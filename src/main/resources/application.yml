@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  context-path: /
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1/transitOA
+    username: root
+    password: 12345678
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  jackson:
+    serialization:
+      indent-output: true
+logging:
+  level:
+    com.expect: INFO
+    
+custom:
+  avatar-path: /Users/joker/java/New_workspace/transitOA/avatar
+  attachment-path: /Users/joker/java/New_workspace/transitOA
