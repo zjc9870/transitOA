@@ -49,8 +49,8 @@ var DatatableTool = function() {
 				"url" : ajax.url,
 				"dataSrc" : "data",
 				"data" : function(data) {
-					if (ajax.dataFunction != null) {
-						var param = ajax.dataFunction();
+					if (ajax.data != null) {
+						var param = ajax.data();
 						param.start = data.start;
 						param.length = data.length;
 						return param;
@@ -76,6 +76,21 @@ var DatatableTool = function() {
 					$(this).prop("checked", false);
 				}
 			});
+		});
+		return mTable;
+	}
+	
+	function initEditorDatatable(tableId,columnDefs){
+		var i18nUrl = "/plugins/datatables/dataTables.chinese.txt";
+		var mTable=$("#"+tableId).DataTable({
+			'oLanguage' : {
+				'sUrl' : i18nUrl
+			},
+			"paging" : false,
+			"bFilter" : false,
+			"bLengthChange" : false,
+			"columnDefs" : columnDefs,
+			"bInfo" : false
 		});
 		return mTable;
 	}
@@ -153,7 +168,7 @@ var DatatableTool = function() {
 			showCancelButton : true,
 			confirmButtonClass : "btn-success",
 			cancelButtonClass : "btn-danger",
-			closeOnConfirm : false,
+			closeOnConfirm : true,
 			closeOnCancel : true,
 			confirmButtonText : "确定",
 			cancelButtonText : "取消",
@@ -168,7 +183,7 @@ var DatatableTool = function() {
 					dataType : "json"
 				});
 				promise.then(function(response) {
-					swal(response.message);
+					Toast.show("删除提醒",response.message);
 					if (response.result) {
 						var idArr = ids.split(",");
 						for (i in idArr) {
@@ -200,7 +215,7 @@ var DatatableTool = function() {
 			showCancelButton : true,
 			confirmButtonClass : "btn-success",
 			cancelButtonClass : "btn-danger",
-			closeOnConfirm : false,
+			closeOnConfirm : true,
 			closeOnCancel : true,
 			confirmButtonText : "确定",
 			cancelButtonText : "取消",
@@ -215,7 +230,7 @@ var DatatableTool = function() {
 					dataType : "json"
 				});
 				promise.then(function(response) {
-					swal(response.message);
+					Toast.show("删除提醒",response.message);
 					if (response.result) {
 						// 删除本身的id
 						mTable.rows("#" + id).remove().draw();
@@ -277,9 +292,7 @@ var DatatableTool = function() {
 		resetCheckbox(formId);
 		
 		//如果是file上传，需要清空已经上传信息
-		$(".fileinput span").eq(0).text("");
-		$(".upload-result").text("");
-		$("#progress .progress-bar").css("width","0%");
+		$(formId).FileUpload().destory();
 	}
 
 	function resetRadio(formId) {
@@ -413,7 +426,10 @@ var DatatableTool = function() {
 			return initDatatable(tableId, columnDefs, order);
 		},
 		initDatatableServer : function(tableId, ajax, columnDefs,drawCallback) {
-			initDatatableServer(tableId, ajax,columnDefs,drawCallback);
+			return initDatatableServer(tableId, ajax,columnDefs,drawCallback);
+		},
+		initEditorDatatable : function(tableId,columnDefs){
+			return initEditorDatatable(tableId,columnDefs);
 		},
 		initModal : function(saveFunction,updateFunction,deleteFunction,batchDeleteFunction){
 			initModal(saveFunction,updateFunction,deleteFunction,batchDeleteFunction);

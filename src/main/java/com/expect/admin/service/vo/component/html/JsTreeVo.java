@@ -3,7 +3,9 @@ package com.expect.admin.service.vo.component.html;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsTreeVo implements Comparable<JsTreeVo> {
+import com.expect.admin.service.vo.component.BaseVo;
+
+public class JsTreeVo extends BaseVo implements Comparable<JsTreeVo> {
 
 	private String id;
 	private String text;

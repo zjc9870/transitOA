@@ -23,6 +23,9 @@ import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
 
+/**
+ * 角色Service
+ */
 @Service
 public class RoleService {
 
@@ -40,6 +43,17 @@ public class RoleService {
 		List<Role> roles = roleRepository.findAll();
 		List<RoleVo> roleVos = RoleVo.convert(roles);
 		return roleVos;
+	}
+
+	/**
+	 * 根据id获取角色
+	 */
+	public RoleVo getRoleById(String id) {
+		if (StringUtils.isEmpty(id)) {
+			return null;
+		}
+		Role role = roleRepository.findOne(id);
+		return RoleConvertor.convert(role);
 	}
 
 	/**

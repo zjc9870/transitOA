@@ -1,6 +1,8 @@
 package com.expect.admin.service.vo.component.html;
 
-public class ButtonVo {
+import com.expect.admin.service.vo.component.BaseVo;
+
+public class ButtonVo extends BaseVo{
 
 	public final String disabled = "disabled";
 	public final String outline = "btn-outline";
@@ -26,6 +28,18 @@ public class ButtonVo {
 		String button = "<button type='button' class='btn " + size + " " + className + "' " + otherAttr + ">" + text
 				+ "</button>";
 		return button;
+	}
+
+	/**
+	 * @param isButton false:代表标签是a,true:代表标签是button
+	 */
+	public String getButton(boolean isButton) {
+		if (isButton) {
+			return getButton();
+		} else {
+			String button = "<a class='btn " + size + " " + className + "' " + otherAttr + ">" + text + "</a>";
+			return button;
+		}
 	}
 
 	public String getClassName() {
@@ -79,15 +93,15 @@ public class ButtonVo {
 			String sizeClassName = "";
 			switch (size) {
 			case Size_Small:
-				sizeClassName = " btn-xs ";
+				sizeClassName = "btn-xs";
 				break;
 			case Size_Normal:
 				break;
 			case Size_Larger:
-				sizeClassName = " btn-lg ";
+				sizeClassName = "btn-lg";
 				break;
 			}
-			buttonVo.className += " " + sizeClassName + " ";
+			buttonVo.className += sizeClassName;
 			return this;
 		}
 

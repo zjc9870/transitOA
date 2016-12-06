@@ -1,6 +1,6 @@
 package com.expect.admin.service.vo.component;
 
-public class ResultVo {
+public class ResultVo extends BaseVo{
 
 	protected String message;
 	protected boolean result;

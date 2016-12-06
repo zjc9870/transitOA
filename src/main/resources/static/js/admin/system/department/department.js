@@ -22,29 +22,16 @@ var Department = {
 		//初始化modal,增加/修改/删除/批量删除
 		DatatableTool.initModal(function(){
 			DatatableTool.modalShow("#department-modal", "#department-form");
-			Department.requestDepartmentSelect();
-			Department.requestUserSelect();
+			Department.getFormPage(-1);
 			
 			$("#save").removeClass("hidden");
 			$("#update").addClass("hidden");
 		},function(id){
 			DatatableTool.modalShow("#department-modal", "#department-form");
-			Department.requestDepartmentSelect(id);
+			Department.getFormPage(id);
 			
 			$("#save").addClass("hidden");
 			$("#update").removeClass("hidden");
-			var mTable = $('#department-table').DataTable();
-			var tr = mTable.row("#" + id);
-			var data = tr.data();
-			var code = data[1];
-			var name = data[2];
-			var username=data[3];
-			Department.requestUserSelect(username);
-			var description = data[5];
-			Department.inputId.val(id);
-			Department.inputCode.val(code);
-			Department.inputName.val(name);
-			Department.inputDescription.val(description);
 		},function(id){
 			DatatableTool.deleteRow("department-table","department/delete",id);
 		},function(ids){
@@ -72,18 +59,11 @@ var Department = {
 			});
 		});
 	},
-	requestDepartmentSelect:function(id){
-		AjaxTool.get("department/getDepartmentSelectHtml",{
+	getFormPage:function(id){
+		AjaxTool.html("department/departmentFormPage",{
 			id:id
-		},function(response){
-			$("#department-parent-select").html(response.html);
-		});
-	},
-	requestUserSelect:function(username){
-		AjaxTool.get("user/getUserSelectHtml",{
-			username:username
-		},function(response){
-			$("#department-manager-select").html(response.html);
+		},function(html){
+			$("#department-modal .modal-body").html(html);
 		});
 	}
 };

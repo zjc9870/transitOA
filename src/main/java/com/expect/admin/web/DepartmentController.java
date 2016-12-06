@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +16,11 @@ import com.expect.admin.service.convertor.DepartmentConvertor;
 import com.expect.admin.service.vo.DepartmentVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.CheckboxsVo;
-import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 
+/**
+ * 部门管理Controller
+ */
 @Controller
 @RequestMapping("/admin/department")
 public class DepartmentController {
@@ -29,7 +30,10 @@ public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
 
-	@RequestMapping("/departmentManagePage")
+	/**
+	 * 部门-管理页面
+	 */
+	@RequestMapping(value = "/departmentManagePage", method = RequestMethod.GET)
 	public ModelAndView userManagePage() {
 		List<DepartmentVo> departments = departmentService.getDepartments();
 		List<DataTableRowVo> dtrvs = DepartmentConvertor.convertDtrv(departments);
@@ -39,47 +43,50 @@ public class DepartmentController {
 	}
 
 	/**
-	 * 获取departmentSelect的html
+	 * 部门-表单页面
 	 */
-	@RequestMapping("/getDepartmentSelectHtml")
-	@ResponseBody
-	public SelectOptionVo getDeaprtmentSelect(String id) {
-		List<DepartmentVo> departments = departmentService.getDepartments();
-		DepartmentVo checkedDepartment = null;
-		if (!StringUtils.isEmpty(id)) {
-			for (int i = departments.size() - 1; i >= 0; i--) {
-				if (id.equals((departments.get(i).getId()))) {
-					checkedDepartment = departments.remove(i);
-					break;
-				}
-			}
-		}
-		SelectOptionVo sov = DepartmentConvertor.convertSov(departments, checkedDepartment);
-		return sov;
+	@RequestMapping(value = "/departmentFormPage", method = RequestMethod.POST)
+	public ModelAndView departmentFormPage(String id) {
+		DepartmentVo department = departmentService.getDepartmentById(id);
+		ModelAndView modelAndView = new ModelAndView(viewName + "form/departmentForm");
+		modelAndView.addObject("department", department);
+		return modelAndView;
 	}
 
+	/**
+	 * 部门-保存
+	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo save(DepartmentVo departmentVo) {
 		return departmentService.save(departmentVo);
 	}
 
+	/**
+	 * 部门-更新
+	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo update(DepartmentVo departmentVo) {
 		return departmentService.update(departmentVo);
 	}
 
+	/**
+	 * 部门-删除
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo delete(String id) {
 		return departmentService.delete(id);
 	}
 
-	@RequestMapping(value = "/batchDelete", method = RequestMethod.POST)
+	/**
+	 * 部门-批量删除
+	 */
+	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultVo batchDelete(String ids) {
-		return departmentService.batchDelete(ids);
+	public ResultVo deleteBatch(String ids) {
+		return departmentService.deleteBatch(ids);
 	}
 
 	/**

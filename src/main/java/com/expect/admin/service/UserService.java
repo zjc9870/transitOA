@@ -21,16 +21,17 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Service;
 
 import com.expect.admin.data.dao.DepartmentRepository;
+import com.expect.admin.data.dao.LogLoginRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Department;
+import com.expect.admin.data.dataobject.LogLogin;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
-import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.RequestUtil;
 
 @Service
@@ -42,13 +43,19 @@ public class UserService implements UserDetailsService {
 	private RoleRepository roleRepository;
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	@Autowired
+	private LogLoginRepository logLoginRepository;
 
 	/**
 	 * 根据id获取用户
 	 */
 	public UserVo getUserById(String id) {
-		UserVo user = UserConvertor.convert(userRepository.findOne(id));
-		return user;
+		if (StringUtils.isEmpty(id)) {
+			return new UserVo();
+		} else {
+			User user = userRepository.findOne(id);
+			return UserConvertor.convert(user);
+		}
 	}
 
 	/**
@@ -137,7 +144,7 @@ public class UserService implements UserDetailsService {
 	 *            用,号隔开
 	 */
 	@Transactional
-	public ResultVo batchDelete(String ids) {
+	public ResultVo deleteBatch(String ids) {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setMessage("删除失败");
 		if (StringUtils.isEmpty(ids)) {
@@ -153,11 +160,19 @@ public class UserService implements UserDetailsService {
 	}
 
 	/**
-	 * 根据用户名修改登录信息
+	 * 修改头像
 	 */
 	@Transactional
-	public int updateLoginInfoByUsername(String lastLoginIp, String lastLoginTime, String username) {
-		return userRepository.updateLoginInfoByUsername(lastLoginIp, lastLoginTime, username);
+	public ResultVo updateAvatar(String id, String avatarId) {
+		ResultVo rv = new ResultVo();
+		rv.setMessage("修改失败");
+		int result = userRepository.updateAvatarById(id, avatarId);
+		if (result > 0) {
+			rv.setMessage("修改成功");
+			rv.setResult(true);
+			rv.setObj(id);
+		}
+		return rv;
 	}
 
 	/**
@@ -210,20 +225,6 @@ public class UserService implements UserDetailsService {
 		return resultVo;
 	}
 
-	@Transactional
-	public ResultVo updateAvatar(String id, byte[] avatar) {
-		ResultVo resultVo = new ResultVo();
-		int result = userRepository.updateAvatarById(id, avatar);
-		if (result > 0) {
-			resultVo.setResult(true);
-			resultVo.setMessage("上传成功");
-		} else {
-			resultVo.setResult(false);
-			resultVo.setMessage("上传失败");
-		}
-		return resultVo;
-	}
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
@@ -234,6 +235,20 @@ public class UserService implements UserDetailsService {
 	}
 
 	/**
+	 * 日志记录
+	 */
+	public void loginLog(String userId, String username, String ip) {
+		// 日志记录
+		Date time = new Date();
+		LogLogin logLogin = new LogLogin();
+		logLogin.setUserId(userId);
+		logLogin.setIp(ip);
+		logLogin.setTime(time);
+		logLogin.setUsername(username);
+		logLoginRepository.save(logLogin);
+	}
+
+	/**
 	 * 登录成功后的回调，右spring-security管理
 	 */
 	public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
@@ -241,10 +256,10 @@ public class UserService implements UserDetailsService {
 		public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 				Authentication authentication) throws ServletException, IOException {
 			User user = (User) authentication.getPrincipal();
-			System.out.println("登录成功！");
-			String lastLoginIp = RequestUtil.getIpAddr(request);
-			String lastLoginTime = DateUtil.format(new Date(), DateUtil.fullFormat);
-			updateLoginInfoByUsername(lastLoginIp, lastLoginTime, user.getUsername());
+			logger.info(user.getUsername() + "登录成功!");
+
+			String ip = RequestUtil.getIpAddr(request);
+			loginLog(user.getId(), user.getUsername(), ip);
 
 			Cookie usernameCookie = new Cookie("username", user.getUsername());
 			usernameCookie.setMaxAge(24 * 60 * 60 * 30);

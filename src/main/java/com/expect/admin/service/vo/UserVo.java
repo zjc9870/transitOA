@@ -1,5 +1,7 @@
 package com.expect.admin.service.vo;
 
+import com.expect.admin.utils.JacksonJsonUtil;
+
 public class UserVo {
 
 	private String id;
@@ -9,11 +11,9 @@ public class UserVo {
 	private String sex;
 	private String phone;
 	private String email;
-	private String lastLoginTime;
-	private String lastLoginIp;
 	private String roleName;
 	private String departmentName;
-	private byte[] avatar;
+	private String avatarId;
 
 	public String getId() {
 		return id;
@@ -71,22 +71,6 @@ public class UserVo {
 		this.email = email;
 	}
 
-	public String getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(String lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public String getLastLoginIp() {
-		return lastLoginIp;
-	}
-
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
-	}
-
 	public String getRoleName() {
 		return roleName;
 	}
@@ -103,20 +87,17 @@ public class UserVo {
 		this.departmentName = departmentName;
 	}
 
-	public byte[] getAvatar() {
-		return avatar;
+	public String getAvatarId() {
+		return avatarId;
 	}
 
-	public void setAvatar(byte[] avatar) {
-		this.avatar = avatar;
+	public void setAvatarId(String avatarId) {
+		this.avatarId = avatarId;
 	}
 
 	@Override
 	public String toString() {
-		return "UserVo [id=" + id + ", username=" + username + ", password=" + password + ", fullName=" + fullName
-				+ ", sex=" + sex + ", phone=" + phone + ", email=" + email + ", lastLoginTime=" + lastLoginTime
-				+ ", lastLoginIp=" + lastLoginIp + ", roleName=" + roleName + ", departmentName=" + departmentName
-				+ "]";
+		return JacksonJsonUtil.getInstance().write(this);
 	}
 
 }

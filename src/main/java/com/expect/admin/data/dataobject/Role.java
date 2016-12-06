@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 角色
+ */
 @Entity
 @Table(name = "c_role")
 public class Role {

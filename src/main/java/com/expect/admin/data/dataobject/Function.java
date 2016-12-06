@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 功能
+ */
 @Entity
 @Table(name = "c_function")
 public class Function {

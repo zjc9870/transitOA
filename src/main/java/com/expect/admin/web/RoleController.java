@@ -18,6 +18,9 @@ import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.CheckboxsVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
 
+/**
+ * 角色管理Controller
+ */
 @Controller
 @RequestMapping("/admin/role")
 public class RoleController {
@@ -27,6 +30,9 @@ public class RoleController {
 	@Autowired
 	private RoleService roleService;
 
+	/**
+	 * 角色-管理页面
+	 */
 	@RequestMapping("/roleManagePage")
 	public ModelAndView userManagePage() {
 		List<RoleVo> roles = roleService.getRoles();
@@ -44,18 +50,27 @@ public class RoleController {
 		return roleService.getFunctionTreeByRoleId(roleId);
 	}
 
+	/**
+	 * 角色-保存
+	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo save(String name) {
 		return roleService.save(name);
 	}
 
+	/**
+	 * 角色-更新
+	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo update(String id, String name) {
 		return roleService.update(id, name);
 	}
 
+	/**
+	 * 角色-删除
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo delete(String id) {

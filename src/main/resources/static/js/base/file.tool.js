@@ -16,7 +16,7 @@ var FileTool = function() {
 			}
 		});
 	}
-	
+
 	/**
 	 * Uploadify 图片上传配置
 	 */
@@ -50,7 +50,8 @@ var FileTool = function() {
 	function uploadifyVedio(selector, url, fileObjName, onUploadStart,
 			onUploadSuccess) {
 		$(selector)
-				.uploadify({
+				.uploadify(
+						{
 							'swf' : '/scfy/resources/plugins/uploadify/uploadify.swf',
 							'uploader' : url,
 							'cancelImg' : '/scfy/resources/plugins/uploadify/cancel.png',
@@ -84,49 +85,46 @@ var FileTool = function() {
 	 * Jquery-file-upload插件 基础配置
 	 */
 	jqueryUpload = function(maxFileSizes, acceptFileTypes, url, selector,
-			formData, uploadButtonSelector, doneCallback, submitCallback,
-			failCallback, cssObj) {
-		
-		var filesSelector;
-		var progressSelector;
-		if (cssObj == undefined) {
-			filesSelector = "#files";
-			progressSelector = "#progress .progress-bar";
-		} else {
-			filesSelector = cssObj.files;
-			progressSelector = cssObj.progress;
-		}
+			formData, uploadButtonSelector, doneCallback, changeCallback, submitCallback,
+			failCallback) {
+		var filesSelector = "#files";
+		var progressSelector = "#progress .progress-bar";
 
 		$(selector).fileupload({
 			url : url,
 			dataType : 'json',
 			autoUpload : false,
 			formData : formData
+		}).on('fileuploadchange', function(e, data) {
+			if(data.files.length>0){
+				jqueryUploadButton(false);
+			}
+			if(data.files.length>1){
+				$(".fileinput-filename").text(data.files.length+"个文件");
+			}else{
+				$(".fileinput-filename").text(data.files[0].name);
+			}
+			if (changeCallback) {
+				changeCallback(data);
+			}
 		}).on('fileuploadadd', function(e, data) {
-			var failure = true;
 			$.each(data.files, function(index, file) {
 				if (!validateFormat(acceptFileTypes, file.name)) {
-					Toast.show("上传文件提醒","文件格式有误");
-					failure = false;
+					Toast.show("上传文件提醒", "文件格式有误");
 					return;
 				}
 				if (file.size > maxFileSizes) {
-					Toast.show("上传文件提醒","文件大小超过规定");
-					failure = false;
+					Toast.show("上传文件提醒", "文件大小超过规定");
 					return;
 				}
+				$(progressSelector).css('width', '0%');
+				data.context = $(uploadButtonSelector).bind("click",function() {
+					data.submit();
+				});
 			});
-			if (!failure) {
-				return;
-			}
-			$(progressSelector).css('width', '0%');
-			$(uploadButtonSelector).unbind("click");
-			data.context = $(uploadButtonSelector).bind("click",function() {
-				data.submit();
-			});
-		}).on("fileuploadsubmit", function(e,data) {
-			if(submitCallback){
-				return submitCallback(e,data);
+		}).on("fileuploadsubmit", function(e, data) {
+			if (submitCallback) {
+				return submitCallback(e, data);
 			}
 			return true;
 		}).on('fileuploadprogressall', function(e, data) {
@@ -143,47 +141,61 @@ var FileTool = function() {
 			}
 		}).on('fileuploadfail', function(e, data) {
 			if (failCallback) {
-				failCallback();
+				failCallback(data);
 			}
 		});
+//		$(".fileinput-exists").hide();
+//		$(".fileinput-remove").unbind("click");
+//		$(".fileinput-remove").bind("click",function(){
+//			jqueryUploadButton(true);
+//			$(".fileinput-filename").text("");
+//		});
 	}
 	
+	function jqueryUploadButton(isRemove){
+		if(isRemove){
+			$(".fileinput-exists").hide();
+			$(".fileinput-new").show();
+		}else{
+			$(".fileinput-exists").show();
+			$(".fileinput-new").hide();
+		}
+	}
+
 	/**
 	 * Jquery-file-upload插件 文本上传
 	 */
 	jqueryUploadText = function(url, selector, formData, uploadButtonSelector,
-			doneCallback, startCallback, failCallback, cssObj) {
+			doneCallback, changeCallback, submitCallback, failCallback) {
 		// 10MB,10485760,'.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$',
-		jqueryUpload(104857600,
-				'.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$',
-				url, selector, formData, uploadButtonSelector, doneCallback,
-				startCallback, failCallback, cssObj);
+		jqueryUpload(104857600, '.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$', url,
+				selector, formData, uploadButtonSelector, doneCallback,
+				changeCallback, submitCallback, failCallback);
 	}
 
 	/**
 	 * Jquery-file-upload插件 图片上传
 	 */
 	jqueryUploadImage = function(url, selector, formData, uploadButtonSelector,
-			doneCallback, startCallback, failCallback, cssObj) {
+			doneCallback, changeCallback, submitCallback, failCallback) {
 		// 10MB,10485760,'.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$',
 		jqueryUpload(10485760,
 				'.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$',
 				url, selector, formData, uploadButtonSelector, doneCallback,
-				startCallback, failCallback, cssObj);
+				changeCallback, submitCallback, failCallback);
 	}
 
 	/**
 	 * Jquery-file-upload插件 视频上传
 	 */
-	jqueryUploadVedio = function(url, selector, formData, uploadButtonSelector,
-			doneCallback, startCallback, failCallback, cssObj) {
+	jqueryUploadVideo = function(url, selector, formData, uploadButtonSelector,
+			doneCallback, changeCallback, submitCallback, failCallback) {
 		// 100MB,104857600,'.+(.swf|.avi|.flv|.mpg|.rm|.mov|.wav|.asf|.3gp|.mkv|.rmvb)$',
-		jqueryUpload(104857600,
-				'.+(.swf|.flv|.mp4)$',
-				url, selector, formData, uploadButtonSelector, doneCallback,
-				startCallback, failCallback, cssObj);
+		jqueryUpload(104857600, '.+(.swf|.flv|.mp4)$', url, selector, formData,
+				uploadButtonSelector, doneCallback, changeCallback,
+				submitCallback, failCallback);
 	}
-	
+
 	jqueryUploadIsSelect = function(files) {
 		var text = "";
 		if (files == undefined) {
@@ -234,7 +246,7 @@ var FileTool = function() {
 	}
 
 	return {
-		ajaxFileUpload : function(url, fileElementsIds, data, successCallback){
+		ajaxFileUpload : function(url, fileElementsIds, data, successCallback) {
 			ajaxFileUpload(url, fileElementsIds, data, successCallback);
 		},
 		uploadifyImg : function(selector, url, fileObjName, onUploadStart,
@@ -251,20 +263,22 @@ var FileTool = function() {
 			return getUploadifyNum(selector);
 		},
 		jqueryUploadText : function(url, selector, formData,
-				uploadButtonSelector, doneCallback, submitCallback,failCallback, cssObj) {
+				uploadButtonSelector, doneCallback, changeCallback,
+				submitCallback, failCallback) {
 			jqueryUploadText(url, selector, formData, uploadButtonSelector,
-					doneCallback, submitCallback,failCallback, cssObj);
+					doneCallback, changeCallback, submitCallback, failCallback);
 		},
 		jqueryUploadImage : function(url, selector, formData,
-				uploadButtonSelector, doneCallback, submitCallback,failCallback, cssObj) {
+				uploadButtonSelector, doneCallback, changeCallback,
+				submitCallback, failCallback) {
 			jqueryUploadImage(url, selector, formData, uploadButtonSelector,
-					doneCallback, submitCallback,failCallback, cssObj);
+					doneCallback, changeCallback, submitCallback, failCallback);
 		},
-		jqueryUploadVedio : function(url, selector, formData,
-				uploadButtonSelector, doneCallback, submitCallback,
-				failCallback, cssObj) {
-			jqueryUploadVedio(url, selector, formData, uploadButtonSelector,
-					doneCallback, submitCallback, failCallback, cssObj);
+		jqueryUploadVideo : function(url, selector, formData,
+				uploadButtonSelector, doneCallback, changeCallback,
+				submitCallback, failCallback) {
+			jqueryUploadVideo(url, selector, formData, uploadButtonSelector,
+					doneCallback, changeCallback, submitCallback, failCallback);
 		},
 		jqueryUploadIsSelect : function(files) {
 			return jqueryUploadIsSelect(files);

@@ -14,10 +14,13 @@ spring:
   jackson:
     serialization:
       indent-output: true
-logging:
-  level:
-    com.expect: INFO
+#logging:
+#  file: /Users/joker/java/New_workspace/transitOA/log/log.log
+#  level:
+#    com.expect: info
     
 custom:
+  root-path: /Users/joker/java/New_workspace/transitOA
   avatar-path: /Users/joker/java/New_workspace/transitOA/avatar
-  attachment-path: /Users/joker/java/New_workspace/transitOA
+  attachment-path: /Users/joker/java/New_workspace/transitOA/attachment
+  ueditor-path: /Users/joker/java/New_workspace/transitOA/ueditor

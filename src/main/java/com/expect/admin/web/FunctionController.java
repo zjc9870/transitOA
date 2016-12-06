@@ -2,7 +2,6 @@ package com.expect.admin.web;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +13,11 @@ import com.expect.admin.service.FunctionService;
 import com.expect.admin.service.convertor.FunctionConvertor;
 import com.expect.admin.service.vo.FunctionVo;
 import com.expect.admin.service.vo.component.ResultVo;
-import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 
+/**
+ * 功能Controller
+ */
 @Controller
 @RequestMapping("/admin/function")
 public class FunctionController {
@@ -26,7 +27,10 @@ public class FunctionController {
 	@Autowired
 	private FunctionService functionService;
 
-	@RequestMapping("/functionManagePage")
+	/**
+	 * 功能-管理页面
+	 */
+	@RequestMapping(value = "/functionManagePage", method = RequestMethod.GET)
 	public ModelAndView userManagePage() {
 		List<FunctionVo> functions = functionService.getFunctions();
 		List<DataTableRowVo> dtrvs = FunctionConvertor.convertDtrv(functions);
@@ -36,46 +40,49 @@ public class FunctionController {
 	}
 
 	/**
-	 * 获取functionSelect的html
+	 * 功能-表单页面
 	 */
-	@RequestMapping("/getFunctionSelectHtml")
-	@ResponseBody
-	public SelectOptionVo getFunctionSelect(String id) {
-		List<FunctionVo> functions = functionService.getFunctions();
-		FunctionVo checkedFunction = null;
-		if (!StringUtils.isEmpty(id)) {
-			for (int i = functions.size() - 1; i >= 0; i--) {
-				if (id.equals((functions.get(i).getId()))) {
-					checkedFunction = functions.remove(i);
-					break;
-				}
-			}
-		}
-		SelectOptionVo sov = FunctionConvertor.convertSov(functions, checkedFunction);
-		return sov;
+	@RequestMapping(value = "/functionFormPage", method = RequestMethod.POST)
+	public ModelAndView functionForm(String id) {
+		FunctionVo function = functionService.getFunctionById(id);
+		ModelAndView modelAndView = new ModelAndView(viewName + "form/functionForm");
+		modelAndView.addObject("function", function);
+		return modelAndView;
 	}
 
+	/**
+	 * 功能-保存
+	 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo save(FunctionVo functionVo) {
 		return functionService.save(functionVo);
 	}
 
+	/**
+	 * 功能-更新
+	 */
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo update(FunctionVo functionVo) {
 		return functionService.update(functionVo);
 	}
 
+	/**
+	 * 功能-删除
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo delete(String id) {
 		return functionService.delete(id);
 	}
 
-	@RequestMapping(value = "/batchDelete", method = RequestMethod.POST)
+	/**
+	 * 功能-批量删除
+	 */
+	@RequestMapping(value = "/deleteBatch", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultVo batchDelete(String ids) {
-		return functionService.batchDelete(ids);
+	public ResultVo deleteBatch(String ids) {
+		return functionService.deleteBatch(ids);
 	}
 }

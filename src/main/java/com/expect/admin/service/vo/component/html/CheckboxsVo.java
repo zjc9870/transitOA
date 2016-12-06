@@ -3,7 +3,9 @@ package com.expect.admin.service.vo.component.html;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CheckboxsVo {
+import com.expect.admin.service.vo.component.BaseVo;
+
+public class CheckboxsVo extends BaseVo{
 
 	private List<CheckboxVo> checkboxVos = new ArrayList<>();
 	private StringBuilder htmlSb = new StringBuilder();

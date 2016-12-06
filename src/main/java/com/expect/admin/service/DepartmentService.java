@@ -15,10 +15,16 @@ import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.service.convertor.DepartmentConvertor;
+import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.DepartmentVo;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
+import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 
+/**
+ * 部门Service
+ */
 @Service
 public class DepartmentService {
 
@@ -26,6 +32,8 @@ public class DepartmentService {
 	private DepartmentRepository departmentRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 获取所有的部门信息
@@ -34,6 +42,39 @@ public class DepartmentService {
 		List<Department> departments = departmentRepository.findAll();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departments);
 		return departmentVos;
+	}
+
+	/**
+	 * 根据id获取部门
+	 */
+	public DepartmentVo getDepartmentById(String id) {
+		List<DepartmentVo> departments = getDepartments();
+		DepartmentVo checkedDepartment = null;
+		if (!StringUtils.isEmpty(id)) {
+			for (int i = departments.size() - 1; i >= 0; i--) {
+				if (id.equals((departments.get(i).getId()))) {
+					checkedDepartment = departments.remove(i);
+					break;
+				}
+			}
+		}
+		List<UserVo> users = userService.getAllUsers();
+		SelectOptionVo managerSov = null;
+
+		DepartmentVo departmentVo = null;
+		if (StringUtils.isEmpty(id)) {
+			departmentVo = new DepartmentVo();
+			managerSov = UserConvertor.convertSov(users, null);
+		} else {
+			Department department = departmentRepository.findOne(id);
+			departmentVo = DepartmentConvertor.convert(department);
+			managerSov = UserConvertor.convertSov(users, departmentVo.getManagerName());
+		}
+
+		SelectOptionVo parentDepartmentSov = DepartmentConvertor.convertSov(departments, checkedDepartment);
+		departmentVo.setParentDepartmentSov(parentDepartmentSov);
+		departmentVo.setManagerSov(managerSov);
+		return departmentVo;
 	}
 
 	/**
@@ -194,7 +235,7 @@ public class DepartmentService {
 	 *            用,号隔开
 	 */
 	@Transactional
-	public ResultVo batchDelete(String ids) {
+	public ResultVo deleteBatch(String ids) {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setMessage("删除失败");
 		if (StringUtils.isEmpty(ids)) {

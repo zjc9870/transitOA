@@ -1,0 +1,135 @@
+.single-page-wrap {
+	height: 100%;
+	text-align: center;
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 0;
+	-webkit-overflow-scrolling: touch;
+	overflow-x: hidden;
+	webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	overflow-y: hidden;
+}
+
+.single-page-wrap:before {
+	webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	content: "";
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+
+.single-page {
+	left: 100%;
+	-webkit-transition: left .6s ease-in-out;
+	transition: left .6s ease-in-out;
+	background: white;
+	padding: 0;
+}
+
+.single-page-active {
+	left: 0;
+}
+
+.single-page-wrap {
+	z-index: 10105 !important;
+}
+
+.single-page-wrap * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.single-page .single-page-content {
+	position: absolute;
+    z-index: 1;
+    vertical-align: top;
+    width: 100%;
+    top: 104px;
+    height: 100%;
+    color: black;
+}
+
+.single-page .single-page-navigation-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 104px;
+	background-color: #3D4750;
+	width:100%;
+}
+
+.single-page .single-page-navigation-wrap {
+	top: 0 !important;
+}
+
+.single-page .single-page-navigation-wrap {
+	z-index: 10106 !important;
+}
+
+.single-page .single-page-navigation{
+	position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.single-page-next, .single-page-prev, .single-page-close{
+	padding: 0;
+    border: medium none;
+    position: absolute;
+    cursor: pointer;
+    outline: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.single-page .single-page-close{
+	background: url(../img/icon-single-page.png) no-repeat scroll -92px -92px transparent;
+    height: 44px;
+    width: 44px;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.single-page .single-page-next{
+	background: url(../img/icon-single-page.png) no-repeat scroll -46px -92px transparent;
+    width: 44px;
+    height: 44px;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 108px;
+}
+
+.single-page .single-page-prev{
+	background: url(../img/icon-single-page.png) no-repeat scroll 0 -92px transparent;
+    width: 44px;
+    height: 44px;
+    margin: auto;
+    top: 0;
+    right: 108px;
+    bottom: 0;
+    left: 0;
+}
+
+.single-page-counter{
+	color: #fff;
+    position: absolute;
+    margin: auto;
+    right: 40px;
+    top: 0;
+    bottom: 0;
+    font: 400 13px/30px "Open Sans", sans-serif;
+    height: 30px;
+}

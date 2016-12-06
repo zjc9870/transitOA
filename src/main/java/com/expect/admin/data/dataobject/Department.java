@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * 部门
+ */
 @Entity
 @Table(name = "c_department")
 public class Department {

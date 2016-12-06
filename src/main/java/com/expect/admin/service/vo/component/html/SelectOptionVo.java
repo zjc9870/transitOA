@@ -3,7 +3,9 @@ package com.expect.admin.service.vo.component.html;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectOptionVo {
+import com.expect.admin.service.vo.component.BaseVo;
+
+public class SelectOptionVo extends BaseVo{
 
 	public List<OptionVo> options = new ArrayList<>();
 	public StringBuilder htmlSb = new StringBuilder();

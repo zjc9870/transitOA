@@ -1,6 +1,9 @@
 package com.expect.admin.service.vo;
 
-public class AttachmentVo {
+import com.expect.admin.service.vo.component.BaseVo;
+import com.expect.admin.utils.JacksonJsonUtil;
+
+public class AttachmentVo extends BaseVo {
 
 	private String id;
 	private String name;
@@ -37,6 +40,12 @@ public class AttachmentVo {
 
 	public void setTimeStr(String timeStr) {
 		this.timeStr = timeStr;
+	}
+
+	@Override
+	public String toString() {
+		String result = JacksonJsonUtil.getInstance().write(this);
+		return result;
 	}
 
 }

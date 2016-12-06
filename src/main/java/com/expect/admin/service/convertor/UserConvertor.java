@@ -23,6 +23,9 @@ public class UserConvertor {
 	 */
 	public static UserVo convert(User user) {
 		UserVo userVo = new UserVo();
+		if (user == null) {
+			return userVo;
+		}
 		BeanUtils.copyProperties(user, userVo);
 		// 设置角色
 		Set<Role> roles = user.getRoles();
@@ -54,6 +57,11 @@ public class UserConvertor {
 			}
 		}
 		userVo.setDepartmentName(departmentSb.toString());
+		// 设置头像
+		if (user.getAvatar() != null) {
+			userVo.setAvatarId(user.getAvatar().getId());
+		}
+
 		return userVo;
 	}
 
@@ -121,8 +129,6 @@ public class UserConvertor {
 		dtrv.addData(userVo.getEmail());
 		dtrv.addData(userVo.getRoleName());
 		dtrv.addData(userVo.getDepartmentName());
-		dtrv.addData(userVo.getLastLoginIp());
-		dtrv.addData(userVo.getLastLoginTime());
 		// 设置操作的button
 		StringBuilder sb = new StringBuilder();
 		sb.append(DataTableButtonFactory.getYellowButton("头像", "data-id='" + userVo.getId() + "'"));
@@ -137,7 +143,7 @@ public class UserConvertor {
 	 * do to dtrv
 	 */
 	public static void convertDtrv(DataTableRowVo dtrv, User user) {
-		UserVo userVo=convert(user);
+		UserVo userVo = convert(user);
 		dtrv.setObj(userVo);
 		dtrv.setCheckbox(true);
 		dtrv.addData(user.getUsername());
@@ -161,7 +167,7 @@ public class UserConvertor {
 			}
 		}
 		dtrv.addData(roleSb.toString());
-		//设置部门
+		// 设置部门
 		Set<Department> departments = user.getDepartments();
 		StringBuilder departmentSb = new StringBuilder();
 		if (!CollectionUtils.isEmpty(departments)) {
@@ -176,8 +182,6 @@ public class UserConvertor {
 			}
 		}
 		dtrv.addData(departmentSb.toString());
-		dtrv.addData(user.getLastLoginIp());
-		dtrv.addData(user.getLastLoginTime());
 		// 设置操作的button
 		StringBuilder buttonSb = new StringBuilder();
 		buttonSb.append(DataTableButtonFactory.getYellowButton("头像", "data-id='" + user.getId() + "'"));

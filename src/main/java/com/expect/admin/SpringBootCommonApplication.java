@@ -10,5 +10,3 @@ public class SpringBootCommonApplication {
 		SpringApplication.run(SpringBootCommonApplication.class, args);
 	}
 }
-
-

@@ -1,6 +1,6 @@
 var Tools = function() {
 	
-	var getUuid = function() {
+	var getUUID = function() {
 		var len = 32; // 32长度
 		var radix = 16; // 16进制
 		var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -44,8 +44,8 @@ var Tools = function() {
 	};
 
 	return {
-		getUuid : function() {
-			return getUuid();
+		getUUID : function() {
+			return getUUID();
 		},
 		replaceAll : function(str,s1, s2) {
 			return replaceAll(str,s1, s2);

@@ -9,16 +9,16 @@ var User = {
 	init : function() {
 		var mTable=DatatableTool.initDatatable("user-table", [ {
 			'orderable' : false,
-			'targets' : [ 0, 11 ]
+			'targets' : [ 0, 9 ]
 		}, {
 			"searchable" : false,
-			"targets" : [ 0, 11 ]
+			"targets" : [ 0, 9 ]
 		}, {
 			"width" : "30px",
 			"targets" : 0
 		}, {
 			"width" : "220px",
-			"targets" : 11
+			"targets" : 9
 		} ], [ [ 1, "asc" ] ]);
 		
 		
@@ -26,39 +26,21 @@ var User = {
 		User.initSaveUpdate();
 		User.userRoleUpdateSubmit();
 		User.userDepartmentUpdateSubmit();
-		User.userAvatarSave();
 	},
 	initModal:function(){
 		//初始化modal,增加/修改/删除/批量删除/部门/角色/头像
 		DatatableTool.initModal(function(){
 			DatatableTool.modalShow("#user-modal", "#user-form");
+			User.getFormPage(-1);
+			
 			$("#save").removeClass("hidden");
 			$("#update").addClass("hidden");
 		},function(id){
 			DatatableTool.modalShow("#user-modal", "#user-form");
+			User.getFormPage(id);
 			
 			$("#save").addClass("hidden");
 			$("#update").removeClass("hidden");
-			var mTable = $('#user-table').DataTable();
-			var tr = mTable.row("#" + id);
-			var data = tr.data();
-			var username = data[1];
-			var password = data[2];
-			var fullName = data[3];
-			var sex = data[4];
-			var phone = data[5];
-			var email = data[6];
-			User.inputId.val(id);
-			User.inputUsername.val(username);
-			User.inputPassword.val(password);
-			User.inputFullName.val(fullName);
-			User.inputEmail.val(email);
-			User.inputPhone.val(phone);
-			if(sex=='男'){
-				User.inputSex.eq(0).attr("checked",true);
-			}else if(sex=='女'){
-				User.inputSex.eq(1).attr("checked",true);
-			}
 		},function(id){
 			DatatableTool.deleteRow("user-table","user/delete",id);
 		},function(ids){
@@ -85,6 +67,15 @@ var User = {
 					$(".user-avatar-img").attr("src","/images/avatar.png");
 				}
 			});
+			var uploader=$("#user-avatar-form").FileUpload({
+				url:"user/uploadAvatar",
+				fileType: "image"
+			});
+			uploader.done(function(data){
+				if(data.result){
+					$(".user-avatar-img").attr("src","user/showAvatar?userId="+data.result.obj+"&uuid"+Tools.getUUID());
+				}
+			});
 		});
 	},
 	initSaveUpdate:function(){
@@ -99,6 +90,13 @@ var User = {
 				$("#user-modal").modal('hide');
 				User.initModal();
 			});
+		});
+	},
+	getFormPage:function(id){
+		AjaxTool.html("user/userFormPage",{
+			id:id
+		},function(html){
+			$("#user-modal .modal-body").html(html);
 		});
 	},
 	userRoleUpdateSubmit : function() {
@@ -159,23 +157,6 @@ var User = {
 					data[8] = departmentName;
 					tr.data(data);
 					User.initModal();
-				}
-			});
-		});
-	},
-	userAvatarSave : function(){
-		$("#user-avatar-save").click(function(){
-			var ctx=$("input[name='ctx']").val();
-			var userId=$("input[name='userAvatarId']").val();
-			var fileIds=new Array(0);
-			var fileId=$("#avatar").attr("id");
-			fileIds.push(fileId);
-			FileTool.ajaxFileUpload("user/uploadAvatar",fileIds,{
-				userId:userId
-			},function(response){
-				Toast.show("用户头像提醒",response.message);
-				if(response.result){
-					$(".user-avatar-img").attr("src","user/showAvatar?userId="+userId+"&uuid="+Tools.getUuid());
 				}
 			});
 		});

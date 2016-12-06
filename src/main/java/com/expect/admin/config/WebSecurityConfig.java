@@ -13,6 +13,9 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.UserService.LoginSuccessHandler;
 
+/**
+ * 权限验证配置
+ */
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

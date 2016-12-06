@@ -10,6 +10,9 @@ var Pjax = function() {
 				startFunction($current);
 			}
 			var url = $(this).data("url");
+			if(!url){
+				return;
+			}
 			if(url==''){
 				url=defaultUrl;
 			}

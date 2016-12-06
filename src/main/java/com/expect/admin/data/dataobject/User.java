@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -21,6 +22,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 用户
+ */
 @Entity
 @Table(name = "c_user")
 public class User implements UserDetails {
@@ -33,23 +37,20 @@ public class User implements UserDetails {
 	@Column(name = "id", nullable = false, unique = true, length = 32)
 	private String id;
 	@Column(name = "username", length = 31)
-	private String username;
+	private String username;// 用户名
 	@Column(name = "password", length = 31)
-	private String password;
+	private String password;// 密码
 	@Column(name = "full_name", length = 31)
-	private String fullName;
+	private String fullName;// 姓名
 	@Column(name = "sex", length = 2)
-	private String sex;
+	private String sex;// 性别
 	@Column(name = "phone", length = 15)
-	private String phone;
+	private String phone;// 手机
 	@Column(name = "email", length = 63)
-	private String email;
-	@Column(name = "avatar")
-	private byte[] avatar;
-	@Column(name = "last_login_time", length = 31)
-	private String lastLoginTime;
-	@Column(name = "last_login_ip", length = 128)
-	private String lastLoginIp;
+	private String email;// 电子邮件
+	@OneToOne
+	@JoinColumn(name = "avatar_id")
+	private Attachment avatar;// 头像
 	/**
 	 * joinColumns代表维护端
 	 * 
@@ -122,28 +123,12 @@ public class User implements UserDetails {
 		this.email = email;
 	}
 
-	public byte[] getAvatar() {
+	public Attachment getAvatar() {
 		return avatar;
 	}
 
-	public void setAvatar(byte[] avatar) {
+	public void setAvatar(Attachment avatar) {
 		this.avatar = avatar;
-	}
-
-	public String getLastLoginTime() {
-		return lastLoginTime;
-	}
-
-	public void setLastLoginTime(String lastLoginTime) {
-		this.lastLoginTime = lastLoginTime;
-	}
-
-	public String getLastLoginIp() {
-		return lastLoginIp;
-	}
-
-	public void setLastLoginIp(String lastLoginIp) {
-		this.lastLoginIp = lastLoginIp;
 	}
 
 	public Set<Role> getRoles() {

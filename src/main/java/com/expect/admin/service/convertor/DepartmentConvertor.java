@@ -41,6 +41,9 @@ public class DepartmentConvertor {
 	 */
 	public static DepartmentVo convert(Department department) {
 		DepartmentVo departmentVo = new DepartmentVo();
+		if (department == null) {
+			return departmentVo;
+		}
 		BeanUtils.copyProperties(department, departmentVo);
 		if (department.getManager() != null) {
 			departmentVo.setManagerId(department.getManager().getId());

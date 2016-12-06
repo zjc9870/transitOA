@@ -3,6 +3,8 @@ package com.expect.admin.service.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.expect.admin.service.vo.component.html.SelectOptionVo;
+
 public class FunctionVo implements Comparable<FunctionVo> {
 
 	private String id;
@@ -17,6 +19,7 @@ public class FunctionVo implements Comparable<FunctionVo> {
 	private List<FunctionVo> childFunctionVos = new ArrayList<>();
 	private String parentId;
 	private String parentName;
+	private SelectOptionVo parentFunctionSov = new SelectOptionVo();
 
 	public String getId() {
 		return id;
@@ -119,6 +122,14 @@ public class FunctionVo implements Comparable<FunctionVo> {
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	public SelectOptionVo getParentFunctionSov() {
+		return parentFunctionSov;
+	}
+
+	public void setParentFunctionSov(SelectOptionVo parentFunctionSov) {
+		this.parentFunctionSov = parentFunctionSov;
 	}
 
 	@Override

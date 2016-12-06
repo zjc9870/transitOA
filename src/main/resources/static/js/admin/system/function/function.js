@@ -24,31 +24,16 @@ var Function = {
 		//初始化modal,增加/修改/删除/批量删除
 		DatatableTool.initModal(function(){
 			DatatableTool.modalShow("#function-modal", "#function-form");
-			Function.requestFunctionSelect();
+			Function.getFormPage(-1);
 			
 			$("#save").removeClass("hidden");
 			$("#update").addClass("hidden");
 		},function(id){
 			DatatableTool.modalShow("#function-modal", "#function-form");
 			
-			Function.requestFunctionSelect(id);
+			Function.getFormPage(id);
 			$("#save").addClass("hidden");
 			$("#update").removeClass("hidden");
-			var mTable = $('#function-table').DataTable();
-			var tr = mTable.row("#" + id);
-			var data = tr.data();
-			var name = data[1];
-			var icon = data[2];
-			var url = data[3];
-			var parentName = data[4];
-			var sequence = data[5];
-			var description = data[6];
-			Function.inputId.val(id);
-			Function.inputName.val(name);
-			Function.inputIcon.val(icon);
-			Function.inputUrl.val(url);
-			Function.inputDescription.val(description);
-			Function.inputSequence.val(sequence);
 		},function(id){
 			DatatableTool.deleteRow("function-table","function/delete",id);
 		},function(ids){
@@ -76,11 +61,11 @@ var Function = {
 			});
 		});
 	},
-	requestFunctionSelect:function(id){
-		AjaxTool.get("function/getFunctionSelectHtml",{
+	getFormPage : function(id){
+		AjaxTool.html("function/functionFormPage",{
 			id:id
-		},function(response){
-			$("#function-parent-select").html(response.html);
+		},function(html){
+			$("#function-modal .modal-body").html(html);
 		});
 	}
 };

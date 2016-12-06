@@ -21,6 +21,9 @@ public class FunctionConvertor {
 	 */
 	public static FunctionVo convert(Function function) {
 		FunctionVo functionVo = new FunctionVo();
+		if (function == null) {
+			return functionVo;
+		}
 		BeanUtils.copyProperties(function, functionVo);
 		String url = functionVo.getUrl();
 		if (!StringUtils.isEmpty(url)) {

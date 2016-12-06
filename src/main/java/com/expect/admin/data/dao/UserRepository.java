@@ -14,18 +14,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 	public User findByUsername(String username);
 
 	/**
-	 * 登录成功后，修改登录信息
-	 * 
-	 * @return 返回更新数据的条数
-	 */
-	@Modifying
-	@Query("update User u set u.lastLoginIp=?1,u.lastLoginTime=?2 where u.username=?3")
-	public int updateLoginInfoByUsername(String lastLoginIp, String lastLoginTime, String username);
-
-	/**
 	 * 修改用户头像
 	 */
 	@Modifying
-	@Query("update User u set u.avatar=?2 where u.id=?1")
-	public int updateAvatarById(String id, byte[] avatar);
+	@Query("update User u set u.avatar.id=?2 where u.id=?1")
+	public int updateAvatarById(String id, String avatarId);
 }

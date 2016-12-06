@@ -1,5 +1,7 @@
 package com.expect.admin.service.vo;
 
+import com.expect.admin.service.vo.component.html.SelectOptionVo;
+
 public class DepartmentVo {
 
 	private String id;
@@ -10,6 +12,8 @@ public class DepartmentVo {
 	private String managerName;
 	private String parentId;
 	private String parentName;
+	private SelectOptionVo parentDepartmentSov = new SelectOptionVo();
+	private SelectOptionVo managerSov = new SelectOptionVo();
 
 	public String getId() {
 		return id;
@@ -73,6 +77,22 @@ public class DepartmentVo {
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	public SelectOptionVo getParentDepartmentSov() {
+		return parentDepartmentSov;
+	}
+
+	public void setParentDepartmentSov(SelectOptionVo parentDepartmentSov) {
+		this.parentDepartmentSov = parentDepartmentSov;
+	}
+
+	public SelectOptionVo getManagerSov() {
+		return managerSov;
+	}
+
+	public void setManagerSov(SelectOptionVo managerSov) {
+		this.managerSov = managerSov;
 	}
 
 }

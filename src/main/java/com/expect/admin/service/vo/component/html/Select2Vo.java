@@ -1,9 +1,11 @@
 package com.expect.admin.service.vo.component.html;
 
+import com.expect.admin.service.vo.component.BaseVo;
+
 /**
  * 该model为select2的model，[{"id":"","text:""},{}],
  */
-public class Select2Vo {
+public class Select2Vo extends BaseVo{
 
 	private String id;
 	private String text;

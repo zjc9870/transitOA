@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,6 +20,7 @@ import com.expect.admin.data.dataobject.User;
 import com.expect.admin.service.convertor.FunctionConvertor;
 import com.expect.admin.service.vo.FunctionVo;
 import com.expect.admin.service.vo.component.ResultVo;
+import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 
 @Service
@@ -128,6 +128,23 @@ public class FunctionService {
 				}
 			}
 		}
+
+		for (FunctionVo fFunction : resultFunctions) {
+			System.out.println("first:" + fFunction.getName());
+			List<FunctionVo> sFunctions = fFunction.getChildFunctionVos();
+			if (sFunctions != null) {
+				for (int j = 0; j < sFunctions.size(); j++) {
+					System.out.println("second:" + sFunctions.get(j).getName());
+					List<FunctionVo> tFunctions = sFunctions.get(j).getChildFunctionVos();
+					if (tFunctions != null) {
+						for (int k = 0; k < tFunctions.size(); k++) {
+							System.out.println("third:" + tFunctions.get(k).getName());
+
+						}
+					}
+				}
+			}
+		}
 		return resultFunctions;
 	}
 
@@ -144,12 +161,30 @@ public class FunctionService {
 	 * 根据id获取function
 	 */
 	public FunctionVo getFunctionById(String id) {
-		if (NumberUtils.isDigits(id)) {
-			Function function = functionRepository.findOne(id);
-			return FunctionConvertor.convert(function);
-		} else {
-			return null;
+		List<FunctionVo> functions = getFunctions();
+		FunctionVo checkedFunction = null;
+		if (!StringUtils.isEmpty(id)) {
+			for (int i = functions.size() - 1; i >= 0; i--) {
+				if (id.equals((functions.get(i).getId()))) {
+					checkedFunction = functions.remove(i);
+					break;
+				}
+			}
 		}
+		SelectOptionVo parentFunctionSov = FunctionConvertor.convertSov(functions, checkedFunction);
+		FunctionVo functionVo = null;
+		if (!StringUtils.isEmpty(id)) {
+			Function function = functionRepository.findOne(id);
+			if(function==null){
+				functionVo = new FunctionVo();
+			}else{
+				functionVo = FunctionConvertor.convert(function);
+			}
+		} else {
+			functionVo = new FunctionVo();
+		}
+		functionVo.setParentFunctionSov(parentFunctionSov);
+		return functionVo;
 	}
 
 	/**
@@ -250,7 +285,7 @@ public class FunctionService {
 	 *            用,号隔开
 	 */
 	@Transactional
-	public ResultVo batchDelete(String ids) {
+	public ResultVo deleteBatch(String ids) {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setMessage("删除失败");
 		if (StringUtils.isEmpty(ids)) {
