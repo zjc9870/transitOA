@@ -1,5 +1,6 @@
 package com.expect.admin.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -127,6 +128,10 @@ public class FunctionService {
 					}
 				}
 			}
+		}
+		
+		for (FunctionVo functionVo : resultFunctions) {
+				System.out.println(functionVo.getName());
 		}
 		return resultFunctions;
 	}

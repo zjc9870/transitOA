@@ -24,6 +24,7 @@ public class Role {
 	private String remark;
 	private Set<User> users;
 	private Set<Function> functions;
+	private String authority;
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -73,5 +74,15 @@ public class Role {
 	public void setFunctions(Set<Function> functions) {
 		this.functions = functions;
 	}
+
+	@Column(name = "authority", length = 2)
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+	
 
 }

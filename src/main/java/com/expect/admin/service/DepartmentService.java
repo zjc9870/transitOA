@@ -2,6 +2,7 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -44,7 +45,12 @@ public class DepartmentService {
 		if (user == null) {
 			return new ArrayList<>();
 		}
-		return DepartmentConvertor.convert(user.getDepartments());
+		
+		Set<Department> dep = user.getDepartments();
+		for (Department department : dep) {
+			System.out.println(department.getName());
+		}
+		return DepartmentConvertor.convert(dep);
 	}
 
 	/**
