@@ -3,7 +3,6 @@ package com.expect.admin.data.dao;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 
 import com.expect.admin.data.dataobject.Draft;
 
