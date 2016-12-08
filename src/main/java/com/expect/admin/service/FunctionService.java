@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.expect.admin.service;
 
 import java.util.ArrayList;

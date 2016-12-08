@@ -103,8 +103,8 @@ public class DraftController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Set<Role> roles = user.getRoles();
 		for(Role r : roles) {
-			Integer auth = Integer.parseInt(r.getAuthority());
-			if(auth == Integer.parseInt(ngshzt)) return true;
+//			Integer auth = Integer.parseInt(r.getAuthority());
+//			if(auth == Integer.parseInt(ngshzt)) return true;
 		}
 		return false;
 	}

@@ -27,3 +27,5 @@ nbdist/
 .mvn/wrapper/maven-wrapper.properties
 
 log/log.log
+
+log.2016-12-06.log
