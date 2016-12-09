@@ -32,14 +32,14 @@ body {
     /* Language */
     /* Dark version */ }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle:hover {
-      background-color: #3f4457; }
+      background-color: rgba(67,175,60,0.5); }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle > i {
       color: #737a99; }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle .badge.badge-default {
       background-color: #5b9bd1;
       color: #5b617d; }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown.open .dropdown-toggle {
-      background-color: #3f4457; }
+      background-color: rgba(67,175,60,0.5); }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-menu:before {
       border-bottom-color: #dce1ec; }
     .page-header.navbar .top-menu .navbar-nav > li.separator {

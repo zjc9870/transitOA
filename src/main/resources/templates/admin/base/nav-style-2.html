@@ -12,7 +12,7 @@
 				<th:block th:if="${not #lists.isEmpty(functions)}">
 					<th:block th:each="firstFunction : ${functions}">
 						<li class="nav-item"><a href="javascript:;"
-							class="nav-link nav-toggle nav-pajx fisrt-nav"
+							class="nav-link nav-toggle nav-pajx first-nav"
 							th:classappend="${firstFunction.encodeUrl}"
 							th:attr="data-url=${firstFunction.url}"> <i
 								th:class="${firstFunction.icon}"></i> <span class="title"
