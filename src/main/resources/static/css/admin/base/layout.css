@@ -141,7 +141,7 @@ Page Header
     padding: 0; }
     .page-header.navbar .top-menu .navbar-nav {
       padding: 0;
-      margin-right: 20px;
+      margin-right: 50px;
       display: block;
       /* Extended Dropdowns */
       /* Notification */
@@ -1445,7 +1445,7 @@ Theme Panel
   .page-quick-sidebar-toggler:hover {
     background: #303a43; }
   .page-quick-sidebar-open .page-quick-sidebar-toggler {
-    display: inline-block; }
+    display: none; }
     .page-quick-sidebar-open .page-quick-sidebar-toggler:hover {
       background: none; }
   .page-quick-sidebar-toggler > i {
