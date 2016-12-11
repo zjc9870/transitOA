@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -27,6 +29,8 @@ public class Role {
 	private String remark;
 	private Set<User> users;
 	private Set<Function> functions;
+	private Department ssgs;//角色所属公司
+	private Department ssbm;//角色所属部门
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -40,7 +44,7 @@ public class Role {
 		this.id = id;
 	}
 
-	@Column(name = "name", length = 31)
+	@Column(name = "name", length = 32)
 	public String getName() {
 		return name;
 	}
@@ -49,7 +53,7 @@ public class Role {
 		this.name = name;
 	}
 
-	@Column(name = "remark", length = 511)
+	@Column(name = "remark", length = 512)
 	public String getRemark() {
 		return remark;
 	}
@@ -75,6 +79,26 @@ public class Role {
 
 	public void setFunctions(Set<Function> functions) {
 		this.functions = functions;
+	}
+
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ssgs_id")
+	public Department getSsgs() {
+		return ssgs;
+	}
+
+	public void setSsgs(Department ssgs) {
+		this.ssgs = ssgs;
+	}
+
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ssbm_id" )
+	public Department getSsbm() {
+		return ssbm;
+	}
+
+	public void setSsbm(Department ssbm) {
+		this.ssbm = ssbm;
 	}
 
 }

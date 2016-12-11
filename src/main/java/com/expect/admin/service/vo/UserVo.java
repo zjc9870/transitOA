@@ -14,6 +14,7 @@ public class UserVo {
 	private String roleName;
 	private String departmentName;
 	private String avatarId;
+	private String ssgs;//所属公司
 
 	public String getId() {
 		return id;
@@ -93,6 +94,14 @@ public class UserVo {
 
 	public void setAvatarId(String avatarId) {
 		this.avatarId = avatarId;
+	}
+
+	public String getSsgs() {
+		return ssgs;
+	}
+
+	public void setSsgs(String ssgs) {
+		this.ssgs = ssgs;
 	}
 
 	@Override

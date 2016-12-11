@@ -80,12 +80,12 @@ public class DepartmentService {
 	/**
 	 * 根据userId获取该用户的所有部门
 	 */
-	public List<DepartmentVo> getDepartmentsByUserId(String userId) {
+	public DepartmentVo getDepartmentsByUserId(String userId) {
 		User user = userRepository.findOne(userId);
 		if (user == null) {
-			return new ArrayList<>();
+			return null;
 		}
-		return DepartmentConvertor.convert(user.getDepartments());
+		return DepartmentConvertor.convert(user.getDepartment());
 	}
 
 	/**

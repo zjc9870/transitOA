@@ -1,0 +1,108 @@
+package com.expect.admin.data.dataobject;
+
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * 流程日志表
+ * 用来记录用来记录用户在各种处理流程中所作的操作，和产生的数据
+ * @author zcz
+ *
+ */
+@Entity
+@Table(name = "lcrzb")
+public class Lcrzb {
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@Column(name = "id", nullable = false, unique = true, length = 32)
+	private String id;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@Column(name = "clsj")
+	private Date clsj;//处理时间
+	
+	@Column(name = "message", length = 200)
+	private String message;//处理意见
+	
+	@Column(name = "cljg", length = 20)
+	private String cljg;//处理结果
+	
+	@Column(name = "clnrid", length = 32)
+	private String clnrid;//处理内容的id（所处理的东西的id）
+	
+	@Column(name = "clnrfl", length = 10)
+	private String clnrfl;//处理内容分类（所处理的东西的分类）
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Date getClsj() {
+		return clsj;
+	}
+
+	public void setClsj(Date clsj) {
+		this.clsj = clsj;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String getCljg() {
+		return cljg;
+	}
+
+	public void setCljg(String cljg) {
+		this.cljg = cljg;
+	}
+
+	public String getClnrid() {
+		return clnrid;
+	}
+
+	public void setClnrid(String clnrid) {
+		this.clnrid = clnrid;
+	}
+
+	public String getClnrfl() {
+		return clnrfl;
+	}
+
+	public void setClnrfl(String clnrfl) {
+		this.clnrfl = clnrfl;
+	}
+	
+
+}

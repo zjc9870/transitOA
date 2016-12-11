@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -36,11 +37,11 @@ public class User implements UserDetails {
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	@Column(name = "id", nullable = false, unique = true, length = 32)
 	private String id;
-	@Column(name = "username", length = 31)
+	@Column(name = "username", length = 32)
 	private String username;// 用户名
-	@Column(name = "password", length = 31)
+	@Column(name = "password", length = 32)
 	private String password;// 密码
-	@Column(name = "full_name", length = 31)
+	@Column(name = "full_name", length = 32)
 	private String fullName;// 姓名
 	@Column(name = "sex", length = 2)
 	private String sex;// 性别
@@ -61,9 +62,14 @@ public class User implements UserDetails {
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinTable(name = "c_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinTable(name = "c_user_department", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "department_id"))
-	private Set<Department> departments;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "department_id")
+	private Department department;//部门
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ssgs_id")
+	private Department ssgs;//所属公司
 
 	public String getId() {
 		return id;
@@ -139,12 +145,22 @@ public class User implements UserDetails {
 		this.roles = roles;
 	}
 
-	public Set<Department> getDepartments() {
-		return departments;
+
+	public Department getDepartment() {
+		return department;
 	}
 
-	public void setDepartments(Set<Department> departments) {
-		this.departments = departments;
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	
+
+	public Department getSsgs() {
+		return ssgs;
+	}
+
+	public void setSsgs(Department ssgs) {
+		this.ssgs = ssgs;
 	}
 
 	@Override

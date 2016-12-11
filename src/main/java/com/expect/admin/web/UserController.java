@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,9 @@ import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 import com.expect.admin.utils.IOUtil;
+import com.expect.admin.utils.JsonResult;
+import com.expect.admin.utils.ResponseBuilder;
+import com.expect.admin.utils.StringUtil;
 
 @Controller
 @RequestMapping("/admin/user")
@@ -186,6 +190,35 @@ public class UserController {
 		}
 		ResultVo rv = userService.updateAvatar(userAvatarId, frv.getId());
 		return rv;
+	}
+	
+	@RequestMapping(value = "/getUserMessage", method = RequestMethod.GET)
+	public ModelAndView getUserMessage() {
+		ModelAndView mv = new ModelAndView(viewName + "form/userForm2");
+		UserVo userVo = userService.getLoginUser();
+		mv.addObject("userVo", userVo);
+		return mv;
+	}
+	
+	@RequestMapping(value = "/modifyPassword", method = RequestMethod.POST)
+	public void modifyPassword(HttpServletResponse response,
+			@RequestParam(name = "oldPassword", required = true)String oldPassword,
+			@RequestParam(name = "newPassword", required = true)String newPassword) throws IOException {
+		UserVo userVo = userService.getLoginUser();
+		String message;
+		boolean isSuccess = false;
+		if(userVo == null){
+			message = "用户未登录！";
+		}
+		else if(!StringUtil.equals(oldPassword, userVo.getPassword())) {
+			message = "原密码错误，修改密码失败";
+		}else {
+			userVo.setPassword(newPassword);
+			userService.update(userVo);
+			isSuccess = true;
+			message = "密码修改成功！";
+		}
+		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(isSuccess, message).build());
 	}
 
 }

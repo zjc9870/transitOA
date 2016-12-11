@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -64,6 +65,16 @@ public class UserService implements UserDetailsService {
 	public List<UserVo> getAllUsers() {
 		List<User> users = userRepository.findAll();
 		return UserConvertor.convert(users);
+	}
+	
+	/**
+	 * 获取当前登录的用户
+	 * @return
+	 */
+	public UserVo getLoginUser() {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(user == null) return null;
+		return UserConvertor.convert(user);
 	}
 
 	/**
@@ -215,9 +226,9 @@ public class UserService implements UserDetailsService {
 		if (user == null) {
 			return resultVo;
 		}
-		String[] departmentIdArr = departmentId.split(",");
-		Set<Department> departments = departmentRepository.findByIdIn(departmentIdArr);
-		user.setDepartments(departments);
+//		String[] departmentIdArr = departmentId.split(",");
+		Department department = departmentRepository.findOne(departmentId);
+		user.setDepartment(department);
 
 		userRepository.flush();
 		resultVo.setMessage("用户部门修改成功");

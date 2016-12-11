@@ -210,7 +210,7 @@ public class Draft {
 		this.sfjtng = sfjtng;
 	}
 
-	@Column(name = "ngshzt", length = 2)
+	@Column(name = "ngshzt", length = 100)
 	public String getNgshzt() {
 		return ngshzt;
 	}

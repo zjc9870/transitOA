@@ -31,6 +31,8 @@ public class Department {
 	private Department parentDepartment;
 	private List<Department> childDepartments;
 	private Set<User> users;
+	
+	private String category;//部门的类型（1 不同部门  2：子公司）
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -100,7 +102,7 @@ public class Department {
 		this.childDepartments = childDepartments;
 	}
 
-	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "departments")
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "department")
 	public Set<User> getUsers() {
 		return users;
 	}
@@ -108,5 +110,16 @@ public class Department {
 	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
+
+	@Column(name = "category", length = 2)
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	
 
 }
