@@ -32,7 +32,7 @@ public class Department {
 	private List<Department> childDepartments;
 	private Set<User> users;
 	
-	private String category;//部门的类型（1 不同部门  2：子公司）
+	private String category;//部门的类型（1 普通部门  2：子公司）
 
 	@Id
 	@GeneratedValue(generator = "uuid")
