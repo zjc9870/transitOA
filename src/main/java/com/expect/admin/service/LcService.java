@@ -1,8 +1,6 @@
 package com.expect.admin.service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +13,10 @@ import com.expect.admin.data.dataobject.Lcb;
 import com.expect.admin.data.dataobject.Lcjdb;
 import com.expect.admin.data.dataobject.Lcjdgxb;
 import com.expect.admin.exception.BaseAppException;
-import com.expect.admin.service.vo.LcVo;
 import com.expect.admin.utils.StringUtil;
 
 @Service
-public class lcService {
+public class LcService {
 
 	@Autowired
 	private LcbRepository lcbRepository;
@@ -41,9 +38,9 @@ public class lcService {
 	 */
 	public static final String DJHT_LC = "3";
 	
-	public LcVo getDefaultLc(String category) {
+	public String getDefaultLc(String category) {
 		Lcb lcb = lcbRepository.findOne(category);
-		return new LcVo();
+		return lcb == null ? "" : lcb.getId();
 	}
 	
 	/**
@@ -52,21 +49,51 @@ public class lcService {
 	 * @return
 	 */
 	public String getStartCondition(String lcCategory) {
-		return getJd(lcCategory, Lcjdb.START_CATEGORY);
+		return getCurLcjd("S", lcCategory).getJsjd();
 	}
 	
 	/**
-	 * 获取当前状态在流程上的下一个状态
+	 * 判断某流程的当前状态是不是结束状态
+	 * @param lcCategory 流程标识
+	 * @param curCondition 当前状态标识
+	 * @return true 是结束状态<br>
+	 * flase 不是结束状态
+	 */
+	public boolean isEndConditon(String lcCategory, String curCondition) {
+		return StringUtil.equals(
+				getCurLcjd(curCondition, lcCategory).getJsjd(), "Y");
+	}
+	
+	/**
+	 * 获取当前状态在流程上的下一个状态的状态码
 	 * 如果下一个状态唯一就直接返回
 	 * 如果下一个状态不唯一就将后面多个同时进行的状态组合成“middle_状态1_状态2”来表示一个中间态
-	 * @param lcCategory
-	 * @param currentCondition
+	 * @param lcCategory流程类别
+	 * @param currentCondition 现在的状态
 	 * @return
 	 * @throws BaseAppException 
 	 */
 	public String getNextCondition(String lcCategory, String currentCondition) {
+		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcCategory, currentCondition);
+		return constructNextCondition(curLcjdSet);
+	}
+
+	/**
+	 * 获取文件退回是应该返回到的状态码
+	 * @param lcCategory
+	 * @param currentCondition
+	 * @return
+	 */
+	public String getThCondition(String lcCategory, String currentCondition) {
+		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcCategory, currentCondition);
+		return constructThCondition(curLcjdSet) ;
+	}
+	
+	
+	
+	private Set<Lcjdgxb> getAllCurLcjd(String lcCategory, String currentCondition) {
 		if(StringUtil.isEmpty(currentCondition) || StringUtil.isEmpty(lcCategory)) throw new BaseAppException();
-		Lcb lcb = lcbRepository.findOne(lcCategory);
+		String lcId = getDefaultLc(lcCategory);
 		Set<Lcjdgxb> curLcjdSet = new HashSet<Lcjdgxb>();
 		if(currentCondition.startsWith("middle")){
 			String[] curConditons = currentCondition.split("_");
@@ -78,15 +105,20 @@ public class lcService {
 				currentCondition = curConditionSet.iterator().next();
 			}else {
 				for (String curCon : curConditionSet) {
-					curLcjdSet.add(getCurLcjd(curCon, lcb));
+					curLcjdSet.add(getCurLcjd(curCon, lcId));
 				}
 			}
 		}else {
-			curLcjdSet.add(getCurLcjd(currentCondition, lcb));
+			curLcjdSet.add(getCurLcjd(currentCondition, lcId));
 		}
-		return constructNextCondition(curLcjdSet);
+		return curLcjdSet;
 	}
 
+	/**
+	 * 构造文件的下一个状态码
+	 * @param curLcjdSet
+	 * @return
+	 */
 	private String constructNextCondition(Set<Lcjdgxb> curLcjdSet) {
 		if(curLcjdSet.size() > 1) {
 			StringBuilder sb = new StringBuilder("middle_");
@@ -98,15 +130,38 @@ public class lcService {
 		}else return curLcjdSet.iterator().next().getJsjd();
 	}
 
-	private Lcjdgxb getCurLcjd(String currentCondition, Lcb lcb) {
-		Lcjdgxb curlcjd = lcjdgxbRepository.findByLcbsAndKsjd(lcb.getId(), currentCondition);
+	/**
+	 * 构造文件退回时下一个状态码
+	 * @param curLcjdSet
+	 * @return
+	 */
+	private String constructThCondition(Set<Lcjdgxb> curLcjdSet) {
+		if(curLcjdSet.size() > 1) {
+			StringBuilder sb = new StringBuilder("middle_");
+			for (Lcjdgxb curLcjd : curLcjdSet) {
+				if(StringUtil.isBlank(curLcjd.getThjd())) continue;
+				sb.append(curLcjd.getThjd()).append("_");
+			}
+			return sb.substring(0, sb.length() - 1).toString();
+		}else return curLcjdSet.iterator().next().getThjd();
+	}
+	/**
+	 * 获取当前所处的节点
+	 * @param currentCondition 文件所处的状态
+	 * @param lcb 所使用的流程
+	 * @return
+	 */
+	private Lcjdgxb getCurLcjd(String currentCondition, String lcbId) {
+		Lcjdgxb curlcjd = lcjdgxbRepository.findByLcbsAndKsjd(lcbId, currentCondition);
 		if(curlcjd ==  null) throw new BaseAppException("未找到当前的状态节点");
 		return curlcjd;
-		
-		
-//		return lcjdgxList.get(0).getJsjd();
 	}
 	
+	/**
+	 * @param lcCategory 流程类别
+	 * @param jdCategory 节点类别
+	 * @return
+	 */
 	public String getJd(String lcCategory, String jdCategory) {
 		Lcb lcb = lcbRepository.findOne(lcCategory);
 		if(lcb == null) return null;
