@@ -1,3 +1,4 @@
+#本机配置
 server:
   port: 8080
   context-path: /

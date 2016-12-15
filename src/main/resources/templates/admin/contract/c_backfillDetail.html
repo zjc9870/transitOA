@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
+    <div class="lg-block-content">
+        <ul>
+            <li>
+                <div class="form-title">合同标题:</div>
+                <pre class="pre-form-content">公共交通XX合同</pre>
+                <button>附件查看</button>
+            </li>
+            <li>
+                <div class="form-title">主要内容:</div>
+                <pre class="pre-form-content">合同是当事人或当事双方之间设立、变更、终止民事关系的协议。依法成立的合同，受法律保护。
+                        广义合同指所有法律部门中确定权利、义务关系的协议。狭义合同指一切民事合同。还有最狭义合同仅指民事合同中的债权合同。
+                        《中华人民共和国民法通则》第85条：合同是当事人之间设立、变更、终止民事关系的协议。依法成立的合同，受法律保护。
+                        《中华人民共和国合同法》第2条：合同是平等主体的自然人、法人、其他组织之间设立、变更、终止民事权利义务关系的协议。
+                        婚姻、收养、监护等有关身份关系的协议，适用其他法律的规定。"</pre>
+            </li>
+            <li>
+                <div class="form-title">主办人和拟合同人:</div>
+                <pre class="pre-form-content">周业茂</pre>
+            </li>
+            <li>
+                <div class="form-title">合同签订日期:</div>
+                <pre class="pre-form-content">2016.12.11</pre>
+            </li>
+            <li>
+                <div class="form-title">期限:</div>
+                <pre class="pre-form-content">30天</pre>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">审批流程</span>
+        <span class="lg-block-subtitle2">Approval Process</span>
+    </div>
+    <div class="process">
+        <ul>
+            <li><div class="process-title">集团专员发起</div></li>
+            <li><div class="process-title">负责人</div><div class="process-content-pass">通过</div></li>
+            <li><div class="process-title">核稿</div><div class="process-content-pass">通过</div></li>
+            <li><div class="process-title">签发</div><div class="process-content-nopass">不通过</div></li>
+            <li><div class="process-title">集团专员发起</div></li>
+        </ul>
+    </div>
+    <div class="operation">
+        <form class="op-form" method="post" action="">
+            <div class="yj-input">
+                <div class="form-title">合同编号:</div>
+                <input class="form-content" type="text" />
+            </div>
+            <input type="submit" />
+        </form>
+    </div>
+</div>
+</body>
+</html>

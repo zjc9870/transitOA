@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <link th:href="@{/css/admin/base/table.css}" rel="stylesheet"  type="text/css"/>
+</head>
+<body>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box">
+            <div class="portlet-body">
+                <div class="table-tab">
+                    <button class="button">待审批</button>
+                    <button class="button-active">已退回</button>
+                </div>
+                <table id="department-table"
+                       class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr class="table-title">
+                        <th>合同名称</th>
+                        <th>申请时间</th>
+                        <th>申请人</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody class="mt-td-checkbox">
+                    <tr>
+                        <td>XX合同</td>
+                        <td>2016/3/23</td>
+                        <td>张三</td>
+                        <td style="color:blue;cursor:pointer" onclick="approveDetail()">查看 同意 退回</td>
+                    </tr>
+                    <tr>
+                        <td>XX合同</td>
+                        <td>2016/3/23</td>
+                        <td>张三</td>
+                        <td style="color:blue;">查看 同意 退回</td>
+                    </tr>
+                    <tr>
+                        <td>XX合同</td>
+                        <td>2016/3/23</td>
+                        <td>张三</td>
+                        <td style="color:blue">查看 同意 退回</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function approveDetail () {
+        window.location.href= "contract/test1";
+    }
+</script>
+</body>
+</html>

@@ -220,5 +220,14 @@ public class UserController {
 		}
 		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(isSuccess, message).build());
 	}
+	
+	/**
+	 * 测试人员选择页面
+	 */
+	@RequestMapping("/testPage")
+	public ModelAndView test() {
+		ModelAndView modelAndView = new ModelAndView(viewName + "test");
+		return modelAndView;
+	}
 
 }
