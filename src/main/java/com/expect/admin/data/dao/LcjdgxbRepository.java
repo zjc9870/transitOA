@@ -12,4 +12,5 @@ public interface LcjdgxbRepository extends JpaRepository<Lcjdgxb, String> {
 
 	public List<Lcjdgxb> findByKsjd(String ksjd);
 	public Lcjdgxb findByLcbsAndKsjd(String lcbs, String ksjd);
+	public List<Lcjdgxb> findByLcbsOrderByXssx(String lcbs);
 }

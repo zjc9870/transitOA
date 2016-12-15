@@ -1,11 +1,18 @@
 package com.expect.admin.data.dataobject;
 
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -14,32 +21,52 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "s_draft_inf")
 public class Draft {
 	
-	private String id;
-	private String ngr;//拟稿人
-	private String ztc;//主题词
-	private int mj;//密级
-	private String sfmhwzfb;//是否门户网站发布（Y： 发布  N:不发布）
-	private String zs;//主送
-	private String cb;//抄报
-	private String cs;//抄送
-	private String bmhgyj;//部门核稿意见
-	private String bmfzrhgyj;//部门负责人核稿意见
-	private String hqyj;//会签意见
-	private String hgyj;//核稿意见
-	private Date yfrq;//印发日期
-	private int fs;//份数
-	private String dyr;//打印人
-	private String jdr;//校对人
-	private String bh;//编号
-	private String bz;//备注
-	private String sfjtng;//是否集团拟稿
-	private String ngshzt;//拟稿审核状态
-	
-
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
 	@Column(name = "id", nullable = false, unique = true)
+	private String id;
+	
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ngr_id")
+	private User ngr;//拟稿人
+	
+	@Column(name = "ztc", length = 200)
+	private String ztc;//主题词
+	
+	@Column(name = "mj")
+	private int mj;//密级
+	
+	@Column(name = "sfmhwzfb", length = 2)
+	private String sfmhwzfb;//是否门户网站发布（Y： 发布  N:不发布）
+	
+	@Column(name = "yfrq")
+	private Date yfrq;//印发日期
+	
+	@Column(name = "fs")
+	private int fs;//份数
+	
+	@Column(name = "dyr", length = 20)
+	private String dyr;//打印人
+	
+	@Column(name = "jdr", length = 20)
+	private String jdr;//校对人
+	
+	@Column(name = "bh", length = 20)
+	private String bh;//编号
+	
+	@Column(name = "bz", length = 200)
+	private String bz;//备注
+	
+	@Column(name = "ngfl", length = 2)
+	private String ngfl;//拟稿分类
+	
+	@Column(name = "ngshzt", length = 100)
+	private String ngshzt;//拟稿审核状态
+	
+	@Column(name = "sqsj")
+	private Date sqsj;//申请时间
+	
 	public String getId() {
 		return id;
 	}
@@ -48,16 +75,14 @@ public class Draft {
 		this.id = id;
 	}
 
-	@Column(name = "ngr", length = 20)
-	public String getNgr() {
+	public User getNgr() {
 		return ngr;
 	}
 
-	public void setNgr(String ngr) {
+	public void setNgr(User ngr) {
 		this.ngr = ngr;
 	}
 
-	@Column(name = "ztc", length = 200)
 	public String getZtc() {
 		return ztc;
 	}
@@ -66,7 +91,6 @@ public class Draft {
 		this.ztc = ztc;
 	}
 
-	@Column(name = "mj")
 	public int getMj() {
 		return mj;
 	}
@@ -75,7 +99,6 @@ public class Draft {
 		this.mj = mj;
 	}
 
-	@Column(name = "sfmhwzfb", length = 2)
 	public String getSfmhwzfb() {
 		return sfmhwzfb;
 	}
@@ -84,70 +107,7 @@ public class Draft {
 		this.sfmhwzfb = sfmhwzfb;
 	}
 
-	@Column(name = "zs", length = 20)
-	public String getZs() {
-		return zs;
-	}
 
-	public void setZs(String zs) {
-		this.zs = zs;
-	}
-
-	@Column(name = "cb", length = 20)
-	public String getCb() {
-		return cb;
-	}
-
-	public void setCb(String cb) {
-		this.cb = cb;
-	}
-
-	@Column(name = "cs", length = 20)
-	public String getCs() {
-		return cs;
-	}
-
-	public void setCs(String cs) {
-		this.cs = cs;
-	}
-
-	@Column(name = "bmhgyj", length = 200)
-	public String getBmhgyj() {
-		return bmhgyj;
-	}
-
-	public void setBmhgyj(String bmhgyj) {
-		this.bmhgyj = bmhgyj;
-	}
-
-	@Column(name = "bmfzrhgyj", length = 200)
-	public String getBmfzrhgyj() {
-		return bmfzrhgyj;
-	}
-
-	public void setBmfzrhgyj(String bmfzrhgyj) {
-		this.bmfzrhgyj = bmfzrhgyj;
-	}
-
-	@Column(name = "hqyj", length = 200)
-	public String getHqyj() {
-		return hqyj;
-	}
-
-	public void setHqyj(String hqyj) {
-		this.hqyj = hqyj;
-	}
-
-	@Column(name = "hgyj", length = 200)
-	public String getHgyj() {
-		return hgyj;
-	}
-
-	public void setHgyj(String hgyj) {
-		this.hgyj = hgyj;
-	}
-
-	@Column(name = "yfrq")
 	public Date getYfrq() {
 		return yfrq;
 	}
@@ -156,7 +116,6 @@ public class Draft {
 		this.yfrq = yfrq;
 	}
 
-	@Column(name = "fs")
 	public int getFs() {
 		return fs;
 	}
@@ -165,7 +124,6 @@ public class Draft {
 		this.fs = fs;
 	}
 
-	@Column(name = "dyr", length = 20)
 	public String getDyr() {
 		return dyr;
 	}
@@ -174,7 +132,6 @@ public class Draft {
 		this.dyr = dyr;
 	}
 
-	@Column(name = "jdr", length = 20)
 	public String getJdr() {
 		return jdr;
 	}
@@ -183,7 +140,6 @@ public class Draft {
 		this.jdr = jdr;
 	}
 
-	@Column(name = "bh", length = 20)
 	public String getBh() {
 		return bh;
 	}
@@ -192,7 +148,6 @@ public class Draft {
 		this.bh = bh;
 	}
 
-	@Column(name = "bz", length = 200)
 	public String getBz() {
 		return bz;
 	}
@@ -201,16 +156,6 @@ public class Draft {
 		this.bz = bz;
 	}
 
-	@Column(name = "sfjtng", length = 2)
-	public String getSfjtng() {
-		return sfjtng;
-	}
-
-	public void setSfjtng(String sfjtng) {
-		this.sfjtng = sfjtng;
-	}
-
-	@Column(name = "ngshzt", length = 100)
 	public String getNgshzt() {
 		return ngshzt;
 	}
@@ -218,6 +163,12 @@ public class Draft {
 	public void setNgshzt(String ngshzt) {
 		this.ngshzt = ngshzt;
 	}
-	
-	
+
+	public String getNgfl() {
+		return ngfl;
+	}
+
+	public void setNgfl(String ngfl) {
+		this.ngfl = ngfl;
+	}
 }

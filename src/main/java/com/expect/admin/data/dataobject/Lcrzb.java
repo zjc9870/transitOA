@@ -14,6 +14,9 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.expect.admin.service.vo.LcrzbVo;
+import com.expect.admin.utils.DateUtil;
+
 /**
  * 流程日志表
  * 用来记录用来记录用户在各种处理流程中所作的操作，和产生的数据
@@ -47,7 +50,22 @@ public class Lcrzb {
 	
 	@Column(name = "clnrfl", length = 10)
 	private String clnrfl;//处理内容分类（所处理的东西的分类）
+	
+	@Column(name = "dyjd", length = 32)
+	private String dyjd;//对应的流程节点
+	
+	@Column(name = "sfxs")
+	private String sfxs;//是否显示(本条数据是否在流程中显示)
 
+	public Lcrzb(){}
+	public Lcrzb(LcrzbVo lczrbVo, User user, String clnrid, String clnrfl){
+		this.user = user;
+		this.cljg = lczrbVo.getCljg();
+		this.clsj = DateUtil.today();
+		this.message = lczrbVo.getMessage();
+		this.clnrfl = clnrfl;
+		this.clnrid = clnrid;
+	}
 	public String getId() {
 		return id;
 	}
@@ -102,6 +120,18 @@ public class Lcrzb {
 
 	public void setClnrfl(String clnrfl) {
 		this.clnrfl = clnrfl;
+	}
+	public String getDyjd() {
+		return dyjd;
+	}
+	public void setDyjd(String dyjd) {
+		this.dyjd = dyjd;
+	}
+	public String getSfxs() {
+		return sfxs;
+	}
+	public void setSfxs(String sfxs) {
+		this.sfxs = sfxs;
 	}
 	
 

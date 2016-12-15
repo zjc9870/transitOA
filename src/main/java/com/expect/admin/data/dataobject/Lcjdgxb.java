@@ -40,6 +40,9 @@ public class Lcjdgxb {
 	
 	@Column(name = "sftb", length = 2)
 	private String sftb;//是否同步
+	
+	@Column(name = "xssx")
+	private int xssx;//显示顺序(用来标识该节点在界面上的显示顺序)
 
 	public String getId() {
 		return id;

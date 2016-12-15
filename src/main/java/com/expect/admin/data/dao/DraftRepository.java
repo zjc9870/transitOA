@@ -15,7 +15,7 @@ public interface DraftRepository extends JpaRepository<Draft, String>{
 	 * @return
 	 */
 	
-	public List<Draft> findBySfjtngAndNgshzt(String sfjt, String ngshzt);
+	public List<Draft> findByNgflAndNgshzt(String ngfl, String ngshzt);
 	
 	public Draft findById(String id);
 	

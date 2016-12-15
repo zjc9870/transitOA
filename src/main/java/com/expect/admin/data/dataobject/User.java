@@ -70,6 +70,9 @@ public class User implements UserDetails {
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ssgs_id")
 	private Department ssgs;//所属公司
+	
+	@Column(name = "zw", length = 32)
+	private String zw;//职位
 
 	public String getId() {
 		return id;

@@ -6,9 +6,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.expect.admin.service.vo.ContractVo;
+import com.expect.admin.utils.DateUtil;
+import com.expect.admin.utils.StringUtil;
 
 @Entity
 @Table(name = "s_contract_inf")
@@ -16,16 +22,35 @@ public class Contract {
 
 	private String id;
 	private String bh;//合同编号
-	private String nhtr;//拟合同人
+	private User nhtr;//拟合同人
 	private String htbt;//合同标题
 	private String htnr;//合同能容
 	private Date nqdrq;//拟签订日期
 	private String qx;//期限
-//	private String fwshyj;//法务审核意见
-//	private String zcglbyj;//资产管理部意见
-//	private String fgfzryj;//分管负责人意见
 	private String htshzt;//合同审核状态
-	private String htfl;//合同分类（1：东交合同    2：集团合同  3：其他公司合同）
+	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
+	private String lcbs;//流程标识
+	private Date sqsj;//申请时间
+	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
+	
+	public Contract() {
+	}
+	
+	public Contract(ContractVo contractVo) {
+		this.id = contractVo.getId();
+		this.bh = contractVo.getBh();
+		this.htbt = contractVo.getHtbt();
+		this.htnr = contractVo.getHtnr();
+		if(!StringUtil.isBlank(contractVo.getNqdrq()))
+			this.nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat);
+		this.qx = contractVo.getQx();
+		this.htshzt = contractVo.getHtshzt();
+		this.htfl = contractVo.getHtfl();
+		this.lcbs = contractVo.getLcbs();
+		if(StringUtil.isBlank(contractVo.getSqsj())){
+			this.sqsj = DateUtil.today();
+		}
+	}
 	
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -45,18 +70,27 @@ public class Contract {
 	public void setBh(String bh) {
 		this.bh = bh;
 	}
-	
-	@Column(name = "nhtr", length = 20)
-	public String getNhtr() {
-		return nhtr;
-	}
-	public void setNhtr(String nhtr) {
-		this.nhtr = nhtr;
-	}
-	
+
 	@Column(name="nqdrq")
 	public Date getNqdrq() {
 		return nqdrq;
+	}
+	
+	@ManyToOne
+	@JoinColumn(name = "nhtr_id")
+	public User getNhtr() {
+		return nhtr;
+	}
+	public void setNhtr(User nhtr) {
+		this.nhtr = nhtr;
+	}
+	
+	@Column(name = "lcbs", length = 32)
+	public String getLcbs() {
+		return lcbs;
+	}
+	public void setLcbs(String lcbs) {
+		this.lcbs = lcbs;
 	}
 	public void setNqdrq(Date nqdrq) {
 		this.nqdrq = nqdrq;
@@ -70,7 +104,7 @@ public class Contract {
 		this.htshzt = htshzt;
 	}
 	
-	@Column(name = "htfl", length = 200)
+	@Column(name = "htfl", length = 20)
 	public String getHtfl() {
 		return htfl;
 	}
@@ -100,6 +134,24 @@ public class Contract {
 	}
 	public void setQx(String qx) {
 		this.qx = qx;
+	}
+
+	@Column(name = "sqsj")
+	public Date getSqsj() {
+		return sqsj;
+	}
+
+	public void setSqsj(Date sqsj) {
+		this.sqsj = sqsj;
+	}
+
+	@Column(name = "sfsc", length = 2)
+	public String getSfsc() {
+		return sfsc;
+	}
+
+	public void setSfsc(String sfsc) {
+		this.sfsc = sfsc;
 	}
 	
 	

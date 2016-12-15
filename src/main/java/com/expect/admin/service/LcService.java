@@ -73,27 +73,27 @@ public class LcService {
 	 * @return
 	 * @throws BaseAppException 
 	 */
-	public String getNextCondition(String lcCategory, String currentCondition) {
-		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcCategory, currentCondition);
+	public String getNextCondition(String lcId, String currentCondition) {
+		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcId, currentCondition);
 		return constructNextCondition(curLcjdSet);
 	}
-
+	
 	/**
 	 * 获取文件退回是应该返回到的状态码
-	 * @param lcCategory
-	 * @param currentCondition
+	 * @param lcbs流程标识
+	 * @param currentCondition当前状态
 	 * @return
 	 */
-	public String getThCondition(String lcCategory, String currentCondition) {
-		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcCategory, currentCondition);
+	public String getThCondition(String lcbs, String currentCondition) {
+		Set<Lcjdgxb> curLcjdSet = getAllCurLcjd(lcbs, currentCondition);
 		return constructThCondition(curLcjdSet) ;
 	}
 	
 	
 	
-	private Set<Lcjdgxb> getAllCurLcjd(String lcCategory, String currentCondition) {
-		if(StringUtil.isEmpty(currentCondition) || StringUtil.isEmpty(lcCategory)) throw new BaseAppException();
-		String lcId = getDefaultLc(lcCategory);
+	private Set<Lcjdgxb> getAllCurLcjd(String lcId, String currentCondition) {
+		if(StringUtil.isEmpty(currentCondition) || StringUtil.isEmpty(lcId)) throw new BaseAppException();
+//		String lcId = getDefaultLc(lcCategory);
 		Set<Lcjdgxb> curLcjdSet = new HashSet<Lcjdgxb>();
 		if(currentCondition.startsWith("middle")){
 			String[] curConditons = currentCondition.split("_");

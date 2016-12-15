@@ -54,7 +54,7 @@ public class DraftServiceImpl implements DraftService {
 	@Override
 	public List<DraftVO> findDraft(String sfjtng, String ngshzt) {
 		List<DraftVO> draftVOList = new ArrayList<DraftVO>();
-		List<Draft> draftList = draftRepitory.findBySfjtngAndNgshzt(sfjtng, ngshzt);
+		List<Draft> draftList = draftRepitory.findByNgflAndNgshzt(sfjtng, ngshzt);
 		if(draftList == null || draftList.size() == 0) return draftVOList;
 		for (Draft draft : draftList) {
 			DraftVO vo = DraftConvertor.convetor(draft);
