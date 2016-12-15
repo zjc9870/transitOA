@@ -1,0 +1,33 @@
+.table-bordered>thead>tr>th {
+    border: 1px solid rgb(0,120,58);
+}
+
+.table-title {
+    background-color: rgb(0,120,58);
+    color: white;
+}
+
+.table-tab {
+    border-bottom: 1px solid rgb(0,120,58);
+    padding: 0 0 10px;
+    margin-bottom: 15px;
+}
+
+.button {
+    color: #ffffff;
+    background: rgb(0,120,58);
+    border: none;
+    padding: 6px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.button-active {
+    color: #ffffff;
+    background: rgb(65,173,60);
+    border: none;
+    padding: 6px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-left: 10px;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
+    <div class="lg-block-content">
+        <form id="c_apply_form" method="post" action="" >
+            <ul>
+                <li>
+                    <div class="form-title">合同标题:</div>
+                    <input class="form-content" type="text" />
+                </li>
+                <li>
+                    <div class="form-title">主要内容:</div>
+                    <textarea class="form-content text-content"></textarea>
+                </li>
+                <li>
+                    <div class="form-title">主办人和拟合同人:</div>
+                    <input class="form-content" type="text" />
+                </li>
+                <li>
+                    <div class="form-title">合同签订日期:</div>
+                    <input class="form-content" type="text" />
+                </li>
+                <li>
+                    <div class="form-title">期限:</div>
+                    <input class="form-content" type="text" />
+                </li>
+            </ul>
+        </form>
+        <ul>
+            <li>
+                <button>附件上传</button>
+                <button>附件查看</button>
+            </li>
+            <li class="right">
+                <button>保存</button>
+                <button onclick="checkCon()">提交</button>
+                <button>取消</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<script th:src="@{/js/admin/contract/c_apply.js}" type="text/javascript"></script>
+</body>
+</html>

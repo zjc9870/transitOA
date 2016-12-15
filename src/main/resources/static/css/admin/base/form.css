@@ -1,0 +1,161 @@
+.form-title {
+    float: left;
+    width: 9em;
+    min-width: 9em;
+}
+
+.pre-form-content {
+    float: left;
+    white-space: normal;
+    margin: 0 0 0 0.5em;
+    max-width: 500px;
+    display: block;
+    padding: 0px;
+    font-size: 14px;
+    line-height: 1.42857;
+    word-break: break-all;
+    word-wrap: break-word;
+    color: #333;
+    background-color: #ffffff;
+    border: none;
+}
+
+.lg-block {
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.lg-block2 {
+    background: #ffffff;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.lg-block-title1 {
+    border-bottom: 1px solid rgb(0,120,58);
+    width: 95%;
+    margin: auto;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 20px;
+    padding: 30px 0 15px;
+}
+
+.lg-block-content li {
+    list-style: none;
+    overflow: hidden;
+    width: 700px;
+    margin: auto;
+    padding: 10px 0;
+}
+
+.lg-block-title2 {
+    padding: 20px 0 15px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: 1px solid rgb(0,120,58);
+}
+
+.lg-block-subtitle1 {
+    color: rgb(0,120,58);
+}
+
+.lg-block-subtitle2 {
+    color: rgb(150,150,150);
+}
+
+.process {
+    float: left;
+    width: 50%;
+}
+
+.process li {
+    list-style: none;
+    overflow: hidden;
+}
+
+.circle {
+    border-radius: 50%!important;
+    width: 80px;
+    height: 80px;
+    border: 3px solid rgb(0,120,58);
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    color: rgb(0,120,58);
+}
+
+.process-title {
+    height: 30px;
+    border: 2px solid rgb(0,120,58);
+    width: 150px;
+    line-height: 30px;
+    margin-top: 12px;
+    text-align: center;
+    color: rgb(0,120,58);
+    float:left;
+}
+
+.process-content-pass {
+    float:left;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 12px;
+    text-align: center;
+    background: rgb(0,120,58);
+    color: #ffffff;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.process-content-nopass {
+    float:left;
+    width: 150px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 12px;
+    text-align: center;
+    background: rgb(202,1,1);
+    color: #ffffff;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.process ul {
+    margin-left: 20%;
+}
+
+.operation {
+    float: left;
+    width: 50%;
+}
+
+.yj-input {
+    margin: 20px 0 20px;
+}
+
+.sp-input {
+    display: inline-block;
+    width: 250px;
+    height: 120px;
+    margin-left: 10px;
+}
+
+.op-form {
+    margin-left: 20%;
+}
+
+.yj-disagree {
+    visibility: hidden;
+}
+
+.text-content {
+    display: inline-block;
+    width: 250px;
+    height: 120px;
+}
+
+.right {
+    float: right;
+}
