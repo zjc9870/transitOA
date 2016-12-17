@@ -4,26 +4,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.expect.admin.data.dao.ContractRepository;
+import com.expect.admin.data.dao.LcjdbRepository;
 import com.expect.admin.data.dao.LcjdgxbRepository;
+import com.expect.admin.data.dao.RoleRepository;
+import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Contract;
+import com.expect.admin.data.dataobject.Department;
+import com.expect.admin.data.dataobject.Lcjdb;
+import com.expect.admin.data.dataobject.Role;
+import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
+import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
@@ -41,12 +39,23 @@ public class ContractService {
 	private LcService lcService;
 	@Autowired
 	private LcjdgxbRepository lcjdgxbRepository;
+	@Autowired
+	private AttachmentService attachmentService;
+	@Autowired
+	private RoleJdgxbGxbService roleJdgxbGxbService;
+	@Autowired
+	private RoleRepository roleRepository;
+	@Autowired
+	private LcjdbRepository lcjdbRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@Transactional
-	public void save(ContractVo contractVo){
+	public String save(ContractVo contractVo){
 		Contract contract = contractRepository.save(new Contract(contractVo));
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
 		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contractVo.getHtshzt());
+		return contract.getId();
 	}
 	
 	@Transactional
@@ -70,15 +79,30 @@ public class ContractService {
 	public ContractVo getContractById(String contractId) {
 		Contract contract = contractRepository.findOne(contractId);
 		if(contract == null) throw new BaseAppException("id为 "+contractId+"的合同没有找到");
-		ContractVo controctVo = new ContractVo(contract);
-		controctVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));
-		return controctVo;
+		ContractVo contractVo = new ContractVo(contract);//合同的基本信息
+		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
+		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
+		return contractVo;
 	}
 	
+	/**
+	 * 还要修改
+	 * @param userId
+	 * @param condition
+	 * @param start
+	 * @param end
+	 * @param lx
+	 * @return
+	 */
 	public List<ContractVo> getContractByUserIdAndCondition(final String userId, final String condition, 
 			final Date start, final Date end, String lx) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
+		
+		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "");
+		if(StringUtil.isBlank(roleJdgxbGxbVo.getRoleId()) || 
+				StringUtil.isBlank(roleJdgxbGxbVo.getJdId())) return contractVoList;
+		Lcjdb lcjd = lcjdbRepository.findOne(roleJdgxbGxbVo.getJdId());
 //		if(start == null || end == null)
 		if(StringUtil.equals(lx, "wtj")){//未提交
 			contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
@@ -96,8 +120,16 @@ public class ContractService {
 		}
 		
 		if(contractList == null) return contractVoList;
-		
+//		User user = userRepository.findOne(userId);
+//		String departmentId = user.getDepartment().getId();
 		for (Contract contract : contractList) {
+			if (!StringUtil.isBlank(lcjd.getShbm()) && 
+					!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
+			else if (!StringUtil.isBlank(lcjd.getShgs())){
+				Department parent = contract.getNhtr().getDepartment().getParentDepartment();
+				if(parent == null) continue;
+				if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
+			}
 			contractVoList.add(new ContractVo(contract));
 		}
 		return contractVoList;
@@ -142,6 +174,15 @@ public class ContractService {
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
 		contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat));
 		contract.setQx(contractVo.getQx());
+	}
+	
+	/**
+	 * 获取用户申请的合同的流程Id
+	 * @return
+	 */
+	public String getLcCategory(){
+		UserVo userVo = userService.getLoginUser();
+		return "";
 	}
 	
 

@@ -21,6 +21,7 @@ public class Attachment {
 	private String name;
 	private String path;
 	private Date time;
+	private String xgId;//与其相关联的公文的id
 
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -59,6 +60,15 @@ public class Attachment {
 
 	public void setTime(Date time) {
 		this.time = time;
+	}
+
+	@Column(name = "xgId", length = 32)
+	public String getXgId() {
+		return xgId;
+	}
+
+	public void setXgId(String xgId) {
+		this.xgId = xgId;
 	}
 
 }

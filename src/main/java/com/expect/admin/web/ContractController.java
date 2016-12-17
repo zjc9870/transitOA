@@ -1,6 +1,7 @@
 package com.expect.admin.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,19 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.ContractService;
-import com.expect.admin.service.FunctionJdgxbGxbService;
 import com.expect.admin.service.LcService;
 import com.expect.admin.service.LcrzbService;
+import com.expect.admin.service.RoleJdgxbGxbService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.ContractVo;
-import com.expect.admin.service.vo.FunctionJdgxbGxbVo;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.JsonResult;
@@ -33,7 +36,7 @@ import com.expect.admin.utils.StringUtil;
 @RequestMapping(value = "/admin/contract")
 public class ContractController {
 	private final Logger log = LoggerFactory.getLogger(ContractController.class);
-
+	
 	@Autowired
 	private ContractService contractService;
 	@Autowired
@@ -43,32 +46,210 @@ public class ContractController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private FunctionJdgxbGxbService functionJdgxbGxbService;
+	private RoleJdgxbGxbService roleJdgxbGxbService;
+	@Autowired
+	private AttachmentService attachmentService;
 	
-	private final String viewName = "admin/system/contract/";
+	private final String viewName = "admin/contract/";
 	
+	/**
+	 * 合同申请界面
+	 * @return
+	 */
 	@RequestMapping(value = "/addContract", method = RequestMethod.GET)
 	public ModelAndView addContract() {
-		return new ModelAndView(viewName + "contractForm");
+//		ContractVo contractVo = new ContractVo();
+//		UserVo userVo = userService.getLoginUser();
+//		contractVo.setUserName(userVo.getFullName());
+//		contractService.save(contractVo);
+		ModelAndView mv = new ModelAndView(viewName + "c_apply");
+//		mv.addObject("contractVo", contractVo);
+		return mv;
 	}
 	
+	/**
+	 * 合同审批查看详情
+	 * @return
+	 */
+	@PostMapping(value = "/htspckxq")
+	public ModelAndView htspckxq(@RequestParam(name = "id", required = true)String contractId){
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_approveDetail");
+		ContractVo contractVo = contractService.getContractById(contractId);
+		modelAndView.addObject("contractVo", contractVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 申请记录
+	 */
+	@PostMapping("/sqjl")
+	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)String lx,
+			@RequestParam(name = "startTime", required = false)Date start,
+			@RequestParam(name = "endTime", required = false)Date end) {
+		if(StringUtil.isBlank(lx)) lx = "wtj";
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
+		UserVo userVo = userService.getLoginUser();
+//		String condition = roleJdgxbGxbService.getWjzt("", "");
+//		String condition = lcService.getStartCondition(lcCategory);
+//		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+//				condition, start, end, lx);
+		List<ContractVo> contractVoList = new ArrayList<>();
+		modelAndView.addObject("contractVoList", contractVoList);
+		return modelAndView;
+	}
+	/**
+	 * 合同审批
+	 */
+	@RequestMapping("/htsp")
+	public ModelAndView htsp(@RequestParam(name = "lx", required = false)String lx,
+			@RequestParam(name = "startTime", required = false)Date start,
+			@RequestParam(name = "endTime", required = false)Date end) {
+		UserVo userVo = userService.getLoginUser();
+		
+		
+		if(StringUtil.isBlank(lx)) lx = "dsp";
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
+		//TODO
+//		String condition = roleJdgxbGxbService.getWjzt("", "");
+//		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+//				condition, start, end, lx);
+		List<ContractVo> contractVoList = new ArrayList<>();
+		modelAndView.addObject("contractVoList", contractVoList);
+		return modelAndView;
+	}
+	
+	/**
+	 * 审批记录  已审批的记录
+	 */
+//	@RequestMapping("/spjl")
+//	public ModelAndView spjl(@RequestParam(name = "lx", required = false)String lx,
+//			@RequestParam(name = "startTime", required = false)Date start,
+//			@RequestParam(name = "endTime", required = false)Date end) {
+//		if(StringUtil.isBlank(lx)) lx = "ysp";
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve_record");
+//		UserVo userVo = userService.getLoginUser();
+//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("审批记录");
+//		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
+//		 modelAndView.addObject("contractVoList", contractVoList);
+//		return modelAndView;
+//	}
+	
+	/**
+	 * 编号回填
+	 */
+	@RequestMapping("/bhht")
+	public ModelAndView bhht(@RequestParam(name = "lx", required = false)String lx,
+			@RequestParam(name = "startTime", required = false)Date start,
+			@RequestParam(name = "endTime", required = false)Date end) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill");
+		if(StringUtil.isBlank(lx)) lx = "dht";
+		UserVo userVo = userService.getLoginUser();
+//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("编号回填");
+		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+				"Y", start, end, lx);
+		 modelAndView.addObject("contractVoList", contractVoList);
+		return modelAndView;
+	}
+	
+	/**
+	 * 回填记录
+	 */
+//	@RequestMapping("/htjl")
+//	public ModelAndView htjl(@RequestParam(name = "lx", required = false)String lx,
+//			@RequestParam(name = "startTime", required = false)Date start,
+//			@RequestParam(name = "endTime", required = false)Date end) {
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_record");
+//		if(StringUtil.isBlank(lx)) lx = "yht";
+//		UserVo userVo = userService.getLoginUser();
+//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("回填记录");
+//		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
+//		 modelAndView.addObject("contractVoList", contractVoList);
+//		return modelAndView;
+//	}
+	
+	/**
+	 * 申请记录详情
+	 */
+	@RequestMapping("/sqjlxq")
+	public ModelAndView sqjlxq(@RequestParam(name = "id", required = true)String contractId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_recordDetail");
+		ContractVo contractVo = contractService.getContractById(contractId);
+		modelAndView.addObject("contractVo", contractVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 编号回填详情
+	 */
+	@RequestMapping("/bhhtxq")
+	public ModelAndView bhhtxq(@RequestParam(name = "id", required = true)String contractId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfillDetail");
+		ContractVo contractVo = contractService.getContractById(contractId);
+		modelAndView.addObject("contractVo", contractVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 回填记录详情
+	 */
+	@PostMapping("/htjlxq")
+	public ModelAndView htjlxq(@RequestParam(name = "id", required = true)String contractId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_recordDetail");
+		ContractVo contractVo = contractService.getContractById(contractId);
+		modelAndView.addObject("contractVo", contractVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 合同查询
+	 */
+	@PostMapping("/htcx")
+	public ModelAndView htcx() {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_find");
+		return modelAndView;
+	}
+	
+	
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
-	public void saveContract(ContractVo contractVo, HttpServletResponse response) throws IOException {
+	public void saveContract(ContractVo contractVo, @RequestParam(name = "bczl", required = true)String bczl,
+			@RequestParam MultipartFile[] files, HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
 			return;
 		}
 		try{
-			String startCondition = lcService.getStartCondition(contractVo.getHtfl());
 			String lcbs = lcService.getDefaultLc(contractVo.getHtfl());
-			contractVo.setHtshzt(startCondition);//合同审核状态
+			String condition;
+			if(StringUtil.equals(bczl, "tj")){
+				String startCondition = lcService.getStartCondition(contractVo.getHtfl());
+				condition = lcService.getNextCondition(lcbs, startCondition);
+				
+			}else condition = lcService.getStartCondition(contractVo.getHtfl());
+			contractVo.setHtshzt(condition);//合同审核状态
 			contractVo.setLcbs(lcbs);//流程标识
-			contractService.save(contractVo);
+			String contractId = contractService.save(contractVo);
+			//附件保存
+			if(files != null){
+				attachmentService.save(files, null, contractId);
+			}
 		}catch(Exception e) {
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
 		}
 		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存合同成功！").build());
 	}
+	
+//	@PostMapping(value = "/fileUpload")
+//	public void uploadFiles(@RequestParam("file") MultipartFile file,
+//							@RequestParam("id") String id, HttpServletResponse response) throws IOException {
+//		String fileName = file.getName();
+//		if(!fileName.endsWith("ceb") || !fileName.endsWith("doc") || !fileName.endsWith("pdf")){
+//			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "文件上传失败，只能是ceb,pdf,doc个时的文件！").build());
+//			return;
+//		}
+//		
+//	}
 	
 	@RequestMapping(value = "/updateContract", method = RequestMethod.POST)
 	public void updateContract(ContractVo contractVo, HttpServletResponse response) throws IOException {
@@ -80,19 +261,19 @@ public class ContractController {
 		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
 	}
 	
-	@RequestMapping(value = "/getContractList", method = RequestMethod.POST)
-	@ResponseBody
-	public List<ContractVo> getContractList(
-			@RequestParam(name = "fucntionId", required = true)String functionId,
-			@RequestParam(name = "lx", required = true)String lx,
-			@RequestParam(name = "startTime", required = false)Date start,
-			@RequestParam(name = "endTime", required = false)Date end) {
-		UserVo userVo = userService.getLoginUser();
-		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionId(functionId);
-		return contractService.getContractByUserIdAndCondition(userVo.getId(),
-				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
-		
-	}
+//	@RequestMapping(value = "/getContractList", method = RequestMethod.POST)
+//	@ResponseBody
+//	public List<ContractVo> getContractList(
+//			@RequestParam(name = "fucntionId", required = true)String functionId,
+//			@RequestParam(name = "lx", required = true)String lx,
+//			@RequestParam(name = "startTime", required = false)Date start,
+//			@RequestParam(name = "endTime", required = false)Date end) {
+//		UserVo userVo = userService.getLoginUser();
+//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionId(functionId);
+//		return contractService.getContractByUserIdAndCondition(userVo.getId(),
+//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
+//		
+//	}
 	
 	@RequestMapping(value = "/getContract", method = RequestMethod.POST)
 	public ModelAndView getContract(@RequestParam(name = "id", required = true)String contractId){

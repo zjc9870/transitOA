@@ -34,7 +34,7 @@ public class AttachmentService {
 	/**
 	 * 保存单张图片
 	 */
-	public FileResultVo save(MultipartFile file, String path) {
+	public FileResultVo save(MultipartFile file, String path, String xgid) {
 		FileResultVo frv = new FileResultVo(false, "上传失败");
 		try {
 			if (file == null || file.getBytes() == null) {
@@ -47,38 +47,52 @@ public class AttachmentService {
 		if (StringUtils.isEmpty(path)) {
 			path = settings.getAttachmentPath();
 		}
-		String fileName = file.getOriginalFilename();
-		try {
-			IOUtil.outputDataToFile(file.getBytes(), path, fileName);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return frv;
-		}
-		Attachment attachment = new Attachment();
-		attachment.setName(file.getOriginalFilename());
-		attachment.setPath(path);
-		attachment.setTime(new Date());
-		Attachment resultAttachment = attachmentRepository.save(attachment);
+		String originalFileName = file.getOriginalFilename();
+		Attachment resultAttachment = saveFileInf(file, path, xgid);
 		if (resultAttachment != null) {
+			String fileName = resultAttachment.getId();
+			try {
+				IOUtil.outputDataToFile(file.getBytes(), path, fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return frv;
+			}
+			
 			frv.setId(resultAttachment.getId());
 			frv.setMessage("上传成功");
 			frv.setResult(true);
 		} else {
-			frv.addErrorName(fileName);
+			frv.addErrorName(originalFileName);
 		}
 		return frv;
 	}
 
 	/**
+	 * 保存文件的信息在数据库中
+	 * @param file
+	 * @param path
+	 * @param xgid  文件相关联的id
+	 * @return
+	 */
+	private Attachment saveFileInf(MultipartFile file, String path, String xgid) {
+		Attachment attachment = new Attachment();
+		attachment.setName(file.getOriginalFilename());
+		attachment.setPath(path);
+		attachment.setTime(new Date());
+		Attachment resultAttachment = attachmentRepository.save(attachment);
+		return resultAttachment;
+	}
+
+	/**
 	 * 保存多张图片
 	 */
-	public FileResultVo save(MultipartFile[] files, String path) {
+	public FileResultVo save(MultipartFile[] files, String path, String xgid) {
 		FileResultVo frv = new FileResultVo(false, "上传失败");
 		if (files == null || files.length == 0) {
 			return frv;
 		}
 		for (MultipartFile file : files) {
-			FileResultVo resultFileRv = save(file, path);
+			FileResultVo resultFileRv = save(file, path, xgid);
 			if (!resultFileRv.isResult()) {
 				frv.addErrorName(resultFileRv.getName());
 			} else {
@@ -123,5 +137,21 @@ public class AttachmentService {
 			attachmentVos.add(attachmentVo);
 		}
 		return attachmentVos;
+	}
+	
+	public List<AttachmentVo> getAttachmentsByXgid(String xgid) {
+		List<AttachmentVo> attachmentVoList = new ArrayList<AttachmentVo>();
+		List<Attachment> attachmentList = attachmentRepository.findByXgid(xgid);
+		if(attachmentList == null || attachmentList.size() == 0) return attachmentVoList;
+		for (Attachment attachment : attachmentList) {
+			AttachmentVo attachmentVo = new AttachmentVo();
+			try {
+				BeanUtils.copyProperties(attachmentVo, attachment);
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			attachmentVoList.add(attachmentVo);
+		}
+		return attachmentVoList;
 	}
 }

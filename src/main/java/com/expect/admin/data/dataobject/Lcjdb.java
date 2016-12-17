@@ -50,6 +50,10 @@ public class Lcjdb {
 //	private Role role;//相关角色
 	@Column(name = "categoty", length = 10)
 	private String category;//节点类型(起始节点， 中间节点， 结束节点)
+	@Column(name = "shbm", length = 32)
+	private String shbm;//是否部门内部审核
+	@Column(name = "shgs", length = 32)
+	private String shgs;//是否公司内部审核
 
 	public String getId() {
 		return id;
@@ -82,6 +86,20 @@ public class Lcjdb {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
-	
+
+	public String getShbm() {
+		return shbm;
+	}
+
+	public void setShbm(String shbm) {
+		this.shbm = shbm;
+	}
+
+	public String getShgs() {
+		return shgs;
+	}
+
+	public void setShgs(String shgs) {
+		this.shgs = shgs;
+	}
 }

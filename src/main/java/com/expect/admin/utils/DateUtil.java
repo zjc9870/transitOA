@@ -24,6 +24,7 @@ public class DateUtil {
 	public final static String zbFormat = "yyyy/MM/dd";
 	public final static String tsfxFormat = "yyyy.MM.dd";
 	public final static String noSecondFormat = "yyyy-MM-dd HH:mm";
+	public final static String dateWithHour = "yyyy-MM-dd HH";
 	public final static long ONE_DAY_MILL_SECONDS = 86400000;
 
 	// -----------------------------------------------------------------------

@@ -19,6 +19,7 @@ public class ContractVo {
 	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
 	private String lcbs;//流程标识
 	private String sqsj;//申请时间
+	private List<AttachmentVo> attachmentList;//附件Vo
 	
 	public ContractVo() {
 	}
@@ -36,7 +37,7 @@ public class ContractVo {
 		this.htfl = contract.getHtfl();
 		this.lcbs = contract.getLcbs();
 		if(contract.getSqsj() != null)
-			this.sqsj = DateUtil.format(contract.getSqsj(), DateUtil.webFormat);
+			this.sqsj = DateUtil.format(contract.getSqsj(), DateUtil.dateWithHour);
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;
@@ -116,5 +117,11 @@ public class ContractVo {
 	public void setSqsj(String sqsj) {
 		this.sqsj = sqsj;
 	}
-	
+	public List<AttachmentVo> getAttachmentList() {
+		return attachmentList;
+	}
+
+	public void setAttachmentList(List<AttachmentVo> attachmentList) {
+		this.attachmentList = attachmentList;
+	}
 }
