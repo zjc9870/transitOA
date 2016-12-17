@@ -1,7 +1,19 @@
 package com.expect.admin.web;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.expect.admin.service.vo.ContractVo;
+import com.expect.admin.utils.JsonResult;
+import com.expect.admin.utils.ResponseBuilder;
 
 @Controller
 @RequestMapping("/admin/contract")
@@ -43,7 +55,54 @@ public class ContractPageController {
 	@RequestMapping("/test4")
 	public ModelAndView test4() {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
+		List<ContractVo> contractVoList = new ArrayList<>();
+		ContractVo con = new ContractVo();
+		con.setId("0001");
+		con.setBh("江宁公交0001号合同");
+		con.setUserName("张三");
+		con.setHtbt("劳动法务合同");
+		con.setHtnr("发打发第三方第三方");
+		con.setNqdrq("2016/12/10");
+		con.setQx("30天");
+		con.setHtshzt("待审核");
+		con.setHtfl("集团合同");
+		con.setLcbs("1");
+		con.setSqsj("2016/12/10");
+		contractVoList.add(con);
+		modelAndView.addObject("contractVoList", contractVoList);
+		System.out.println(contractVoList);
 		return modelAndView;
+	}
+	
+	/**
+	 * 合同审批
+	 */
+	@RequestMapping("/test41")
+	public void test41(@RequestParam(name = "lx", required = false)String lx,HttpServletResponse response) {
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
+		List<ContractVo> contractVoList = new ArrayList<>();
+		ContractVo con = new ContractVo();
+		switch (lx) {
+		case "dsp":
+			con.setHtbt("劳动法务合同");
+			break;
+		case "yth":
+			con.setHtbt("纠纷处理合同");
+			break;
+		case "ysp":
+			con.setHtbt("工资发放合同");
+			break;
+		default:
+			break;
+		}
+		contractVoList.add(con);
+//		modelAndView.addObject("contractVoList", contractVoList);
+		System.out.println(lx);
+		try {
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "success",contractVoList).build());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

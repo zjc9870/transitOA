@@ -10,7 +10,7 @@
 <div class="lg-block">
     <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
     <div class="lg-block-content">
-        <form id="c_apply_form" method="post" action="" >
+        <form id="c_apply_form" method="post" action="contract/saveContract">
             <ul>
                 <li>
                     <div class="form-title">合同标题:</div>
@@ -39,10 +39,9 @@
                 <button>附件上传</button>
                 <button>附件查看</button>
             </li>
-            <li class="right">
-                <button>保存</button>
-                <button onclick="checkCon()">提交</button>
-                <button>取消</button>
+            <li id="saveCon" class="right">
+                <button id="bc">保存</button>
+                <button id="tj">提交</button>
             </li>
         </ul>
     </div>
