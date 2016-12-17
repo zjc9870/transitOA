@@ -66,6 +66,39 @@ public class AttachmentService {
 		}
 		return frv;
 	}
+	
+	public FileResultVo save(MultipartFile file, String path) {
+		FileResultVo frv = new FileResultVo(false, "上传失败");
+		try {
+			if (file == null || file.getBytes() == null) {
+				return frv;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return frv;
+		}
+		if (StringUtils.isEmpty(path)) {
+			path = settings.getAttachmentPath();
+		}
+		String originalFileName = file.getOriginalFilename();
+		Attachment resultAttachment = saveFileInf(file, path);
+		if (resultAttachment != null) {
+			String fileName = resultAttachment.getId();
+			try {
+				IOUtil.outputDataToFile(file.getBytes(), path, fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return frv;
+			}
+			
+			frv.setId(resultAttachment.getId());
+			frv.setMessage("上传成功");
+			frv.setResult(true);
+		} else {
+			frv.addErrorName(originalFileName);
+		}
+		return frv;
+	}
 
 	/**
 	 * 保存文件的信息在数据库中
@@ -83,6 +116,14 @@ public class AttachmentService {
 		return resultAttachment;
 	}
 
+	private Attachment saveFileInf(MultipartFile file, String path) {
+		Attachment attachment = new Attachment();
+		attachment.setName(file.getOriginalFilename());
+		attachment.setPath(path);
+		attachment.setTime(new Date());
+		Attachment resultAttachment = attachmentRepository.save(attachment);
+		return resultAttachment;
+	}
 	/**
 	 * 保存多张图片
 	 */
@@ -141,7 +182,7 @@ public class AttachmentService {
 	
 	public List<AttachmentVo> getAttachmentsByXgid(String xgid) {
 		List<AttachmentVo> attachmentVoList = new ArrayList<AttachmentVo>();
-		List<Attachment> attachmentList = attachmentRepository.findByXgid(xgid);
+		List<Attachment> attachmentList = attachmentRepository.findByXgId(xgid);
 		if(attachmentList == null || attachmentList.size() == 0) return attachmentVoList;
 		for (Attachment attachment : attachmentList) {
 			AttachmentVo attachmentVo = new AttachmentVo();

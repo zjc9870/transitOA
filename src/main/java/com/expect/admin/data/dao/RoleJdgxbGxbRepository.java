@@ -17,7 +17,7 @@ public interface RoleJdgxbGxbRepository extends JpaRepository<RoleJdgxbGxb, Stri
 	 * @param wjzl 用户要操作的文件种类
 	 * @return
 	 */
-	public RoleJdgxbGxb findByBzAndAndWjzlRoleIdIn(String bz, String wjzl, Collection<String> roles);
+	public RoleJdgxbGxb findByBzAndWjzlAndRoleIdIn(String bz, String wjzl, Collection<String> roles);
 	
 //	@Query("select f1 from RoleJdgxbGxb f1, Function f2 where f1.roleId = f2.id and f2.name = ?1")
 //	RoleJdgxbGxb findByFunctionName(String roleName);
