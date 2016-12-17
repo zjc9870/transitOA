@@ -8,10 +8,9 @@ for(var i=0; i<buttons.length;i++) {
                 return false;
             }
         }
-        // AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
-        //         alert(data.message);
-        //     }
-        // )
-        document.getElementById('c_apply_form').submit();
+        AjaxTool.post('/admin/contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
+                alert(data.message);
+            }
+        )
     };
 }

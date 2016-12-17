@@ -10,33 +10,33 @@
 <div class="lg-block">
     <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
     <div class="lg-block-content">
-        <form id="c_apply_form" method="post" action="contract/saveContract">
+        <form id="c_apply_form" enctype="multipart/form-data">
             <ul>
                 <li>
                     <div class="form-title">合同标题:</div>
-                    <input class="form-content" type="text" />
+                    <input name="htbt" class="form-content" type="text" />
                 </li>
                 <li>
                     <div class="form-title">主要内容:</div>
-                    <textarea class="form-content text-content"></textarea>
+                    <textarea name="htnr" class="form-content text-content"></textarea>
                 </li>
                 <li>
                     <div class="form-title">主办人和拟合同人:</div>
-                    <input class="form-content" type="text" />
+                    <input name="userName" class="form-content" type="text" />
                 </li>
                 <li>
                     <div class="form-title">合同签订日期:</div>
-                    <input class="form-content" type="text" />
+                    <input name="nqdrq" class="form-content" type="text" />
                 </li>
                 <li>
                     <div class="form-title">期限:</div>
-                    <input class="form-content" type="text" />
+                    <input name="qx" class="form-content" type="text" />
                 </li>
             </ul>
         </form>
         <ul>
             <li>
-                <button>附件上传</button>
+                <input name="files"  type="file"/>
                 <button>附件查看</button>
             </li>
             <li id="saveCon" class="right">
