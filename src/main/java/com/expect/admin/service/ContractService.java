@@ -52,7 +52,11 @@ public class ContractService {
 	
 	@Transactional
 	public String save(ContractVo contractVo){
-		Contract contract = contractRepository.save(new Contract(contractVo));
+		Contract contract = new Contract(contractVo);
+		UserVo userVo = userService.getLoginUser();
+		User user = userRepository.findOne(userVo.getId());
+		contract.setNhtr(user);
+		contract = contractRepository.save(contract);
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
 		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contractVo.getHtshzt());
 		return contract.getId();
@@ -99,10 +103,11 @@ public class ContractService {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
 		
-		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "ht");
-		if(StringUtil.isBlank(roleJdgxbGxbVo.getRoleId()) || 
-				StringUtil.isBlank(roleJdgxbGxbVo.getJdId())) return contractVoList;
-		Lcjdb lcjd = lcjdbRepository.findOne(roleJdgxbGxbVo.getJdId());
+//		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "ht");
+//		if(StringUtil.isBlank(roleJdgxbGxbVo.getRoleId()) || 
+//				StringUtil.isBlank(roleJdgxbGxbVo.getJdId())) return contractVoList;
+		if(StringUtil.isBlank(condition)) return contractVoList;
+		Lcjdb lcjd = lcjdbRepository.findOne(condition);
 //		if(start == null || end == null)
 		if(StringUtil.equals(lx, "wtj")){//未提交
 			contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);

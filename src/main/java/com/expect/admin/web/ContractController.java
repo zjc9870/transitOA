@@ -90,7 +90,7 @@ public class ContractController {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
 		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 				condition.getJdId(), start, end, lx);
 //		List<ContractVo> contractVoList = new ArrayList<>();
@@ -213,6 +213,7 @@ public class ContractController {
 	public void saveContract(ContractVo contractVo, @RequestParam(name = "bczl", required = true)String bczl,
 			@RequestParam(name = "files" ,required = false) MultipartFile[] files, HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
+			log.error("试图保存空的合同");
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
 			return;
 		}
@@ -233,7 +234,7 @@ public class ContractController {
 				attachmentService.save(files, null, contractId);
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			log.error("保存合同报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
 		}
@@ -245,6 +246,7 @@ public class ContractController {
 		try{
 			contractService.updateContract(contractVo);
 		}catch(Exception e) {
+			log.error("更新合同内容报错", e);
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！"));
 		}
 		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！"));
@@ -276,17 +278,16 @@ public class ContractController {
 	public void addLcrz(HttpServletResponse response, 
 			@RequestParam(name = "cljg", required = true)String cljg,
 			@RequestParam(name = "yj", required = false)String message,
-			@RequestParam(name = "id", required = true)String clnrid,
-			@RequestParam(name = "clnrfl", required = true)String clnrfl) throws IOException{
+			@RequestParam(name = "id", required = true)String clnrid) throws IOException{
 		//插入流程日志
 		//判断审核是否通过 如果通过更新文件状态到下一个状态
 		//如果不通过更新文件状态到退回状态，修改流程日志表中的审批记录以后不再显示退回状态之后的审批记录
 		if(message == null) message  ="";
 		try{
-			contractService.saveContractLcrz(cljg, message, clnrid, clnrfl);
+			contractService.saveContractLcrz(cljg, message, clnrid, "ht");
 		}catch(Exception e) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
 			log.error("合同审核失败", e);
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
 		}
 		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！"));
 		

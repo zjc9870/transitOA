@@ -61,7 +61,7 @@ public class Lcrzb {
 	public Lcrzb(LcrzbVo lczrbVo, User user, String clnrid, String clnrfl){
 		this.user = user;
 		this.cljg = lczrbVo.getCljg();
-		this.clsj = DateUtil.today();
+		this.clsj = new Date();
 		this.message = lczrbVo.getMessage();
 		this.clnrfl = clnrfl;
 		this.clnrid = clnrid;
