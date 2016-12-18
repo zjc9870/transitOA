@@ -43,37 +43,43 @@
             <span class="lg-block-subtitle2">Approval Process</span>
         </div>
         <div class="process">
-            <ul>
-                <li><div class="process-title">集团专员发起</div></li>
-                <li><div class="process-title">负责人</div><div class="process-content-pass">通过</div></li>
-                <li><div class="process-title">核稿</div><div class="process-content-pass">通过</div></li>
-                <li><div class="process-title">签发</div><div class="process-content-nopass">不通过</div></li>
-                <li><div class="process-title">集团专员发起</div></li>
-            </ul>
+            <th:block th:if='${not #lists.isEmpty(contractVo.lcrzList)}'>
+                <ul th:each="lcrz : ${contractVo.lcrzList}">
+                    <th:block>
+                        <li><div class="process-title" th:text="${lcrz.userName}"></div>
+                            <th:block th:if="${lcrz.cljg='通过'}">
+                                <div class="process-content-pass">通过</div>
+                            </th:block>
+                            <th:block th:if="${lcrz.cljg='不通过'}">
+                                <div class="process-content-nopass">不通过</div>
+                            </th:block>
+                        </li>
+                    </th:block>
+                    <!--<li><div class="process-title">集团专员发起</div></li>-->
+                    <!--<li><div class="process-title">负责人</div><div class="process-content-pass">通过</div></li>-->
+                    <!--<li><div class="process-title">核稿</div><div class="process-content-pass">通过</div></li>-->
+                    <!--<li><div class="process-title">签发</div><div class="process-content-nopass">不通过</div></li>-->
+                    <!--<li><div class="process-title">集团专员发起</div></li>-->
+                </ul>
+            </th:block>
         </div>
         <div class="operation">
-            <form class="op-form" method="post" action="">
+            <form id="c_approveForm" class="op-form">
                 <div class="yj-input">
                     <span>办理人意见:</span>
-                    <label><input type="radio" name="suggest" value="同意" onclick="hide()" />同意</label>
-                    <label><input type="radio" name="suggest" value="不同意" onclick="show()" />不同意</label>
+                    <label><input type="radio" name="cljg" value="通过" onclick="hide()" />通过</label>
+                    <label><input type="radio" name="cljg" value="不通过" onclick="show()" />不通过</label>
                 </div>
                 <div class="yj-disagree">
                     <div class="form-title">审批意见:</div>
-                    <textarea class="sp-input"></textarea>
+                    <textarea class="sp-input" name="yj"></textarea>
                 </div>
-                <input type="submit" />
             </form>
+            <input type="hidden" th:value="${contractVo.id}" id="data" />
+            <button id="submit" onclick="submitForm()">提交</button>
+
         </div>
     </div>
-    <script type="text/javascript">
-        var yj = document.getElementsByClassName('yj-disagree')[0];
-        function show() {
-            yj.setAttribute('style', 'visibility:visible');
-        }
-        function hide() {
-            yj.setAttribute('style', 'visibility:hidden');
-        }
-    </script>
+<script th:src="@{/js/admin/contract/c_approveDetail.js}" type="text/javascript"></script>
 </body>
 </html>
