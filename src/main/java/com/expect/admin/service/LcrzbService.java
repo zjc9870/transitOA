@@ -105,7 +105,9 @@ public class LcrzbService {
 		
 		Lcrzb lcrzb = new Lcrzb(lcrzbVo, user, clnrid, clnrfl);
 		lcrzb.setDyjd(cunCondition);
-		lcrzb.setSfxs("Y");
+		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过")){
+			lcrzb.setSfxs("N");
+		}else lcrzb.setSfxs("Y");
 		lcrzbRepository.save(lcrzb);
 	}
 	

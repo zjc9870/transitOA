@@ -118,8 +118,8 @@ public class ContractService {
 			contractList = contractRepository.findByHtshzt("Y");
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId, start, end);
-		if(StringUtil.equals(lx, "yth"))//已退回????
-			contractList = contractRepository.findYhtContract(userId, start, end);
+		if(StringUtil.equals(lx, "yth"))//已退回
+			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批
 			contractList = contractRepository.findYhtContract(userId, start, end);
 		}
@@ -150,7 +150,7 @@ public class ContractService {
 		String nextCondition;
 		ContractVo contractVo = getContractById(clnrid);
 		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, contractVo.getHtshzt());
-		if(StringUtil.equals(cljg, "N")){
+		if(StringUtil.equals(cljg, "不通过")){
 			nextCondition = lcService.getThCondition(contractVo.getLcbs(), contractVo.getHtshzt());
 			lcrzbService.setLcrzSfxs(clnrid, contractVo.getLcbs(), nextCondition);
 		}else{
@@ -158,8 +158,10 @@ public class ContractService {
 			nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
 		}
 		
-		if(!StringUtil.isBlank(nextCondition)) contractVo.setHtshzt(nextCondition);
-		updateContract(contractVo);
+		if(!StringUtil.isBlank(nextCondition)){
+			contractVo.setHtshzt(nextCondition);
+			updateContract(contractVo);
+		}
 	}
 	
 	/**
@@ -177,6 +179,7 @@ public class ContractService {
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
 		contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat));
 		contract.setQx(contractVo.getQx());
+		contract.setHtshzt(contractVo.getHtshzt());
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package com.expect.admin.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -96,6 +97,30 @@ public class ContractController {
 //		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
+	}
+	/**
+	 * 申请记录tab 合同审批tab
+	 * @throws IOException 
+	 */
+	@GetMapping(value = "/sqjlTab")
+	public void sqjlTab(@RequestParam(name = "lx", required = false)String lx,
+			@RequestParam(name = "startTime", required = false)Date start,
+			@RequestParam(name = "endTime", required = false)Date end,
+			HttpServletResponse response) throws IOException {
+		if(StringUtil.isBlank(lx)) lx = "wtj";
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
+		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
+		try{
+			UserVo userVo = userService.getLoginUser();
+			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
+			contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+					condition.getJdId(), start, end, lx);
+		}catch(Exception e) {
+			log.error("获取申请记录错误" + lx, e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取申请记录出错"));
+		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录出错", contractVoList));
+		
 	}
 	/**
 	 * 合同审批
@@ -287,9 +312,9 @@ public class ContractController {
 			contractService.saveContractLcrz(cljg, message, clnrid, "ht");
 		}catch(Exception e) {
 			log.error("合同审核失败", e);
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
 		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！"));
 		
 	}
 	
