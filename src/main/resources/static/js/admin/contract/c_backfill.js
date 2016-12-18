@@ -4,15 +4,16 @@ for(var i=0; i<tabs.length; i++) {
         AjaxTool.post('contract/test31', {
                 lx: this.id},function (data) {
                 if(data.success) {
-                    var str = "<tr>";
+                    var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
+                        str += "<tr>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td>"+cons[i].htbt+"</td>";
+                        str += "</tr>";
                     }
-                    str += "</tr>";
                     $('#c-approve-tbody').html(str);
                 }
             }
