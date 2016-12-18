@@ -1,7 +1,6 @@
 package com.expect.admin.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -182,7 +180,7 @@ public class ContractController {
 	/**
 	 * 编号回填详情
 	 */
-	@RequestMapping("/bhhtxq")
+	@PostMapping("/bhhtxq")
 	public ModelAndView bhhtxq(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfillDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
@@ -235,11 +233,11 @@ public class ContractController {
 				attachmentService.save(files, null, contractId);
 			}
 		}catch(Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			log.error("保存合同报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存合同内容成功！").build());
 	}
 	
 	@RequestMapping(value = "/updateContract", method = RequestMethod.POST)
