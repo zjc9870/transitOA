@@ -10,33 +10,31 @@
     <div class="lg-block">
         <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
         <div class="lg-block-content">
+            <th:block>
             <ul>
                 <li>
                     <div class="form-title">合同标题:</div>
-                    <pre class="pre-form-content">公共交通XX合同</pre>
+                    <pre class="pre-form-content" th:text="${contractVo.htbt}"></pre>
                     <button>附件查看</button>
                 </li>
                 <li>
                     <div class="form-title">主要内容:</div>
-                    <pre class="pre-form-content">合同是当事人或当事双方之间设立、变更、终止民事关系的协议。依法成立的合同，受法律保护。
-                        广义合同指所有法律部门中确定权利、义务关系的协议。狭义合同指一切民事合同。还有最狭义合同仅指民事合同中的债权合同。
-                        《中华人民共和国民法通则》第85条：合同是当事人之间设立、变更、终止民事关系的协议。依法成立的合同，受法律保护。
-                        《中华人民共和国合同法》第2条：合同是平等主体的自然人、法人、其他组织之间设立、变更、终止民事权利义务关系的协议。
-                        婚姻、收养、监护等有关身份关系的协议，适用其他法律的规定。"</pre>
+                    <pre class="pre-form-content" th:text="${contractVo.htnr}"></pre>
                 </li>
                 <li>
                     <div class="form-title">主办人和拟合同人:</div>
-                    <pre class="pre-form-content">周业茂</pre>
+                    <pre class="pre-form-content" th:text="${contractVo.userName}"></pre>
                 </li>
                 <li>
                     <div class="form-title">合同签订日期:</div>
-                    <pre class="pre-form-content">2016.12.11</pre>
+                    <pre class="pre-form-content" th:text="${contractVo.nqdrq}"></pre>
                 </li>
                 <li>
                     <div class="form-title">期限:</div>
-                    <pre class="pre-form-content">30天</pre>
+                    <pre class="pre-form-content" th:text="${contractVo.qx}"></pre>
                 </li>
             </ul>
+            </th:block>
         </div>
     </div>
     <div class="lg-block2">

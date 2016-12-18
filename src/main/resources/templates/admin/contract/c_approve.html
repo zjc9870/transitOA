@@ -33,11 +33,12 @@
                         <tr th:each='con : ${contractVoList}'>
                         <th:block >
                         <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.htbt}'></td>
+                        <td th:text='${con.sqsj}'></td>
+                        <td th:text='${con.userName}'></td>
+                        <td>-</td>
+                        <td th:text='${con.htshzt}'></td>
+                        <input type="hidden" th:value='${con.id}' id="data"/>
+                        <td><div  onclick="seeApprove($('#data').val())">查看</div><div>通过</div><div>退回</div></td>
                         </th:block>
                         </tr>
                         </th:block>

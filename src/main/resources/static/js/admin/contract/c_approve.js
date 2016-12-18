@@ -1,19 +1,18 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
-        AjaxTool.post('contract/test41', {
+        AjaxTool.get('contract/htsp', {
             lx: this.id},function (data) {
                 if(data.success) {
                     var str = "<tr>";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
                         str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
+                        str += "<td>"+cons[i].sqsj+"</td>";
+                        str += "<td>"+cons[i].userName+"</td>";
+                        str += "<td>-</td>";
+                        str += "<td>"+cons[i].htshzt+"</td>";
+                        str += "<td><div  onclick='seeApprove('"+ cons[i].id +"')'>查看</div><div>通过</div><div>退回</div></td>";
                     }
                     str += "</tr>";
                     $('#c-approve-tbody').html(str);
@@ -27,4 +26,10 @@ for(var i=0; i<tabs.length; i++) {
             }
         }
     }
+}
+
+function seeApprove(id) {
+    AjaxTool.html('contract/htspckxq',{id: id},function (html) {
+        $('.portlet-body').html(html);
+    });
 }
