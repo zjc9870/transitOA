@@ -34,6 +34,7 @@ public class Contract {
 	private String lcbs;//流程标识
 	private Date sqsj;//申请时间
 	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
+	private String sfth;//是否退回（Y 是退回， N不是退回）
 	
 	public Contract() {
 	}
@@ -154,6 +155,15 @@ public class Contract {
 
 	public void setSfsc(String sfsc) {
 		this.sfsc = sfsc;
+	}
+
+	@Column(name = "sfth", length = 2)
+	public String getSfth() {
+		return sfth;
+	}
+
+	public void setSfth(String sfth) {
+		this.sfth = sfth;
 	}
 	
 	

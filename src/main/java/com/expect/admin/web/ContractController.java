@@ -106,20 +106,22 @@ public class ContractController {
 	public void sqjlTab(@RequestParam(name = "lx", required = false)String lx,
 			@RequestParam(name = "startTime", required = false)Date start,
 			@RequestParam(name = "endTime", required = false)Date end,
+			@RequestParam(name = "bz", required = false)String bz, 
 			HttpServletResponse response) throws IOException {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 //		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
 		try{
 			UserVo userVo = userService.getLoginUser();
-			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
+			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
 			contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 					condition.getJdId(), start, end, lx);
 		}catch(Exception e) {
+			e.printStackTrace();
 			log.error("获取申请记录错误" + lx, e);
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取申请记录出错"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取申请记录出错").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录出错", contractVoList));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录出错", contractVoList).build());
 		
 	}
 	/**
@@ -272,9 +274,9 @@ public class ContractController {
 			contractService.updateContract(contractVo);
 		}catch(Exception e) {
 			log.error("更新合同内容报错", e);
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！").build());
 		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
 	}
 	
 //	@RequestMapping(value = "/getContractList", method = RequestMethod.POST)
@@ -312,9 +314,9 @@ public class ContractController {
 			contractService.saveContractLcrz(cljg, message, clnrid, "ht");
 		}catch(Exception e) {
 			log.error("合同审核失败", e);
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！").build());
 		
 	}
 	
@@ -334,6 +336,6 @@ public class ContractController {
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo);
 		lcrzbService.save(new LcrzbVo(), id, contractVo.getHtfl(), "T");
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
 	}
 }

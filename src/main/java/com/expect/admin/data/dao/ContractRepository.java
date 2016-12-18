@@ -60,8 +60,8 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @param curCondition
 	 * @return
 	 */
-	@Query("select distinct c from Contract c, Lcrzb l where c.htshzt =  ?2 and c.id = l.clnrid "
-			+ "and c.nhtr.id = ?1 and l.cljg = '不通过'")
+	@Query("select distinct c from Contract c, Lcrzb l where c.htshzt =  ?2 and c.sfth = 'Y' and c.id = l.clnrid "
+			+ "and l.user.id = ?1")
 	public List<Contract> findYthContract(String userId, String curCondition);
 	
 	/**

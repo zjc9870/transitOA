@@ -19,6 +19,7 @@ public class ContractVo {
 	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
 	private String lcbs;//流程标识
 	private String sqsj;//申请时间
+	private String sfth;
 	private List<AttachmentVo> attachmentList;//附件Vo
 	
 	public ContractVo() {
@@ -124,4 +125,13 @@ public class ContractVo {
 	public void setAttachmentList(List<AttachmentVo> attachmentList) {
 		this.attachmentList = attachmentList;
 	}
+
+	public String getSfth() {
+		return sfth;
+	}
+
+	public void setSfth(String sfth) {
+		this.sfth = sfth;
+	}
+	
 }

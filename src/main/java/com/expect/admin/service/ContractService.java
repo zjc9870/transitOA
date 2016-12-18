@@ -2,7 +2,9 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,7 +112,7 @@ public class ContractService {
 		Lcjdb lcjd = lcjdbRepository.findOne(condition);
 //		if(start == null || end == null)
 		if(StringUtil.equals(lx, "wtj")){//未提交
-			contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
+			contractList = getWtjContracts(userId, condition);
 		}
 		if(StringUtil.equals(lx, "dsp"))//待审批 || 待回填
 			contractList = contractRepository.findByHtshzt(condition);
@@ -138,6 +140,22 @@ public class ContractService {
 		return contractVoList;
 	}
 	
+	private List<Contract> getWtjContracts(String userId, String condition){
+		List<Contract> ythContractList = contractRepository.findYthContract(userId, condition);//已退回合同
+		List<Contract> contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
+		List<Contract> result = new ArrayList<Contract>();
+		if(ythContractList == null || ythContractList.size() == 0) return contractList;
+		Map<String, Contract> ythContractMap = new HashMap<String, Contract>();
+		for (Contract contract2 : ythContractList) {
+			ythContractMap.put(contract2.getId(), contract2);
+		}
+		for (Contract contract : contractList) {
+			if(ythContractMap.get(contract.getId()) == null)
+				result.add(contract);
+		}
+		return result;
+	}
+	
 	/**
 	 * 合同审批
 	 * @param cljg
@@ -148,9 +166,11 @@ public class ContractService {
 	@Transactional
 	public void saveContractLcrz(String cljg, String message, String clnrid, String clnrfl) {
 		String nextCondition;
+		String sfth = "N";
 		ContractVo contractVo = getContractById(clnrid);
 		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, contractVo.getHtshzt());
 		if(StringUtil.equals(cljg, "不通过")){
+			sfth = "Y";
 			nextCondition = lcService.getThCondition(contractVo.getLcbs(), contractVo.getHtshzt());
 			lcrzbService.setLcrzSfxs(clnrid, contractVo.getLcbs(), nextCondition);
 		}else{
@@ -160,6 +180,7 @@ public class ContractService {
 		
 		if(!StringUtil.isBlank(nextCondition)){
 			contractVo.setHtshzt(nextCondition);
+			contractVo.setSfth(sfth);
 			updateContract(contractVo);
 		}
 	}
@@ -180,6 +201,7 @@ public class ContractService {
 		contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat));
 		contract.setQx(contractVo.getQx());
 		contract.setHtshzt(contractVo.getHtshzt());
+		contract.setSfth(contractVo.getSfth());
 	}
 	
 	/**
