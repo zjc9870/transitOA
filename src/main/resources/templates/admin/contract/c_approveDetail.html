@@ -47,10 +47,10 @@
                 <ul th:each="lcrz : ${contractVo.lcrzList}">
                     <th:block>
                         <li><div class="process-title" th:text="${lcrz.userName}"></div>
-                            <th:block th:if="${lcrz.cljg='通过'}">
+                            <th:block th:if="${lcrz.cljg=='通过'}">
                                 <div class="process-content-pass">通过</div>
                             </th:block>
-                            <th:block th:if="${lcrz.cljg='不通过'}">
+                            <th:block th:if="${lcrz.cljg=='不通过'}">
                                 <div class="process-content-nopass">不通过</div>
                             </th:block>
                         </li>
