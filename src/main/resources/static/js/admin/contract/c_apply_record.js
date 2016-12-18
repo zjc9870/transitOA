@@ -2,7 +2,7 @@ var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         AjaxTool.get('contract/sqjlTab', {
-                lx: this.id},function (data) {
+                lx: this.id, bz: 'sq'},function (data) {
                 if(data.success) {
                     var str = "";
                     var cons = data.content;
