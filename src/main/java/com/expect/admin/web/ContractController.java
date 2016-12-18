@@ -215,7 +215,7 @@ public class ContractController {
 	
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, @RequestParam(name = "bczl", required = true)String bczl,
-			@RequestParam(required = false) MultipartFile[] files, HttpServletResponse response) throws IOException {
+			@RequestParam(name = "files" ,required = false) MultipartFile[] files, HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
 			return;
