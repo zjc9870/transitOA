@@ -1,17 +1,19 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
-        AjaxTool.post('contract/test31', {
-                lx: this.id},function (data) {
+        AjaxTool.post('contract/sqjlTab', {
+                lx: this.id, bz:'ht'},function (data) {
                 if(data.success) {
                     var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
                         str += "<tr>";
                         str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].htbt+"</td>";
+                        str += "<td>"+cons[i].sqsj+"</td>";
+                        str += "<td>"+cons[i].userName+"</td>";
+                        str += "<td>-</td>";
+                        str += "<td>-</td>";
+                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看详情</div><div>修改编号</div></td>";
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);
@@ -25,4 +27,10 @@ for(var i=0; i<tabs.length; i++) {
             }
         }
     }
+}
+
+function backfillDetail(id) {
+    AjaxTool.html('contract/bhhtxq',{id: id},function (html) {
+        $('.portlet-body').html(html);
+    });
 }
