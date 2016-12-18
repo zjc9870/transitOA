@@ -13,7 +13,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>"+cons[i].htshzt+"</td>";
-                        str += "<td><div onclick='seeApprove("+cons[i].id+")'>查看</div><div>通过</div><div>退回</div></td>";
+                        str += "<td><div onclick='seeApprove(\""+cons[i].id+"\")'>查看</div><div>通过</div><div>退回</div></td>";
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);

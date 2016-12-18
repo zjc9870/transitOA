@@ -142,22 +142,6 @@ public class ContractController {
 		return modelAndView;
 	}
 	
-	/**
-	 * 审批记录  已审批的记录
-	 */
-//	@RequestMapping("/spjl")
-//	public ModelAndView spjl(@RequestParam(name = "lx", required = false)String lx,
-//			@RequestParam(name = "startTime", required = false)Date start,
-//			@RequestParam(name = "endTime", required = false)Date end) {
-//		if(StringUtil.isBlank(lx)) lx = "ysp";
-//		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve_record");
-//		UserVo userVo = userService.getLoginUser();
-//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("审批记录");
-//		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
-//		 modelAndView.addObject("contractVoList", contractVoList);
-//		return modelAndView;
-//	}
 	
 	/**
 	 * 编号回填
@@ -176,22 +160,6 @@ public class ContractController {
 		return modelAndView;
 	}
 	
-	/**
-	 * 回填记录
-	 */
-//	@RequestMapping("/htjl")
-//	public ModelAndView htjl(@RequestParam(name = "lx", required = false)String lx,
-//			@RequestParam(name = "startTime", required = false)Date start,
-//			@RequestParam(name = "endTime", required = false)Date end) {
-//		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_record");
-//		if(StringUtil.isBlank(lx)) lx = "yht";
-//		UserVo userVo = userService.getLoginUser();
-//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("回填记录");
-//		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
-//		 modelAndView.addObject("contractVoList", contractVoList);
-//		return modelAndView;
-//	}
 	
 	/**
 	 * 申请记录详情
@@ -278,20 +246,6 @@ public class ContractController {
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
 	}
-	
-//	@RequestMapping(value = "/getContractList", method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<ContractVo> getContractList(
-//			@RequestParam(name = "fucntionId", required = true)String functionId,
-//			@RequestParam(name = "lx", required = true)String lx,
-//			@RequestParam(name = "startTime", required = false)Date start,
-//			@RequestParam(name = "endTime", required = false)Date end) {
-//		UserVo userVo = userService.getLoginUser();
-//		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionId(functionId);
-//		return contractService.getContractByUserIdAndCondition(userVo.getId(),
-//				functionJdgxbGxbVo.getJdgxbId(), start, end, lx);
-//		
-//	}
 	
 	@RequestMapping(value = "/getContract", method = RequestMethod.POST)
 	public ModelAndView getContract(@RequestParam(name = "id", required = true)String contractId){

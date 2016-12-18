@@ -45,7 +45,7 @@ public class Contract {
 		this.htbt = contractVo.getHtbt();
 		this.htnr = contractVo.getHtnr();
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
-			this.nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat);
+			this.nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat);
 		this.qx = contractVo.getQx();
 		this.htshzt = contractVo.getHtshzt();
 		this.htfl = contractVo.getHtfl();

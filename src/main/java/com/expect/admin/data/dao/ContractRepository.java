@@ -50,9 +50,8 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @param end
 	 * @return
 	 */
-	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.sfxs = 'Y' and"
-			+ " l.clsj between ?2 and ?3")
-	List<Contract> findYspContract(String userId, Date start, Date end);
+	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
+	List<Contract> findYspContract(String userId);
 	
 	/**
 	 * 已退回

@@ -123,7 +123,7 @@ public class ContractService {
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批
-			contractList = contractRepository.findYhtContract(userId, start, end);
+			contractList = contractRepository.findYspContract(userId);
 		}
 		
 		if(contractList == null) return contractVoList;
