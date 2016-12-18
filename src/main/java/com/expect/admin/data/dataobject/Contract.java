@@ -2,8 +2,10 @@ package com.expect.admin.data.dataobject;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -76,7 +78,7 @@ public class Contract {
 		return nqdrq;
 	}
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "nhtr_id")
 	public User getNhtr() {
 		return nhtr;

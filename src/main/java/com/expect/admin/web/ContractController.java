@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ import com.expect.admin.service.RoleJdgxbGxbService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
+import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
@@ -83,38 +85,34 @@ public class ContractController {
 	/**
 	 * 申请记录
 	 */
-	@PostMapping("/sqjl")
+	@GetMapping(value = "/sqjl")
 	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)String lx,
 			@RequestParam(name = "startTime", required = false)Date start,
 			@RequestParam(name = "endTime", required = false)Date end) {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
-//		String condition = roleJdgxbGxbService.getWjzt("", "");
-//		String condition = lcService.getStartCondition(lcCategory);
-//		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-//				condition, start, end, lx);
-		List<ContractVo> contractVoList = new ArrayList<>();
+		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+				condition.getJdId(), start, end, lx);
+//		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
 	}
 	/**
 	 * 合同审批
 	 */
-	@RequestMapping("/htsp")
+	@GetMapping(value = "/htsp")
 	public ModelAndView htsp(@RequestParam(name = "lx", required = false)String lx,
 			@RequestParam(name = "startTime", required = false)Date start,
 			@RequestParam(name = "endTime", required = false)Date end) {
 		UserVo userVo = userService.getLoginUser();
-		
-		
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
-		//TODO
-//		String condition = roleJdgxbGxbService.getWjzt("", "");
-//		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-//				condition, start, end, lx);
-		List<ContractVo> contractVoList = new ArrayList<>();
+		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+				condition.getJdId(), start, end, lx);
+//		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
 	}
@@ -139,8 +137,8 @@ public class ContractController {
 	/**
 	 * 编号回填
 	 */
-	@RequestMapping("/bhht")
-	public ModelAndView bhht(@RequestParam(name = "lx", required = false)String lx,
+	@RequestMapping("/getBhhtList")
+	public ModelAndView getBhhtList(@RequestParam(name = "lx", required = false)String lx,
 			@RequestParam(name = "startTime", required = false)Date start,
 			@RequestParam(name = "endTime", required = false)Date end) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill");

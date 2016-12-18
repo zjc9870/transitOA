@@ -99,7 +99,7 @@ public class ContractService {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
 		
-		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "");
+		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "ht");
 		if(StringUtil.isBlank(roleJdgxbGxbVo.getRoleId()) || 
 				StringUtil.isBlank(roleJdgxbGxbVo.getJdId())) return contractVoList;
 		Lcjdb lcjd = lcjdbRepository.findOne(roleJdgxbGxbVo.getJdId());
@@ -108,7 +108,7 @@ public class ContractService {
 			contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
 		}
 		if(StringUtil.equals(lx, "dsp"))//待审批 || 待回填
-			contractList = contractRepository.findByUserAndCondition(userId, condition);
+			contractList = contractRepository.findByHtshzt(condition);
 		if(StringUtil.equals(lx, "dht"))//待回填
 			contractList = contractRepository.findByHtshzt("Y");
 		if(StringUtil.equals(lx, "yht"))//已回填

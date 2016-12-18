@@ -22,7 +22,8 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
 	public List<Contract> findByUserAndCondition(String userId, String condition);
 	
-	
+//	@Query("select distinct c from Contract c where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
+//	public List<Contract> findDspContract(String condition)
 	/**
 	 * 获取某人用户未提交的合同记录
 	 * @param userId
