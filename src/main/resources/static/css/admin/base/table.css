@@ -32,3 +32,8 @@
     border-radius: 5px;
     margin-left: 10px;
 }
+
+#c-approve-tbody tr td:last-child{
+    color:blue;
+    cursor: pointer;
+}

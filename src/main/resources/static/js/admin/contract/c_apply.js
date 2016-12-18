@@ -8,7 +8,7 @@ for(var i=0; i<buttons.length;i++) {
                 return false;
             }
         }
-        AjaxTool.post('/admin/contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
+        AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
                 alert(data.message);
             }
         )
