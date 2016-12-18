@@ -44,12 +44,12 @@ public class LcService {
 	}
 	
 	/**
-	 * 获取某人流程的起始状态
-	 * @param lcCategory
+	 * 获取某流程的起始状态
+	 * @param lcbs
 	 * @return
 	 */
-	public String getStartCondition(String lcCategory) {
-		return getCurLcjd("S", lcCategory).getJsjd();
+	public String getStartCondition(String lcbs) {
+		return getCurLcjd("S", lcbs).getJsjd();
 	}
 	
 	/**

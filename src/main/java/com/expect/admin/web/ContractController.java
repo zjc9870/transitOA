@@ -29,6 +29,7 @@ import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.JsonResult;
+import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.ResponseBuilder;
 import com.expect.admin.utils.StringUtil;
 
@@ -214,19 +215,20 @@ public class ContractController {
 	
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, @RequestParam(name = "bczl", required = true)String bczl,
-			@RequestParam MultipartFile[] files, HttpServletResponse response) throws IOException {
+			@RequestParam(required = false) MultipartFile[] files, HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
 			return;
 		}
 		try{
-			String lcbs = lcService.getDefaultLc(contractVo.getHtfl());
+			String htfl = contractService.getHtfl();
+			contractVo.setHtfl(htfl);
+			String lcbs = lcService.getDefaultLc(htfl);
 			String condition;
+			String startCondition = lcService.getStartCondition(lcbs);
 			if(StringUtil.equals(bczl, "tj")){
-				String startCondition = lcService.getStartCondition(contractVo.getHtfl());
 				condition = lcService.getNextCondition(lcbs, startCondition);
-				
-			}else condition = lcService.getStartCondition(contractVo.getHtfl());
+			}else condition = startCondition;
 			contractVo.setHtshzt(condition);//合同审核状态
 			contractVo.setLcbs(lcbs);//流程标识
 			String contractId = contractService.save(contractVo);
@@ -235,30 +237,21 @@ public class ContractController {
 				attachmentService.save(files, null, contractId);
 			}
 		}catch(Exception e) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
+//			e.printStackTrace();
+			log.error("保存合同报错", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
 		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存合同成功！").build());
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
 	}
-	
-//	@PostMapping(value = "/fileUpload")
-//	public void uploadFiles(@RequestParam("file") MultipartFile file,
-//							@RequestParam("id") String id, HttpServletResponse response) throws IOException {
-//		String fileName = file.getName();
-//		if(!fileName.endsWith("ceb") || !fileName.endsWith("doc") || !fileName.endsWith("pdf")){
-//			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "文件上传失败，只能是ceb,pdf,doc个时的文件！").build());
-//			return;
-//		}
-//		
-//	}
 	
 	@RequestMapping(value = "/updateContract", method = RequestMethod.POST)
 	public void updateContract(ContractVo contractVo, HttpServletResponse response) throws IOException {
 		try{
 			contractService.updateContract(contractVo);
 		}catch(Exception e) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！").build());
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！"));
 		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
+		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！"));
 	}
 	
 //	@RequestMapping(value = "/getContractList", method = RequestMethod.POST)
@@ -296,10 +289,10 @@ public class ContractController {
 		try{
 			contractService.saveContractLcrz(cljg, message, clnrid, clnrfl);
 		}catch(Exception e) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！").build());
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同审核失败！"));
 			log.error("合同审核失败", e);
 		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！").build());
+		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！"));
 		
 	}
 	
@@ -319,6 +312,6 @@ public class ContractController {
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo);
 		lcrzbService.save(new LcrzbVo(), id, contractVo.getHtfl(), "T");
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
+		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！"));
 	}
 }

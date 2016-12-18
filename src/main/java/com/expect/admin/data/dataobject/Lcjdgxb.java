@@ -42,7 +42,7 @@ public class Lcjdgxb {
 	private String sftb;//是否同步
 	
 	@Column(name = "xssx")
-	private int xssx;//显示顺序(用来标识该节点在界面上的显示顺序)
+	private Integer xssx;//显示顺序(用来标识该节点在界面上的显示顺序)
 
 	public String getId() {
 		return id;
@@ -98,6 +98,14 @@ public class Lcjdgxb {
 
 	public void setLcbs(String lcbs) {
 		this.lcbs = lcbs;
+	}
+
+	public Integer getXssx() {
+		return xssx;
+	}
+
+	public void setXssx(Integer xssx) {
+		this.xssx = xssx;
 	}
 	
 }

@@ -42,6 +42,9 @@ public class RoleJdgxbGxb {
 		BeanUtils.copyProperties(gxbVo, this);
 	}
 	
+	public RoleJdgxbGxb() {
+	}
+	
 	public String getId() {
 		return id;
 	}

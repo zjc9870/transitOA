@@ -49,7 +49,7 @@ public class DraftController {
 	@RequestMapping(value = "/addDraft", method = RequestMethod.POST)
 	public void addDraft(HttpServletResponse response, @ModelAttribute() DraftVO draftVO) throws IOException {
 		if(draftVO == null) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "拟稿内容为空！").build());
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "拟稿内容为空！"));
 			logger.error("新增拟稿失败");
 		}
 		draftVO.setNgshzt("1");//新申请的拟稿
@@ -67,7 +67,7 @@ public class DraftController {
 	@RequestMapping(value = "/updateDraft", method = RequestMethod.POST)
 	public void updateDraft(HttpServletResponse response, @ModelAttribute() DraftVO draftVO) throws IOException {
 		if(draftVO == null || StringUtil.isBlank(draftVO.getId())) {
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "修改拟稿失败，没有找到要修改的拟稿！").build());
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "修改拟稿失败，没有找到要修改的拟稿！"));
 			if(draftVO != null) {
 				String ngr = draftVO.getNgr();
 				String ztc = draftVO.getZtc();

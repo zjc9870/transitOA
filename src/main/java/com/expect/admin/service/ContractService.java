@@ -120,8 +120,6 @@ public class ContractService {
 		}
 		
 		if(contractList == null) return contractVoList;
-//		User user = userRepository.findOne(userId);
-//		String departmentId = user.getDepartment().getId();
 		for (Contract contract : contractList) {
 			if (!StringUtil.isBlank(lcjd.getShbm()) && 
 					!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
@@ -183,6 +181,20 @@ public class ContractService {
 	public String getLcCategory(){
 		UserVo userVo = userService.getLoginUser();
 		return "";
+	}
+	
+	/**
+	 * 新申请合同时获取合同分类
+	 * @return
+	 */
+	public String getHtfl() {
+		UserVo userVo = userService.getLoginUser();
+		User user = userRepository.findOne(userVo.getId());
+		RoleJdgxbGxbVo roleJdgxbGxbVo= roleJdgxbGxbService.getWjzt("sq", "ht");
+		Role role = roleRepository.findOne(roleJdgxbGxbVo.getRoleId());
+		if(StringUtil.equals(role.getName(), "集团文员")) return "1";//集团合同
+		if(StringUtil.equals(role.getName(), "东交公司文员")) return "3";//东交合同
+		return "2";//非集团合同
 	}
 	
 

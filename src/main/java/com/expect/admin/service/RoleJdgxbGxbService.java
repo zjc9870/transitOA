@@ -43,7 +43,7 @@ public class RoleJdgxbGxbService {
 		for (Role role : user.getRoles()) {
 			roleIds.add(role.getId());
 		}
-		RoleJdgxbGxb roleJdgxbGxb = roleJdgxbGxbRepository.findByBzAndWjzlAndRoleIdIn(bz, wjzl, roleIds);
+		RoleJdgxbGxb roleJdgxbGxb = roleJdgxbGxbRepository.findByBzAndWjzlAndRoleIdIn(bz, wjzl, roleIds);//有错
 		if(roleJdgxbGxb == null) return new RoleJdgxbGxbVo();
 		return new RoleJdgxbGxbVo(roleJdgxbGxb);
 	}
