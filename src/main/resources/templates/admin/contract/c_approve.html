@@ -30,17 +30,17 @@
                     </thead>
                     <tbody id="c-approve-tbody" class="mt-td-checkbox">
                         <th:block th:if='${not #lists.isEmpty(contractVoList)}'>
-                        <tr th:each='con : ${contractVoList}'>
-                        <th:block >
-                        <td th:text='${con.htbt}'></td>
-                        <td th:text='${con.sqsj}'></td>
-                        <td th:text='${con.userName}'></td>
-                        <td>-</td>
-                        <td th:text='${con.htshzt}'></td>
-                        <input type="hidden" th:value='${con.id}' id="data"/>
-                        <td><div  onclick="seeApprove($('#data').val())">查看</div><div>通过</div><div>退回</div></td>
-                        </th:block>
-                        </tr>
+                            <tr th:each='con : ${contractVoList}'>
+                                <th:block >
+                                <input type="hidden" th:value="${con.id}" />
+                                <td th:text='${con.htbt}'></td>
+                                <td th:text='${con.sqsj}'></td>
+                                <td th:text='${con.userName}'></td>
+                                <td>-</td>
+                                <td th:text='${con.htshzt}'></td>
+                                <td><div onclick="seeApprove($(this.parentNode.parentNode.childNodes[1]).val())">查看</div><div>通过</div><div>退回</div></td>
+                            </th:block>
+                            </tr>
                         </th:block>
                     </tbody>
                     <!--<tbody class="mt-td-checkbox">-->
