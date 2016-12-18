@@ -11,7 +11,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td>"+cons[i].sqsj+"</td>";
                         str += "<td>"+cons[i].htshzt+"</td>";
-                        str += "<td><div onclick='seeApplyRecord("+ cons[i].id +")'>查看</div><div>提交</div><div>删除</div></td>";
+                        str += "<td><div onclick='seeApplyRecord(\""+ cons[i].id +"\")'>查看</div><div>提交</div><div>删除</div></td>";
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);
