@@ -1,7 +1,7 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
-        AjaxTool.post('contract/sqjlTab', {
+        AjaxTool.get('contract/sqjlTab', {
                 lx: this.id, bz:'ht'},function (data) {
                 if(data.success) {
                     var str = "";
