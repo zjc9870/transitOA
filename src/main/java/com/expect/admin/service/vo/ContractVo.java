@@ -39,6 +39,7 @@ public class ContractVo {
 		this.lcbs = contract.getLcbs();
 		if(contract.getSqsj() != null)
 			this.sqsj = DateUtil.format(contract.getSqsj(), DateUtil.dateWithHour);
+		else this.sqsj = "";
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;

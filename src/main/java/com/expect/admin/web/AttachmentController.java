@@ -29,19 +29,19 @@ public class AttachmentController {
 	@Autowired
 	private AttachmentService attachmentService;
 
-//	/**
-//	 * 附件上传
-//	 */
-//	@RequestMapping(value = "/upload", method = RequestMethod.POST)
-//	@ResponseBody
-//	public ResultVo upload(MultipartFile files, String path, HttpServletRequest request) {
-//		if (StringUtils.isEmpty(path)) {
-//			return new FileResultVo(false, "路径错误");
-//		}
-//		path = Base64Util.decode(path);
-//		FileResultVo frv = attachmentService.save(files, path);
-//		return frv;
-//	}
+	/**
+	 * 附件上传
+	 */
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo upload(MultipartFile files, String path, HttpServletRequest request) {
+		if (StringUtils.isEmpty(path)) {
+			return new FileResultVo(false, "路径错误");
+		}
+		path = Base64Util.decode(path);
+		FileResultVo frv = attachmentService.save(files, path);
+		return frv;
+	}
 
 	/**
 	 * 附件下载

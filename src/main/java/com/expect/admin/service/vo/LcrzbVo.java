@@ -10,6 +10,7 @@ public class LcrzbVo {
 	private String clsj;//处理时间
 	private String message;//处理意见
 	private String cljg;//处理结果
+	private String lcjd;
 //	private String clnrid;//处理内容的id（所处理的东西的id）
 //	private String clnrfl;
 	
@@ -28,8 +29,9 @@ public class LcrzbVo {
 			this.userDepartmnet = lcrzb.getUser().getDepartment().getName();
 		this.cljg = lcrzb.getCljg();
 		this.clsj = lcrzb.getClsj() == null? "" : 
-			DateUtil.format(lcrzb.getClsj(), DateUtil.webFormat);
+			DateUtil.format(lcrzb.getClsj(), DateUtil.zbFormat);
 		this.message = lcrzb.getMessage();
+		this.lcjd = lcrzb.getDyjd();
 	}
 	public String getUserName() {
 		return userName;
@@ -60,6 +62,14 @@ public class LcrzbVo {
 	}
 	public void setCljg(String cljg) {
 		this.cljg = cljg;
+	}
+
+	public String getLcjd() {
+		return lcjd;
+	}
+
+	public void setLcjd(String lcjd) {
+		this.lcjd = lcjd;
 	}
 	
 	

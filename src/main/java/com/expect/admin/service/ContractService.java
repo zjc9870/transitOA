@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,20 +73,17 @@ public class ContractService {
 		if(contract == null) throw new BaseAppException("要更新的合同不存在！");
 		update(contract, contractVo);
 		contractRepository.save(contract);
-//		LcrzbVo lcrzbVo = new LcrzbVo("修改", "");
-//		lcrzbService.save(lcrzbVo, contractVo.getId(), contractVo.getHtfl());
-	}
-	
-	@Transactional
-	public void deleteContract(String contractId) {
-		contractRepository.delete(contractId);
-		lcrzbService.delete(contractId);
 	}
 	
 	public ContractVo getContractById(String contractId) {
 		Contract contract = contractRepository.findOne(contractId);
 		if(contract == null) throw new BaseAppException("id为 "+contractId+"的合同没有找到");
 		ContractVo contractVo = new ContractVo(contract);//合同的基本信息
+		List<LcrzbVo> lcrzbVoList = lcrzbService.getKxsLcrzbVoList(contractId);
+		Map<String, String> lcjdbMap = getAllLcjdMapping();
+		for (LcrzbVo lcrzbVo : lcrzbVoList) {
+			if(!StringUtil.isBlank(lcrzbVo.getLcjd())) lcrzbVo.setLcjd(lcjdbMap.get(lcrzbVo.getLcjd()));
+		}
 		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
 		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
 		return contractVo;
@@ -105,21 +103,15 @@ public class ContractService {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
 		
-//		RoleJdgxbGxbVo  roleJdgxbGxbVo = roleJdgxbGxbService.getWjzt("sp", "ht");
-//		if(StringUtil.isBlank(roleJdgxbGxbVo.getRoleId()) || 
-//				StringUtil.isBlank(roleJdgxbGxbVo.getJdId())) return contractVoList;
 		if(StringUtil.isBlank(condition)) return contractVoList;
 		Lcjdb lcjd = lcjdbRepository.findOne(condition);
-//		if(start == null || end == null)
 		if(StringUtil.equals(lx, "wtj")){//未提交
 			contractList = getWtjContracts(userId, condition);
 		}
-		if(StringUtil.equals(lx, "dsp"))//待审批 || 待回填
+		if(StringUtil.equals(lx, "dsp") || StringUtil.equals(lx, "dht"))//待审批 || 待回填
 			contractList = contractRepository.findByHtshzt(condition);
-		if(StringUtil.equals(lx, "dht"))//待回填
-			contractList = contractRepository.findByHtshzt("Y");
 		if(StringUtil.equals(lx, "yht"))//已回填
-			contractList = contractRepository.findYhtContract(userId, start, end);
+			contractList = contractRepository.findYhtContract(userId);
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批
@@ -127,7 +119,9 @@ public class ContractService {
 		}
 		
 		if(contractList == null) return contractVoList;
+		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		for (Contract contract : contractList) {
+			if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
 			if (!StringUtil.isBlank(lcjd.getShbm()) && 
 					!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
 			else if (!StringUtil.isBlank(lcjd.getShgs())){
@@ -135,11 +129,20 @@ public class ContractService {
 				if(parent == null) continue;
 				if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
 			}
-			contractVoList.add(new ContractVo(contract));
+			ContractVo contractVo = new ContractVo(contract);
+			if(!StringUtil.isBlank(contract.getHtshzt())) 
+				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
+			contractVoList.add(contractVo);
 		}
 		return contractVoList;
 	}
 	
+	/**
+	 * 获取未提交的合同列表
+	 * @param userId
+	 * @param condition
+	 * @return
+	 */
 	private List<Contract> getWtjContracts(String userId, String condition){
 		List<Contract> ythContractList = contractRepository.findYthContract(userId, condition);//已退回合同
 		List<Contract> contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
@@ -166,7 +169,7 @@ public class ContractService {
 	@Transactional
 	public void saveContractLcrz(String cljg, String message, String clnrid, String clnrfl) {
 		String nextCondition;
-		String sfth = "N";
+		String sfth = "N";//合同是否被退回
 		ContractVo contractVo = getContractById(clnrid);
 		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, contractVo.getHtshzt());
 		if(StringUtil.equals(cljg, "不通过")){
@@ -195,22 +198,15 @@ public class ContractService {
 	}
 	
 	private void update(Contract contract, ContractVo contractVo) {
-		contract.setHtbt(contractVo.getHtbt());
-		contract.setHtnr(contractVo.getHtnr());
+		BeanUtils.copyProperties(contractVo, contract);
+//		contract.setHtbt(contractVo.getHtbt());
+//		contract.setHtnr(contractVo.getHtnr());
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
-		contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.webFormat));
-		contract.setQx(contractVo.getQx());
-		contract.setHtshzt(contractVo.getHtshzt());
-		contract.setSfth(contractVo.getSfth());
-	}
-	
-	/**
-	 * 获取用户申请的合同的流程Id
-	 * @return
-	 */
-	public String getLcCategory(){
-		UserVo userVo = userService.getLoginUser();
-		return "";
+			contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat));
+//		contract.setQx(contractVo.getQx());
+//		contract.setHtshzt(contractVo.getHtshzt());
+//		contract.setSfth(contractVo.getSfth());
+//		contract.setBh(contractVo.getBh());
 	}
 	
 	/**
@@ -218,13 +214,37 @@ public class ContractService {
 	 * @return
 	 */
 	public String getHtfl() {
-		UserVo userVo = userService.getLoginUser();
-		User user = userRepository.findOne(userVo.getId());
+//		UserVo userVo = userService.getLoginUser();
+//		User user = userRepository.findOne(userVo.getId());
 		RoleJdgxbGxbVo roleJdgxbGxbVo= roleJdgxbGxbService.getWjzt("sq", "ht");
 		Role role = roleRepository.findOne(roleJdgxbGxbVo.getRoleId());
 		if(StringUtil.equals(role.getName(), "集团文员")) return "1";//集团合同
 		if(StringUtil.equals(role.getName(), "东交公司文员")) return "3";//东交合同
 		return "2";//非集团合同
+	}
+	
+	/**
+	 * 删除合同（软删除）
+	 * @param id
+	 */
+	public void deleteContract(String id) {
+		Contract contract = contractRepository.findById(id);
+		if(contract == null) throw new BaseAppException("未找到要删除的合同 合同id = "+ id);
+		contract.setSfsc("Y");
+		contractRepository.save(contract);
+	}
+	
+	/**
+	 * 获取所有的合同的节点id和名字的map
+	 * @return
+	 */
+	public Map<String, String> getAllLcjdMapping() {
+		List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("1");
+		Map<String, String> resultMap = new HashMap<String, String>();
+		for (Lcjdb lcjdb : lcjdbList) {
+			resultMap.put(lcjdb.getId(), lcjdb.getName());
+		}
+		return resultMap;
 	}
 	
 

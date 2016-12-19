@@ -60,12 +60,13 @@ public class ContractController {
 	 */
 	@RequestMapping(value = "/addContract", method = RequestMethod.GET)
 	public ModelAndView addContract() {
-//		ContractVo contractVo = new ContractVo();
-//		UserVo userVo = userService.getLoginUser();
-//		contractVo.setUserName(userVo.getFullName());
-//		contractService.save(contractVo);
+		ContractVo contractVo = new ContractVo();
+		UserVo userVo = userService.getLoginUser();
+		contractVo.setUserName(userVo.getFullName());
+		String contractId = contractService.save(contractVo);
+		contractVo.setId(contractId);
 		ModelAndView mv = new ModelAndView(viewName + "c_apply");
-//		mv.addObject("contractVo", contractVo);
+		mv.addObject("contractVo", contractVo);
 		return mv;
 	}
 	
@@ -85,9 +86,9 @@ public class ContractController {
 	 * 申请记录
 	 */
 	@GetMapping(value = "/sqjl")
-	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)String lx,
-			@RequestParam(name = "startTime", required = false)Date start,
-			@RequestParam(name = "endTime", required = false)Date end) {
+	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)       String lx,
+			                 @RequestParam(name = "startTime", required = false)Date start,
+			                 @RequestParam(name = "endTime", required = false)  Date end) {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
@@ -103,21 +104,25 @@ public class ContractController {
 	 * @throws IOException 
 	 */
 	@GetMapping(value = "/sqjlTab")
-	public void sqjlTab(@RequestParam(name = "lx", required = false)String lx,
-			@RequestParam(name = "startTime", required = false)Date start,
-			@RequestParam(name = "endTime", required = false)Date end,
-			@RequestParam(name = "bz", required = false)String bz, 
+	public void sqjlTab(@RequestParam(name = "lx", required = false)        String lx,
+			       		@RequestParam(name = "startTime", required = false) Date start,
+			            @RequestParam(name = "endTime", required = false)   Date end,
+			            @RequestParam(name = "bz", required = false)        String bz, 
 			HttpServletResponse response) throws IOException {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
-//		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
 		try{
 			UserVo userVo = userService.getLoginUser();
-			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
-			contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-					condition.getJdId(), start, end, lx);
+			if(StringUtil.equals(lx, "Yht")) {
+				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+						"T", start, end, lx);
+			}else{
+				RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
+				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+						condition.getJdId(), start, end, lx);
+			}
 		}catch(Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			log.error("获取申请记录错误" + lx, e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取申请记录出错").build());
 		}
@@ -128,9 +133,9 @@ public class ContractController {
 	 * 合同审批
 	 */
 	@GetMapping(value = "/htsp")
-	public ModelAndView htsp(@RequestParam(name = "lx", required = false)String lx,
-			@RequestParam(name = "startTime", required = false)Date start,
-			@RequestParam(name = "endTime", required = false)Date end) {
+	public ModelAndView htsp(@RequestParam(name = "lx", required = false)       String lx,
+			                 @RequestParam(name = "startTime", required = false)Date start,
+			                 @RequestParam(name = "endTime", required = false)  Date end) {
 		UserVo userVo = userService.getLoginUser();
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
@@ -147,9 +152,9 @@ public class ContractController {
 	 * 编号回填
 	 */
 	@RequestMapping("/getBhhtList")
-	public ModelAndView getBhhtList(@RequestParam(name = "lx", required = false)String lx,
-			@RequestParam(name = "startTime", required = false)Date start,
-			@RequestParam(name = "endTime", required = false)Date end) {
+	public ModelAndView getBhhtList(@RequestParam(name = "lx", required = false)       String lx,
+			                        @RequestParam(name = "startTime", required = false)Date start,
+			                        @RequestParam(name = "endTime", required = false)  Date end) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill");
 		if(StringUtil.isBlank(lx)) lx = "dht";
 		UserVo userVo = userService.getLoginUser();
@@ -205,8 +210,10 @@ public class ContractController {
 	
 	
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
-	public void saveContract(ContractVo contractVo, @RequestParam(name = "bczl", required = true)String bczl,
-			@RequestParam(name = "files" ,required = false) MultipartFile[] files, HttpServletResponse response) throws IOException {
+	public void saveContract(ContractVo contractVo, 
+			                 @RequestParam(name = "bczl", required = true)   String bczl,
+			                 @RequestParam(name = "files" ,required = false) MultipartFile[] files, 
+			                 HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			log.error("试图保存空的合同");
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
@@ -258,8 +265,8 @@ public class ContractController {
 	@RequestMapping(value = "/addLcrz", method = RequestMethod.POST)
 	public void addLcrz(HttpServletResponse response, 
 			@RequestParam(name = "cljg", required = true)String cljg,
-			@RequestParam(name = "yj", required = false)String message,
-			@RequestParam(name = "id", required = true)String clnrid) throws IOException{
+			@RequestParam(name = "yj", required = false) String message,
+			@RequestParam(name = "id", required = true)  String clnrid) throws IOException{
 		//插入流程日志
 		//判断审核是否通过 如果通过更新文件状态到下一个状态
 		//如果不通过更新文件状态到退回状态，修改流程日志表中的审批记录以后不再显示退回状态之后的审批记录
@@ -284,12 +291,24 @@ public class ContractController {
 	@RequestMapping(value = "/bhht", method = RequestMethod.POST)
 	public void bhht(HttpServletResponse response,
 			@RequestParam(name = "bh", required = false)String bh,
-			@RequestParam(name = "id", required = true)String id) throws IOException{
+			@RequestParam(name = "id", required = true) String id) throws IOException{
 		ContractVo contractVo = contractService.getContractById(id);
 		contractVo.setBh(bh);
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo);
-		lcrzbService.save(new LcrzbVo(), id, contractVo.getHtfl(), "T");
+		lcrzbService.save(new LcrzbVo("编号回填", bh), id, contractVo.getHtfl(), "T");
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
+	}
+	
+	@PostMapping("/deleteContract")
+	public void deleteContract(HttpServletResponse response,
+			                   @RequestParam(name = "id", required = true) String id) throws IOException{
+		try{
+			contractService.deleteContract(id);
+		}catch(Exception e){
+			log.error("删除合同失败未找到id为" + id + "的合同", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到要删除的合同！").build());
+		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "删除的合同成功！").build());
 	}
 }
