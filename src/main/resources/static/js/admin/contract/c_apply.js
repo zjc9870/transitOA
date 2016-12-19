@@ -8,9 +8,7 @@ for(var i=0; i<buttons.length;i++) {
                 return false;
             }
         }
-        var files=new Array(0);
-        files.push($('#c_apply_form input[name= "files"]').attr("id"));
-        FileTool.ajaxFileUpload('contract/saveContract',files, $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
+        AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
                 alert(data.message);
             }
         )
