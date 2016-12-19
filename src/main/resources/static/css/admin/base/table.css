@@ -33,11 +33,10 @@
     margin-left: 10px;
 }
 
-#c-approve-tbody tr td:last-child{
-    color:blue;
-    cursor: pointer;
-}
 
 #c-approve-tbody tr td:last-child div{
-    float: left;
+    color:blue;
+    cursor: pointer;
+    margin-left:10px;
+    display: inline;
 }
