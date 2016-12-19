@@ -69,7 +69,7 @@ var User = {
 			});
 			var uploader=$("#user-avatar-form").FileUpload({
 				url:"user/uploadAvatar",
-				fileType: "image"
+				isMultiFile:true
 			});
 			uploader.done(function(data){
 				if(data.result){

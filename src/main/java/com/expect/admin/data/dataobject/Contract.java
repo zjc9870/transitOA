@@ -1,6 +1,7 @@
 package com.expect.admin.data.dataobject;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,7 +10,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -35,6 +39,7 @@ public class Contract {
 	private Date sqsj;//申请时间
 	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
 	private String sfth;//是否退回（Y 是退回， N不是退回）
+	private Set<Attachment> attachments;//附件
 	
 	public Contract() {
 	}
@@ -164,6 +169,16 @@ public class Contract {
 
 	public void setSfth(String sfth) {
 		this.sfth = sfth;
+	}
+
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinTable(name = "s_contract_attachment", joinColumns = @JoinColumn(name = "contract_id"), inverseJoinColumns = @JoinColumn(name = "attachment_id"))
+	public Set<Attachment> getAttachments() {
+		return attachments;
+	}
+
+	public void setAttachments(Set<Attachment> attachments) {
+		this.attachments = attachments;
 	}
 	
 	

@@ -14,19 +14,25 @@
         	dataType : "json",
             formData : function(form){
             	var array=form.serializeArray();
-            	if($("input[name='path']").length>0){
-            		var path=$("input[name='path']").val();
+            	var templateSelector =options.templateSelector;
+            	var pathName=$(templateSelector).data("pathname");
+            	var path=$(templateSelector).data("path");
+            	if(path){
+            		if(!pathName){
+            			pathName="path";
+            		}
     				array.push({
-    					name:"path",
+    					name:pathName,
     					value:path
     				});
             	}
 				return array;
 			},
             fileType : null,
-            maxFileSizes:104857600,
+            maxFileSizes:20*1024*1024,
             templateSelector:".files-template-wrapper",
-            isMultiFile : false
+            isMultiFile : false,
+            limitMultiFileUploads:undefined
         };
         var options = $.extend({}, defaults, options);
         var imageFormat='.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$';
@@ -64,9 +70,7 @@
         	//设置默认名称
         	var fileNames=$(templateSelector).data("filenames");
         	if(fileNames){
-        		console.info(fileNames);
         		var fileNamesArr=fileNames.split(",");
-        		console.info(fileNamesArr);
         		if(fileNamesArr.length>1){
         			$(templateSelector + " .fileinput span").eq(0).text(fileNamesArr.length+"个文件");
         		}else if(fileNamesArr.length==1){

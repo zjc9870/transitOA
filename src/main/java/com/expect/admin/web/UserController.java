@@ -165,7 +165,7 @@ public class UserController {
 			String avatarId = user.getAvatarId();
 			AttachmentVo avatar = attachmentService.getAttachmentById(avatarId);
 			if (avatar != null) {
-				byte[] avatarByte = IOUtil.inputDataFromFile(avatar.getPath() + File.separator + avatar.getName());
+				byte[] avatarByte = IOUtil.inputDataFromFile(avatar.getPath() + File.separator + avatar.getId());
 				try {
 					response.getOutputStream().write(avatarByte);
 					response.getOutputStream().flush();
@@ -177,20 +177,20 @@ public class UserController {
 		}
 	}
 
-//	/**
-//	 * 修改头像
-//	 */
-//	@RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
-//	@ResponseBody
-//	public ResultVo uploadAvatar(MultipartFile files, String userAvatarId, HttpServletRequest request) {
-//		String avatarPath = settings.getAvatarPath();
-//		FileResultVo frv = attachmentService.save(files, avatarPath);
-//		if (!frv.isResult()) {
-//			return frv;
-//		}
-//		ResultVo rv = userService.updateAvatar(userAvatarId, frv.getId());
-//		return rv;
-//	}
+	/**
+	 * 修改头像
+	 */
+	@RequestMapping(value = "/uploadAvatar", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo uploadAvatar(MultipartFile files, String userAvatarId, HttpServletRequest request) {
+		String avatarPath = settings.getAvatarPath();
+		FileResultVo frv = attachmentService.save(files, avatarPath);
+		if (!frv.isResult()) {
+			return frv;
+		}
+		ResultVo rv = userService.updateAvatar(userAvatarId, frv.getId());
+		return rv;
+	}
 	
 	@RequestMapping(value = "/getUserMessage", method = RequestMethod.GET)
 	public ModelAndView getUserMessage() {

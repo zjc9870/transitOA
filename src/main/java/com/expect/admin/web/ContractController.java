@@ -60,13 +60,13 @@ public class ContractController {
 	 */
 	@RequestMapping(value = "/addContract", method = RequestMethod.GET)
 	public ModelAndView addContract() {
-		ContractVo contractVo = new ContractVo();
-		UserVo userVo = userService.getLoginUser();
-		contractVo.setUserName(userVo.getFullName());
-		String contractId = contractService.save(contractVo);
-		contractVo.setId(contractId);
+//		ContractVo contractVo = new ContractVo();
+//		UserVo userVo = userService.getLoginUser();
+//		contractVo.setUserName(userVo.getFullName());
+//		String contractId = contractService.save(contractVo);
+//		contractVo.setId(contractId);
 		ModelAndView mv = new ModelAndView(viewName + "c_apply");
-		mv.addObject("contractVo", contractVo);
+//		mv.addObject("contractVo", contractVo);
 		return mv;
 	}
 	
@@ -212,7 +212,7 @@ public class ContractController {
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, 
 			                 @RequestParam(name = "bczl", required = true)   String bczl,
-			                 @RequestParam(name = "files" ,required = false) MultipartFile[] files, 
+//			                 @RequestParam(name = "files" ,required = false) MultipartFile[] files, 
 			                 HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			log.error("试图保存空的合同");
@@ -232,9 +232,9 @@ public class ContractController {
 			contractVo.setLcbs(lcbs);//流程标识
 			String contractId = contractService.save(contractVo);
 			//附件保存
-			if(files != null){
-				attachmentService.save(files, null, contractId);
-			}
+//			if(files != null){
+//				attachmentService.save(files, null, contractId);
+//			}
 		}catch(Exception e) {
 //			e.printStackTrace();
 			log.error("保存合同报错", e);
