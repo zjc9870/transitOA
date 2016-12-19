@@ -6,8 +6,8 @@
             url: "contract/uploadContractAttachment",
             isMultiFile: true,
         });
-        uploader.done(function (data) {
-            ids.push(data.id);
+        uploader.done(function(data) {
+            ids.push(data.result.id);
         });
     });
 
