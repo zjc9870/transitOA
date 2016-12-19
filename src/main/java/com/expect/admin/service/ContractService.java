@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdbRepository;
 import com.expect.admin.data.dao.LcjdgxbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
+import com.expect.admin.data.dataobject.Attachment;
 import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.Lcjdb;
@@ -52,13 +54,20 @@ public class ContractService {
 	private LcjdbRepository lcjdbRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private AttachmentRepository attachmentRepository;
 	
 	@Transactional
-	public String save(ContractVo contractVo){
+	public String save(ContractVo contractVo, String[] attachmentId){
 		Contract contract = new Contract(contractVo);
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
 		contract.setNhtr(user);
+		if(attachmentId != null && attachmentId.length > 0) {
+			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
+			if(attachmentList != null && attachmentList.size() > 0)
+				contract.setAttachments(attachmentList);
+		}
 		contract = contractRepository.save(contract);
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
 		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contractVo.getHtshzt());
@@ -98,8 +107,7 @@ public class ContractService {
 	 * @param lx
 	 * @return
 	 */
-	public List<ContractVo> getContractByUserIdAndCondition(final String userId, final String condition, 
-			final Date start, final Date end, String lx) {
+	public List<ContractVo> getContractByUserIdAndCondition(String userId, String condition, String lx) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
 		
@@ -134,6 +142,49 @@ public class ContractService {
 				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
 			contractVoList.add(contractVo);
 		}
+		return contractVoList;
+	}
+	
+	/**
+	 * 申请记录界面已审批合同
+	 * @param userId
+	 * @return
+	 */
+	public List<ContractVo> getSqjlYspList(String userId){
+		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
+		List<Contract> yspList = contractRepository.findByNhtr_idAndHtshzt(userId, "Y");
+		List<Contract> yhtList = contractRepository.findByNhtr_idAndHtshzt(userId, "T");
+		if(yspList != null){
+			for (Contract contract1 : yspList) {
+				ContractVo contractVo = new ContractVo(contract1);
+				contractVo.setHtshzt("已审批");
+				contractVoList.add(contractVo);
+			}
+		}
+		if(yhtList != null){
+			for (Contract contract : yhtList) {
+				ContractVo contractVo = new ContractVo(contract);
+				contractVo.setHtshzt("已回填");
+				contractVoList.add(contractVo);
+			}
+		}
+		return contractVoList;
+	}
+	
+	/**
+	 * 申请记录界面未审批合同
+	 * @param userId
+	 * @return
+	 */
+	public List<ContractVo> getSqjlWspList(String userId, String condition) {
+		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
+		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);
+		if(wspList != null && wspList.size() > 0)
+			for (Contract contract : wspList) {
+				ContractVo contractVo = new ContractVo(contract);
+				contractVo.setHtshzt("待审批");
+				contractVoList.add(contractVo);
+			}
 		return contractVoList;
 	}
 	

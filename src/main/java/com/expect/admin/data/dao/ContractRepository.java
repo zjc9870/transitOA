@@ -19,6 +19,9 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	
 	List<Contract> findByHtshzt(String condition);
 	
+	@Query("select c from Contract c where c.nhtr.id = ?1 and c.htshzt <> 'T' and c.htshzt <> 'Y' and c.htshzt <> ?2")
+	public List<Contract> findSqjlWspList(String userId, String condition);
+	
 	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
 	public List<Contract> findByUserAndCondition(String userId, String condition);
 	
@@ -49,7 +52,8 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @param end
 	 * @return
 	 */
-	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
+//	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
+	@Query("select c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1")
 	List<Contract> findYspContract(String userId);
 	
 	/**

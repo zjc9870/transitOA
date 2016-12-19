@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.expect.admin.config.Settings;
 import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.ContractService;
 import com.expect.admin.service.LcService;
@@ -29,6 +33,9 @@ import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.UserVo;
+import com.expect.admin.service.vo.component.FileResultVo;
+import com.expect.admin.service.vo.component.ResultVo;
+import com.expect.admin.utils.Base64Util;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.ResponseBuilder;
@@ -51,6 +58,8 @@ public class ContractController {
 	private RoleJdgxbGxbService roleJdgxbGxbService;
 	@Autowired
 	private AttachmentService attachmentService;
+	@Autowired
+	private Settings settings;
 	
 	private final String viewName = "admin/contract/";
 	
@@ -86,16 +95,13 @@ public class ContractController {
 	 * 申请记录
 	 */
 	@GetMapping(value = "/sqjl")
-	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)       String lx,
-			                 @RequestParam(name = "startTime", required = false)Date start,
-			                 @RequestParam(name = "endTime", required = false)  Date end) {
+	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)String lx) {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
 		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-				condition.getJdId(), start, end, lx);
-//		List<ContractVo> contractVoList = new ArrayList<>();
+				condition.getJdId(), lx);
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
 	}
@@ -104,22 +110,27 @@ public class ContractController {
 	 * @throws IOException 
 	 */
 	@GetMapping(value = "/sqjlTab")
-	public void sqjlTab(@RequestParam(name = "lx", required = false)        String lx,
-			       		@RequestParam(name = "startTime", required = false) Date start,
-			            @RequestParam(name = "endTime", required = false)   Date end,
-			            @RequestParam(name = "bz", required = false)        String bz, 
+	public void sqjlTab(@RequestParam(name = "lx", required = false)String lx,
+			            @RequestParam(name = "bz", required = false)String bz, 
 			HttpServletResponse response) throws IOException {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
 		try{
 			UserVo userVo = userService.getLoginUser();
-			if(StringUtil.equals(lx, "Yht")) {
+			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
+			if(StringUtil.equals(bz, "sq")){
+				if(StringUtil.equals(lx, "ysp"))
+					contractVoList = contractService.getSqjlYspList(userVo.getId());
+				else if(StringUtil.equals(lx, "wsp"))
+					contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
+			}
+			
+			else if(StringUtil.equals(lx, "yht")) {
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-						"T", start, end, lx);
+						"T", lx);
 			}else{
-				RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-						condition.getJdId(), start, end, lx);
+						condition.getJdId(), lx);
 			}
 		}catch(Exception e) {
 //			e.printStackTrace();
@@ -133,15 +144,13 @@ public class ContractController {
 	 * 合同审批
 	 */
 	@GetMapping(value = "/htsp")
-	public ModelAndView htsp(@RequestParam(name = "lx", required = false)       String lx,
-			                 @RequestParam(name = "startTime", required = false)Date start,
-			                 @RequestParam(name = "endTime", required = false)  Date end) {
+	public ModelAndView htsp(@RequestParam(name = "lx", required = false)String lx) {
 		UserVo userVo = userService.getLoginUser();
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
 		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-				condition.getJdId(), start, end, lx);
+				condition.getJdId(), lx);
 //		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
@@ -152,16 +161,14 @@ public class ContractController {
 	 * 编号回填
 	 */
 	@RequestMapping("/getBhhtList")
-	public ModelAndView getBhhtList(@RequestParam(name = "lx", required = false)       String lx,
-			                        @RequestParam(name = "startTime", required = false)Date start,
-			                        @RequestParam(name = "endTime", required = false)  Date end) {
+	public ModelAndView getBhhtList(@RequestParam(name = "lx", required = false)String lx) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill");
 		if(StringUtil.isBlank(lx)) lx = "dht";
 		UserVo userVo = userService.getLoginUser();
 //		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("编号回填");
-		 List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-				"Y", start, end, lx);
-		 modelAndView.addObject("contractVoList", contractVoList);
+		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+			"Y",lx);
+		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
 	}
 	
@@ -212,7 +219,7 @@ public class ContractController {
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, 
 			                 @RequestParam(name = "bczl", required = true)   String bczl,
-//			                 @RequestParam(name = "files" ,required = false) MultipartFile[] files, 
+			                 @RequestParam(name = "fileId" ,required = false) String[] attachmentId, 
 			                 HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			log.error("试图保存空的合同");
@@ -230,11 +237,7 @@ public class ContractController {
 			}else condition = startCondition;
 			contractVo.setHtshzt(condition);//合同审核状态
 			contractVo.setLcbs(lcbs);//流程标识
-			String contractId = contractService.save(contractVo);
-			//附件保存
-//			if(files != null){
-//				attachmentService.save(files, null, contractId);
-//			}
+			contractService.save(contractVo, attachmentId);
 		}catch(Exception e) {
 //			e.printStackTrace();
 			log.error("保存合同报错", e);
@@ -310,5 +313,17 @@ public class ContractController {
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到要删除的合同！").build());
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "删除的合同成功！").build());
+	}
+	
+	/**
+	 * 合同附件上传
+	 */
+	@RequestMapping(value = "/uploadContractAttachment", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo upload(MultipartFile files, HttpServletRequest request) {
+		String path = settings.getAttachmentPath();
+//		path = Base64Util.decode(path);
+		FileResultVo frv = attachmentService.save(files, path);
+		return frv;
 	}
 }

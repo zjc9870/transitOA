@@ -108,7 +108,7 @@ public class LcrzbService {
 		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过")){
 			lcrzb.setSfxs("N");
 		}else lcrzb.setSfxs("Y");
-		lcrzbRepository.save(lcrzb);
+		lcrzb = lcrzbRepository.save(lcrzb);
 	}
 	
 	
