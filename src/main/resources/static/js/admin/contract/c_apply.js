@@ -1,3 +1,17 @@
+(function () {
+    var ids = [];
+    $('#uploadFile').click(function () {
+        DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
+        var uploader = $("#fileUploadForm").FileUpload({
+            url: "contract/uploadContractAttachment",
+            isMultiFile: true,
+        });
+        uploader.done(function (data) {
+            ids.push(data.id);
+        });
+    });
+
+
 var buttons = document.getElementById('saveCon').getElementsByTagName('button');
 for(var i=0; i<buttons.length;i++) {
     buttons[i].onclick= function() {
@@ -8,9 +22,11 @@ for(var i=0; i<buttons.length;i++) {
                 return false;
             }
         }
-        AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
+        AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
                 alert(data.message);
             }
         )
     };
 }
+
+})();

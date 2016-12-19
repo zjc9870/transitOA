@@ -32,12 +32,32 @@
                     <div class="form-title">期限:</div>
                     <input name="qx" class="form-content" type="text" />
                 </li>
-                <li>
-                    <input id = "file" name="files"  type="file"/>
-                </li>
-                <!--<button>附件查看</button>-->
             </ul>
+            <input type="hidden" id="fileID" />
         </form>
+        <button id="uploadFile" style="margin-left:20%">上传附件</button>
+        <div id="upload-modal" class="modal modal-fixed-footer">
+            <div class="modal-header">
+                <h4 class="modal-title">上传附件</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" id="fileUploadForm">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="files-template-wrapper"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal"
+                        class="btn btn-outline dark">关闭</button>
+            </div>
+        </div>
         <ul>
             <li id="saveCon" class="right">
                 <button id="bc">保存</button>
