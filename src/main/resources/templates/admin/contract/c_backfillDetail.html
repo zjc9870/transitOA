@@ -57,14 +57,14 @@
         </th:block>
     </div>
     <div class="operation">
-        <form class="op-form" method="post" action="contract/bhht">
+        <form class="op-form">
             <div class="yj-input">
                 <div class="form-title">合同编号:</div>
                 <input name="bh" class="form-content" type="text" />
             </div>
             <input type="hidden" th:value="${contractVo.id}" id="data" name="id" />
-            <input type="submit" />
         </form>
+        <button id="submit" onclick="submitForm()" style="margin-left:20%">提交</button>
     </div>
 </div>
 </body>
