@@ -13,7 +13,8 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>-</td>";
-                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看详情</div><div>修改编号</div></td>";
+                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看详情</div>" +
+                            "<div onclick='print(\""+cons[i].id+"\")'>打印审办单</div></td>";
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);
@@ -33,4 +34,11 @@ function backfillDetail(id) {
     AjaxTool.html('contract/bhhtxq',{id: id},function (html) {
         $('.portlet-body').html(html);
     });
+}
+
+function print(id) {
+    AjaxTool.post('/wjsc',{
+        xgdm:'jtht', xgid:id},function () {
+        alert('下载成功');
+    })
 }
