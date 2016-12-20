@@ -1,6 +1,7 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
+        var tabId = this.id;
         AjaxTool.get('contract/sqjlTab', {
                 lx: this.id, bz:'ht'},function (data) {
                 if(data.success) {
@@ -13,7 +14,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>-</td>";
-                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看</div>" +
+                        str += "<td><div onclick='backfillDetail(\""+cons[i].id +'\",\"'+cons[i].bh + "\")'>查看</div>" +
                             "<div onclick='print(\""+cons[i].id+"\")'>打印</div></td>";
                         str += "</tr>";
                     }
@@ -30,9 +31,12 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
-function backfillDetail(id) {
+function backfillDetail(id,bh) {
     AjaxTool.html('contract/bhhtxq',{id: id},function (html) {
         $('.portlet-body').html(html);
+        if(bh) {
+            $('.bh').val(bh);
+        }
     });
 }
 
