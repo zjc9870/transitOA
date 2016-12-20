@@ -49,3 +49,10 @@ function seeApprove(id,tabId) {
         }
     });
 }
+
+function pass(id) {
+    AjaxTool.post('contract/addLcrz',{
+        cljg: '通过', id:id},function () {
+        alert('操作成功!');
+    });
+}
