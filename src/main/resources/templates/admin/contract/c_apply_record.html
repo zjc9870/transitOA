@@ -31,10 +31,12 @@
                     <th:block th:if='${not #lists.isEmpty(contractVoList)}'>
                         <tr th:each='con : ${contractVoList}'>
                             <th:block >
-                                <td th:text='${con.htbt}'></td>
-                                <td th:text='${con.sqsj}'></td>
-                                <td th:text='${con.htshzt}'></td>
-                                <td><div  onclick="seeApplyRecord('${con.id}')">查看</div><div>提交</div><div>删除</div></td>
+                            <input type="hidden" th:value="${con.id}" />
+                            <td th:text='${con.htbt}'></td>
+                            <td th:text='${con.sqsj}'></td>
+                            <td th:text='${con.htshzt}'></td>
+                            <td><div  onclick="seeApplyRecord($(this.parentNode.parentNode.childNodes[1]).val())">查看</div>
+                                <div>提交</div><div>删除</div></td>
                             </th:block>
                         </tr>
                     </th:block>

@@ -13,8 +13,8 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>-</td>";
-                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看详情</div>" +
-                            "<div onclick='print(\""+cons[i].id+"\")'>打印审办单</div></td>";
+                        str += "<td><div onclick='backfillDetail(\""+cons[i].id+"\")'>查看</div>" +
+                            "<div onclick='print(\""+cons[i].id+"\")'>打印</div></td>";
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);

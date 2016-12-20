@@ -3,6 +3,7 @@ for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         AjaxTool.get('contract/sqjlTab', {
             lx: this.id, bz: 'sp'},function (data) {
+                var tabId = this.id;
                 if(data.success) {
                     var str = "";
                     var cons = data.content;
@@ -13,7 +14,14 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>"+cons[i].htshzt+"</td>";
-                        str += "<td><div onclick='seeApprove(\""+cons[i].id+"\")'>查看</div><div>通过</div><div>退回</div></td>";
+                        switch (tabId) {
+                            case "dsp":
+                                str += "<td><div onclick='seeApprove(\""+cons[i].id+"\")'>查看</div><div>通过</div></td>";
+                                break;
+                            default:
+                                str += "<td><div onclick='seeApprove(\""+cons[i].id+"\")'>查看</div></td>";
+                                break;
+                        }
                         str += "</tr>";
                     }
                     $('#c-approve-tbody').html(str);
