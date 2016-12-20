@@ -1,9 +1,9 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
+        var tabId = this.id;
         AjaxTool.get('contract/sqjlTab', {
                 lx: this.id, bz: 'sq'},function (data) {
-                var tabId = this.id;
                 if(data.success) {
                     var str = "";
                     var cons = data.content;
