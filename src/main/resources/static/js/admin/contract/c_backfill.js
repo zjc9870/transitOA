@@ -35,7 +35,7 @@ function backfillDetail(id,bh) {
     AjaxTool.html('contract/bhhtxq',{id: id},function (html) {
         $('.portlet-body').html(html);
         if(bh) {
-            $('.bh').val(bh);
+            $('#htbh').val(bh);
         }
     });
 }
