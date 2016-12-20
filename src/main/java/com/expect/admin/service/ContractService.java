@@ -6,10 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.ContractRepository;
@@ -123,7 +130,7 @@ public class ContractService {
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批
-			contractList = contractRepository.findYspContract(userId);
+			contractList = getHtspYspList(userId);
 		}
 		
 		if(contractList == null) return contractVoList;
@@ -143,6 +150,15 @@ public class ContractService {
 			contractVoList.add(contractVo);
 		}
 		return contractVoList;
+	}
+
+	private List<Contract> getHtspYspList(String userId) {
+		List<Contract> contractList = contractRepository.findYspContract(userId, "不通过");
+		List<Contract> contractList2 = contractRepository.findYspContract(userId, "通过");
+		if(contractList == null || contractList.size() == 0) return contractList2;
+		if(contractList2 == null || contractList2.size() == 0) return contractList;
+		contractList.addAll(contractList2);
+		return contractList;
 	}
 	
 	/**
@@ -296,6 +312,25 @@ public class ContractService {
 			resultMap.put(lcjdb.getId(), lcjdb.getName());
 		}
 		return resultMap;
+	}
+	
+	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
+			final Date endTime, final String htzt, final String fqr) {
+		List<Contract> contractList = contractRepository.findAll(new Specification<Contract>() {
+			@Override
+			public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<Predicate>();
+				if(StringUtil.isBlank(htbt)) list.add(cb.like(root.get("htbt").as(String.class), "%" + htbt + "%"));
+				if(StringUtil.isBlank(htbh)) list.add(cb.like(root.get("htbh").as(String.class), "%" + htbh + "%"));
+				if(StringUtil.isBlank(htzt)) list.add(cb.equal(root.get("htzt").as(String.class), htzt));
+				if(startTime != null && endTime != null) list.add(cb.between(root.get("sqsj").as(Date.class), startTime, endTime));
+				if(StringUtil.isBlank(fqr)) list.add(cb.like(root.get("").as(String.class), "%" + htbt + "%"));//发起人还没有做
+				Predicate[] predicate = new Predicate[list.size()];
+				return cb.and(list.toArray(predicate));
+			}
+		});
+		
+		return null;
 	}
 	
 

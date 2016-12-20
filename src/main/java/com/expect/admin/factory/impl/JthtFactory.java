@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.expect.admin.factory.WordXmlFactory;
 import com.expect.admin.service.ContractService;
@@ -13,9 +14,10 @@ import com.expect.admin.utils.WordXmlUtil;
 
 import freemarker.template.TemplateException;
 
+@Service("jthtFactory")
 public class JthtFactory implements WordXmlFactory {
 
-	private final String TEMPLATE_NAME = "djh.ftl";
+	private final String TEMPLATE_NAME = "jtht.ftl";
 	@Autowired
 	private ContractService contractService;
 	
@@ -33,7 +35,7 @@ public class JthtFactory implements WordXmlFactory {
 		
 		dataMap.put("bmsh", "同意");
 		dataMap.put("bmfzrsh", "同意");
-		dataMap.put("fwyj", "同意");
+		dataMap.put("fwshyj", "同意");
 		dataMap.put("zcglbyj", "同意");
 		dataMap.put("fgfzryj", "同意");
 		dataMap.put("fzryj", "同意");

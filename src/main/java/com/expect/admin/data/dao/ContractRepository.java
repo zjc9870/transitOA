@@ -1,6 +1,5 @@
 package com.expect.admin.data.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -53,8 +52,8 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @return
 	 */
 //	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
-	@Query("select c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1")
-	List<Contract> findYspContract(String userId);
+	@Query("select c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = ?2")
+	List<Contract> findYspContract(String userId, String cljg);
 	
 	/**
 	 * 已退回

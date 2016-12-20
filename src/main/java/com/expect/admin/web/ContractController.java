@@ -28,10 +28,12 @@ import com.expect.admin.service.ContractService;
 import com.expect.admin.service.LcService;
 import com.expect.admin.service.LcrzbService;
 import com.expect.admin.service.RoleJdgxbGxbService;
+import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
+import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.FileResultVo;
 import com.expect.admin.service.vo.component.ResultVo;
@@ -60,6 +62,8 @@ public class ContractController {
 	private AttachmentService attachmentService;
 	@Autowired
 	private Settings settings;
+	@Autowired
+	private RoleService roleService;
 	
 	private final String viewName = "admin/contract/";
 	
@@ -149,8 +153,12 @@ public class ContractController {
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		if(condition == null) return modelAndView;
 		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 				condition.getJdId(), lx);
+		//
+		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+		modelAndView.addObject("role", roleVo.getName());
 //		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
@@ -195,16 +203,16 @@ public class ContractController {
 		return modelAndView;
 	}
 	
-	/**
-	 * 回填记录详情
-	 */
-	@PostMapping("/htjlxq")
-	public ModelAndView htjlxq(@RequestParam(name = "id", required = true)String contractId) {
-		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_recordDetail");
-		ContractVo contractVo = contractService.getContractById(contractId);
-		modelAndView.addObject("contractVo", contractVo);
-		return modelAndView;
-	}
+//	/**
+//	 * 回填记录详情
+//	 */
+//	@PostMapping("/htjlxq")
+//	public ModelAndView htjlxq(@RequestParam(name = "id", required = true)String contractId) {
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_recordDetail");
+//		ContractVo contractVo = contractService.getContractById(contractId);
+//		modelAndView.addObject("contractVo", contractVo);
+//		return modelAndView;
+//	}
 	
 	/**
 	 * 合同查询
@@ -325,5 +333,16 @@ public class ContractController {
 //		path = Base64Util.decode(path);
 		FileResultVo frv = attachmentService.save(files, path);
 		return frv;
+	}
+	
+	@PostMapping("/searchContract")
+	public void contractSearchResult(HttpServletResponse response,
+			@RequestParam(name = "htbt", required = false)String htbt,
+			@RequestParam(name = "htbh", required = false)String htbh,
+			@RequestParam(name = "startTime", required = false)Date startTime,
+			@RequestParam(name = "endTime", required = false)Date endTime,
+			@RequestParam(name = "htzt", required = false)String htzt,
+			@RequestParam(name = "fqr", required = false)String fqr){
+		
 	}
 }

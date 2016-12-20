@@ -37,8 +37,9 @@ function backfillDetail(id) {
 }
 
 function print(id) {
-    AjaxTool.post('/wjsc',{
-        xgdm:'jtht', xgid:id},function () {
-        alert('下载成功');
-    })
+	window.location = "/wjsc?xgdm=jtht&xgid=" +id; 
+//    AjaxTool.post('/wjsc',{
+//        xgdm:'jtht', xgid:id},function () {
+//        alert('下载成功');
+//    })
 }

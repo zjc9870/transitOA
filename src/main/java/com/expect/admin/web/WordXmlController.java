@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -18,12 +18,13 @@ import com.expect.admin.utils.WordXmlUtil;
 @Controller
 public class WordXmlController {
 	Logger logger = LoggerFactory.getLogger(WordXmlController.class);
+	
+//	private final String beanClassPath = "com.expect.admin.factory.impl";
 
-	@PostMapping("/wjsc")
+	@GetMapping("/wjsc")
 	public void bgsc(HttpServletRequest request, String xgdm, String xgid, HttpServletResponse response) {
 		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getSession().getServletContext());
 		WordXmlFactory factory = null;
-		
 		String factoryBeanName = getFactoryBeanName(xgdm);
 		try{
 			factory = (WordXmlFactory) context.getBean(factoryBeanName);
@@ -47,8 +48,8 @@ public class WordXmlController {
 	}
 	
 	private String getFactoryBeanName(String xgdm){
-		String firChar = xgdm.substring(0, 1).toUpperCase();
-		String theLast = xgdm.substring(1, xgdm.length());
-		return  firChar + theLast+ "Factory";
+//		String firChar = xgdm.substring(0, 1).toUpperCase();
+//		String theLast = xgdm.substring(1, xgdm.length());
+		return  xgdm+ "Factory";
 	}
 }

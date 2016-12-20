@@ -57,12 +57,10 @@ public class WordXmlUtil {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_0) ;
         configuration.setDefaultEncoding("UTF-8");
         //设置模板文件路径
-        try {
-            configuration.setDirectoryForTemplateLoading(
-                    new File(WordXmlUtil.getFtlTemplateDirPath()));
-        } catch (IOException e) {
-            log.error("获取模板文件夹路径错误:"+getFtlTemplateDirPath(),e);
-        }
+       
+//            configuration.setDirectoryForTemplateLoading(
+//                    new File(WordXmlUtil.getFtlTemplateDirPath()));
+        configuration.setClassForTemplateLoading(WordXmlUtil.class, "/ftl");
         //获取模板文件
         Template t = null ;
         try {
@@ -262,7 +260,7 @@ public class WordXmlUtil {
         // 清空response
         response.reset();
         // 设置response的Header
-        response.setContentType("application/octet-stream");
+        response.setContentType("application/x-download");
         response.addHeader("Content-Disposition", "attachment;filename=" + wjm);
         OutputStream out = response.getOutputStream();
 
