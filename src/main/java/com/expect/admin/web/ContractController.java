@@ -345,6 +345,7 @@ public class ContractController {
 	 * @throws IOException 
 	 * 
 	 */
+	@PostMapping("/submitWtj")
 	public void submitWtj(String id, HttpServletResponse response) throws IOException{
 		
 		try{
@@ -369,6 +370,7 @@ public class ContractController {
 	 * @param response
 	 * @throws IOException
 	 */
+	@PostMapping("/deleteWjt")
 	public void deleteWjt(String id, HttpServletResponse response) throws IOException {
 		try{
 			if(StringUtil.isBlank(id)){
