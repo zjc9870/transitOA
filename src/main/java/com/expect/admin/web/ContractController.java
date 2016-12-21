@@ -73,13 +73,11 @@ public class ContractController {
 	 */
 	@RequestMapping(value = "/addContract", method = RequestMethod.GET)
 	public ModelAndView addContract() {
-//		ContractVo contractVo = new ContractVo();
-//		UserVo userVo = userService.getLoginUser();
-//		contractVo.setUserName(userVo.getFullName());
-//		String contractId = contractService.save(contractVo);
-//		contractVo.setId(contractId);
+		ContractVo contractVo = new ContractVo();
+		UserVo userVo = userService.getLoginUser();
+		contractVo.setUserName(userVo.getFullName());
 		ModelAndView mv = new ModelAndView(viewName + "c_apply");
-//		mv.addObject("contractVo", contractVo);
+		mv.addObject("contractVo", contractVo);
 		return mv;
 	}
 	
@@ -122,14 +120,19 @@ public class ContractController {
 		try{
 			UserVo userVo = userService.getLoginUser();
 			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
-			if(StringUtil.equals(bz, "sq")){
-				if(StringUtil.equals(lx, "ysp"))
-					contractVoList = contractService.getSqjlYspList(userVo.getId());
-				else if(StringUtil.equals(lx, "wsp"))
-					contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
+			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "ysp")){
+				contractVoList = contractService.getSqjlYspList(userVo.getId());
+				MyResponseBuilder.writeJsonResponse(response, 
+						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
+				return;
 			}
-			
-			else if(StringUtil.equals(lx, "yht")) {
+			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "dsp")){
+				contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
+				MyResponseBuilder.writeJsonResponse(response, 
+						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
+				return;
+			}
+			if(StringUtil.equals(lx, "yht")) {
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 						"T", lx);
 			}else{
@@ -141,7 +144,7 @@ public class ContractController {
 			log.error("获取申请记录错误" + lx, e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取申请记录出错").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录出错", contractVoList).build());
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 		
 	}
 	/**

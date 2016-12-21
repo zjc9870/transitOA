@@ -15,7 +15,7 @@ public class DateUtil {
 	public final static String shortFormat = "yyyyMMdd";
 	public final static String longFormat = "yyyyMMddHHmmss";
 	public final static String webFormat = "yyyy-MM-dd";
-	public final static String timeFormat = "HHmmss";
+	public final static String timeFormat = "HH:mm:ss";
 	public final static String monthFormat = "yyyyMM";
 	public final static String chineseDtFormat = "yyyy年MM月dd日";
 	public final static String fullFormat = "yyyy-MM-dd HH:mm:ss";
@@ -242,5 +242,12 @@ public class DateUtil {
 	public static Date today() {
 		return parse(format(new Date(), webFormat), webFormat);
 	}
+	
+//	public static void main(String[] args) {
+//		Calendar c = new GregorianCalendar();
+//		Date d = c.getTime();
+//		System.out.println(format(d, zbFormat));
+//		System.out.println(format(d, timeFormat));
+//	}
 
 }

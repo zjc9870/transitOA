@@ -86,6 +86,7 @@ public class LcrzbService {
 			String con = lcjdgxb.getJsjd();
 			if(StringUtil.equals(curCondition, con) || StringUtil.equals(con, "Y")) break;
 			Lcrzb lcrzb = lcrzbMap.get(con);
+			if(lcrzb == null) continue;
 			lcrzb.setSfxs("Y");
 		}
 		

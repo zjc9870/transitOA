@@ -19,6 +19,8 @@ public class ContractVo {
 	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
 	private String lcbs;//流程标识
 	private String sqsj;//申请时间
+	private String date;//申请时间日期
+	private String time;//申请时间 时间
 	private String sfth;
 	private List<AttachmentVo> attachmentList;//附件Vo
 	
@@ -32,13 +34,15 @@ public class ContractVo {
 		this.htbt = contract.getHtbt();
 		this.htnr = contract.getHtnr();
 		if(contract.getNqdrq() != null)
-			this.nqdrq = DateUtil.format(contract.getNqdrq(), DateUtil.webFormat);
+			this.nqdrq = DateUtil.format(contract.getNqdrq(), DateUtil.zbFormat);
 		this.qx = contract.getQx();
 		this.htshzt = contract.getHtshzt();
 		this.htfl = contract.getHtfl();
 		this.lcbs = contract.getLcbs();
-		if(contract.getSqsj() != null)
-			this.sqsj = DateUtil.format(contract.getSqsj(), DateUtil.dateWithHour);
+		if(contract.getSqsj() != null){
+			this.date = DateUtil.format(contract.getSqsj(), DateUtil.zbFormat);
+			this.time = DateUtil.format(contract.getSqsj(), DateUtil.timeFormat);
+		}
 		else this.sqsj = "";
 	}
 	public List<LcrzbVo> getLcrzList() {
@@ -133,6 +137,22 @@ public class ContractVo {
 
 	public void setSfth(String sfth) {
 		this.sfth = sfth;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
 }
