@@ -34,10 +34,10 @@
                                 <th:block >
                                 <input type="hidden" th:value="${con.id}" />
                                 <td th:text='${con.htbt}'></td>
-                                <td th:text='${con.sqsj}'></td>
+                                <td><div th:text='${con.date}'></div><div th:text='${con.time}'></div></td>
                                 <td th:text='${con.userName}'></td>
                                 <td>-</td>
-                                <td th:text='${con.htshzt}'></td>
+                                <td>待审批</td>
                                 <td><div onclick="seeApprove($(this.parentNode.parentNode.childNodes[1]).val())">查看</div>
                                     <div onclick="pass($(this.parentNode.parentNode.childNodes[1]).val())">通过</div></td>
                             </th:block>

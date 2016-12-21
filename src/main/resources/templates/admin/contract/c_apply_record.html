@@ -33,10 +33,10 @@
                             <th:block >
                             <input type="hidden" th:value="${con.id}" />
                             <td th:text='${con.htbt}'></td>
-                            <td th:text='${con.sqsj}'></td>
-                            <td th:text='${con.htshzt}'></td>
+                            <td><div th:text='${con.date}'></div><div th:text='${con.time}'></div></td>
+                            <td>未提交</td>
                             <td><div  onclick="seeApplyRecordE($(this.parentNode.parentNode.childNodes[1]).val())">查看</div>
-                                <div onclick="submitWtjForm()">提交</div>
+                                <div onclick="submitWtjForm($(this.parentNode.parentNode.childNodes[1]).val())">提交</div>
                                 <div onclick="deleteWtjCon($(this.parentNode.parentNode.childNodes[1]).val())">删除</div></td>
                             </th:block>
                         </tr>
