@@ -159,3 +159,7 @@
 .right {
     float: right;
 }
+
+#splc {
+    display: none;
+}

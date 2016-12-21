@@ -185,11 +185,22 @@ public class ContractController {
 	
 	
 	/**
-	 * 申请记录详情
+	 * 申请记录详情(可编辑)
 	 */
-	@RequestMapping("/sqjlxq")
-	public ModelAndView sqjlxq(@RequestParam(name = "id", required = true)String contractId) {
+	@RequestMapping("/sqjlxqE")
+	public ModelAndView sqjlxqE(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_recordDetail");
+		ContractVo contractVo = contractService.getContractById(contractId);
+		modelAndView.addObject("contractVo", contractVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 申请记录详情(不可编辑)
+	 */
+	@RequestMapping("/sqjlxqNE")
+	public ModelAndView sqjlxqNE(@RequestParam(name = "id", required = true)String contractId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_recordDetail_ne");
 		ContractVo contractVo = contractService.getContractById(contractId);
 		modelAndView.addObject("contractVo", contractVo);
 		return modelAndView;
