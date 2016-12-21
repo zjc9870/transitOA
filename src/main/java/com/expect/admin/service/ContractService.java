@@ -136,13 +136,15 @@ public class ContractService {
 		if(contractList == null) return contractVoList;
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		for (Contract contract : contractList) {
-			if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
-			if (!StringUtil.isBlank(lcjd.getShbm()) && 
-					!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
-			else if (!StringUtil.isBlank(lcjd.getShgs())){
-				Department parent = contract.getNhtr().getDepartment().getParentDepartment();
-				if(parent == null) continue;
-				if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
+			if(lcjd != null){
+				if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
+				if (!StringUtil.isBlank(lcjd.getShbm()) && 
+						!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
+				else if (!StringUtil.isBlank(lcjd.getShgs())){
+					Department parent = contract.getNhtr().getDepartment().getParentDepartment();
+					if(parent == null) continue;
+					if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
+				}
 			}
 			ContractVo contractVo = new ContractVo(contract);
 			if(!StringUtil.isBlank(contract.getHtshzt())) 

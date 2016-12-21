@@ -219,16 +219,6 @@ public class ContractController {
 		return modelAndView;
 	}
 	
-	/**
-	 * 合同查询
-	 */
-	@PostMapping("/htcx")
-	public ModelAndView htcx() {
-		ModelAndView modelAndView = new ModelAndView(viewName + "c_find");
-		return modelAndView;
-	}
-	
-	
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, 
 			                 @RequestParam(name = "bczl", required = true)   String bczl,
@@ -385,10 +375,13 @@ public class ContractController {
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同删除完成"));
 	}
 	
-	@GetMapping("/contractSearch")
-	public ModelAndView contractSearchResult() {
-		ModelAndView mv = new ModelAndView(viewName + "/c_find");
-		return mv;
+	/**
+	 * 合同查询
+	 */
+	@GetMapping("/htcx")
+	public ModelAndView htcx() {
+		ModelAndView modelAndView = new ModelAndView(viewName + "c_find");
+		return modelAndView;
 	}
 	
 	@PostMapping("/searchContract")
