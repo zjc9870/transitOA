@@ -1,5 +1,7 @@
 package com.expect.admin.web;
 
+import static org.mockito.Matchers.contains;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -217,17 +219,6 @@ public class ContractController {
 		return modelAndView;
 	}
 	
-//	/**
-//	 * 回填记录详情
-//	 */
-//	@PostMapping("/htjlxq")
-//	public ModelAndView htjlxq(@RequestParam(name = "id", required = true)String contractId) {
-//		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfill_recordDetail");
-//		ContractVo contractVo = contractService.getContractById(contractId);
-//		modelAndView.addObject("contractVo", contractVo);
-//		return modelAndView;
-//	}
-	
 	/**
 	 * 合同查询
 	 */
@@ -349,6 +340,55 @@ public class ContractController {
 		return frv;
 	}
 	
+	/**
+	 * 以保存合同的提交
+	 * @throws IOException 
+	 * 
+	 */
+	public void submitWtj(String id, HttpServletResponse response) throws IOException{
+		
+		try{
+			ContractVo contractVo = contractService.getContractById(id);
+			if(contractVo == null){
+				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该合同"));
+				return;
+			}
+			String nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
+			contractVo.setHtshzt(nextCondition);
+			contractService.updateContract(contractVo);
+		}catch(Exception e) {
+			log.error("以保存合同提交时报错", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同提交出错，请重试"));
+		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同提交完成"));
+	}
+	
+	/**
+	 * 以保存未提交的合同的删除
+	 * @param id
+	 * @param response
+	 * @throws IOException
+	 */
+	public void deleteWjt(String id, HttpServletResponse response) throws IOException {
+		try{
+			if(StringUtil.isBlank(id)){
+				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败， 要删除的合同id为空"));
+				return;
+			}
+			contractService.delete(id);
+		}catch(Exception e) {
+			log.error("以保存合同提交时报错", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败"));
+		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同删除完成"));
+	}
+	
+	@GetMapping("/contractSearch")
+	public ModelAndView contractSearchResult() {
+		ModelAndView mv = new ModelAndView(viewName + "/c_find");
+		return mv;
+	}
+	
 	@PostMapping("/searchContract")
 	public void contractSearchResult(HttpServletResponse response,
 			@RequestParam(name = "htbt", required = false)String htbt,
@@ -356,7 +396,8 @@ public class ContractController {
 			@RequestParam(name = "startTime", required = false)Date startTime,
 			@RequestParam(name = "endTime", required = false)Date endTime,
 			@RequestParam(name = "htzt", required = false)String htzt,
-			@RequestParam(name = "fqr", required = false)String fqr){
-		
+			@RequestParam(name = "fqr", required = false)String fqr) throws IOException{
+		List<ContractVo> contractVoList = contractService.searchContract(htbt, htbh, startTime, endTime, htzt, fqr);
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList));
 	}
 }

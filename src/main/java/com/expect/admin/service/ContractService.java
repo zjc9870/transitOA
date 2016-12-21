@@ -302,6 +302,16 @@ public class ContractService {
 	}
 	
 	/**
+	 * 从数据库中删除合同，用于未提交以保存的合同草稿
+	 * @param id
+	 */
+	public void delete(String id) {
+		Contract contract = contractRepository.findById(id);
+		if(contract == null) return;
+		contractRepository.delete(contract);
+	}
+	
+	/**
 	 * 获取所有的合同的节点id和名字的map
 	 * @return
 	 */
@@ -316,6 +326,7 @@ public class ContractService {
 	
 	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
 			final Date endTime, final String htzt, final String fqr) {
+		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = contractRepository.findAll(new Specification<Contract>() {
 			@Override
 			public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -329,8 +340,11 @@ public class ContractService {
 				return cb.and(list.toArray(predicate));
 			}
 		});
-		
-		return null;
+		if(contractList == null) return contractVoList;
+		for (Contract contract : contractList) {
+			contractVoList.add(new ContractVo(contract));
+		}
+		return contractVoList;
 	}
 	
 
