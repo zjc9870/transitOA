@@ -10,19 +10,27 @@ for(var i=0; i<tabs.length; i++) {
                     for(var i=0;i<cons.length;i++) {
                         str += "<tr>";
                         str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].sqsj+"</td>";
-                        str += "<td>"+cons[i].htshzt+"</td>";
+                        str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         switch(tabId){
                             case "wtj":
+                                str += "<td>未提交</td>";
                                 str += "<td><div onclick='seeApplyRecordE(\""+ cons[i].id +"\")'>查看</div>" +
-                                    "<div>提交</div>" +
+                                    "<div onclick='submitWtjForm(\""+ cons[i].id +"\")'>提交</div>" +
                                     "<div onclick='deleteWtjCon(\""+ cons[i].id +"\")'>删除</div></td>";
                                 break;
+                            case "dsp":
+                                str += "<td>待审批</td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
+                                break;
+                            case "ysp":
+                                str += "<td>已审批</td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
+                                break;
                             case "yth":
+                                str += "<td>已退回</td>";
                                 str += "<td><div onclick='seeApplyRecordE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             default:
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
                                 break;
                         }
                         str += "</tr>";
@@ -55,15 +63,15 @@ function seeApplyRecordNE(id) {
     });
 }
 
-function submitWtjForm() {
-    AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id, function (data) {
+function submitWtjForm(id) {
+    AjaxTool.post('contract/submitWtj',{id: id}, function (data) {
             alert(data.message);
         }
     )
 };
 
 function deleteWtjCon(id) {
-    AjaxTool.post('contract/deleteContract',{
+    AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
         alert(data.message);
         window.location.reload();

@@ -10,15 +10,20 @@ for(var i=0; i<tabs.length; i++) {
                     for(var i=0;i<cons.length;i++) {
                         str += "<tr>";
                         str += "<td>"+cons[i].htbt+"</td>";
-                        str += "<td>"+cons[i].sqsj+"</td>";
+                        str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
-                        str += "<td>"+cons[i].htshzt+"</td>";
                         switch (tabId) {
                             case "dsp":
+                                str += "<td>待审批</td>";
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div><div>通过</div></td>";
                                 break;
+                            case "yth":
+                                str += "<td>已退回</td>";
+                                str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
+                                break;
                             default:
+                                str += "<td>已审批</td>";
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                         }
