@@ -2,6 +2,7 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,21 +36,17 @@ public class FunctionService {
 	public List<FunctionVo> getFunctionsByUser() {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Set<Role> roles = user.getRoles();
-		List<Function> functions = new ArrayList<>();
+		Set<Function> functions = new HashSet<>();
 		for (Role role : roles) {
-			functions.addAll(role.getFunctions());
-		}
-		// 先把不同角色相同功能去除
-		for (int i = 0; i < functions.size(); i++) {
-			Function function = functions.get(i);
-			for (int j = functions.size() - 1; j >= 0; j--) {
-				Function judgeFunction = functions.get(j);
-				if (i != j && function.getId() == judgeFunction.getId()) {
-					functions.remove(j);
+			Set<Function> roleFunctions = role.getFunctions();
+			if (!CollectionUtils.isEmpty(roleFunctions)) {
+				for (Function function : roleFunctions) {
+					functions.add(function);
 				}
 			}
 		}
-		// 把相应功能归类到同一顶级功能下
+
+		//菜单分级
 		List<FunctionVo> resultFunctions = new ArrayList<>();
 		for (Function function : functions) {
 			Function parentFunction = function.getParentFunction();
@@ -75,7 +72,11 @@ public class FunctionService {
 								FunctionVo functionVo = FunctionConvertor.convert(function);
 								FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction);
 								parentFunctionVo.addChildFunction(functionVo);
-								resultFunctions.add(parentFunctionVo);
+								for (FunctionVo functionTmpVo : resultFunctions) {
+									if (functionTmpVo.getName().equals(parentParentFunction.getName())) {
+										functionTmpVo.addChildFunction(parentFunctionVo);
+									}
+								}
 							}
 							flag = true;
 							break;
@@ -112,7 +113,7 @@ public class FunctionService {
 				resultFunctions.add(functionVo);
 			}
 		}
-		// 排序
+		//排序
 		Collections.sort(resultFunctions);
 		for (int i = 0; i < resultFunctions.size(); i++) {
 			FunctionVo parentParentFunction = resultFunctions.get(i);
@@ -129,22 +130,6 @@ public class FunctionService {
 			}
 		}
 
-		for (FunctionVo fFunction : resultFunctions) {
-			System.out.println("first:" + fFunction.getName());
-			List<FunctionVo> sFunctions = fFunction.getChildFunctionVos();
-			if (sFunctions != null) {
-				for (int j = 0; j < sFunctions.size(); j++) {
-					System.out.println("second:" + sFunctions.get(j).getName());
-					List<FunctionVo> tFunctions = sFunctions.get(j).getChildFunctionVos();
-					if (tFunctions != null) {
-						for (int k = 0; k < tFunctions.size(); k++) {
-							System.out.println("third:" + tFunctions.get(k).getName());
-
-						}
-					}
-				}
-			}
-		}
 		return resultFunctions;
 	}
 

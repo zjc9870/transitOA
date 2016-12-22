@@ -30,7 +30,7 @@ public class LcrzbVo {
 		this.cljg = lcrzb.getCljg();
 		this.clsj = lcrzb.getClsj() == null? "" : 
 			DateUtil.format(lcrzb.getClsj(), DateUtil.zbFormat);
-		this.message = lcrzb.getMessage();
+		this.message = lcrzb.getMessage();//处理意见
 		this.lcjd = lcrzb.getDyjd();
 	}
 	public String getUserName() {
