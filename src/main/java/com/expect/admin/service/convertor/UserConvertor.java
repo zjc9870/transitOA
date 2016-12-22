@@ -43,9 +43,21 @@ public class UserConvertor {
 		}
 		userVo.setRoleName(roleSb.toString());
 		// 设置部门
-		Department department = user.getDepartment();
+		Set<Department> departments = user.getDepartments();
+		StringBuilder departmentSb = new StringBuilder();
+		if (!CollectionUtils.isEmpty(departments)) {
+			int index = 0;
+			for (Department department : departments) {
+				if (index != departments.size() - 1) {
+					departmentSb.append(department.getName() + ",");
+				} else {
+					departmentSb.append(department.getName());
+				}
+				index++;
+			}
+		}
+		userVo.setDepartmentName(departmentSb.toString());
 		
-		userVo.setDepartmentName((department == null) ? "" : department.getName());
 		// 设置头像
 		if (user.getAvatar() != null) {
 			userVo.setAvatarId(user.getAvatar().getId());
@@ -157,20 +169,22 @@ public class UserConvertor {
 		}
 		dtrv.addData(roleSb.toString());
 		// 设置部门
-		Department department = user.getDepartment();
-//		StringBuilder departmentSb = new StringBuilder();
-//		if (!CollectionUtils.isEmpty(departments)) {
-//			int index = 0;
-//			for (Department department : departments) {
-//				if (index != departments.size() - 1) {
-//					departmentSb.append(department.getName() + ",");
-//				} else {
-//					departmentSb.append(department.getName());
-//				}
-//				index++;
-//			}
-//		}
-		dtrv.addData((department == null) ? "" : department.getName());
+//		Department department = user.getDepartment();
+		Set<Department> departments = user.getDepartments();
+		StringBuilder departmentSb = new StringBuilder();
+		if (!CollectionUtils.isEmpty(departments)) {
+			int index = 0;
+			for (Department department : departments) {
+				if (index != departments.size() - 1) {
+					departmentSb.append(department.getName() + ",");
+				} else {
+					departmentSb.append(department.getName());
+				}
+				index++;
+			}
+		}
+//		dtrv.addData((department == null) ? "" : department.getName());
+		dtrv.addData(departmentSb.toString());
 		// 设置操作的button
 		StringBuilder buttonSb = new StringBuilder();
 		buttonSb.append(DataTableButtonFactory.getYellowButton("头像", "data-id='" + user.getId() + "'"));

@@ -102,7 +102,7 @@ public class Department {
 		this.childDepartments = childDepartments;
 	}
 
-	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "department")
+	@ManyToMany(cascade = CascadeType.REFRESH, mappedBy = "departments")
 	public Set<User> getUsers() {
 		return users;
 	}

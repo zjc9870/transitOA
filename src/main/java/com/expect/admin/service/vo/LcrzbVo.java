@@ -25,8 +25,8 @@ public class LcrzbVo {
 	
 	public LcrzbVo(Lcrzb lcrzb) {
 		this.userName = lcrzb.getUser().getFullName();
-		if(lcrzb.getUser().getDepartment() != null)
-			this.userDepartmnet = lcrzb.getUser().getDepartment().getName();
+		if(lcrzb.getUser().getDepartments() != null && lcrzb.getUser().getDepartments().size() > 0)
+			this.userDepartmnet = lcrzb.getUser().getDepartments().iterator().next().getName();
 		this.cljg = lcrzb.getCljg();
 		this.clsj = lcrzb.getClsj() == null? "" : 
 			DateUtil.format(lcrzb.getClsj(), DateUtil.zbFormat);

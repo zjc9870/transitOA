@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -119,7 +120,6 @@ public class ContractService {
 		List<Contract> contractList = null;
 		
 		if(StringUtil.isBlank(condition)) return contractVoList;
-		Lcjdb lcjd = lcjdbRepository.findOne(condition);
 		if(StringUtil.equals(lx, "wtj")){//未提交
 			contractList = getWtjContracts(userId, condition);
 		}
@@ -134,24 +134,43 @@ public class ContractService {
 		}
 		
 		if(contractList == null) return contractVoList;
-		Map<String, String> lcjdbMap = getAllLcjdMapping();
+//		Map<String, String> lcjdbMap = getAllLcjdMapping();
+		Lcjdb lcjd = lcjdbRepository.findOne(condition);
+		User user = userRepository.findOne(userId);
 		for (Contract contract : contractList) {
-			if(lcjd != null){
-				if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
-				if (!StringUtil.isBlank(lcjd.getShbm()) && 
-						!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
-				else if (!StringUtil.isBlank(lcjd.getShgs())){
-					Department parent = contract.getNhtr().getDepartment().getParentDepartment();
-					if(parent == null) continue;
-					if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
-				}
-			}
+			if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
+			if(StringUtil.equals(lcjd.getShbm(), "Y"))
+					if(!sfsybm(contract.getNhtr().getDepartments().iterator().next(), 
+							user.getDepartments())) continue;
+				
+//			if(lcjd != null){
+//				if (!StringUtil.isBlank(lcjd.getShbm()) && 
+//						!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
+//				else if (!StringUtil.isBlank(lcjd.getShgs())){
+//					Department parent = contract.getNhtr().getDepartment().getParentDepartment();
+//					if(parent == null) continue;
+//					if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
+//				}
+//			}
 			ContractVo contractVo = new ContractVo(contract);
-			if(!StringUtil.isBlank(contract.getHtshzt())) 
-				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
+//			if(!StringUtil.isBlank(contract.getHtshzt())) 
+//				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
 			contractVoList.add(contractVo);
 		}
 		return contractVoList;
+	}
+	
+	/**
+	 * 判断一个合同是不是属于一个部门
+	 * @return true(是同一个部门)<br>
+	 * false (不是同一个部门)
+	 */
+	private boolean sfsybm(Department contractDepartment, Set<Department> userDepartments){
+		if(contractDepartment == null || userDepartments == null) return false;
+		for (Department department : userDepartments) {
+			if(StringUtil.equals(contractDepartment.getId(), department.getId())) return true;
+		}
+		return false;
 	}
 
 	private List<Contract> getHtspYspList(String userId) {

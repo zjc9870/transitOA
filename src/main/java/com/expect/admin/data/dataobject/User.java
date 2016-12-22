@@ -63,9 +63,9 @@ public class User implements UserDetails {
 	@JoinTable(name = "c_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 	
-	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinColumn(name = "department_id")
-	private Department department;//部门
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinTable(name = "c_user_department", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "department_id"))
+	private Set<Department> departments;
 	
 	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ssgs_id")
@@ -148,15 +148,23 @@ public class User implements UserDetails {
 		this.roles = roles;
 	}
 
-
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
 	
+
+	public Set<Department> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(Set<Department> departments) {
+		this.departments = departments;
+	}
+
+	public String getZw() {
+		return zw;
+	}
+
+	public void setZw(String zw) {
+		this.zw = zw;
+	}
 
 	public Department getSsgs() {
 		return ssgs;

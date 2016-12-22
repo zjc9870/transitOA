@@ -219,6 +219,14 @@ public class ContractController {
 		return modelAndView;
 	}
 	
+	/**
+	 * 保存，提交合同
+	 * @param contractVo
+	 * @param bczl
+	 * @param attachmentId
+	 * @param response
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/saveContract", method = RequestMethod.POST)
 	public void saveContract(ContractVo contractVo, 
 			                 @RequestParam(name = "bczl", required = true)   String bczl,
@@ -268,6 +276,14 @@ public class ContractController {
 		return mv;
 	}
 	
+	/**
+	 * 流程审批
+	 * @param response
+	 * @param cljg
+	 * @param message
+	 * @param clnrid
+	 * @throws IOException
+	 */
 	@RequestMapping(value = "/addLcrz", method = RequestMethod.POST)
 	public void addLcrz(HttpServletResponse response, 
 			@RequestParam(name = "cljg", required = true)String cljg,
@@ -306,6 +322,12 @@ public class ContractController {
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
 	}
 	
+	/**
+	 * 删除已提交的合同（软删除）
+	 * @param response
+	 * @param id
+	 * @throws IOException
+	 */
 	@PostMapping("/deleteContract")
 	public void deleteContract(HttpServletResponse response,
 			                   @RequestParam(name = "id", required = true) String id) throws IOException{

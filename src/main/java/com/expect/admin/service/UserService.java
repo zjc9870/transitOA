@@ -226,9 +226,11 @@ public class UserService implements UserDetailsService {
 		if (user == null) {
 			return resultVo;
 		}
-//		String[] departmentIdArr = departmentId.split(",");
-		Department department = departmentRepository.findOne(departmentId);
-		user.setDepartment(department);
+		String[] departmentIdArr = departmentId.split(",");
+		Set<Department> departments = departmentRepository.findByIdIn(departmentIdArr);
+		user.setDepartments(departments);
+//		Department department = departmentRepository.findOne(departmentId);
+//		user.setDepartment(department);
 
 		userRepository.flush();
 		resultVo.setMessage("用户部门修改成功");

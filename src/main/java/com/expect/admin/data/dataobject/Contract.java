@@ -41,6 +41,8 @@ public class Contract {
 	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
 	private String sfth;//是否退回（Y 是退回， N不是退回）
 	private List<Attachment> attachments;//附件
+	private String sbd;
+//	private Department department;//合同所属部门
 	
 	public Contract() {
 	}
@@ -59,6 +61,7 @@ public class Contract {
 		if(StringUtil.isBlank(contractVo.getSqsj())){
 			this.sqsj = new Date();
 		}
+		this.sbd = contractVo.getSbd();
 	}
 	
 	@Id
@@ -181,7 +184,25 @@ public class Contract {
 	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
 	}
+
+	@Column(name = "sbd", length = 50)
+	public String getSbd() {
+		return sbd;
+	}
+
+	public void setSbd(String sbd) {
+		this.sbd = sbd;
+	}
 	
-	
+
+//	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+//	@JoinColumn(name = "department_id")
+//	public Department getDepartment() {
+//		return department;
+//	}
+//
+//	public void setDepartment(Department department) {
+//		this.department = department;
+//	}
 	
 }

@@ -97,13 +97,13 @@ public class DepartmentController {
 	public CheckboxsVo getDepartmentCheckboxHtml(String userId) {
 		List<DepartmentVo> departments = departmentService.getAllBottomDepartments();
 		List<String> ids = new ArrayList<>();
-		DepartmentVo userDepartment = departmentService.getDepartmentsByUserId(userId);
-//		if (!CollectionUtils.isEmpty(userDepartments)) {
-//			for (DepartmentVo department : userDepartments) {
-//				ids.add(department.getId());
-//			}
-//		}
-		ids.add(userDepartment.getId());
+		List<DepartmentVo> userDepartments = departmentService.getDepartmentsByUserId(userId);
+		if (!CollectionUtils.isEmpty(userDepartments)) {
+			for (DepartmentVo department : userDepartments) {
+				ids.add(department.getId());
+			}
+		}
+//		ids.add(userDepartment.getId());
 		CheckboxsVo cbv = DepartmentConvertor.convertCbv(departments, ids);
 		return cbv;
 	}

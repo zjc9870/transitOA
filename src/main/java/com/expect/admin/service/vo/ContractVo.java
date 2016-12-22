@@ -21,7 +21,8 @@ public class ContractVo {
 	private String sqsj;//申请时间
 	private String date;//申请时间日期
 	private String time;//申请时间 时间
-	private String sfth;
+	private String sfth;//是否退回
+	private String sbd;//合同的大标题
 	private List<AttachmentVo> attachmentList;//附件Vo
 	
 	public ContractVo() {
@@ -44,6 +45,7 @@ public class ContractVo {
 			this.time = DateUtil.format(contract.getSqsj(), DateUtil.timeFormat);
 		}
 		else this.sqsj = "";
+		this.sbd = contract.getSbd();
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;
@@ -154,5 +156,14 @@ public class ContractVo {
 	public void setTime(String time) {
 		this.time = time;
 	}
+
+	public String getSbd() {
+		return sbd;
+	}
+
+	public void setSbd(String sbd) {
+		this.sbd = sbd;
+	}
+	
 	
 }
