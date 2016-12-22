@@ -92,6 +92,7 @@ public class AttachmentService {
 			}
 			
 			frv.setId(resultAttachment.getId());
+			frv.setName(originalFileName);
 			frv.setMessage("上传成功");
 			frv.setResult(true);
 		} else {

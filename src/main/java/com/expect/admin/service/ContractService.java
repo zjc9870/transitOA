@@ -32,6 +32,7 @@ import com.expect.admin.data.dataobject.Lcjdb;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
@@ -50,10 +51,10 @@ public class ContractService {
 	private UserService userService;
 	@Autowired
 	private LcService lcService;
-	@Autowired
-	private LcjdgxbRepository lcjdgxbRepository;
-	@Autowired
-	private AttachmentService attachmentService;
+//	@Autowired
+//	private LcjdgxbRepository lcjdgxbRepository;
+//	@Autowired
+//	private AttachmentService attachmentService;
 	@Autowired
 	private RoleJdgxbGxbService roleJdgxbGxbService;
 	@Autowired
@@ -102,8 +103,27 @@ public class ContractService {
 			if(!StringUtil.isBlank(lcrzbVo.getLcjd())) lcrzbVo.setLcjd(lcjdbMap.get(lcrzbVo.getLcjd()));
 		}
 		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
-		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
+		List<AttachmentVo> attachmentVoList = getContractAttachment(contract);
+		contractVo.setAttachmentList(attachmentVoList);
+//		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
 		return contractVo;
+	}
+
+	/**
+	 * 获取一个合同相关的附件信息
+	 * @param contract
+	 * @return
+	 */
+	private List<AttachmentVo> getContractAttachment(Contract contract) {
+		List<Attachment> attachmentList = contract.getAttachments();
+		List<AttachmentVo> attachmentVoList = new ArrayList<>();
+		if(attachmentList != null && attachmentList.size() > 0)
+			for (Attachment attachment : attachmentList) {
+				AttachmentVo attachementVo = new AttachmentVo();
+				BeanUtils.copyProperties(attachment, attachementVo);
+				attachmentVoList.add(attachementVo);
+			}
+		return attachmentVoList;
 	}
 	
 	/**

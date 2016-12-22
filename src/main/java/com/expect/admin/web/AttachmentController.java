@@ -53,7 +53,7 @@ public class AttachmentController {
 		}
 		AttachmentVo attachment = attachmentService.getAttachmentById(id);
 		if (attachment != null) {
-			String path = attachment.getPath() + File.separator + attachment.getName();
+			String path = attachment.getPath() + File.separator + attachment.getId();
 			byte[] buffer = IOUtil.inputDataFromFile(path);
 			try {
 				RequestUtil.downloadFile(buffer, attachment.getName(), response);
@@ -73,7 +73,7 @@ public class AttachmentController {
 		}
 		AttachmentVo attachment = attachmentService.getAttachmentById(id);
 		if (attachment != null) {
-			String path = attachment.getPath() + File.separator + attachment.getName();
+			String path = attachment.getPath() + File.separator + attachment.getId();
 			byte[] buffer = IOUtil.inputDataFromFile(path);
 			try {
 				response.getOutputStream().write(buffer);

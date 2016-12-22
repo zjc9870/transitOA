@@ -12,8 +12,8 @@ public class ContractVo {
 	private String userName;//拟合同人
 	private String htbt;//合同标题
 	private String htnr;//合同能容
-	private String nqdrq;//拟签订日期
-	private String qx;//期限
+	private String nqdrq;//拟签订日期（年月日）
+	private String qx;//期限（年月日）
 	private String htshzt;//合同审核状态
 	private List<LcrzbVo> lcrzList;//流程日志
 	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
@@ -36,7 +36,9 @@ public class ContractVo {
 		this.htnr = contract.getHtnr();
 		if(contract.getNqdrq() != null)
 			this.nqdrq = DateUtil.format(contract.getNqdrq(), DateUtil.zbFormat);
-		this.qx = contract.getQx();
+		
+		if(contract.getQx() != null)
+			this.qx = DateUtil.format(contract.getQx(), DateUtil.zbFormat);
 		this.htshzt = contract.getHtshzt();
 		this.htfl = contract.getHtfl();
 		this.lcbs = contract.getLcbs();
