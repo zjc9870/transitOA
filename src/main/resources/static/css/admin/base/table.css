@@ -16,7 +16,7 @@
 .button {
     color: #ffffff;
     background: rgb(0,120,58);
-    border: none;
+    border: 1px solid rgb(0,120,58);
     padding: 6px 20px;
     font-size: 12px;
     border-radius: 5px;
@@ -39,4 +39,13 @@
     cursor: pointer;
     margin-left:10px;
     display: inline;
+}
+
+.hover:hover{
+    color: rgb(0,120,58);
+    background: #ffffff;
+    padding: 6px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-left: 10px;
 }

@@ -73,7 +73,7 @@ function submitWtjForm(id) {
 function deleteWtjCon(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
-        alert(data.message);
+        alert('删除成功!');
         window.location.reload();
     })
 }

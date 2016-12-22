@@ -5,16 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div class="lg-block">
-    <div class="lg-block-title1">XXXX公共交通集团有限公司合同审办单</div>
     <div class="lg-block-content">
         <form id="c_apply_form" enctype="multipart/form-data">
+            <div class="lg-block-title1"><input id="sbd" name="sbd" class="form-content" type="text" value="江宁公共交通集团" />有限公司合同审办单</div>
             <ul>
                 <li>
                     <div class="form-title">合同标题:</div>
-                    <input name="htbt" class="form-content" type="text" />
+                    <input name="htbt" class="form-content" type="text" style="width:380px;"/>
                 </li>
                 <li>
                     <div class="form-title">主要内容:</div>
@@ -30,11 +31,11 @@
                 </li>
                 <li>
                     <div class="form-title">期限:</div>
-                    <input name="qx" class="form-content" type="text" />
+                    <input name="qx" class="form-content date-picker" type="text" />
                 </li>
             </ul>
         </form>
-        <button id="uploadFile" style="margin-left:20%">上传附件</button>
+        <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
         <div id="upload-modal" class="modal modal-fixed-footer">
             <div class="modal-header">
                 <h4 class="modal-title">上传附件</h4>
@@ -59,8 +60,8 @@
         </div>
         <ul>
             <li id="saveCon" class="right">
-                <button id="bc">保存</button>
-                <button id="tj">提交</button>
+                <button id="bc" class="button hover">保存</button>
+                <button id="tj" class="button hover">提交</button>
             </li>
         </ul>
     </div>

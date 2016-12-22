@@ -44,7 +44,7 @@
 .lg-block-content li {
     list-style: none;
     overflow: hidden;
-    width: 700px;
+    width: 640px;
     margin: auto;
     padding: 10px 0;
 }
@@ -152,14 +152,22 @@
 
 .text-content {
     display: inline-block;
-    width: 250px;
+    width: 380px;
     height: 120px;
 }
 
 .right {
-    float: right;
+    width: 156px!important;
 }
 
 #splc {
     display: none;
+}
+
+#sbd {
+    width: 8.5em;
+}
+
+.form-content {
+    border: 1px solid rgb(0,120,58);
 }
