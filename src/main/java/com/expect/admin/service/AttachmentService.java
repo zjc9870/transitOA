@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -152,11 +152,7 @@ public class AttachmentService {
 	public AttachmentVo getAttachmentById(String id) {
 		Attachment attachment = attachmentRepository.findOne(id);
 		AttachmentVo attachmentVo = new AttachmentVo();
-		try {
-			BeanUtils.copyProperties(attachmentVo, attachment);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
+		BeanUtils.copyProperties(attachment, attachmentVo);
 		return attachmentVo;
 	}
 
@@ -171,11 +167,7 @@ public class AttachmentService {
 		List<AttachmentVo> attachmentVos = new ArrayList<>();
 		for (Attachment attachment : attachments) {
 			AttachmentVo attachmentVo = new AttachmentVo();
-			try {
-				BeanUtils.copyProperties(attachmentVo, attachment);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			BeanUtils.copyProperties(attachmentVo, attachment);
 			attachmentVos.add(attachmentVo);
 		}
 		return attachmentVos;
@@ -187,11 +179,7 @@ public class AttachmentService {
 		if(attachmentList == null || attachmentList.size() == 0) return attachmentVoList;
 		for (Attachment attachment : attachmentList) {
 			AttachmentVo attachmentVo = new AttachmentVo();
-			try {
-				BeanUtils.copyProperties(attachmentVo, attachment);
-			} catch (IllegalAccessException | InvocationTargetException e) {
-				e.printStackTrace();
-			}
+			BeanUtils.copyProperties(attachmentVo, attachment);
 			attachmentVoList.add(attachmentVo);
 		}
 		return attachmentVoList;
