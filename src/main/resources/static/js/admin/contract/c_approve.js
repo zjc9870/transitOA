@@ -16,7 +16,8 @@ for(var i=0; i<tabs.length; i++) {
                         switch (tabId) {
                             case "dsp":
                                 str += "<td>待审批</td>";
-                                str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div><div>通过</div></td>";
+                                str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div>" +
+                                    "<div onclick='pass(\"" + cons[i].id +"\")'>通过</div></td>";
                                 break;
                             case "yth":
                                 str += "<td>已退回</td>";
@@ -59,5 +60,6 @@ function pass(id) {
     AjaxTool.post('contract/addLcrz',{
         cljg: '通过', id:id},function () {
         alert('操作成功!');
+        window.location.reload();
     });
 }

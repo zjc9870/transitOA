@@ -23,7 +23,8 @@
                 </li>
                 <li>
                     <div class="form-title">主办人和拟合同人:</div>
-                    <input name="userName" class="form-content" type="text" disabled="disabled" th:value="${contractVo.userName}"/>
+                    <input name="userName" class="form-content" type="text" disabled="disabled" th:value="${contractVo.userName}"
+                       style="background: #ddd;"/>
                 </li>
                 <li>
                     <div class="form-title">合同签订日期:</div>
@@ -36,6 +37,8 @@
             </ul>
         </form>
         <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
+        <ul id="fjlb">
+        </ul>
         <div id="upload-modal" class="modal modal-fixed-footer">
             <div class="modal-header">
                 <h4 class="modal-title">上传附件</h4>

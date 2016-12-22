@@ -14,6 +14,19 @@ var AjaxTool = function() {
 		});
 	}
 
+	var getHtml = function(url, successFunction) {
+		var promise = $.ajax({
+			url : url,
+			dataType : "html",
+			type : "get"
+		});
+		promise.then(function(response) {
+			if (successFunction != null) {
+				successFunction(response);
+			}
+		});
+	}
+
 	var post = function(url, data, successFunction) {
 		var promise = $.ajax({
 			url : url,
@@ -45,6 +58,9 @@ var AjaxTool = function() {
 	return {
 		get : function(url, data, successFunction) {
 			get(url, data, successFunction);
+		},
+		getHtml : function(url, successFunction) {
+			getHtml(url, successFunction);
 		},
 		post : function(url, data, successFunction) {
 			post(url, data, successFunction);

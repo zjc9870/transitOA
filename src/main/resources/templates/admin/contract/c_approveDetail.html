@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
 </head>
 <body>
     <div class="lg-block">
-        <div class="lg-block-title1" th:value="${contractVo.sbd}+有限公司合同审办单"></div>
+        <button id="back" class="button">返回</button>
+        <div class="lg-block-title1" th:text="${contractVo.sbd}+有限公司合同审办单"></div>
         <div class="lg-block-content">
             <th:block>
             <ul>
                 <li>
                     <div class="form-title">合同标题:</div>
                     <pre class="pre-form-content" th:text="${contractVo.htbt}"></pre>
-                    <button>附件查看</button>
+                    <button class="button-active">附件查看</button>
                 </li>
                 <li>
                     <div class="form-title">主要内容:</div>
@@ -46,12 +48,14 @@
             <th:block th:if='${not #lists.isEmpty(contractVo.lcrzList)}'>
                 <ul th:each="lcrz : ${contractVo.lcrzList}">
                     <th:block>
-                        <li><div class="process-title" th:text="${lcrz.userName}"></div>
+                        <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
                             <th:block th:if="${lcrz.cljg=='通过'}">
-                                <div class="process-content-pass">通过</div>
+                                <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
+                                     class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
                             </th:block>
                             <th:block th:if="${lcrz.cljg=='不通过'}">
-                                <div class="process-content-nopass">不通过</div>
+                                <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
+                                     class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
                             </th:block>
                         </li>
                     </th:block>

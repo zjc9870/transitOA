@@ -11,3 +11,9 @@ $('#tj').click(function() {
         }
     )
 });
+
+$('#back').click(function () {
+    AjaxTool.getHtml('contract/sqjl',function (html) {
+        $('.page-content').html(html);
+    });
+});

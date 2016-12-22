@@ -5,3 +5,9 @@ function submitForm() {
     )
 }
 
+
+$('#back').click(function () {
+    AjaxTool.getHtml('contract/getBhhtList',function (html) {
+        $('.page-content').html(html);
+    });
+});

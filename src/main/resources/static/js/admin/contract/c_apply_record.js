@@ -66,6 +66,7 @@ function seeApplyRecordNE(id) {
 function submitWtjForm(id) {
     AjaxTool.post('contract/submitWtj',{id: id}, function (data) {
             alert(data.message);
+            window.location.reload();
         }
     )
 };
@@ -73,7 +74,7 @@ function submitWtjForm(id) {
 function deleteWtjCon(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
-        alert('删除成功!');
+        alert(data.message);
         window.location.reload();
     })
 }

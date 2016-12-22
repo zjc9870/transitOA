@@ -12,3 +12,9 @@ function submitForm() {
         }
     )
 }
+
+$('#back').click(function () {
+    AjaxTool.getHtml('contract/htsp',function (html) {
+        $('.page-content').html(html);
+    });
+});
