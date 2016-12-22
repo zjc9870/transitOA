@@ -9,6 +9,8 @@ import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -68,6 +70,8 @@ public class ContractService {
 	
 	@Transactional
 	public String save(ContractVo contractVo, String[] attachmentId){
+		boolean xzFlag = false;//新增标志
+		if(StringUtil.isBlank(contractVo.getId())) xzFlag = true;
 		Contract contract = new Contract(contractVo);
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
@@ -78,18 +82,31 @@ public class ContractService {
 				contract.setAttachments(attachmentList);
 		}
 		contract = contractRepository.save(contract);
-		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
-		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contractVo.getHtshzt());
+		if(xzFlag) addXzLcrz(contract);//如果是新增就增加一条日志记录 
 		return contract.getId();
+	}
+	/**
+	 * 新增是增加流程日志
+	 * @param contract
+	 */
+	private void addXzLcrz(Contract contract) {
+		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
+		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contract.getHtshzt());
 	}
 	
 	@Transactional
-	public void updateContract(ContractVo contractVo) {
+	public void updateContract(ContractVo contractVo, String[] attachmentId) {
 		if(contractVo == null || StringUtil.isBlank(contractVo.getId())) 
 			throw new BaseAppException("要更新的合同ID为空，无法更新");
 		Contract contract = contractRepository.findOne(contractVo.getId());
 		if(contract == null) throw new BaseAppException("要更新的合同不存在！");
 		update(contract, contractVo);
+		//更新合同的附件列表
+		if(attachmentId != null && attachmentId.length > 0) {
+			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
+			if(attachmentList != null && attachmentList.size() > 0)
+				contract.setAttachments(attachmentList);
+		}
 		contractRepository.save(contract);
 	}
 	
@@ -162,16 +179,6 @@ public class ContractService {
 			if(StringUtil.equals(lcjd.getShbm(), "Y"))
 					if(!sfsybm(contract.getNhtr().getDepartments().iterator().next(), 
 							user.getDepartments())) continue;
-				
-//			if(lcjd != null){
-//				if (!StringUtil.isBlank(lcjd.getShbm()) && 
-//						!StringUtil.equals(lcjd.getShbm(), contract.getNhtr().getDepartment().getId())) continue;
-//				else if (!StringUtil.isBlank(lcjd.getShgs())){
-//					Department parent = contract.getNhtr().getDepartment().getParentDepartment();
-//					if(parent == null) continue;
-//					if(!StringUtil.equals(lcjd.getShgs(), parent.getId())) continue;
-//				}
-//			}
 			ContractVo contractVo = new ContractVo(contract);
 //			if(!StringUtil.isBlank(contract.getHtshzt())) 
 //				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
@@ -292,7 +299,7 @@ public class ContractService {
 		if(!StringUtil.isBlank(nextCondition)){
 			contractVo.setHtshzt(nextCondition);
 			contractVo.setSfth(sfth);
-			updateContract(contractVo);
+			updateContract(contractVo, null);
 		}
 	}
 	
@@ -372,13 +379,17 @@ public class ContractService {
 			@Override
 			public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();
-				if(StringUtil.isBlank(htbt)) list.add(cb.like(root.get("htbt").as(String.class), "%" + htbt + "%"));
-				if(StringUtil.isBlank(htbh)) list.add(cb.like(root.get("htbh").as(String.class), "%" + htbh + "%"));
-				if(StringUtil.isBlank(htzt)) list.add(cb.equal(root.get("htzt").as(String.class), htzt));
+				if(!StringUtil.isBlank(htbt)) list.add(cb.like(root.get("htbt").as(String.class), "%" + htbt + "%"));
+				if(!StringUtil.isBlank(htbh)) list.add(cb.like(root.get("bh").as(String.class), "%" + htbh + "%"));
+				if(!StringUtil.isBlank(htzt)) list.add(cb.equal(root.get("htshzt").as(String.class), htzt));
 				if(startTime != null && endTime != null) list.add(cb.between(root.get("sqsj").as(Date.class), startTime, endTime));
-				if(StringUtil.isBlank(fqr)) list.add(cb.like(root.get("").as(String.class), "%" + htbt + "%"));//发起人还没有做
+//				if(StringUtil.isBlank(fqr)) list.add(cb.like(root.get("").as(String.class), "%" + htbt + "%"));//发起人还没有做
+				Join<Contract, User> leftJoin = root.join(root.getModel().getSingularAttribute("nhtr", User.class), JoinType.LEFT);
+				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("id").as(String.class), fqr));
 				Predicate[] predicate = new Predicate[list.size()];
-				return cb.and(list.toArray(predicate));
+				Predicate psssredicate = cb.and(list.toArray(predicate));
+				System.out.println(psssredicate.toString());
+				return psssredicate;
 			}
 		});
 		if(contractList == null) return contractVoList;

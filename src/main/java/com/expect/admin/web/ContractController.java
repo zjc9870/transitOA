@@ -258,9 +258,11 @@ public class ContractController {
 	}
 	
 	@RequestMapping(value = "/updateContract", method = RequestMethod.POST)
-	public void updateContract(ContractVo contractVo, HttpServletResponse response) throws IOException {
+	public void updateContract(ContractVo contractVo, 
+			@RequestParam(name = "fileId" ,required = false) String[] attachmentId,
+			HttpServletResponse response) throws IOException {
 		try{
-			contractService.updateContract(contractVo);
+			contractService.updateContract(contractVo, attachmentId);
 		}catch(Exception e) {
 			log.error("更新合同内容报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！").build());
@@ -317,7 +319,7 @@ public class ContractController {
 		ContractVo contractVo = contractService.getContractById(id);
 		contractVo.setBh(bh);
 		contractVo.setHtshzt("T");
-		contractService.updateContract(contractVo);
+		contractService.updateContract(contractVo, null);
 		lcrzbService.save(new LcrzbVo("编号回填", bh), id, contractVo.getHtfl(), "T");
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
 	}
@@ -358,22 +360,24 @@ public class ContractController {
 	 * 
 	 */
 	@PostMapping("/submitWtj")
-	public void submitWtj(String id, HttpServletResponse response) throws IOException{
+	public void submitWtj(String id, 
+			@RequestParam(name = "fileId" ,required = false) String[] attachmentId,
+			HttpServletResponse response) throws IOException{
 		
 		try{
 			ContractVo contractVo = contractService.getContractById(id);
 			if(contractVo == null){
-				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该合同"));
+				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该合同").build());
 				return;
 			}
 			String nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
 			contractVo.setHtshzt(nextCondition);
-			contractService.updateContract(contractVo);
+			contractService.updateContract(contractVo, attachmentId);
 		}catch(Exception e) {
 			log.error("以保存合同提交时报错", e);
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同提交出错，请重试"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同提交出错，请重试").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同提交完成"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同提交完成").build());
 	}
 	
 	/**
@@ -386,15 +390,15 @@ public class ContractController {
 	public void deleteWjt(String id, HttpServletResponse response) throws IOException {
 		try{
 			if(StringUtil.isBlank(id)){
-				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败， 要删除的合同id为空"));
+				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败， 要删除的合同id为空").build());
 				return;
 			}
 			contractService.delete(id);
 		}catch(Exception e) {
 			log.error("以保存合同提交时报错", e);
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败"));
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同删除失败").build());
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同删除完成"));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同删除完成").build());
 	}
 	
 	/**
@@ -415,6 +419,6 @@ public class ContractController {
 			@RequestParam(name = "htzt", required = false)String htzt,
 			@RequestParam(name = "fqr", required = false)String fqr) throws IOException{
 		List<ContractVo> contractVoList = contractService.searchContract(htbt, htbh, startTime, endTime, htzt, fqr);
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList));
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList).build());
 	}
 }

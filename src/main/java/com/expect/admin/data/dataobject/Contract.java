@@ -41,7 +41,7 @@ public class Contract {
 	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
 	private String sfth;//是否退回（Y 是退回， N不是退回）
 	private List<Attachment> attachments;//附件
-	private String sbd;
+	private String sbd;//申办单名称
 //	private Department department;//合同所属部门
 	
 	public Contract() {
