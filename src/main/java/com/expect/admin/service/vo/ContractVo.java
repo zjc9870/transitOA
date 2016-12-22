@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.utils.DateUtil;
+import com.expect.admin.utils.StringUtil;
 
 public class ContractVo {
 
@@ -47,7 +48,9 @@ public class ContractVo {
 			this.time = DateUtil.format(contract.getSqsj(), DateUtil.timeFormat);
 		}
 		else this.sqsj = "";
-		this.sbd = contract.getSbd();
+		if(StringUtil.isBlank(contract.getSbd()))
+			this.sbd = "";
+		else this.sbd = contract.getSbd();
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;

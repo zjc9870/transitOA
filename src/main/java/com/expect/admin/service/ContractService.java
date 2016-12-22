@@ -42,6 +42,8 @@ import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 @Service
 public class ContractService {
 	
@@ -117,9 +119,13 @@ public class ContractService {
 		List<LcrzbVo> lcrzbVoList = lcrzbService.getKxsLcrzbVoList(contractId);
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		for (LcrzbVo lcrzbVo : lcrzbVoList) {
-			if(!StringUtil.isBlank(lcrzbVo.getLcjd())) lcrzbVo.setLcjd(lcjdbMap.get(lcrzbVo.getLcjd()));
+			if(!StringUtil.isBlank(lcrzbVo.getLcjd())){
+				String lcjdName = lcjdbMap.get(lcrzbVo.getLcjd());
+				lcrzbVo.setLcjd(lcjdName);
+			}
 		}
-		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
+//		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
+		contractVo.setLcrzList(lcrzbVoList);
 		List<AttachmentVo> attachmentVoList = getContractAttachment(contract);
 		contractVo.setAttachmentList(attachmentVoList);
 //		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
