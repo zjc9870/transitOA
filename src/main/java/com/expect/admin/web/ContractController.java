@@ -406,9 +406,21 @@ public class ContractController {
 	@GetMapping("/htcx")
 	public ModelAndView htcx() {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_find");
+		
 		return modelAndView;
 	}
 	
+	/**
+	 * 
+	 * @param response
+	 * @param htbt 合同标题
+	 * @param htbh 合同编号
+	 * @param startTime 开始时间（搜索的时间段，以申请时间为准）
+	 * @param endTime 结束时间
+	 * @param htzt 合同状态（0 ：全部， 1：待审批， 2 ：已审批， 3 ： 已回填）
+	 * @param fqr 发起人（合同的申请人）姓名
+	 * @throws IOException
+	 */
 	@PostMapping("/searchContract")
 	public void contractSearchResult(HttpServletResponse response,
 			@RequestParam(name = "htbt", required = false)String htbt,

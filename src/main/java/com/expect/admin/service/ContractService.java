@@ -373,6 +373,15 @@ public class ContractService {
 		return resultMap;
 	}
 	
+	/**
+	 * @param htbt 合同标题
+	 * @param htbh 合同编号
+	 * @param startTime 开始时间（搜索的时间段，以申请时间为准）
+	 * @param endTime 结束时间
+	 * @param htzt 合同状态（0 ：全部， 1：待审批， 2 ：已审批， 3 ： 已回填）
+	 * @param fqr 发起人（合同的申请人）姓名
+	 * @return
+	 */
 	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
 			final Date endTime, final String htzt, final String fqr) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
@@ -380,12 +389,27 @@ public class ContractService {
 			@Override
 			public Predicate toPredicate(Root<Contract> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<Predicate>();
+				//合同标题
 				if(!StringUtil.isBlank(htbt)) list.add(cb.like(root.get("htbt").as(String.class), "%" + htbt + "%"));
+				//合同编号
 				if(!StringUtil.isBlank(htbh)) list.add(cb.like(root.get("bh").as(String.class), "%" + htbh + "%"));
-				if(!StringUtil.isBlank(htzt)) list.add(cb.equal(root.get("htshzt").as(String.class), htzt));
+				
+				//合同状态
+				if(StringUtil.equals(htzt, "1")){
+					list.add(cb.notEqual(root.get("htshzt").as(String.class), "Y"));
+					list.add(cb.notEqual(root.get("htshzt").as(String.class), "T"));
+				}
+				if(StringUtil.equals(htzt, "2"))
+					list.add(cb.equal(root.get("htshzt").as(String.class), "Y"));
+				if(StringUtil.equals(htzt, "3"))
+					list.add(cb.equal(root.get("htshzt").as(String.class), "T"));
+				
+				//申请时间（时间段内的申请）
 				if(startTime != null && endTime != null) list.add(cb.between(root.get("sqsj").as(Date.class), startTime, endTime));
 				Join<Contract, User> leftJoin = root.join(root.getModel().getSingularAttribute("nhtr", User.class), JoinType.LEFT);
-				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("id").as(String.class), fqr));
+//				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("id").as(String.class), fqr));
+				//合同申请人（发起人）
+				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("fullName").as(String.class), fqr));//发起人
 				Predicate[] predicate = new Predicate[list.size()];
 				Predicate psssredicate = cb.and(list.toArray(predicate));
 				return psssredicate;
@@ -393,7 +417,11 @@ public class ContractService {
 		});
 		if(contractList == null) return contractVoList;
 		for (Contract contract : contractList) {
-			contractVoList.add(new ContractVo(contract));
+			ContractVo contractVo = new ContractVo(contract);
+			if(StringUtil.equals(contract.getHtshzt(), "Y")) contractVo.setHtshzt("已审批");
+			else if(StringUtil.equals(contract.getHtshzt(), "T")) contractVo.setHtshzt("已回填");
+			else contractVo.setHtshzt("待审批");
+			contractVoList.add(contractVo);
 		}
 		return contractVoList;
 	}
