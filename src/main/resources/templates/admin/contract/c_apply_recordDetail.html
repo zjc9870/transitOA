@@ -17,7 +17,6 @@
                 <li>
                     <div class="form-title">合同标题:</div>
                     <input name="htbt" class="form-content" type="text" th:value="${contractVo.htbt}" />
-                    <button class="button-active">附件查看</button>
                 </li>
                 <li>
                     <div class="form-title">主要内容:</div>
@@ -38,6 +37,8 @@
             </ul>
             <input type="hidden" name="id" th:value="${contractVo.id}" />
         </form>
+        <input id="attachList" type="hidden" th:value="${contractVo.attachmentList}" />
+        <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
         <ul>
             <li class="right">
                 <button id="tj" class="button">提交</button>
