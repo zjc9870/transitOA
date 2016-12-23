@@ -19,7 +19,7 @@ public class ContractServiceTest extends BaseTest {
 	public void testSearchContract() {
 		List<ContractVo> contractVoList = contractService.searchContract("", "", null, null, null, null);
 		assertNotNull("contractVoList is null", contractVoList);
-		assertEquals(30, contractVoList.size());
+		assertEquals(62, contractVoList.size());
 	}
 	
 

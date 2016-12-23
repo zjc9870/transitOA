@@ -7406,10 +7406,10 @@ Custom colored portlets
   color: #fdfdfd; }
 
 .portlet.box.blue {
-  border: 1px solid #60aee4;
+  border: 1px solid rgb(67,175,60);
   border-top: 0; }
   .portlet.box.blue > .portlet-title {
-    background-color: #3598dc; }
+    background-color: rgb(67,175,60); }
     .portlet.box.blue > .portlet-title > .caption {
       color: #FFFFFF; }
       .portlet.box.blue > .portlet-title > .caption > i {
