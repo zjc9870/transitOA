@@ -19,12 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdbRepository;
-import com.expect.admin.data.dao.LcjdgxbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
@@ -42,8 +40,6 @@ import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-
 @Service
 public class ContractService {
 	
@@ -55,10 +51,6 @@ public class ContractService {
 	private UserService userService;
 	@Autowired
 	private LcService lcService;
-//	@Autowired
-//	private LcjdgxbRepository lcjdgxbRepository;
-//	@Autowired
-//	private AttachmentService attachmentService;
 	@Autowired
 	private RoleJdgxbGxbService roleJdgxbGxbService;
 	@Autowired
@@ -78,11 +70,14 @@ public class ContractService {
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
 		contract.setNhtr(user);
+		
+		//处理合同和附件的对应关系
 		if(attachmentId != null && attachmentId.length > 0) {
 			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
 			if(attachmentList != null && attachmentList.size() > 0)
 				contract.setAttachments(attachmentList);
-		}
+		}else contract.setAttachments(new ArrayList<Attachment>());
+		
 		contract = contractRepository.save(contract);
 		if(xzFlag) addXzLcrz(contract);//如果是新增就增加一条日志记录 
 		return contract.getId();
@@ -320,14 +315,8 @@ public class ContractService {
 	
 	private void update(Contract contract, ContractVo contractVo) {
 		BeanUtils.copyProperties(contractVo, contract);
-//		contract.setHtbt(contractVo.getHtbt());
-//		contract.setHtnr(contractVo.getHtnr());
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
 			contract.setNqdrq(DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat));
-//		contract.setQx(contractVo.getQx());
-//		contract.setHtshzt(contractVo.getHtshzt());
-//		contract.setSfth(contractVo.getSfth());
-//		contract.setBh(contractVo.getBh());
 	}
 	
 	/**
@@ -335,8 +324,6 @@ public class ContractService {
 	 * @return
 	 */
 	public String getHtfl() {
-//		UserVo userVo = userService.getLoginUser();
-//		User user = userRepository.findOne(userVo.getId());
 		RoleJdgxbGxbVo roleJdgxbGxbVo= roleJdgxbGxbService.getWjzt("sq", "ht");
 		Role role = roleRepository.findOne(roleJdgxbGxbVo.getRoleId());
 		if(StringUtil.equals(role.getName(), "集团文员")) return "1";//集团合同
@@ -371,8 +358,16 @@ public class ContractService {
 	 */
 	public Map<String, String> getAllLcjdMapping() {
 		List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("1");
+		List<Lcjdb> lcjdbList2 = lcjdbRepository.findBySslc("2");
+		List<Lcjdb> lcjdbList3 = lcjdbRepository.findBySslc("3");
 		Map<String, String> resultMap = new HashMap<String, String>();
 		for (Lcjdb lcjdb : lcjdbList) {
+			resultMap.put(lcjdb.getId(), lcjdb.getName());
+		}
+		for (Lcjdb lcjdb : lcjdbList2) {
+			resultMap.put(lcjdb.getId(), lcjdb.getName());
+		}
+		for (Lcjdb lcjdb : lcjdbList3) {
 			resultMap.put(lcjdb.getId(), lcjdb.getName());
 		}
 		return resultMap;
@@ -389,12 +384,10 @@ public class ContractService {
 				if(!StringUtil.isBlank(htbh)) list.add(cb.like(root.get("bh").as(String.class), "%" + htbh + "%"));
 				if(!StringUtil.isBlank(htzt)) list.add(cb.equal(root.get("htshzt").as(String.class), htzt));
 				if(startTime != null && endTime != null) list.add(cb.between(root.get("sqsj").as(Date.class), startTime, endTime));
-//				if(StringUtil.isBlank(fqr)) list.add(cb.like(root.get("").as(String.class), "%" + htbt + "%"));//发起人还没有做
 				Join<Contract, User> leftJoin = root.join(root.getModel().getSingularAttribute("nhtr", User.class), JoinType.LEFT);
 				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("id").as(String.class), fqr));
 				Predicate[] predicate = new Predicate[list.size()];
 				Predicate psssredicate = cb.and(list.toArray(predicate));
-				System.out.println(psssredicate.toString());
 				return psssredicate;
 			}
 		});

@@ -19,6 +19,7 @@ import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.DepartmentVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
+import com.expect.admin.service.vo.component.html.JsTreeVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 
@@ -265,6 +266,36 @@ public class DepartmentService {
 		resultVo.setMessage("删除成功");
 		resultVo.setObj(childIds);
 		return resultVo;
+	}
+	
+	/**
+	 * 获取部门的树形结构
+	 * @return
+	 */
+	public List<JsTreeVo> getDepartmentTree() {
+		List<Department> departmentList = departmentRepository.findByParentDepartmentId(null);
+		if(departmentList == null || departmentList.size() == 0) return new ArrayList<>();
+		List<JsTreeVo> firJstree = new ArrayList<>(departmentList.size());
+		for (Department department : departmentList) {//一级部门
+			JsTreeVo firJsTreeVo = new JsTreeVo();
+			setDepartmentTree(department, firJsTreeVo);
+			List<Department> secDepartmentList = department.getChildDepartments();
+			if(secDepartmentList == null || secDepartmentList.size() == 0) continue;
+			List<JsTreeVo> secJsTree = new ArrayList<>(secDepartmentList.size());
+			for (Department secDepartment : secDepartmentList) {//二级部门
+				JsTreeVo secJsTreeVo = new JsTreeVo();
+				setDepartmentTree(secDepartment, secJsTreeVo);
+				secJsTree.add(secJsTreeVo);
+			}
+			firJsTreeVo.setChildren(secJsTree);
+			firJstree.add(firJsTreeVo);
+		}
+		return firJstree;
+	}
+	
+	private void setDepartmentTree(Department department, JsTreeVo jsTreeVo) {
+		jsTreeVo.setId(department.getId());
+		jsTreeVo.setText(department.getName());
 	}
 
 }

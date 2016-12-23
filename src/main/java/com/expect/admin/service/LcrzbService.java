@@ -46,6 +46,7 @@ public class LcrzbService {
 		List<LcrzbVo> lcrzbVoList = new ArrayList<LcrzbVo>();
 		if(lcrzbList == null || lcrzbList.size() == 0) return lcrzbVoList;
 		for (Lcrzb lcrzb : lcrzbList) {
+			if(StringUtil.equals(lcrzb.getDyjd(), "T")) continue;
 			lcrzbVoList.add(new LcrzbVo(lcrzb));
 		}
 		return lcrzbVoList;	
@@ -135,4 +136,5 @@ public class LcrzbService {
 		lcrzbRepository.delete(
 				lcrzbRepository.findByClnridOrderByClsjAsc(wjId));
 	}
+	
 }

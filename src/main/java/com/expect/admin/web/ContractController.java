@@ -1,6 +1,5 @@
 package com.expect.admin.web;
 
-import static org.mockito.Matchers.contains;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +37,7 @@ import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.FileResultVo;
 import com.expect.admin.service.vo.component.ResultVo;
-import com.expect.admin.utils.Base64Util;
+import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.ResponseBuilder;
@@ -317,6 +315,7 @@ public class ContractController {
 			@RequestParam(name = "bh", required = false)String bh,
 			@RequestParam(name = "id", required = true) String id) throws IOException{
 		ContractVo contractVo = contractService.getContractById(id);
+//		if(StringUtil.equals(contractVo.getHtshzt(), "T"))
 		contractVo.setBh(bh);
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo, null);
@@ -414,11 +413,20 @@ public class ContractController {
 	public void contractSearchResult(HttpServletResponse response,
 			@RequestParam(name = "htbt", required = false)String htbt,
 			@RequestParam(name = "htbh", required = false)String htbh,
-			@RequestParam(name = "startTime", required = false)Date startTime,
-			@RequestParam(name = "endTime", required = false)Date endTime,
+			@RequestParam(name = "startTime", required = false)String startTime,
+			@RequestParam(name = "endTime", required = false)String endTime,
 			@RequestParam(name = "htzt", required = false)String htzt,
 			@RequestParam(name = "fqr", required = false)String fqr) throws IOException{
-		List<ContractVo> contractVoList = contractService.searchContract(htbt, htbh, startTime, endTime, htzt, fqr);
+		Date start = null,end = null;
+		List<ContractVo> contractVoList = null;
+		try{
+			if(!StringUtil.isBlank(startTime)) start = DateUtil.parse(startTime, DateUtil.zbFormat);
+			if(!StringUtil.isBlank(endTime)) end = DateUtil.parse(endTime, DateUtil.zbFormat);
+			contractVoList = contractService.searchContract(htbt, htbh, start, end, htzt, fqr);
+		}catch(Exception e) {
+			log.error("合同查询失败", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "搜索合同失败！").build());
+		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList).build());
 	}
 }
