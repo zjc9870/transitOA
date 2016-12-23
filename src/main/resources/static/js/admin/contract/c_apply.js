@@ -1,4 +1,4 @@
-(function () {
+$(document).ready(function () {
     var ids = [];
     $('#uploadFile').click(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
@@ -53,6 +53,6 @@
             $('.page-content').html(html);
         });
     }
+});
 
 
-})();

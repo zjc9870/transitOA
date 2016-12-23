@@ -37,8 +37,38 @@
             </ul>
             <input type="hidden" name="id" th:value="${contractVo.id}" />
         </form>
-        <input id="attachList" type="hidden" th:value="${contractVo.attachmentList}" />
-        <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+        <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
+
+        <th:block th:if='${not #lists.isEmpty(contractVo.attachmentList)}'>
+            <ul id="fjlb"  th:each="attach : ${contractVo.attachmentList}">
+                <th:block>
+                <li th:id="${attach.id}" th:text="${attach.name}"></li>
+                </th:block>
+            </ul>
+        </th:block>
+
+        <div id="upload-modal" class="modal modal-fixed-footer">
+            <div class="modal-header">
+                <h4 class="modal-title">上传附件</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" id="fileUploadForm">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="files-template-wrapper"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal"
+                        class="btn btn-outline dark">关闭</button>
+            </div>
+        </div>
         <ul>
             <li class="right">
                 <button id="tj" class="button">提交</button>
