@@ -21,7 +21,8 @@ public class PersonChooseService {
 	private DepartmentRepository departmentRepository;
 	
 	public List<JsTreeVo> getUserTree() {
-		List<Department> departmentList = departmentRepository.findByParentDepartmentId(null);
+		//取出父部门是东交总公司的
+		List<Department> departmentList = departmentRepository.findByParentDepartmentId("2c9151b6592fd4c901592fde79690002");
 		if(departmentList == null) return new ArrayList<>();
 		List<JsTreeVo> resultJsTreeVos = new ArrayList<>();
 		for (Department department : departmentList) {

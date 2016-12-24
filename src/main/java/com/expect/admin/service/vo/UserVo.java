@@ -14,7 +14,8 @@ public class UserVo {
 	private String roleName;
 	private String departmentName;
 	private String avatarId;
-	private String ssgs;//所属公司
+	private String ssgsName;//所属公司
+	private String ssgsId;//所属公司id
 	private String phoneNumber1;
 	private String phoneNumber2;
 
@@ -98,14 +99,13 @@ public class UserVo {
 		this.avatarId = avatarId;
 	}
 
-	public String getSsgs() {
-		return ssgs;
+	public String getSsgsName() {
+		return ssgsName;
 	}
 
-	public void setSsgs(String ssgs) {
-		this.ssgs = ssgs;
+	public void setSsgsName(String ssgsName) {
+		this.ssgsName = ssgsName;
 	}
-	
 
 	public String getPhoneNumber1() {
 		return phoneNumber1;
@@ -121,6 +121,14 @@ public class UserVo {
 
 	public void setPhoneNumber2(String phoneNumber2) {
 		this.phoneNumber2 = phoneNumber2;
+	}
+
+	public String getSsgsId() {
+		return ssgsId;
+	}
+
+	public void setSsgsId(String ssgsId) {
+		this.ssgsId = ssgsId;
 	}
 
 	@Override

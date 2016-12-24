@@ -62,7 +62,11 @@ public class UserConvertor {
 		if (user.getAvatar() != null) {
 			userVo.setAvatarId(user.getAvatar().getId());
 		}
-
+		//设置所属公司
+		if(user.getSsgs() != null){
+			userVo.setSsgsName(user.getSsgs().getName());
+			userVo.setSsgsId(user.getSsgs().getId());
+		}
 		return userVo;
 	}
 
