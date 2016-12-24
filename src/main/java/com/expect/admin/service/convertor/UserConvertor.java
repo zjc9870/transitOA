@@ -97,13 +97,15 @@ public class UserConvertor {
 	 * vo to do
 	 */
 	public static void convert(User user, UserVo userVo) {
-		BeanUtils.copyProperties(userVo, user);
+//		BeanUtils.copyProperties(userVo, user);
 //		user.setUsername(userVo.getUsername());
-//		user.setPassword(userVo.getPassword());
+		user.setPassword(userVo.getPassword());
 //		user.setFullName(userVo.getFullName());
-//		user.setEmail(userVo.getEmail());
-//		user.setPhone(userVo.getPhone());
-//		user.setSex(userVo.getSex());
+		user.setEmail(userVo.getEmail());
+		user.setPhone(userVo.getPhone());
+		user.setPhoneNumber1(userVo.getPhoneNumber1());
+		user.setPhoneNumber2(userVo.getPhoneNumber2());
+		user.setSex(userVo.getSex());
 	}
 
 	/**

@@ -24,7 +24,7 @@ import com.expect.admin.utils.StringUtil;
  *
  */
 @Controller
-@RequestMapping("/admin/user/")
+@RequestMapping("/admin/personalCon")
 public class IndividualController {
 	
 //	private final Logger log = LoggerFactory.getLogger(IndividualController.class);

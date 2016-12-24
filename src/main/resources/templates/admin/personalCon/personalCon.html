@@ -21,54 +21,68 @@
                         <ul>
                             <li>
                                 <div class="pform-title">用户名:</div>
-                                <input name="yhm" class="pform-content pform-disabled" type="text" disabled="disabled"/>
+                                <input name="username" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                th:value="${userVo.username}"/>
                                 <span class="pfrom-tips">用户名一旦注册成功不得修改</span>
                             </li>
                             <li>
                                 <div class="pform-title">新密码:</div>
-                                <input name="xmm" class="pform-content" type="password"/>
+                                <input class="pform-content" type="password"/>
                                 <span class="pfrom-tips">密码必须是字母、数字、连接符号,不能是汉字。密码设置6~8位</span>
                             </li>
                             <li>
                                 <div class="pform-title">重复新密码:</div>
-                                <input name="cfxmm" class="pform-content" type="password"/>
+                                <input name="password" class="pform-content" type="password"/>
                                 <span class="pfrom-tips">重复输入的密码必须和上一步输入的密码保持一致</span>
                             </li>
                             <li>
                                 <div class="pform-title">姓名:</div>
-                                <input name="xm" class="pform-content pform-disabled" type="text" disabled="disabled"/>
+                                <input name="fullName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                       th:value="${userVo.fullName}"/>
                                 <span class="pfrom-tips">如果需要修改自己的姓名,请联系管理员</span>
                             </li>
                             <li>
                                 <div class="pform-title">座机:</div>
-                                <input name="zj" class="pform-content" type="text" />
+                                <input name="phone" class="pform-content" type="text" th:value="${userVo.phone}"/>
                                 <span class="pfrom-tips">请输入您的座机或手机号</span>
                             </li>
                             <li>
                                 <div class="pform-title">手机1:</div>
-                                <input name="sj1" class="pform-content" type="text" />
+                                <input name="phoneNumber1" class="pform-content" type="text" th:value="${userVo.phoneNumber1}"/>
                             </li>
                             <li>
                                 <div class="pform-title">手机2:</div>
-                                <input name="sj2" class="pform-content" type="text" />
+                                <input name="phoneNumber2" class="pform-content" type="text" th:value="${userVo.phoneNumber2}"/>
                             </li>
                             <li>
                                 <div class="pform-title">邮箱:</div>
-                                <input name="yx" class="pform-content" type="text" />
+                                <input name="email" class="pform-content" type="text" th:value="${userVo.email}"/>
                                 <span class="pfrom-tips">选择最常用的信箱地址,最优选择是集团内部邮箱</span>
                             </li>
-                            <li>
+                            <li th:switch="${userVo.sex}">
                                 <div class="pform-title">性别:</div>
-                                <div class="pform-radio"><input name="xb" class="" type="radio" value="男" /><span>男</span></div>
-                                <div class="pform-radio" style="margin-left: 35px"><input name="xb" class="" type="radio" value="女" /><span>女</span></div>
+                                <th:block th:case="'男'">
+                                    <div class="pform-radio"><input name="sex" type="radio" value="男" checked="checked"/><span>男</span></div>
+                                    <div class="pform-radio" style="margin-left: 35px"><input name="sex" type="radio" value="女" /><span>女</span></div>
+                                </th:block>
+                                <th:block th:case="'女'">
+                                    <div class="pform-radio"><input name="sex" type="radio" value="男" /><span>男</span></div>
+                                    <div class="pform-radio" style="margin-left: 35px"><input name="sex" type="radio" value="女" checked="checked"/><span>女</span></div>
+                                </th:block>
+                                <th:block th:case="*">
+                                    <div class="pform-radio"><input name="sex" type="radio" value="男" /><span>男</span></div>
+                                    <div class="pform-radio" style="margin-left: 35px"><input name="sex" type="radio" value="女" /><span>女</span></div>
+                                </th:block>
                             </li>
                             <li>
                                 <div class="pform-title">部门:</div>
-                                <input name="bm" class="pform-content pform-disabled" type="text" disabled="disabled"/>
+                                <input name="departmentName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                       th:value="${userVo.departmentName}"/>
                             </li>
                             <li>
                                 <div class="pform-title">所属公司:</div>
-                                <input name="ssgs" class="pform-content pform-disabled" type="text" disabled="disabled"/>
+                                <input name="ssgsName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                       th:value="${userVo.ssgsName}"/>
                             </li>
                         </ul>
                     </form>
