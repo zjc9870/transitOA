@@ -7417,11 +7417,11 @@ Custom colored portlets
     .portlet.box.blue > .portlet-title > .actions .btn-default {
       background: transparent !important;
       background-color: transparent !important;
-      border: 1px solid #95c9ed;
-      color: #aad4f0;
+      border: 1px solid #b7ed95;
+      color: #b7ed95;
       box-shadow: none; }
       .portlet.box.blue > .portlet-title > .actions .btn-default > i {
-        color: #b7daf3; }
+        color: #b7ed95; }
       .portlet.box.blue > .portlet-title > .actions .btn-default:hover, .portlet.box.blue > .portlet-title > .actions .btn-default:focus, .portlet.box.blue > .portlet-title > .actions .btn-default:active, .portlet.box.blue > .portlet-title > .actions .btn-default.active {
         border: 1px solid #c0dff4;
         color: #d6eaf8; }

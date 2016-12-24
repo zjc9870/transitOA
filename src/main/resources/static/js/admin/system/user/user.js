@@ -1,3 +1,4 @@
+var sendInputId;
 var User = {
 	inputId : $("input[name='id']"),
 	inputUsername : $("input[name='username']"),
@@ -49,12 +50,14 @@ var User = {
 		DatatableTool.initAddModal(function(id){
 			//部门
 			DatatableTool.modalShow("#green-modal", "#user-department-form");
-			$("input[name='id']").val(id);
+			// $("input[name='id']").val(id);
+			sendInputId = id;
 			User.requestDepartmentCheckBox(id);
 		},function(id){
 			//角色
 			DatatableTool.modalShow("#purple-modal", "#user-role-form");
-			$("input[name='id']").val(id);
+			// $("input[name='id']").val(id);
+			sendInputId = id;
 			User.requestRoleCheckBox(id);
 		},function(id){
 			//头像
@@ -112,7 +115,8 @@ var User = {
 					roleName+= "," +$(this).parent().find("label").text();
 				}
 			});
-			var id=$("input[name='id']").val();
+			// var id=$("input[name='id']").val();
+			id = sendInputId;
 			AjaxTool.post("user/updateUserRole", {
 				"userId" : id,
 				"roleId" : roleid
@@ -143,7 +147,8 @@ var User = {
 					departmentName+= "," +$(this).parent().find("label").text();
 				}
 			});
-			var id=$("input[name='id']").val();
+			// var id=$("input[name='id']").val();
+			var id = sendInputId;
 			AjaxTool.post("user/updateUserDepartment", {
 				"userId" : id,
 				"departmentId" : departmentId
@@ -162,7 +167,8 @@ var User = {
 		});
 	},
 	requestRoleCheckBox:function(){
-		var id=$("input[name='id']").val();
+		// var id=$("input[name='id']").val();
+		var id = sendInputId;
 		AjaxTool.post("role/getRoleCheckboxHtml",{
 			userId:id
 		},function(response){
@@ -170,7 +176,8 @@ var User = {
 		});
 	},
 	requestDepartmentCheckBox:function(){
-		var id=$("input[name='id']").val();
+		// var id=$("input[name='id']").val();
+		var id = sendInputId;
 		AjaxTool.post("department/getDepartmentCheckboxHtml",{
 			userId:id
 		},function(response){
