@@ -16,10 +16,10 @@ import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.ResponseBuilder;
 
 @Controller
-@RequestMapping("/admin/contract")
+@RequestMapping("/admin/personalCon")
 public class ContractPageController {
 
-	private final String viewName = "admin/contract/";
+	private final String viewName = "admin/personalCon/";
 
 
 	/**
@@ -168,6 +168,13 @@ public class ContractPageController {
 		return modelAndView;
 	}
 	
-	
+	/**
+	 * 个人设置
+	 */
+	@RequestMapping("/test")
+	public ModelAndView test() {
+		ModelAndView modelAndView = new ModelAndView(viewName + "personalCon");
+		return modelAndView;
+	}
 
 }

@@ -4,6 +4,14 @@
     min-width: 9em;
 }
 
+.pform-title {
+    float: left;
+    width: 6em;
+    min-width: 6em;
+    line-height: 27px;
+    text-align: right;
+}
+
 .pre-form-content {
     float: left;
     white-space: normal;
@@ -46,6 +54,13 @@
     overflow: hidden;
     width: 640px;
     margin: auto;
+    padding: 10px 0;
+}
+
+.lg-block-content2 li {
+    list-style: none;
+    overflow: hidden;
+    margin-left: 8%;
     padding: 10px 0;
 }
 
@@ -170,4 +185,31 @@
 
 .form-content {
     border: 1px solid rgb(0,120,58);
+}
+
+.pform-content {
+    border: 1px solid rgb(0,120,58);
+    margin-left: 10px;
+    width: 255px;
+    height: 27px;
+}
+
+.pform-radio {
+    display: inline;
+    line-height: 27px;
+    margin-left: 10px;
+}
+
+.pform-radio span {
+    margin-left: 5px;
+}
+
+.pfrom-tips {
+    font-size: 12px;
+    color:rgb(150,150,150);
+    margin-left:5px;
+}
+
+.pform-disabled {
+    background: #ddd;
 }
