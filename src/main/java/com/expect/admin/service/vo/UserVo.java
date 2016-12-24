@@ -15,6 +15,8 @@ public class UserVo {
 	private String departmentName;
 	private String avatarId;
 	private String ssgs;//所属公司
+	private String phoneNumber1;
+	private String phoneNumber2;
 
 	public String getId() {
 		return id;
@@ -102,6 +104,23 @@ public class UserVo {
 
 	public void setSsgs(String ssgs) {
 		this.ssgs = ssgs;
+	}
+	
+
+	public String getPhoneNumber1() {
+		return phoneNumber1;
+	}
+
+	public void setPhoneNumber1(String phoneNumber1) {
+		this.phoneNumber1 = phoneNumber1;
+	}
+
+	public String getPhoneNumber2() {
+		return phoneNumber2;
+	}
+
+	public void setPhoneNumber2(String phoneNumber2) {
+		this.phoneNumber2 = phoneNumber2;
 	}
 
 	@Override

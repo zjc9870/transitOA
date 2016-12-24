@@ -192,34 +192,34 @@ public class UserController {
 		return rv;
 	}
 	
-	@RequestMapping(value = "/getUserMessage", method = RequestMethod.GET)
-	public ModelAndView getUserMessage() {
-		ModelAndView mv = new ModelAndView(viewName + "form/userForm2");
-		UserVo userVo = userService.getLoginUser();
-		mv.addObject("userVo", userVo);
-		return mv;
-	}
+//	@RequestMapping(value = "/getUserMessage", method = RequestMethod.GET)
+//	public ModelAndView getUserMessage() {
+//		ModelAndView mv = new ModelAndView(viewName + "form/userForm2");
+//		UserVo userVo = userService.getLoginUser();
+//		mv.addObject("userVo", userVo);
+//		return mv;
+//	}
 	
-	@RequestMapping(value = "/modifyPassword", method = RequestMethod.POST)
-	public void modifyPassword(HttpServletResponse response,
-			@RequestParam(name = "oldPassword", required = true)String oldPassword,
-			@RequestParam(name = "newPassword", required = true)String newPassword) throws IOException {
-		UserVo userVo = userService.getLoginUser();
-		String message;
-		boolean isSuccess = false;
-		if(userVo == null){
-			message = "用户未登录！";
-		}
-		else if(!StringUtil.equals(oldPassword, userVo.getPassword())) {
-			message = "原密码错误，修改密码失败";
-		}else {
-			userVo.setPassword(newPassword);
-			userService.update(userVo);
-			isSuccess = true;
-			message = "密码修改成功！";
-		}
-		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(isSuccess, message).build());
-	}
+//	@RequestMapping(value = "/modifyPassword", method = RequestMethod.POST)
+//	public void modifyPassword(HttpServletResponse response,
+//			@RequestParam(name = "oldPassword", required = true)String oldPassword,
+//			@RequestParam(name = "newPassword", required = true)String newPassword) throws IOException {
+//		UserVo userVo = userService.getLoginUser();
+//		String message;
+//		boolean isSuccess = false;
+//		if(userVo == null){
+//			message = "用户未登录！";
+//		}
+//		else if(!StringUtil.equals(oldPassword, userVo.getPassword())) {
+//			message = "原密码错误，修改密码失败";
+//		}else {
+//			userVo.setPassword(newPassword);
+//			userService.update(userVo);
+//			isSuccess = true;
+//			message = "密码修改成功！";
+//		}
+//		ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(isSuccess, message).build());
+//	}
 	
 	/**
 	 * 测试人员选择页面

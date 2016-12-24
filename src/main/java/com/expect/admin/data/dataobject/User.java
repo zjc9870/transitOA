@@ -45,13 +45,18 @@ public class User implements UserDetails {
 	private String fullName;// 姓名
 	@Column(name = "sex", length = 2)
 	private String sex;// 性别
-	@Column(name = "phone", length = 15)
-	private String phone;// 手机
 	@Column(name = "email", length = 63)
 	private String email;// 电子邮件
 	@OneToOne
 	@JoinColumn(name = "avatar_id")
 	private Attachment avatar;// 头像
+	//每个人都有3个电话
+	@Column(name = "phone", length = 15)
+	private String phone;// 手机
+	@Column(name = "phoneNumber1", length = 15)
+	private String phoneNumber1;
+	@Column(name = "phoneNumber2", length = 15)
+	private String phoneNumber2;
 	/**
 	 * joinColumns代表维护端
 	 * 
@@ -172,6 +177,23 @@ public class User implements UserDetails {
 
 	public void setSsgs(Department ssgs) {
 		this.ssgs = ssgs;
+	}
+	
+
+	public String getPhoneNumber1() {
+		return phoneNumber1;
+	}
+
+	public void setPhoneNumber1(String phoneNumber1) {
+		this.phoneNumber1 = phoneNumber1;
+	}
+
+	public String getPhoneNumber2() {
+		return phoneNumber2;
+	}
+
+	public void setPhoneNumber2(String phoneNumber2) {
+		this.phoneNumber2 = phoneNumber2;
 	}
 
 	@Override
