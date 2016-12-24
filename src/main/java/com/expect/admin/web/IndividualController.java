@@ -48,7 +48,9 @@ public class IndividualController {
 	public DataTableRowVo updateIndividualMessage(UserVo userVo, 
 			@RequestParam(name = "newPassword", required = false)String newPassword,
 			HttpServletResponse response) throws IOException{
+		UserVo loginUserVo = userService.getLoginUser();
 		if(!StringUtil.isBlank(newPassword)) userVo.setPassword(newPassword);
+		else userVo.setPassword(loginUserVo.getPassword());
 		return userService.update(userVo);
 	}
 }
