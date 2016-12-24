@@ -450,7 +450,7 @@ public class ContractController {
 	 */
 	@PostMapping("/ssxq")
 	public ModelAndView getSsxq(String id, HttpServletResponse response) {
-		ModelAndView mv = new ModelAndView(viewName + "c_findDetial");
+		ModelAndView mv = new ModelAndView(viewName + "c_findDetail");
 		ContractVo contractVo = contractService.getContractById(id);
 		mv.addObject("contractVo", contractVo);
 		return mv;
