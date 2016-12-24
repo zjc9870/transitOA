@@ -27,13 +27,13 @@
                             </li>
                             <li>
                                 <div class="pform-title">新密码:</div>
-                                <input class="pform-content" type="password"/>
+                                <input id="password1" class="pform-content" type="password"/>
                                 <span class="pfrom-tips">密码必须是字母、数字、连接符号,不能是汉字。密码设置6~8位</span>
                             </li>
                             <li>
                                 <div class="pform-title">重复新密码:</div>
-                                <input name="password" class="pform-content" type="password"/>
-                                <span class="pfrom-tips">重复输入的密码必须和上一步输入的密码保持一致</span>
+                                <input id="password2" name="newPassword" class="pform-content" type="password"/>
+                                <span id="passwordTips" class="pfrom-tips">重复输入的密码必须和上一步输入的密码保持一致</span>
                             </li>
                             <li>
                                 <div class="pform-title">姓名:</div>
@@ -87,9 +87,9 @@
                         </ul>
                     </form>
                     <ul>
-                        <li id="saveCon" class="right" style="margin-left:21%">
-                            <button id="cz" class="button hover">重置</button>
-                            <button id="bc" class="button hover">保存</button>
+                        <li class="right" style="margin-left:21%">
+                            <button id="reset" class="button hover">重置</button>
+                            <button id="saveCon" class="button hover">保存</button>
                         </li>
                     </ul>
                 </div>
@@ -97,5 +97,6 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" th:src="@{/js/admin/personalCon/personalCon.js}"></script>
 </body>
 </html>
