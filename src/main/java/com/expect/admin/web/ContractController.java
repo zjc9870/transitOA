@@ -441,4 +441,18 @@ public class ContractController {
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList).build());
 	}
+	
+	/**
+	 * 搜索页面查看详情
+	 * @param id
+	 * @param response
+	 * @return
+	 */
+	@PostMapping("/ssxq")
+	public ModelAndView getSsxq(String id, HttpServletResponse response) {
+		ModelAndView mv = new ModelAndView(viewName + "c_findDetial");
+		ContractVo contractVo = contractService.getContractById(id);
+		mv.addObject("contractVo", contractVo);
+		return mv;
+	}
 }
