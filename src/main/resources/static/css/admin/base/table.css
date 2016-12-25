@@ -53,3 +53,7 @@
 #back {
     float: right;
 }
+
+#user-table.table-bordered>thead>tr>th {
+        border: 1px solid #e7ecf1;
+}

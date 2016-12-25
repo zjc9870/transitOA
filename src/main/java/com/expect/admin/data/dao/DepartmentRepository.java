@@ -24,7 +24,7 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
 	 * 根据parentId获取所有的子department
 	 */
 	public List<Department> findByParentDepartmentIdIn(String[] parentIds);
-
+	
 	/**
 	 * 根据ids获取部门
 	 * 

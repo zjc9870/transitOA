@@ -12,16 +12,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.expect.admin.data.dao.DepartmentRepository;
 import com.expect.admin.data.dao.FunctionRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
+import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.Function;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
+import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.RoleConvertor;
 import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
+import com.expect.admin.utils.StringUtil;
 
 /**
  * 角色Service
@@ -35,6 +39,8 @@ public class RoleService {
 	private FunctionRepository functionRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private DepartmentRepository departmentRepository;
 
 	/**
 	 * 获取所有的角色
@@ -66,12 +72,26 @@ public class RoleService {
 		}
 		return RoleConvertor.convert(user.getRoles());
 	}
+	
+	/**
+	 * 根据管理员的所属公司获取某公司的角色列表
+	 * 超级管理员获取所有公司的所有角色
+	 * @param ssgs 所属公司（"zgs" : 总公司， super ：超级管理员）
+	 * @return
+	 */
+	public List<RoleVo> getRolesLoginUser(String ssgs) {
+		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司角色是公司id为空");
+//		departmentRepository.findOne(ssgs);
+		List<Role> roles = roleRepository.findBySsgs_id(ssgs);
+		if(roles == null || roles.isEmpty()) return new ArrayList<>();
+		return RoleConvertor.convert(roles);
+	}
 
 	/**
 	 * 保存角色
 	 */
 	@Transactional
-	public ResultVo save(String name) {
+	public ResultVo save(String name, String ssgsId) {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setMessage("增加失败");
 		if (StringUtils.isEmpty(name)) {
@@ -80,6 +100,11 @@ public class RoleService {
 		}
 		Role role = new Role();
 		role.setName(name);
+		
+		if(!StringUtil.isBlank(ssgsId)) {
+			Department department = departmentRepository.findOne(ssgsId);
+			role.setSsgs(department);
+		}
 
 		Role result = roleRepository.save(role);
 		if (result != null) {

@@ -1,6 +1,7 @@
 package com.expect.admin.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,7 @@ import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 import com.expect.admin.utils.RequestUtil;
+import com.expect.admin.utils.StringUtil;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -46,13 +48,19 @@ public class UserService implements UserDetailsService {
 	private DepartmentRepository departmentRepository;
 	@Autowired
 	private LogLoginRepository logLoginRepository;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 根据id获取用户
 	 */
 	public UserVo getUserById(String id) {
-		if (StringUtils.isEmpty(id)) {
-			return new UserVo();
+		UserVo userVo = userService.getLoginUser();
+		if (StringUtils.isEmpty(id) || StringUtil.equals(id, "-1")) {
+			UserVo newUserVo= new UserVo();
+			newUserVo.setSsgsId(userVo.getSsgsId());
+			newUserVo.setSsgsName(userVo.getSsgsName());
+			return newUserVo;
 		} else {
 			User user = userRepository.findOne(id);
 			return UserConvertor.convert(user);
@@ -77,6 +85,13 @@ public class UserService implements UserDetailsService {
 		return UserConvertor.convert(user);
 	}
 
+	public List<UserVo> getUserBySsgsId(String ssgsId) {
+		List<User> userList;
+		if(StringUtil.isBlank(ssgsId)) return getAllUsers();
+		else userList = userRepository.findBySsgs_id(ssgsId);
+		if(userList == null || userList.isEmpty()) return new ArrayList<>();
+		return UserConvertor.convert(userList);
+	}
 	/**
 	 * 保存用户
 	 */
@@ -89,6 +104,10 @@ public class UserService implements UserDetailsService {
 			return dtrv;
 		}
 		User user = UserConvertor.convert(userVo);
+		if(!StringUtil.isBlank(userVo.getSsgsId())){ 
+			Department ssgs = departmentRepository.findOne(userVo.getSsgsId());
+			user.setSsgs(ssgs);
+		}
 		// 数据库日至记录开始
 		User result = userRepository.save(user);
 		if (result != null) {

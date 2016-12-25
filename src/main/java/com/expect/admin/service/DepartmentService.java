@@ -22,6 +22,7 @@ import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
+import com.expect.admin.utils.StringUtil;
 
 /**
  * 部门Service
@@ -43,6 +44,36 @@ public class DepartmentService {
 		List<Department> departments = departmentRepository.findAll();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departments);
 		return departmentVos;
+	}
+	
+	/**
+	 * 获取某个公司的所有部门
+	 * @param ssgs 所属公司Id（父部门Id）<br>
+	 * 如果ssgs为空就返回所有部门
+	 * @return
+	 */
+	public List<DepartmentVo> getGsDepartmentsBySsgs(String ssgs) {
+		if(StringUtil.isBlank(ssgs)) 
+			return getDepartments();
+		List<Department> departmentList = departmentRepository.findByParentDepartmentId(ssgs);
+		if(departmentList == null || departmentList.isEmpty()) return new ArrayList<>();
+		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departmentList);
+		return departmentVos;
+	}
+	
+	public DepartmentVo getANewDepartmentVo(){
+		DepartmentVo departmentVo = new DepartmentVo();
+		UserVo userVo = userService.getLoginUser();
+		if(!StringUtil.isBlank(userVo.getSsgsId())){
+			Department parentDepartment = departmentRepository.findOne(userVo.getSsgsId());
+			departmentVo.getParentDepartmentSov().addOption(parentDepartment.getId(), 
+					parentDepartment.getName(), true);
+		}else return getDepartmentById("-1");
+		List<UserVo> users = userService.getAllUsers();
+		SelectOptionVo managerSov = null;
+		managerSov = UserConvertor.convertSov(users, null);
+		departmentVo.setManagerSov(managerSov);
+		return departmentVo;
 	}
 
 	/**

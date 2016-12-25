@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.service.RoleService;
+import com.expect.admin.service.UserService;
 import com.expect.admin.service.convertor.RoleConvertor;
 import com.expect.admin.service.vo.RoleVo;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.CheckboxsVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
@@ -29,13 +31,18 @@ public class RoleController {
 
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 角色-管理页面
 	 */
 	@RequestMapping("/roleManagePage")
 	public ModelAndView userManagePage() {
-		List<RoleVo> roles = roleService.getRoles();
+		UserVo userVo = userService.getLoginUser();
+		if(userVo == null) return new ModelAndView("admin/login");
+		List<RoleVo> roles = roleService.getRolesLoginUser(userVo.getSsgsId()); 
+//		List<RoleVo> roles = roleService.getRoles();
 		ModelAndView modelAndView = new ModelAndView(viewName + "manage");
 		modelAndView.addObject("roles", roles);
 		return modelAndView;
@@ -56,7 +63,9 @@ public class RoleController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public ResultVo save(String name) {
-		return roleService.save(name);
+		UserVo userVo = userService.getLoginUser();
+		String ssgsId = userVo.getSsgsId();
+		return roleService.save(name, ssgsId);
 	}
 
 	/**
@@ -92,7 +101,8 @@ public class RoleController {
 	@RequestMapping(value = "/getRoleCheckboxHtml", method = RequestMethod.POST)
 	@ResponseBody
 	public CheckboxsVo getRoleCheckboxHtml(String userId) {
-		List<RoleVo> roles = roleService.getRoles();
+		UserVo userVo = userService.getLoginUser();
+		List<RoleVo> roles = roleService.getRolesLoginUser(userVo.getSsgsId()); 
 		List<RoleVo> userRoles = roleService.getRolesByUserId(userId);
 		List<String> ids = new ArrayList<>();
 		if (!CollectionUtils.isEmpty(userRoles)) {

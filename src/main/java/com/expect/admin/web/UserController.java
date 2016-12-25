@@ -19,9 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.config.Settings;
 import com.expect.admin.service.AttachmentService;
+import com.expect.admin.service.DepartmentService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.AttachmentVo;
+import com.expect.admin.service.vo.DepartmentVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.FileResultVo;
 import com.expect.admin.service.vo.component.ResultVo;
@@ -44,13 +46,18 @@ public class UserController {
 	private AttachmentService attachmentService;
 	@Autowired
 	private Settings settings;
+	@Autowired
+	private DepartmentService departmentService;
 
 	/**
 	 * 用户管理页面
 	 */
 	@RequestMapping(value = "/userManagePage", method = RequestMethod.GET)
 	public ModelAndView userManagePage() {
-		List<UserVo> users = userService.getAllUsers();
+		UserVo userVo = userService.getLoginUser();
+		if(userVo == null) return new ModelAndView("admin/login");
+//		List<UserVo> users = userService.getAllUsers();
+		List<UserVo> users = userService.getUserBySsgsId(userVo.getSsgsId());
 		List<DataTableRowVo> dtrvs = UserConvertor.convertDtrvs(users);
 		ModelAndView modelAndView = new ModelAndView(viewName + "manage");
 		modelAndView.addObject("users", dtrvs);
@@ -64,7 +71,7 @@ public class UserController {
 	public ModelAndView userForm(String id) {
 		UserVo user = userService.getUserById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/userForm");
-		modelAndView.addObject("user", user);
+		modelAndView.addObject("userVo", user);
 		return modelAndView;
 	}
 

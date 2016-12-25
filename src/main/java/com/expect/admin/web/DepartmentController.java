@@ -12,11 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.service.DepartmentService;
+import com.expect.admin.service.UserService;
 import com.expect.admin.service.convertor.DepartmentConvertor;
 import com.expect.admin.service.vo.DepartmentVo;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.CheckboxsVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
+import com.expect.admin.utils.StringUtil;
 
 /**
  * 部门管理Controller
@@ -29,14 +32,19 @@ public class DepartmentController {
 
 	@Autowired
 	private DepartmentService departmentService;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 部门-管理页面
 	 */
 	@RequestMapping(value = "/departmentManagePage", method = RequestMethod.GET)
 	public ModelAndView userManagePage() {
-		List<DepartmentVo> departments = departmentService.getDepartments();
-		List<DataTableRowVo> dtrvs = DepartmentConvertor.convertDtrv(departments);
+		UserVo userVo = userService.getLoginUser();
+		if(userVo == null) return new ModelAndView("admin/login");
+//		List<DepartmentVo> departments = departmentService.getDepartments();
+		List<DepartmentVo> departmentVoList = departmentService.getGsDepartmentsBySsgs(userVo.getSsgsId());
+		List<DataTableRowVo> dtrvs = DepartmentConvertor.convertDtrv(departmentVoList);
 		ModelAndView modelAndView = new ModelAndView(viewName + "manage");
 		modelAndView.addObject("departments", dtrvs);
 		return modelAndView;
@@ -47,7 +55,9 @@ public class DepartmentController {
 	 */
 	@RequestMapping(value = "/departmentFormPage", method = RequestMethod.POST)
 	public ModelAndView departmentFormPage(String id) {
-		DepartmentVo department = departmentService.getDepartmentById(id);
+		DepartmentVo department;
+		if(StringUtil.equals(id, "-1")) department = departmentService.getANewDepartmentVo();
+		else department = departmentService.getDepartmentById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/departmentForm");
 		modelAndView.addObject("department", department);
 		return modelAndView;
@@ -95,7 +105,9 @@ public class DepartmentController {
 	@RequestMapping(value = "/getDepartmentCheckboxHtml", method = RequestMethod.POST)
 	@ResponseBody
 	public CheckboxsVo getDepartmentCheckboxHtml(String userId) {
-		List<DepartmentVo> departments = departmentService.getAllBottomDepartments();
+//		List<DepartmentVo> departments = departmentService.getAllBottomDepartments();
+		UserVo userVo = userService.getLoginUser();
+		List<DepartmentVo> departments = departmentService.getGsDepartmentsBySsgs(userVo.getSsgsId());
 		List<String> ids = new ArrayList<>();
 		List<DepartmentVo> userDepartments = departmentService.getDepartmentsByUserId(userId);
 		if (!CollectionUtils.isEmpty(userDepartments)) {
