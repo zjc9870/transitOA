@@ -42,6 +42,7 @@ public class Contract {
 	private String sfth;//是否退回（Y 是退回， N不是退回）
 	private List<Attachment> attachments;//附件
 	private String sbd;//申办单名称
+//	private Lcrzb lcrz;//流程日志
 //	private Department department;//合同所属部门
 	
 	public Contract() {
@@ -61,6 +62,8 @@ public class Contract {
 		this.lcbs = contractVo.getLcbs();
 		if(StringUtil.isBlank(contractVo.getSqsj())){
 			this.sqsj = new Date();
+		}else {
+			this.sqsj = DateUtil.parse(contractVo.getSqsj(), DateUtil.fullFormat);
 		}
 		this.sbd = contractVo.getSbd();
 	}
@@ -196,6 +199,15 @@ public class Contract {
 	public void setSbd(String sbd) {
 		this.sbd = sbd;
 	}
+
+//	@OneToMany
+//	public Lcrzb getLcrz() {
+//		return lcrz;
+//	}
+//
+//	public void setLcrz(Lcrzb lcrz) {
+//		this.lcrz = lcrz;
+//	}
 	
 
 //	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

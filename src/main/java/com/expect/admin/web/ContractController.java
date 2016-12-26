@@ -230,29 +230,39 @@ public class ContractController {
 			                 @RequestParam(name = "bczl", required = true)   String bczl,
 			                 @RequestParam(name = "fileId" ,required = false) String[] attachmentId, 
 			                 HttpServletResponse response) throws IOException {
+		if(!contractCheck(contractVo, response)) return;
+		String message = StringUtil.equals(bczl, "tj") ? "合同申请" : "合同保存";
+		try{
+			contractService.newContractSave(contractVo, bczl, attachmentId);
+		}catch(Exception e) {
+			log.error("保存合同报错", e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, message + "失败！").build());
+		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, message + "成功！").build());
+	}
+
+	/**
+	 * 判断新申请的合同是不是满足要求
+	 * 1.合同不能为空
+	 * 2.合同的期限必须在拟签订日期之后
+	 * @param contractVo
+	 * @param response
+	 * @return 满足全部要求返回true， 否则返回false
+	 * @throws IOException
+	 */
+	private boolean  contractCheck(ContractVo contractVo, HttpServletResponse response) throws IOException {
 		if(contractVo == null) {
 			log.error("试图保存空的合同");
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
-			return;
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "申请失败，合同内容为空！").build());
+			return false;
 		}
-		try{
-			String htfl = contractService.getHtfl();
-			contractVo.setHtfl(htfl);
-			String lcbs = lcService.getDefaultLc(htfl);
-			String condition;
-			String startCondition = lcService.getStartCondition(lcbs);
-			if(StringUtil.equals(bczl, "tj")){
-				condition = lcService.getNextCondition(lcbs, startCondition);
-			}else condition = startCondition;
-			contractVo.setHtshzt(condition);//合同审核状态
-			contractVo.setLcbs(lcbs);//流程标识
-			contractService.save(contractVo, attachmentId);
-		}catch(Exception e) {
-//			e.printStackTrace();
-			log.error("保存合同报错", e);
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存合同失败！").build());
+		Date nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat);
+		Date qx = DateUtil.parse(contractVo.getQx(), DateUtil.zbFormat);
+		if(DateUtil.getDiffSeconds(qx, nqdrq) < 0) {
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "申请失败，合同期限必须在拟签订日期之后！").build());
+			return false;
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存合同内容成功！").build());
+		return true;
 	}
 	
 	@RequestMapping(value = "/updateContract", method = RequestMethod.POST)

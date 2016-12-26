@@ -12,7 +12,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         str += "<td>"+cons[i].userName+"</td>";
-                        str += "<td>-</td>";
+                        str += "<td>"+cons[i].spyj +"</td>";
                         switch (tabId) {
                             case "dsp":
                                 str += "<td>待审批</td>";

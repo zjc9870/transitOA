@@ -16,12 +16,12 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	
 	public List<Contract> findByHtflAndHtshzt(String htfl, String htshzt);
 	
-	List<Contract> findByHtshzt(String condition);
+	List<Contract> findByHtshztOrderBySqsjDesc(String condition);
 	
-	@Query("select c from Contract c where c.nhtr.id = ?1 and c.htshzt <> 'T' and c.htshzt <> 'Y' and c.htshzt <> ?2")
+	@Query("select c from Contract c where c.nhtr.id = ?1 and c.htshzt <> 'T' and c.htshzt <> 'Y' and c.htshzt <> ?2 order by c.sqsj desc")
 	public List<Contract> findSqjlWspList(String userId, String condition);
 	
-	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
+	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2 order by c.sqsj desc")
 	public List<Contract> findByUserAndCondition(String userId, String condition);
 	
 //	@Query("select distinct c from Contract c where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
@@ -32,7 +32,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @param condition
 	 * @return
 	 */
-	List<Contract> findByNhtr_idAndHtshzt(String userId, String condition);
+	List<Contract> findByNhtr_idAndHtshztOrderBySqsjDesc(String userId, String condition);
 	
 	/**
 	 * 某用户已回填的记录
@@ -41,7 +41,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @param end
 	 * @return
 	 */
-	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.dyjd = 'T'")
+	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.dyjd = 'T' order by c.sqsj desc")
 	List<Contract> findYhtContract(String userId);
 	
 	/**
@@ -52,7 +52,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @return
 	 */
 //	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
-	@Query("select c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = ?2")
+	@Query("select c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = ?2 order by c.sqsj desc")
 	List<Contract> findYspContract(String userId, String cljg);
 	
 	/**
@@ -62,7 +62,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	 * @return
 	 */
 	@Query("select distinct c from Contract c, Lcrzb l where c.htshzt =  ?2 and c.sfth = 'Y' and c.id = l.clnrid "
-			+ "and l.user.id = ?1")
+			+ "and l.user.id = ?1 order by c.sqsj desc")
 	public List<Contract> findYthContract(String userId, String curCondition);
 	
 	/**

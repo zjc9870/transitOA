@@ -42,7 +42,7 @@ $(document).ready(function () {
             }
             AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
                     alert(data.message);
-                    toSqjl();
+                    if(data.success) toSqjl();
                 }
             )
         };

@@ -88,7 +88,8 @@ public class RequestUtil {
 	 */
 	public static void downloadFile(byte[] buffer, String filename, HttpServletResponse response) throws IOException {
 		response.reset();
-		response.setContentType("application/x-msdownload;");
+//		response.setContentType("application/x-msdownload;");
+		response.setContentType("application/octet-stream;");//如果用x-msdownload Safari浏览器会给下载后的文件加.exe后缀
 		response.setCharacterEncoding("utf-8");
 
 		int length = buffer.length;

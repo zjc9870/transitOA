@@ -24,6 +24,7 @@ public class ContractVo {
 	private String time;//申请时间 时间
 	private String sfth;//是否退回
 	private String sbd;//合同的大标题
+	private String spyj;//审批意见
 	private List<AttachmentVo> attachmentList;//附件Vo
 	
 	public ContractVo() {
@@ -169,6 +170,12 @@ public class ContractVo {
 	public void setSbd(String sbd) {
 		this.sbd = sbd;
 	}
-	
-	
+
+	public String getSpyj() {
+		return spyj;
+	}
+
+	public void setSpyj(String spyj) {
+		this.spyj = spyj;
+	}
 }

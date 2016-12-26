@@ -29,7 +29,7 @@ public class LcrzbVo {
 			this.userDepartmnet = lcrzb.getUser().getDepartments().iterator().next().getName();
 		this.cljg = lcrzb.getCljg();
 		this.clsj = lcrzb.getClsj() == null? "" : 
-			DateUtil.format(lcrzb.getClsj(), DateUtil.zbFormat);
+			DateUtil.format(lcrzb.getClsj(), DateUtil.fullFormat);
 		this.message = lcrzb.getMessage();//处理意见
 		this.lcjd = lcrzb.getDyjd();
 	}

@@ -64,8 +64,6 @@ public class ContractService {
 	
 	@Transactional
 	public String save(ContractVo contractVo, String[] attachmentId){
-		boolean xzFlag = false;//新增标志
-		if(StringUtil.isBlank(contractVo.getId())) xzFlag = true;
 		Contract contract = new Contract(contractVo);
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
@@ -79,16 +77,43 @@ public class ContractService {
 		}else contract.setAttachments(new ArrayList<Attachment>());
 		
 		contract = contractRepository.save(contract);
-		if(xzFlag) addXzLcrz(contract);//如果是新增就增加一条日志记录 
 		return contract.getId();
+	}
+	
+	/**
+	 * 新合同的保存
+	 * @param contractVo
+	 * @param bczl  保存种类（提交：“tj”， 保存 ： “bc”）
+	 * @param attachmentId
+	 */
+	public void newContractSave(ContractVo contractVo, String bczl, String[] attachmentId) {
+		String htfl = getHtfl();
+		contractVo.setHtfl(htfl);
+		String lcbs = lcService.getDefaultLc(htfl);
+		String condition = getNewContractCondition(bczl, lcbs);
+		contractVo.setHtshzt(condition);//合同审核状态
+		contractVo.setLcbs(lcbs);//流程标识
+		if(StringUtil.equals(bczl, "tj"))
+			contractVo.setSqsj(DateUtil.format(new Date(), DateUtil.fullFormat));
+		String id = save(contractVo, attachmentId);
+		contractVo.setId(id);
+		if(StringUtil.equals(bczl, "tj")) {
+			addXzLcrz(id, contractVo.getHtfl(), lcService.getStartCondition(lcbs));//如果是新增就增加一条日志记录 
+		}
+	}
+
+	private String getNewContractCondition(String bczl, String lcbs) {
+		String startCondition = lcService.getStartCondition(lcbs);
+		if(!StringUtil.equals(bczl, "tj")) return startCondition;
+		else return lcService.getNextCondition(lcbs, startCondition);
 	}
 	/**
 	 * 新增是增加流程日志
 	 * @param contract
 	 */
-	private void addXzLcrz(Contract contract) {
+	private void addXzLcrz(String id, String htfl, String htshzt) {
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
-		lcrzbService.save(lcrzbVo, contract.getId(), contract.getHtfl(), contract.getHtshzt());
+		lcrzbService.save(lcrzbVo, id, htfl, htshzt);
 	}
 	
 	@Transactional
@@ -162,13 +187,13 @@ public class ContractService {
 			contractList = getWtjContracts(userId, condition);
 		}
 		if(StringUtil.equals(lx, "dsp") || StringUtil.equals(lx, "dht"))//待审批 || 待回填
-			contractList = contractRepository.findByHtshzt(condition);
+			contractList = contractRepository.findByHtshztOrderBySqsjDesc(condition);
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId);
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批
-			contractList = getHtspYspList(userId);
+			return getHtspYspList(userId);
 		}
 		
 		if(contractList == null) return contractVoList;
@@ -201,13 +226,25 @@ public class ContractService {
 		return false;
 	}
 
-	private List<Contract> getHtspYspList(String userId) {
+	private List<ContractVo> getHtspYspList(String userId) {
+		List<ContractVo> contractVoList = new ArrayList<>();
 		List<Contract> contractList = contractRepository.findYspContract(userId, "不通过");
 		List<Contract> contractList2 = contractRepository.findYspContract(userId, "通过");
-		if(contractList == null || contractList.size() == 0) return contractList2;
-		if(contractList2 == null || contractList2.size() == 0) return contractList;
-		contractList.addAll(contractList2);
-		return contractList;
+		if(contractList != null && !contractList.isEmpty()){
+			for (Contract contract : contractList) {
+				ContractVo contractVo = new ContractVo(contract);
+				contractVo.setSpyj("不通过");
+				contractVoList.add(contractVo);
+			}
+		}
+		if(contractList2 != null && !contractList2.isEmpty()){
+			for (Contract contract : contractList2) {
+				ContractVo contractVo = new ContractVo(contract);
+				contractVo.setSpyj("通过");
+				contractVoList.add(contractVo);
+			}
+		}
+		return contractVoList;
 	}
 	
 	/**
@@ -217,8 +254,8 @@ public class ContractService {
 	 */
 	public List<ContractVo> getSqjlYspList(String userId){
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
-		List<Contract> yspList = contractRepository.findByNhtr_idAndHtshzt(userId, "Y");
-		List<Contract> yhtList = contractRepository.findByNhtr_idAndHtshzt(userId, "T");
+		List<Contract> yspList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, "Y");
+		List<Contract> yhtList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, "T");
 		if(yspList != null){
 			for (Contract contract1 : yspList) {
 				ContractVo contractVo = new ContractVo(contract1);
@@ -261,7 +298,7 @@ public class ContractService {
 	 */
 	private List<Contract> getWtjContracts(String userId, String condition){
 		List<Contract> ythContractList = contractRepository.findYthContract(userId, condition);//已退回合同
-		List<Contract> contractList = contractRepository.findByNhtr_idAndHtshzt(userId, condition);
+		List<Contract> contractList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, condition);
 		List<Contract> result = new ArrayList<Contract>();
 		if(ythContractList == null || ythContractList.size() == 0) return contractList;
 		Map<String, Contract> ythContractMap = new HashMap<String, Contract>();
