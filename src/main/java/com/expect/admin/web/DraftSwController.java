@@ -14,14 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.expect.admin.data.dataobject.DraftSw;
-import com.expect.admin.service.AttachmentService;
-import com.expect.admin.service.ContractService;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.LcService;
-import com.expect.admin.service.LcrzbService;
-import com.expect.admin.service.RoleJdgxbGxbService;
-import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.ResponseBuilder;
@@ -35,15 +29,7 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	@Autowired
 	private DraftSwService draftSwService;
 	@Autowired
-	private LcrzbService lcrzbService;
-	@Autowired
 	private  LcService lcService;
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private RoleJdgxbGxbService roleJdgxbGxbService;
-	@Autowired
-	private AttachmentService attachmentService;
 	
 	private final String viewName = "admin/draftSw/";
 	
@@ -55,11 +41,10 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
 			return;
 		}
-		String lcbs = lcService.getDefaultLc("收文流程");
 		String startCondition = lcService.getStartCondition("收文流程");
 		String condition;
 		if(StringUtil.equals(bczl, "tj")){
-			condition = lcService.getNextCondition(lcbs, startCondition);
+			condition = lcService.getNextCondition("4", startCondition);
 		}else condition = startCondition;
 		draftSwVo.setZt(condition);
 		draftSwService.save(draftSwVo);
@@ -76,6 +61,9 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 		}
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(id);
 		draftSwVo.setLdps(ldps);
+		String currentCondition = draftSwVo.getZt();
+		String condition = lcService.getNextCondition("4", currentCondition);
+		draftSwVo.setZt(condition);
 		draftSwService.update(draftSwVo);
 		return;
 	}
@@ -93,9 +81,8 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	@RequestMapping(value = "/addPyr" , method = RequestMethod.POST)
 	public void addPyr(DraftSwVo draftSwVo,@RequestParam(name = "userIdList", required = true)List<String> pyrIdList,HttpServletResponse response){
 		
-		String lcbs = lcService.getDefaultLc("收文流程");
 		String currentCondition = draftSwVo.getZt();
-		String condition = lcService.getNextCondition(lcbs, currentCondition);
+		String condition = lcService.getNextCondition("4", currentCondition);
 		draftSwVo.setZt(condition);
 		draftSwService.addPyr(pyrIdList, draftSwVo);
 	}
@@ -103,9 +90,8 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	//添加办理人
 	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
 	public void addBlr(DraftSwVo draftSwVo,@RequestParam(name = "userId", required = true)String blrId ,HttpServletResponse response){
-		String lcbs = lcService.getDefaultLc("收文流程");
 		String currentCondition = draftSwVo.getZt();
-		String condition = lcService.getNextCondition(lcbs, currentCondition);
+		String condition = lcService.getNextCondition("4", currentCondition);
 		draftSwVo.setZt(condition);
 		draftSwService.addBlr(blrId, draftSwVo);
 	}
@@ -114,9 +100,8 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	@RequestMapping(value = "/py" , method = RequestMethod.POST)
 	public void py(DraftSwVo draftSwVo,@RequestParam(name = "userId" , required = true)String pyrId , HttpServletResponse response){
 		if(draftSwService.py(draftSwVo.getId(), pyrId)){
-			String lcbs = lcService.getDefaultLc("收文流程");
 			String currentCondition = draftSwVo.getZt();
-			String condition = lcService.getNextCondition(lcbs, currentCondition);
+			String condition = lcService.getNextCondition("4", currentCondition);
 			draftSwVo.setZt(condition);
 			draftSwService.update(draftSwVo);
 		}
@@ -125,9 +110,8 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	//办理
 	@RequestMapping(value = "/bl", method = RequestMethod.POST)
 	public void bl(DraftSwVo draftSwVo,@RequestParam(name = "blqk", required = true)String blqk, HttpServletResponse response){
-		String lcbs = lcService.getDefaultLc("收文流程");
 		String currentCondition = draftSwVo.getZt();
-		String condition = lcService.getNextCondition(lcbs, currentCondition);
+		String condition = lcService.getNextCondition("4", currentCondition);
 		draftSwVo.setZt(condition);
 		draftSwVo.setBlqk(blqk);
 		draftSwService.update(draftSwVo);
@@ -137,12 +121,10 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	@RequestMapping(value = "/fh" , method = RequestMethod.POST)
 	public void fh(DraftSwVo draftSwVo,@RequestParam(name = "nextStep", required = true)String nextStep, HttpServletResponse response){
 		if(nextStep.equals("fh")){
-			String lcbs = lcService.getDefaultLc("收文流程");
-			String condition = lcService.getJd(lcbs, "选择传阅人");
+			String condition = lcService.getJd("4", "选择传阅人");
 			draftSwVo.setZt(condition);
 		}else if(nextStep.equals("js")){
-			String lcbs = lcService.getDefaultLc("收文流程");
-			String condition = lcService.getNextCondition(lcbs, draftSwVo.getZt());
+			String condition = "Y";
 			draftSwVo.setZt(condition);
 		}
 		
