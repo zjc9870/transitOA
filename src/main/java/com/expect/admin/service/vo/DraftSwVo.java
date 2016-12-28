@@ -26,7 +26,7 @@ public class DraftSwVo {
 		this.bz = draftSw.getBz();
 		this.lwdw = draftSw.getLwdw();
 		if(draftSw.getRq() != null)
-			this.rq = DateUtil.format(draftSw.getRq(), DateUtil.webFormat);
+			this.rq = DateUtil.format(draftSw.getRq(), DateUtil.zbFormat);
 		this.swr = draftSw.getSwr().getFullName();
 		this.wh = draftSw.getWh();
 		this.wjbt = draftSw.getWjbt();

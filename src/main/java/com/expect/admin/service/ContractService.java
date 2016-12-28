@@ -31,6 +31,7 @@ import com.expect.admin.data.dataobject.Attachment;
 import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.Lcjdb;
+import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
@@ -91,7 +92,7 @@ public class ContractService {
 	public void newContractSave(ContractVo contractVo, String bczl, String[] attachmentId) {
 		String htfl = getHtfl();
 		contractVo.setHtfl(htfl);
-		String lcbs = lcService.getDefaultLc(htfl);
+		String lcbs = htfl;
 		String condition = getNewContractCondition(bczl, lcbs);
 		contractVo.setHtshzt(condition);//合同审核状态
 		contractVo.setLcbs(lcbs);//流程标识
@@ -138,7 +139,7 @@ public class ContractService {
 		Contract contract = contractRepository.findOne(contractId);
 		if(contract == null) throw new BaseAppException("id为 "+contractId+"的合同没有找到");
 		ContractVo contractVo = new ContractVo(contract);//合同的基本信息
-		List<LcrzbVo> lcrzbVoList = lcrzbService.getKxsLcrzbVoList(contractId);
+		List<LcrzbVo> lcrzbVoList = lcrzbService.convert(contract.getLcrzSet());
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		for (LcrzbVo lcrzbVo : lcrzbVoList) {
 			if(!StringUtil.isBlank(lcrzbVo.getLcjd())){
@@ -241,29 +242,57 @@ public class ContractService {
 		return false;
 	}
 
+	/**
+	 * @param userId
+	 * @return
+	 */
 	private List<ContractVo> getHtspYspList(String userId) {
 		List<ContractVo> contractVoList = new ArrayList<>();
-		List<Contract> contractList = contractRepository.findYspContract(userId, "不通过");
-		List<Contract> contractList2 = contractRepository.findYspContract(userId, "通过");
+		List<Contract> contractList = contractRepository.findYspContract(userId);
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		if(contractList != null && !contractList.isEmpty()){
 			for (Contract contract : contractList) {
+				Set<Lcrzb> lcrzbList = contract.getLcrzSet();
+				
 				ContractVo contractVo = new ContractVo(contract);
-				contractVo.setSpyj("不通过");
+				setSpjg(userId, lcrzbList, contractVo);
 				convertHtshzt(lcjdbMap, contractVo);
 				contractVoList.add(contractVo);
 			}
 		}
-		if(contractList2 != null && !contractList2.isEmpty()){
-			for (Contract contract : contractList2) {
-				ContractVo contractVo = new ContractVo(contract);
-				contractVo.setSpyj("通过");
-				convertHtshzt(lcjdbMap, contractVo);
-				contractVoList.add(contractVo);
-			}
-		}
-		sortContractVoListBySqsjDesc(contractVoList);
+//		sortContractVoListBySqsjDesc(contractVoList);
 		return contractVoList;
+	}
+
+	/**
+	 * 设置某人已审批合同的审批意见（某人对合同的最后一次的审批结果）
+	 * @param userId
+	 * @param lcrzbList
+	 * @param lcrzbListOfUser
+	 * @param contractVo
+	 */
+	private void setSpjg(String userId, Set<Lcrzb> lcrzbList, ContractVo contractVo) {
+		List<Lcrzb> lcrzbListOfUser = new ArrayList<>();
+		if(lcrzbList != null && !lcrzbList.isEmpty()){
+			for (Lcrzb lcrzb : lcrzbList) {
+				if(StringUtil.equals(lcrzb.getUser().getId(), userId))
+					lcrzbListOfUser.add(lcrzb);
+			}
+		}
+		if(!lcrzbListOfUser.isEmpty()){
+			Collections.sort(lcrzbListOfUser, new Comparator<Lcrzb>() {
+				@Override
+				public int compare(Lcrzb c1, Lcrzb c2) {
+					if(c1.getClsj() == null) return -1;
+					if(c2.getClsj() == null) return 1;
+					long dif = DateUtil.getDiffSeconds(c1.getClsj(), c2.getClsj());
+					return (dif > 0) ? -1 : 
+						((dif < 0) ? 1 : 0);
+				}
+			});
+			Lcrzb lastLcrz = lcrzbListOfUser.get(0);
+			contractVo.setSpyj(lastLcrz.getCljg());
+		}else contractVo.setSpyj("");
 	}
 
 	/**
@@ -277,7 +306,7 @@ public class ContractService {
 		else contractVo.setHtshzt("");
 	}
 
-	private void sortContractVoListBySqsjDesc(List<ContractVo> contractVoList) {
+	/*private void sortContractVoListBySqsjDesc(List<ContractVo> contractVoList) {
 		Collections.sort(contractVoList, new Comparator<ContractVo>() {
 
 			@Override
@@ -287,11 +316,11 @@ public class ContractService {
 				Date d1 = DateUtil.parse(c1.getSqsj(), DateUtil.fullFormat);
 				Date d2 = DateUtil.parse(c2.getSqsj(), DateUtil.fullFormat);
 				long dif = DateUtil.getDiffSeconds(d1, d2);
-				return (dif > 0) ? 1 : 
-					((dif < 0) ? -1 : 0);
+				return (dif > 0) ? -1 : 
+					((dif < 0) ? 1 : 0);
 			}
 		});
-	}
+	}*/
 	
 	/**
 	 * 申请记录界面已审批合同

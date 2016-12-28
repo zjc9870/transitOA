@@ -1,6 +1,7 @@
 package com.expect.admin.data.dataobject;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -42,7 +42,7 @@ public class Contract {
 	private String sfth;//是否退回（Y 是退回， N不是退回）
 	private List<Attachment> attachments;//附件
 	private String sbd;//申办单名称
-//	private Lcrzb lcrz;//流程日志
+	private Set<Lcrzb> lcrzSet = new HashSet<>();//流程日志
 //	private Department department;//合同所属部门
 	
 	public Contract() {
@@ -182,7 +182,8 @@ public class Contract {
 	}
 
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinTable(name = "s_contract_attachment", joinColumns = @JoinColumn(name = "contract_id"), inverseJoinColumns = @JoinColumn(name = "attachment_id"))
+	@JoinTable(name = "s_contract_attachment", joinColumns = @JoinColumn(name = "contract_id"), 
+	inverseJoinColumns = @JoinColumn(name = "attachment_id"))
 	public List<Attachment> getAttachments() {
 		return attachments;
 	}
@@ -200,14 +201,17 @@ public class Contract {
 		this.sbd = sbd;
 	}
 
-//	@OneToMany
-//	public Lcrzb getLcrz() {
-//		return lcrz;
-//	}
-//
-//	public void setLcrz(Lcrzb lcrz) {
-//		this.lcrz = lcrz;
-//	}
+
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@JoinTable(name = "s_contract_lcrzb", joinColumns = @JoinColumn(name = "contract_id"),
+	inverseJoinColumns = @JoinColumn(name = "lcrzb_id"))
+	public Set<Lcrzb> getLcrzSet() {
+		return lcrzSet;
+	}
+
+	public void setLcrzSet(Set<Lcrzb> lcrzSet) {
+		this.lcrzSet = lcrzSet;
+	}
 	
 
 //	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

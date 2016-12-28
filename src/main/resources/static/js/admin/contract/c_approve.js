@@ -76,7 +76,7 @@ function init() {
 	}, {
 		"searchable" : false,
 		"targets" : [ 5 ]
-	}], [ [ 1, "asc" ] ]);
+	}], [ [ 1, "desc" ] ]);
 }
 
 jQuery(document).ready(function() {

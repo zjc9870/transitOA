@@ -1,22 +1,28 @@
 package com.expect.admin.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdgxbRepository;
 import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.UserRepository;
+import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.Lcjdgxb;
 import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.service.vo.LcrzbVo;
 import com.expect.admin.service.vo.UserVo;
+import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 
 /**
@@ -35,6 +41,8 @@ public class LcrzbService {
 	private UserService userService;
 	@Autowired
 	private LcjdgxbRepository lcjdgxbRepository;
+	@Autowired
+	private ContractRepository contractRepository;
 	
 	/**
 	 * 获取某个文件的所有可显示的审批记录（sfxs）
@@ -49,6 +57,34 @@ public class LcrzbService {
 			if(StringUtil.equals(lcrzb.getDyjd(), "T")) continue;
 			lcrzbVoList.add(new LcrzbVo(lcrzb));
 		}
+		return lcrzbVoList;	
+	}
+	
+	/**
+	 * 转换
+	 * @param lcrzbList
+	 * @return
+	 */
+	public List<LcrzbVo> convert(Set<Lcrzb> lcrzbList) {
+		List<LcrzbVo> lcrzbVoList = new ArrayList<LcrzbVo>();
+		if(lcrzbList == null || lcrzbList.size() == 0) return lcrzbVoList;
+		for (Lcrzb lcrzb : lcrzbList) {
+			if(StringUtil.equals(lcrzb.getDyjd(), "T")) continue;
+			lcrzbVoList.add(new LcrzbVo(lcrzb));
+		}
+		Collections.sort(lcrzbVoList, new Comparator<LcrzbVo>() {
+
+			@Override
+			public int compare(LcrzbVo c1, LcrzbVo c2) {
+				if(StringUtil.isBlank(c1.getClsj())) return -1;
+				if(StringUtil.isBlank(c2.getClsj())) return 1;
+				Date d1 = DateUtil.parse(c1.getClsj(), DateUtil.fullFormat);
+				Date d2 = DateUtil.parse(c2.getClsj(), DateUtil.fullFormat);
+				long dif = DateUtil.getDiffSeconds(d1, d2);
+				return (dif > 0) ? 1 : 
+					((dif < 0) ? -1 : 0);
+			}
+		});
 		return lcrzbVoList;	
 	}
 	
@@ -91,7 +127,10 @@ public class LcrzbService {
 			lcrzb.setSfxs("Y");
 		}
 		
-		lcrzbRepository.save(lcrzbList);
+		List<Lcrzb> lcrzbL = lcrzbRepository.save(lcrzbList);
+		Contract contract = contractRepository.findOne(id);
+		contract.getLcrzSet().addAll(lcrzbL);
+		contractRepository.save(contract);
 	}
 	
 	/**
@@ -111,6 +150,9 @@ public class LcrzbService {
 			lcrzb.setSfxs("N");
 		}else lcrzb.setSfxs("Y");
 		lcrzb = lcrzbRepository.save(lcrzb);
+		
+		Contract contract = contractRepository.findOne(clnrid);
+		contract.getLcrzSet().add(lcrzb);
 	}
 	
 	

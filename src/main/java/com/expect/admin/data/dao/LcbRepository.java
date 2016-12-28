@@ -6,5 +6,4 @@ import com.expect.admin.data.dataobject.Lcb;
 
 public interface LcbRepository extends JpaRepository<Lcb, String> {
 
-	
 }

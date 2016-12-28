@@ -90,7 +90,7 @@ function init() {//dataTable初始化
 	}, {
 		"searchable" : false,
 		"targets" : [ 3 ]
-	}], [ [ 1, "asc" ] ]);
+	}], [ [ 1, "desc" ] ]);
 }
 
 jQuery(document).ready(function() {

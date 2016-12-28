@@ -102,9 +102,9 @@ public class ContractController {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
-		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-				condition.getJdId(), lx);
-		modelAndView.addObject("contractVoList", contractVoList);
+//		List<ContractVo> contractVoList = ;
+		modelAndView.addObject("contractVoList", 
+				contractService.getContractByUserIdAndCondition(userVo.getId(), condition.getJdId(), lx));
 		return modelAndView;
 	}
 	/**
@@ -120,18 +120,24 @@ public class ContractController {
 		try{
 			UserVo userVo = userService.getLoginUser();
 			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
+			
+			//申请记录的已审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "ysp")){
 				contractVoList = contractService.getSqjlYspList(userVo.getId());
 				MyResponseBuilder.writeJsonResponse(response, 
 						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 				return;
 			}
+			
+			//申请记录的待审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "dsp")){
 				contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
 				MyResponseBuilder.writeJsonResponse(response, 
 						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 				return;
 			}
+			
+			//已回填
 			if(StringUtil.equals(lx, "yht")) {
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 						"T", lx);
@@ -147,6 +153,7 @@ public class ContractController {
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 		
 	}
+	
 	/**
 	 * 合同审批
 	 */
@@ -157,13 +164,12 @@ public class ContractController {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
 		if(condition == null) return modelAndView;
-		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-				condition.getJdId(), lx);
-		//
 		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
 		modelAndView.addObject("role", roleVo.getName());
 //		List<ContractVo> contractVoList = new ArrayList<>();
-		modelAndView.addObject("contractVoList", contractVoList);
+		modelAndView.addObject("contractVoList", 
+				contractService.getContractByUserIdAndCondition(userVo.getId(),
+						condition.getJdId(), lx));
 		return modelAndView;
 	}
 	
@@ -177,9 +183,9 @@ public class ContractController {
 		if(StringUtil.isBlank(lx)) lx = "dht";
 		UserVo userVo = userService.getLoginUser();
 //		FunctionJdgxbGxbVo functionJdgxbGxbVo = functionJdgxbGxbService.getByFunctionName("编号回填");
-		List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-			"Y",lx);
-		modelAndView.addObject("contractVoList", contractVoList);
+		modelAndView.addObject("contractVoList", 
+				contractService.getContractByUserIdAndCondition(userVo.getId(),
+						"Y",lx));
 		return modelAndView;
 	}
 	
@@ -276,14 +282,6 @@ public class ContractController {
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "更新合同内容失败！").build());
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "更新合同内容成功！").build());
-	}
-	
-	@RequestMapping(value = "/getContract", method = RequestMethod.POST)
-	public ModelAndView getContract(@RequestParam(name = "id", required = true)String contractId){
-		ModelAndView mv = new ModelAndView(viewName + "contractForm");
-		ContractVo contractVo = contractService.getContractById(contractId);
-		mv.addObject("contractVo", contractVo);
-		return mv;
 	}
 	
 	/**
