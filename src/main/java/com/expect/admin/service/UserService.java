@@ -30,6 +30,7 @@ import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.LogLogin;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
+import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
@@ -87,7 +88,8 @@ public class UserService implements UserDetailsService {
 
 	public List<UserVo> getUserBySsgsId(String ssgsId) {
 		List<User> userList;
-		if(StringUtil.isBlank(ssgsId)) return getAllUsers();
+		if(StringUtil.isBlank(ssgsId)) throw new BaseAppException("获取某公司部门时公司id为空"); 
+		if(StringUtil.equals(ssgsId, "super")) return getAllUsers();
 		else userList = userRepository.findBySsgs_id(ssgsId);
 		if(userList == null || userList.isEmpty()) return new ArrayList<>();
 		return UserConvertor.convert(userList);

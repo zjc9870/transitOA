@@ -76,13 +76,15 @@ public class RoleService {
 	/**
 	 * 根据管理员的所属公司获取某公司的角色列表
 	 * 超级管理员获取所有公司的所有角色
-	 * @param ssgs 所属公司（"zgs" : 总公司， super ：超级管理员）
+	 * @param ssgs 所属公司（ "super" ：超级管理员）
 	 * @return
 	 */
 	public List<RoleVo> getRolesLoginUser(String ssgs) {
-		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司角色是公司id为空");
+		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司角色时公司id为空");
+		List<Role> roles;
+		if(StringUtil.equals(ssgs, "super")) roles = roleRepository.findAll();
 //		departmentRepository.findOne(ssgs);
-		List<Role> roles = roleRepository.findBySsgs_id(ssgs);
+		else roles = roleRepository.findBySsgs_id(ssgs);
 		if(roles == null || roles.isEmpty()) return new ArrayList<>();
 		return RoleConvertor.convert(roles);
 	}

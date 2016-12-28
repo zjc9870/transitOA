@@ -14,6 +14,7 @@ import com.expect.admin.data.dao.DepartmentRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.User;
+import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.DepartmentConvertor;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.DepartmentVo;
@@ -53,8 +54,8 @@ public class DepartmentService {
 	 * @return
 	 */
 	public List<DepartmentVo> getGsDepartmentsBySsgs(String ssgs) {
-		if(StringUtil.isBlank(ssgs)) 
-			return getDepartments();
+		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司部门时公司id为空");
+		if(StringUtil.equals(ssgs, "super")) return getDepartments();
 		List<Department> departmentList = departmentRepository.findByParentDepartmentId(ssgs);
 		if(departmentList == null || departmentList.isEmpty()) return new ArrayList<>();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departmentList);
