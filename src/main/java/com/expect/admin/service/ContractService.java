@@ -1,6 +1,8 @@
 package com.expect.admin.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -179,10 +181,9 @@ public class ContractService {
 	 * @return
 	 */
 	public List<ContractVo> getContractByUserIdAndCondition(String userId, String condition, String lx) {
-		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = null;
 		
-		if(StringUtil.isBlank(condition)) return contractVoList;
+		if(StringUtil.isBlank(condition)) return new ArrayList<>();
 		if(StringUtil.equals(lx, "wtj")){//未提交
 			contractList = getWtjContracts(userId, condition);
 		}
@@ -192,12 +193,26 @@ public class ContractService {
 			contractList = contractRepository.findYhtContract(userId);
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
-		if(StringUtil.equals(lx, "ysp")){ //已审批
+		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
 			return getHtspYspList(userId);
 		}
 		
+		return filter(userId, condition, contractList);
+	}
+
+	/**
+	 * 对数据进行过滤，并设置合同的状态
+	 * 1.过滤掉已经被标记为删除的合同
+	 * 2.如果是部门内部审批时过滤掉其他部门的合同
+	 * @param userId
+	 * @param condition
+	 * @param contractList
+	 * @return
+	 */
+	private List<ContractVo> filter(String userId, String condition, List<Contract> contractList) {
+		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		if(contractList == null) return contractVoList;
-//		Map<String, String> lcjdbMap = getAllLcjdMapping();
+		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		Lcjdb lcjd = lcjdbRepository.findOne(condition);
 		User user = userRepository.findOne(userId);
 		for (Contract contract : contractList) {
@@ -206,8 +221,8 @@ public class ContractService {
 					if(!sfsybm(contract.getNhtr().getDepartments().iterator().next(), 
 							user.getDepartments())) continue;
 			ContractVo contractVo = new ContractVo(contract);
-//			if(!StringUtil.isBlank(contract.getHtshzt())) 
-//				contractVo.setHtshzt(lcjdbMap.get(contract.getHtshzt()));
+			
+			convertHtshzt(lcjdbMap, contractVo);
 			contractVoList.add(contractVo);
 		}
 		return contractVoList;
@@ -230,10 +245,12 @@ public class ContractService {
 		List<ContractVo> contractVoList = new ArrayList<>();
 		List<Contract> contractList = contractRepository.findYspContract(userId, "不通过");
 		List<Contract> contractList2 = contractRepository.findYspContract(userId, "通过");
+		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		if(contractList != null && !contractList.isEmpty()){
 			for (Contract contract : contractList) {
 				ContractVo contractVo = new ContractVo(contract);
 				contractVo.setSpyj("不通过");
+				convertHtshzt(lcjdbMap, contractVo);
 				contractVoList.add(contractVo);
 			}
 		}
@@ -241,10 +258,39 @@ public class ContractService {
 			for (Contract contract : contractList2) {
 				ContractVo contractVo = new ContractVo(contract);
 				contractVo.setSpyj("通过");
+				convertHtshzt(lcjdbMap, contractVo);
 				contractVoList.add(contractVo);
 			}
 		}
+		sortContractVoListBySqsjDesc(contractVoList);
 		return contractVoList;
+	}
+
+	/**
+	 * 合同审核状态由代码转换为对应汉字
+	 * @param lcjdbMap
+	 * @param contractVo
+	 */
+	private void convertHtshzt(Map<String, String> lcjdbMap, ContractVo contractVo) {
+		if(!StringUtil.isBlank(contractVo.getHtshzt())) 
+			contractVo.setHtshzt(lcjdbMap.get(contractVo.getHtshzt()));
+		else contractVo.setHtshzt("");
+	}
+
+	private void sortContractVoListBySqsjDesc(List<ContractVo> contractVoList) {
+		Collections.sort(contractVoList, new Comparator<ContractVo>() {
+
+			@Override
+			public int compare(ContractVo c1, ContractVo c2) {
+				if(StringUtil.isBlank(c1.getSqsj())) return -1;
+				if(StringUtil.isBlank(c2.getSqsj())) return 1;
+				Date d1 = DateUtil.parse(c1.getSqsj(), DateUtil.fullFormat);
+				Date d2 = DateUtil.parse(c2.getSqsj(), DateUtil.fullFormat);
+				long dif = DateUtil.getDiffSeconds(d1, d2);
+				return (dif > 0) ? 1 : 
+					((dif < 0) ? -1 : 0);
+			}
+		});
 	}
 	
 	/**
@@ -321,17 +367,20 @@ public class ContractService {
 	 */
 	@Transactional
 	public void saveContractLcrz(String cljg, String message, String clnrid, String clnrfl) {
-		String nextCondition;
-		String sfth = "N";//合同是否被退回
 		ContractVo contractVo = getContractById(clnrid);
-		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, contractVo.getHtshzt());
-		if(StringUtil.equals(cljg, "不通过")){
+		String nextCondition;//合同的下一个状态，根据是否被退回确定
+		String curCondition = contractVo.getHtshzt();
+		String sfth = "N";//合同是否被退回
+		//添加流程日志
+		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, curCondition);
+		//处理意见是“不通过”，并且不是法务审核就是退回
+		if(StringUtil.equals(cljg, "不通过") && !StringUtil.equals(curCondition, "3")){
 			sfth = "Y";
-			nextCondition = lcService.getThCondition(contractVo.getLcbs(), contractVo.getHtshzt());
+			nextCondition = lcService.getThCondition(contractVo.getLcbs(), curCondition);
 			lcrzbService.setLcrzSfxs(clnrid, contractVo.getLcbs(), nextCondition);
 		}else{
 			//修改合同状态
-			nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
+			nextCondition = lcService.getNextCondition(contractVo.getLcbs(), curCondition);
 		}
 		
 		if(!StringUtil.isBlank(nextCondition)){
@@ -407,6 +456,8 @@ public class ContractService {
 		for (Lcjdb lcjdb : lcjdbList3) {
 			resultMap.put(lcjdb.getId(), lcjdb.getName());
 		}
+		resultMap.put("T", "已回填");
+		resultMap.put("Y", "审核完成");
 		return resultMap;
 	}
 	

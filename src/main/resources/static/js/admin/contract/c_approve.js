@@ -12,7 +12,9 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         str += "<td>"+cons[i].userName+"</td>";
-                        str += "<td>"+cons[i].spyj +"</td>";
+                        if(cons[i].spyj == null || cons[i].spyj == undefined)
+                        	str += "<td>-</td>";
+                        else str += "<td>"+cons[i].spyj +"</td>";
                         switch (tabId) {
                             case "dsp":
                                 str += "<td>待审批</td>";
@@ -24,13 +26,16 @@ for(var i=0; i<tabs.length; i++) {
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                             default:
-                                str += "<td>已审批</td>";
+                                str += "<td><div>"+cons[i].htshzt+"</div></td>";
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                         }
                         str += "</tr>";
                     }
+                    var mTable = $('#c-approve-table').DataTable();
+                    mTable.destroy();
                     $('#c-approve-tbody').html(str);
+                    init();
                 }
             }
         );
@@ -63,3 +68,17 @@ function pass(id) {
         window.location.reload();
     });
 }
+
+function init() {
+	mTable=DatatableTool.initDatatable("c-approve-table", [ {
+		'orderable' : false,
+		'targets' : [ 5 ]
+	}, {
+		"searchable" : false,
+		"targets" : [ 5 ]
+	}], [ [ 1, "asc" ] ]);
+}
+
+jQuery(document).ready(function() {
+	init();
+});

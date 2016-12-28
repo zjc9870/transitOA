@@ -49,16 +49,22 @@
             <th:block th:if='${not #lists.isEmpty(contractVo.lcrzList)}'>
                 <ul th:each="lcrz : ${contractVo.lcrzList}">
                     <th:block>
-                        <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
-                            <th:block th:if="${lcrz.cljg=='通过'}">
-                                <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                     class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
-                            </th:block>
-                            <th:block th:if="${lcrz.cljg=='不通过'}">
-                                <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                     class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
-                            </th:block>
-                        </li>
+                         <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+	                        <th:block th:if="${lcrz.cljg=='通过'}">
+	                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+	                             class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+	                        </th:block>
+	                        <th:block th:if="${lcrz.cljg=='不通过'}">
+	                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+	                            +'&#10;处理时间:'+ lcrz.clsj}"
+	                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+	                        </th:block>
+	                        <th:block th:if="${lcrz.cljg=='新增'}">
+	                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+	                            +'&#10;处理时间:'+ lcrz.clsj}"
+	                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+	                        </th:block>
+                    	</li>
                     </th:block>
                     <!--<li><div class="process-title">集团专员发起</div></li>-->
                     <!--<li><div class="process-title">负责人</div><div class="process-content-pass">通过</div></li>-->

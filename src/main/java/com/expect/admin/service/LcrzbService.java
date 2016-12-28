@@ -101,13 +101,13 @@ public class LcrzbService {
 	 * @param clnrfl “东西”的分类
 	 * @param cunCondition 此条记录关联的流程节点
 	 */
-	public void save(LcrzbVo lcrzbVo, String clnrid, String clnrfl, String cunCondition) {
+	public void save(LcrzbVo lcrzbVo, String clnrid, String clnrfl, String curCondition) {
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
 		
 		Lcrzb lcrzb = new Lcrzb(lcrzbVo, user, clnrid, clnrfl);
-		lcrzb.setDyjd(cunCondition);
-		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过")){
+		lcrzb.setDyjd(curCondition);
+		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过") && !StringUtil.equals(curCondition, "3")){
 			lcrzb.setSfxs("N");
 		}else lcrzb.setSfxs("Y");
 		lcrzb = lcrzbRepository.save(lcrzb);

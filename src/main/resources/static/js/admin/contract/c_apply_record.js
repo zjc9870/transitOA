@@ -23,7 +23,7 @@ for(var i=0; i<tabs.length; i++) {
                                 str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
                                 break;
                             case "ysp":
-                                str += "<td>已审批</td>";
+                                str += "<td><div>"+cons[i].htshzt+"</div></td>";
                                 str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
                                 break;
                             case "yth":
@@ -35,7 +35,11 @@ for(var i=0; i<tabs.length; i++) {
                         }
                         str += "</tr>";
                     }
+//                    mTable.fnClearTable();
+                    var mTable = $('#c-apply-record-table').DataTable();
+                    mTable.destroy();
                     $('#c-approve-tbody').html(str);
+                    init();
                 }
             }
         );
@@ -78,4 +82,18 @@ function deleteWtjCon(id) {
         window.location.reload();
     })
 }
+
+function init() {//dataTable初始化
+	mTable=DatatableTool.initDatatable("c-apply-record-table", [ {
+		'orderable' : false,
+		'targets' : [ 3 ]
+	}, {
+		"searchable" : false,
+		"targets" : [ 3 ]
+	}], [ [ 1, "asc" ] ]);
+}
+
+jQuery(document).ready(function() {
+	init();
+});
 
