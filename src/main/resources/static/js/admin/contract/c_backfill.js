@@ -18,7 +18,10 @@ for(var i=0; i<tabs.length; i++) {
                             "<div onclick='print(\""+cons[i].id+"\")'>打印</div></td>";
                         str += "</tr>";
                     }
+                    var mTable = $('#c-backfill-table').DataTable();
+                    mTable.destroy();
                     $('#c-approve-tbody').html(str);
+                    init();
                 }
             }
         );
@@ -42,8 +45,18 @@ function backfillDetail(id,bh) {
 
 function print(id) {
 	window.location = "/wjsc?xgdm=jtht&xgid=" +id; 
-//    AjaxTool.post('/wjsc',{
-//        xgdm:'jtht', xgid:id},function () {
-//        alert('下载成功');
-//    })
 }
+
+function init() {
+	mTable=DatatableTool.initDatatable("c-backfill-table", [ {
+		'orderable' : false,
+		'targets' : [ 5 ]
+	}, {
+		"searchable" : false,
+		"targets" : [ 5 ]
+	}], [ [ 1, "desc" ] ]);
+}
+
+jQuery(document).ready(function() {
+	init();
+});

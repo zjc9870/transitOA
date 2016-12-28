@@ -47,8 +47,13 @@ public class ContractVo {
 		if(contract.getSqsj() != null){
 			this.date = DateUtil.format(contract.getSqsj(), DateUtil.zbFormat);
 			this.time = DateUtil.format(contract.getSqsj(), DateUtil.timeFormat);
+			this.sqsj = DateUtil.format(contract.getSqsj(), DateUtil.fullFormat);
 		}
-		else this.sqsj = "";
+		else {
+			this.sqsj = "";
+			this.date = "";
+			this.time = "";
+		}
 		if(StringUtil.isBlank(contract.getSbd()))
 			this.sbd = "";
 		else this.sbd = contract.getSbd();

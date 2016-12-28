@@ -26,6 +26,7 @@ public class JthtFactory implements WordXmlFactory {
 		ContractVo contractVo = contractService.getContractById(wjid);
 		if(contractVo == null) return null;
 		Map<String,Object> dataMap = new HashMap<String,Object>() ;
+		dataMap.put("sbd", contractVo.getSbd());
 		dataMap.put("htbt", contractVo.getHtbt());
 		dataMap.put("bh", contractVo.getBh());
 		dataMap.put("htnr", contractVo.getHtnr());
@@ -33,12 +34,12 @@ public class JthtFactory implements WordXmlFactory {
 		dataMap.put("nqdrq", contractVo.getNqdrq());
 		dataMap.put("qx", contractVo.getQx());
 		
-		dataMap.put("bmsh", "同意");
-		dataMap.put("bmfzrsh", "同意");
-		dataMap.put("fwshyj", "同意");
-		dataMap.put("zcglbyj", "同意");
-		dataMap.put("fgfzryj", "同意");
-		dataMap.put("fzryj", "同意");
+		dataMap.put("bmshjg", "同意");
+		dataMap.put("bmfzrshjg", "同意");
+		dataMap.put("fwshjg", "同意");
+		dataMap.put("zcglbshjg", "同意");
+		dataMap.put("fgfzrshjg", "同意");
+		dataMap.put("fzrshjg", "同意");
 		
 		byte[] content =  WordXmlUtil.create(dataMap, TEMPLATE_NAME) ;
 		return content;
