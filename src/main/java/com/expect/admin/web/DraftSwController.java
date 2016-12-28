@@ -2,9 +2,7 @@ package com.expect.admin.web;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.LcService;
 import com.expect.admin.service.vo.DraftSwVo;
@@ -129,6 +126,78 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 		}
 		
 		draftSwService.save(draftSwVo);
+	}
+	
+	/**
+	 * 上级来文
+	 * @return
+	 */
+	@RequestMapping(value = "/addSw", method = RequestMethod.GET)
+	public ModelAndView addSw() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_incoming");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
+	}
+	
+	/**
+	 * 收文记录
+	 * @return
+	 */
+	@RequestMapping(value = "/swRecord", method = RequestMethod.GET)
+	public ModelAndView swRecord() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_records");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
+	}
+	
+	/**
+	 * 收文批示
+	 * @return
+	 */
+	@RequestMapping(value = "/swPs", method = RequestMethod.GET)
+	public ModelAndView swPs() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_instructions");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
+	}
+	
+	/**
+	 * 收文传阅
+	 * @return
+	 */
+	@RequestMapping(value = "/swCy", method = RequestMethod.GET)
+	public ModelAndView swCy() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_circulate");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
+	}
+	
+	/**
+	 * 收文办理
+	 * @return
+	 */
+	@RequestMapping(value = "/swBl", method = RequestMethod.GET)
+	public ModelAndView swBl() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_handle");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
+	}
+	
+	/**
+	 * 收文查询
+	 * @return
+	 */
+	@RequestMapping(value = "/swCx", method = RequestMethod.GET)
+	public ModelAndView swCx() {
+		DraftSwVo draftSwVo = new DraftSwVo();
+		ModelAndView mv = new ModelAndView(viewName + "s_find");
+		mv.addObject("draftSwVo", draftSwVo);
+		return mv;
 	}
 
 }
