@@ -12,6 +12,9 @@ public class DraftSwVo {
 	private String wjbt;//文件标题
 	private String bz;//备注
 	private String swr;//收文人
+	private String zt;//状态
+	private String ldps;//领导批示
+	private String blqk;//办理情况
 	
 	public DraftSwVo() {
 		
@@ -29,6 +32,24 @@ public class DraftSwVo {
 		this.wjbt = draftSw.getWjbt();
 	}
 	 
+	
+	
+	public String getBlqk() {
+		return blqk;
+	}
+
+	public void setBlqk(String blqk) {
+		this.blqk = blqk;
+	}
+
+	public String getZt() {
+		return zt;
+	}
+
+	public void setZt(String zt) {
+		this.zt = zt;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -76,6 +97,14 @@ public class DraftSwVo {
 	}
 	public void setSwr(String swr) {
 		this.swr = swr;
+	}
+
+	public String getLdps() {
+		return ldps;
+	}
+
+	public void setLdps(String ldps) {
+		this.ldps = ldps;
 	}
 	
 	
