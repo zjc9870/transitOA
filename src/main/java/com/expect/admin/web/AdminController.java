@@ -14,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.expect.admin.service.FunctionService;
+import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.FunctionVo;
+import com.expect.admin.service.vo.UserVo;
 
 @Controller
 @RequestMapping("/admin")
@@ -22,6 +24,8 @@ public class AdminController {
 
 	@Autowired
 	private FunctionService functionService;
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/login")
 	public String login() {
@@ -31,13 +35,15 @@ public class AdminController {
 	@RequestMapping("/home")
 	public String home(Model model) {
 		List<FunctionVo> functions = functionService.getFunctionsByUser();
+		UserVo userVo = userService.getLoginUser();
+		model.addAttribute("userVo", userVo);
 		model.addAttribute("functions", functions);
 		return "admin/home";
 	}
 
 	@RequestMapping("/home1")
 	public String home1() {
-		return "admin/index";
+		return "admin/homeContent";
 	}
 
 	@RequestMapping("/logout")

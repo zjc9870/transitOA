@@ -33,7 +33,9 @@ var defaultParams = {
   inputType: 'text',
   inputPlaceholder: '',
   inputValue: '',
-  showLoaderOnConfirm: false
+  content:"",
+  showLoaderOnConfirm: false,
+  openModal:null
 };
 
 exports.default = defaultParams;
@@ -403,7 +405,7 @@ exports.default = handleKeyDown;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fixVerticalPosition = exports.resetInputError = exports.resetInput = exports.openModal = exports.getInput = exports.getOverlay = exports.getModal = exports.sweetAlertInitialize = undefined;
+exports.fixVerticalPosition = exports.resetContent = exports.resetInputError = exports.resetInput = exports.openModal = exports.getInput= exports.getContent = exports.getOverlay = exports.getModal = exports.sweetAlertInitialize = undefined;
 
 var _handleDom = require('./handle-dom');
 
@@ -467,9 +469,19 @@ var getOverlay = function getOverlay() {
 };
 
 /*
+ * Get DOM element of content
+ */
+var getContent = function getOverlay() {
+	var $modal = getModal();
+	if ($modal) {
+	  return $modal.querySelector('.sweet-alert-content');
+	}
+};
+
+/*
  * Animation when opening modal
  */
-var openModal = function openModal(callback) {
+var openModal = function openModal(callback,params) {
   var $modal = getModal();
   (0, _handleDom.fadeIn)(getOverlay(), 10);
   (0, _handleDom.show)($modal);
@@ -496,6 +508,11 @@ var openModal = function openModal(callback) {
         sweetAlert.close();
       }
     }, timer);
+  }
+  
+  var openModalCallback = params.openModal;
+  if(openModalCallback){
+	  openModalCallback();
   }
 };
 
@@ -530,6 +547,12 @@ var resetInputError = function resetInputError(event) {
   (0, _handleDom.removeClass)($errorContainer, 'has-error');
 };
 
+var resetContent = function resetContent(){
+	var $modal = getModal();
+	var $content = getContent();
+	$content.innerHTML="";
+}
+
 /*
  * Set "margin-top"-property on modal based on its computed height
  */
@@ -542,9 +565,11 @@ exports.sweetAlertInitialize = sweetAlertInitialize;
 exports.getModal = getModal;
 exports.getOverlay = getOverlay;
 exports.getInput = getInput;
+exports.getContent = getContent;
 exports.openModal = openModal;
 exports.resetInput = resetInput;
 exports.resetInputError = resetInputError;
+exports.resetContent = resetContent;
 exports.fixVerticalPosition = fixVerticalPosition;
 
 },{"./default-params":1,"./handle-dom":3,"./injected-html":6}],6:[function(require,module,exports){
@@ -576,6 +601,8 @@ var injectedHTML =
 // Title, text and input
 "<h2>Title</h2>\n    <p class=\"lead text-muted\">Text</p>\n    <div class=\"form-group\">\n      <input type=\"text\" class=\"form-control\" tabIndex=\"3\" />\n      <span class=\"sa-input-error help-block\">\n        <span class=\"glyphicon glyphicon-exclamation-sign\"></span> <span class=\"sa-help-text\">Not valid</span>\n      </span>\n    </div>" +
 
+'<div class="sweet-alert-content"></div>'+
+
 // Cancel and confirm buttons
 "<div class=\"sa-button-container\">\n      <button class=\"cancel btn btn-lg\" tabIndex=\"2\">Cancel</button>\n      <div class=\"sa-confirm-button-container\">\n        <button class=\"confirm btn btn-lg\" tabIndex=\"1\">OK</button>" +
 
@@ -602,7 +629,7 @@ var _handleSwalDom = require('./handle-swal-dom');
 
 var _handleDom = require('./handle-dom');
 
-var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
+var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt', 'content'];
 
 /*
  * Set type, text and actions on modal
@@ -704,6 +731,10 @@ var setParameters = function setParameters(params) {
             $input.addEventListener('keyup', swal.resetInputError);
           }, 400);
           break;
+        case 'content':
+        	var $content=(0, _handleSwalDom.getContent)();
+        	$content.innerHTML=params.content;
+        	break;
       }
     }();
 
@@ -939,6 +970,7 @@ exports.default = sweetAlert = _swal = function swal() {
 
   (0, _handleDom.addClass)(document.body, 'stop-scrolling');
   (0, _handleSwalDom.resetInput)();
+  (0, _handleSwalDom.resetContent)();
 
   /*
    * Use argument if defined or default value from params object otherwise.
@@ -996,7 +1028,7 @@ exports.default = sweetAlert = _swal = function swal() {
 
   (0, _setParams2.default)(params);
   (0, _handleSwalDom.fixVerticalPosition)();
-  (0, _handleSwalDom.openModal)(arguments[1]);
+  (0, _handleSwalDom.openModal)(arguments[1],params);
 
   // Modal interactions
   var modal = (0, _handleSwalDom.getModal)();

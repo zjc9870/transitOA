@@ -127,9 +127,10 @@ public class LcrzbService {
 			lcrzb.setSfxs("Y");
 		}
 		
-		List<Lcrzb> lcrzbL = lcrzbRepository.save(lcrzbList);
+		lcrzbRepository.save(lcrzbList);
+		
 		Contract contract = contractRepository.findOne(id);
-		contract.getLcrzSet().addAll(lcrzbL);
+		contract.getLcrzSet().addAll(lcrzbList);
 		contractRepository.save(contract);
 	}
 	
@@ -149,7 +150,7 @@ public class LcrzbService {
 		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过") && !StringUtil.equals(curCondition, "3")){
 			lcrzb.setSfxs("N");
 		}else lcrzb.setSfxs("Y");
-		lcrzb = lcrzbRepository.save(lcrzb);
+		lcrzbRepository.save(lcrzb);
 		
 		Contract contract = contractRepository.findOne(clnrid);
 		contract.getLcrzSet().add(lcrzb);
