@@ -90,6 +90,7 @@ public class ContractService {
 	 * @param bczl  保存种类（提交：“tj”， 保存 ： “bc”）
 	 * @param attachmentId
 	 */
+	@Transactional
 	public void newContractSave(ContractVo contractVo, String bczl, String[] attachmentId) {
 		String htfl = getHtfl();
 		contractVo.setHtfl(htfl);
@@ -451,6 +452,7 @@ public class ContractService {
 	 * 删除合同（软删除）
 	 * @param id
 	 */
+	@Transactional
 	public void deleteContract(String id) {
 		Contract contract = contractRepository.findById(id);
 		if(contract == null) throw new BaseAppException("未找到要删除的合同 合同id = "+ id);
@@ -462,6 +464,7 @@ public class ContractService {
 	 * 从数据库中删除合同，用于未提交以保存的合同草稿
 	 * @param id
 	 */
+	@Transactional
 	public void delete(String id) {
 		Contract contract = contractRepository.findById(id);
 		if(contract == null) return;

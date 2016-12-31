@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdgxbRepository;
@@ -141,6 +142,7 @@ public class LcrzbService {
 	 * @param clnrfl “东西”的分类
 	 * @param cunCondition 此条记录关联的流程节点
 	 */
+	@Transactional
 	public void save(LcrzbVo lcrzbVo, String clnrid, String clnrfl, String curCondition) {
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
