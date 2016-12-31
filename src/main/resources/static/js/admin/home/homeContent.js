@@ -18,6 +18,25 @@ $(document).on('click', '.xwbt', function() {
 	})
 });
 
+$(document).on('click', '.lcbt', function () {
+	var id = $(this).data('id');
+	var tabId = $(this).data('fl');
+	seeConApprove(id,tabId);
+})
+
+
+function seeConApprove(id,tabId) {
+	AjaxTool.html('contract/htspckxq',{id: id},function (html) {
+		$('.portlet-body').html(html);
+		switch (tabId) {
+			case "ysp":
+				$('.operation').attr('style','display:none');
+				break;
+			default:
+				break;
+		}
+	});
+}
 
 // 点击之后把点击的按钮变绿色
 function setTheClickButtonSelect(button) {
@@ -59,8 +78,8 @@ function getAndDisplayHtsjByFl(fl) {
 			var rightUlStr = "<ul>"
 			var cons = data.content;
 			for (var i = 0; (i < cons.length && i < 7); i++) {
-				leftUlStr += "<li><span>" + cons[i].htbt + "</sapn></li>";
-				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</sapn></li>";
+				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].htbt + "</sapn></li>";
+				rightUlStr += "<li class = 'lcbt'><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</sapn></li>";
 			}
 			leftUlStr += "</ul>";
 			rightUlStr += "</ul>";

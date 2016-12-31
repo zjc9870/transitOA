@@ -127,3 +127,12 @@
     line-height: 20px;
     float:right;
 }
+
+.confirm{
+    background-color: #007937 !important;
+    border-color: #007937 !important;
+}
+
+.xwbt,.lcbt {
+    cursor: pointer;
+}

@@ -6,20 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="Expect" name="author" />
-<!--备忘录确认按钮的颜色改为绿色-->
-<style type="text/css">
-	.confirm{             
-   		background-color: #007937 !important;
-    	border-color: #007937 !important;
-	}	
-	
-</style>
 <link th:href="@{/css/admin/base/index.css}" type="text/css" rel="stylesheet" />
-<link th:href="@{/plugins/jquery-memo/css/memo.css}" rel="stylesheet"
-	type="text/css" />
+<link th:href="@{/plugins/jquery-memo/css/memo.css}" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
+	<div class="portlet box">
+	<div class="portlet-body">
 	<div class="content-left">
 		<img th:src="@{/images/pic.png}" style="width:100%"/>
 		<!--流程中心-->
@@ -67,10 +60,10 @@
 				</ul>
 			</div>
 		</div>
-		<!--新闻中心-->
+		<!--公告中心-->
 		<div class="md-block">
 			<div class="md-block-title">
-				<span class="md-block-subtitle1">新闻中心</span>
+				<span class="md-block-subtitle1">公告中心</span>
 				<span class="md-block-subtitle2">News Center</span>
 			</div>
 			<div class="md-block-tab">
@@ -140,6 +133,8 @@
 				</ul>
 			</div>
 		</div>
+	</div>
+	</div>
 	</div>
 	
 	<script th:src="@{/plugins/jquery-memo/js/jquery.memo.js}"
