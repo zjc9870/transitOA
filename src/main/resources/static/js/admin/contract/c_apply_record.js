@@ -14,17 +14,17 @@ for(var i=0; i<tabs.length; i++) {
                         switch(tabId){
                             case "wtj":
                                 str += "<td>未提交</td>";
-                                str += "<td><div onclick='seeApplyRecordE(\""+ cons[i].id +"\")'>查看</div>" +
+                                str += "<td><div onclick='seeApplyRecordE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div>" +
                                     "<div onclick='submitWtjForm(\""+ cons[i].id +"\")'>提交</div>" +
                                     "<div onclick='deleteWtjCon(\""+ cons[i].id +"\")'>删除</div></td>";
                                 break;
                             case "dsp":
                                 str += "<td>待审批</td>";
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             case "ysp":
                                 str += "<td><div>"+cons[i].htshzt+"</div></td>";
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +"\")'>查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             case "yth":
                                 str += "<td>已退回</td>";
@@ -58,13 +58,16 @@ function seeApplyRecordE(id,tabId) {
         if(tabId == "yth") {
             $('#splc').attr('style','display:block');
         }
+        $('#back').data('tabId',tabId);
     });
 }
 
-function seeApplyRecordNE(id) {
+function seeApplyRecordNE(id,tabId) {
     AjaxTool.html('contract/sqjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
+        $('#back').data('tabId',tabId);
     });
+
 }
 
 function submitWtjForm(id) {

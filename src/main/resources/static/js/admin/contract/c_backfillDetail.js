@@ -14,8 +14,10 @@ function toBhht() {
 
 
 $('#back').click(function () {
+    var tabId = $('#back').data('tabId');
     AjaxTool.getHtml('contract/getBhhtList',function (html) {
         $('.page-content').html(html);
+        $('#'+tabId).trigger("click");
     });
 });
 

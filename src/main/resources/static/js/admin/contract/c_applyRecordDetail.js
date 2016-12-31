@@ -99,11 +99,12 @@
 
 
     $('#back').click(function () {
+        var tabId = ($('#back').data('tabId'));
         AjaxTool.getHtml('contract/sqjl',function (html) {
             $('.page-content').html(html);
+            $('#'+tabId).trigger('click');
         });
     });
-
 
 })();
 

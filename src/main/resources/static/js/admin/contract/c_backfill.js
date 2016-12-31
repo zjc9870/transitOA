@@ -14,7 +14,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+cons[i].userName+"</td>";
                         str += "<td>-</td>";
                         str += "<td>-</td>";
-                        str += "<td><div onclick='backfillDetail(\""+cons[i].id +'\",\"'+cons[i].bh + "\")'>查看</div>" +
+                        str += "<td><div onclick='backfillDetail(\""+cons[i].id +'\",\"'+cons[i].bh + '\",\"'+tabId + "\")'>查看</div>" +
                             "<div onclick='print(\""+cons[i].id+"\")'>打印</div></td>";
                         str += "</tr>";
                     }
@@ -34,12 +34,13 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
-function backfillDetail(id,bh) {
+function backfillDetail(id,bh,tabId) {
     AjaxTool.html('contract/bhhtxq',{id: id},function (html) {
         $('.portlet-body').html(html);
         if(bh) {
             $('#htbh').val(bh);
         }
+        $('#back').data('tabId',tabId);
     });
 }
 
