@@ -45,13 +45,13 @@ public class NewsController {
 							HttpServletResponse response) throws IOException{
 		
 		if(StringUtil.isBlank(lx)) lx = "dtgg";
-		if(page == null) page = 0;
+		if(page == null) page = 1;
 		if(pageSize == null) pageSize = 8;
 //		Calendar calendar = new GregorianCalendar();
 //		Date end = calendar.getTime();
 //		calendar.add(Calendar.MONTH, -1);
 //		Date start = calendar.getTime();
-		List<NewsVo> newsVoList = newsService.getNewsList(lx, page, pageSize);
+		List<NewsVo> newsVoList = newsService.getNewsList(lx, page - 1, pageSize);
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", newsVoList).build());
 	}
 	

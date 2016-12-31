@@ -11,6 +11,15 @@ $(document).on('click', "#dtgg, #djgz, #gwfc", function() {
 	getAndDisplayNewsByFl(fl);
 });
 
+$(document).on('click', '.xwbt', function() {
+	var xwid = $(this).data('id');
+	alert(xwid);
+	AjaxTool.post('news/getNewsDetail', {id : xwid}, function(html){
+		$('.page-content').html(html);
+	})
+});
+
+
 // 点击之后把点击的按钮变绿色
 function setTheClickButtonSelect(button) {
 	var tabs = button.parent().children();
@@ -29,8 +38,8 @@ function getAndDisplayNewsByFl(fl) {
 			var rightUlStr = "<ul>";
 			var cons = data.content;
 			for (var i = 0; i < cons.length; i++) {
-				leftUlStr += "<input style = 'display:none;' value = "+ cons[i].id + "></input>";
-				leftUlStr += "<li><span>" + cons[i].tittle + "</sapn></li>";
+//				leftUlStr += ";
+				leftUlStr += "<li class = 'xwbt' data-id = '"+cons[i].id+"'><span>" + cons[i].tittle + "</sapn></li>";
 				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].sqsj + "</sapn></li>";
 			}
 			leftUlStr += "</ul>";
