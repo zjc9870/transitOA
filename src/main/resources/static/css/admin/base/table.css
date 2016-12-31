@@ -57,3 +57,14 @@
 #user-table.table-bordered>thead>tr>th {
         border: 1px solid #e7ecf1;
 }
+
+.news-subTitle {
+    font-size: 13px;
+    text-align: center;
+    color: #999;
+}
+
+.news-content {
+    padding: 0 80px;
+    word-wrap: break-word;
+}

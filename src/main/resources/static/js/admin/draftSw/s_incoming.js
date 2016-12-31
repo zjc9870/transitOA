@@ -40,7 +40,7 @@ $(document).ready(function () {
                     return false;
                 }
             }
-            AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+            AjaxTool.post('draftSw/saveSw', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
                     alert(data.message);
                     toSqjl();
                 }
@@ -49,7 +49,7 @@ $(document).ready(function () {
     }
 
     function toSqjl() {
-        AjaxTool.getHtml('contract/sqjl',function (html) {
+        AjaxTool.getHtml('draftSw/swRecord',function (html) {
             $('.page-content').html(html);
         });
     }
