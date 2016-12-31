@@ -58,6 +58,7 @@ function seeApprove(id,tabId) {
             default:
                 break;
         }
+        $('#back').data('tabId',tabId);
     });
 }
 
