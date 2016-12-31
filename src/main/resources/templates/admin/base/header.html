@@ -26,7 +26,7 @@
 								data-toggle="dropdown" data-hover="dropdown"
 								data-close-others="true"> <span
 								class="username username-hide-on-mobile"
-								sec:authentication="name" th:text = '${"当前用户：" + userVo.username}'></span> <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
+								sec:authentication="name" th:text = '${"用户：" + userVo.fullName}'></span> <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 								<img alt="" class="img-circle user-avatar" th:src="@{/images/avatar.png}" />
 							</a>
 						</li>

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,8 +77,8 @@ public class ContractService {
 		if(attachmentId != null && attachmentId.length > 0) {
 			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
 			if(attachmentList != null && attachmentList.size() > 0)
-				contract.setAttachments(attachmentList);
-		}else contract.setAttachments(new ArrayList<Attachment>());
+				contract.setAttachments(new HashSet<>(attachmentList));
+		}else contract.setAttachments(new HashSet<>());
 		
 		contract = contractRepository.save(contract);
 		return contract.getId();
@@ -130,7 +131,7 @@ public class ContractService {
 		if(attachmentId != null && attachmentId.length > 0) {
 			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
 			if(attachmentList != null && attachmentList.size() > 0)
-				contract.setAttachments(attachmentList);
+				contract.setAttachments(new HashSet<>(attachmentList));
 		}
 		contractRepository.save(contract);
 	}
@@ -161,9 +162,9 @@ public class ContractService {
 	 * @return
 	 */
 	private List<AttachmentVo> getContractAttachment(Contract contract) {
-		List<Attachment> attachmentList = contract.getAttachments();
+		Set<Attachment> attachmentList = contract.getAttachments();
 		List<AttachmentVo> attachmentVoList = new ArrayList<>();
-		if(attachmentList != null && attachmentList.size() > 0)
+		if(attachmentList != null && !attachmentList.isEmpty())
 			for (Attachment attachment : attachmentList) {
 				AttachmentVo attachementVo = new AttachmentVo();
 				BeanUtils.copyProperties(attachment, attachementVo);

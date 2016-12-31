@@ -6,9 +6,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta content="width=device-width, initial-scale=1" name="viewport" />
 <meta content="Expect" name="author" />
+<!--备忘录确认按钮的颜色改为绿色-->
+<style type="text/css">
+	.confirm{             
+   		background-color: #007937 !important;
+    	border-color: #007937 !important;
+	}	
+	
+</style>
 <link th:href="@{/css/admin/base/index.css}" type="text/css" rel="stylesheet" />
 <link th:href="@{/plugins/jquery-memo/css/memo.css}" rel="stylesheet"
 	type="text/css" />
+
 </head>
 <body>
 	<div class="content-left">
@@ -21,10 +30,10 @@
 			</div>
 			<div class="md-block-tab">
 				<div class="tab-box tab-box-selected">
-					<div id ="htdb" class="small-font smallsize-font word">合同待办</div>
+					<div id ="htdb" data-fl = "dsp" class="small-font smallsize-font word">合同待办</div>
 				</div>
 				<div class="tab-box">
-					<div id ="htyb" class="small-font smallsize-font word">合同已办</div>
+					<div id ="htyb" data-fl = "ysp" class="small-font smallsize-font word">合同已办</div>
 				</div>
 				<div class="tab-box">
 					<div id = "gwdb" class="small-font smallsize-font word">公文待办</div>
@@ -66,20 +75,20 @@
 			</div>
 			<div class="md-block-tab">
 				<div class="tab-box tab-box-selected">
-					<div class="small-font smallsize-font word">公司新闻</div>
+					<div id = "dtgg" data-fl = "dtgg" class="small-font smallsize-font word">动态公告</div>
 				</div>
 				<div class="tab-box">
-					<div class="small-font smallsize-font word">客户签约</div>
+					<div id = "djgz" data-fl = "djgz" class="small-font smallsize-font word">党建工作</div>
 				</div>
 				<div class="tab-box">
-					<div class="small-font smallsize-font word">项目新闻</div>
+					<div id = "gwfc"  data-fl = "gwfc" class="small-font smallsize-font word">公文风采</div>
 				</div>
-				<div class="tab-box">
+				<!-- <div class="tab-box">
 					<div class="small-font smallsize-font word">人事新闻</div>
-				</div>
+				</div> -->
 			</div>
-			<img th:src="@{/images/news.png}" class="news-img"/>
-			<div class="md-block-content">
+			<!-- <img th:src="@{/images/news.png}" class="news-img"/> -->
+			<div id = 'newsLeft' class="md-block-content">
 				<ul>
 					<li><span>请在即日起三天内提交个人周工作总结</span></li>
 					<li><span>今天下班前请完成下周工作计划</span></li>
@@ -91,7 +100,7 @@
 					<li><span>下午两点和见客户见面约谈</span></li>
 				</ul>
 			</div>
-			<div class="md-block-content-right">
+			<div id = 'newsRight' class="md-block-content-right">
 				<ul>
 					<li><span>2016-12-08</span></li>
 					<li><span>2016-12-08</span></li>

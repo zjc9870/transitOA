@@ -129,9 +129,9 @@ public class LcrzbService {
 		
 		lcrzbRepository.save(lcrzbList);
 		
-		Contract contract = contractRepository.findOne(id);
-		contract.getLcrzSet().addAll(lcrzbList);
-		contractRepository.save(contract);
+//		Contract contract = contractRepository.findOne(id);
+//		contract.getLcrzSet().addAll(lcrzbList);
+//		contractRepository.save(contract);
 	}
 	
 	/**

@@ -15,7 +15,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.expect.admin.service.vo.LcrzbVo;
-import com.expect.admin.utils.DateUtil;
 
 /**
  * 流程日志表

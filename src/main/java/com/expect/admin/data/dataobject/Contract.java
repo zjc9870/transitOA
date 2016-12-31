@@ -2,7 +2,6 @@ package com.expect.admin.data.dataobject;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -40,7 +39,7 @@ public class Contract {
 	private Date sqsj;//申请时间
 	private String sfsc;//是否已经删除（采用软删除，只标识，不删除）
 	private String sfth;//是否退回（Y 是退回， N不是退回）
-	private List<Attachment> attachments;//附件
+	private Set<Attachment> attachments;//附件
 	private String sbd;//申办单名称
 	private Set<Lcrzb> lcrzSet = new HashSet<>();//流程日志
 //	private Department department;//合同所属部门
@@ -184,11 +183,11 @@ public class Contract {
 	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinTable(name = "s_contract_attachment", joinColumns = @JoinColumn(name = "contract_id"), 
 	inverseJoinColumns = @JoinColumn(name = "attachment_id"))
-	public List<Attachment> getAttachments() {
+	public Set<Attachment> getAttachments() {
 		return attachments;
 	}
 
-	public void setAttachments(List<Attachment> attachments) {
+	public void setAttachments(Set<Attachment> attachments) {
 		this.attachments = attachments;
 	}
 
