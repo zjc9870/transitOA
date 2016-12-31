@@ -1,5 +1,6 @@
 package com.expect.admin.data.dataobject;
 
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -64,7 +65,8 @@ public class Contract {
 		}else {
 			this.sqsj = DateUtil.parse(contractVo.getSqsj(), DateUtil.fullFormat);
 		}
-		this.sbd = contractVo.getSbd();
+		if(!StringUtil.isBlank(contractVo.getSbd()))
+			this.sbd = contractVo.getSbd();
 	}
 	
 	@Id

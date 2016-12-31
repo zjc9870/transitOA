@@ -116,7 +116,7 @@ public class ContractService {
 	 * 新增是增加流程日志
 	 * @param contract
 	 */
-	private void addXzLcrz(String id, String htfl, String htshzt) {
+	public void addXzLcrz(String id, String htfl, String htshzt) {
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
 		lcrzbService.save(lcrzbVo, id, htfl, htshzt);
 	}

@@ -23,6 +23,7 @@ import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.RoleConvertor;
 import com.expect.admin.service.vo.RoleVo;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
 import com.expect.admin.utils.StringUtil;
@@ -41,6 +42,8 @@ public class RoleService {
 	private UserRepository userRepository;
 	@Autowired
 	private DepartmentRepository departmentRepository;
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 获取所有的角色
@@ -161,6 +164,7 @@ public class RoleService {
 	 * 根据roleId获取functions
 	 */
 	public List<JsTreeVo> getFunctionTreeByRoleId(String roleId) {
+		UserVo userVo = userService.getLoginUser();
 		if (StringUtils.isEmpty(roleId)) {
 			return new ArrayList<>();
 		}
@@ -174,6 +178,7 @@ public class RoleService {
 		// 设置第一级功能
 		for (Function firFunction : parentFunctions) {
 			JsTreeVo firJsTree = new JsTreeVo();
+			if(!gnglQxpd(userVo.getUsername(), firFunction.getName())) continue;
 			setFunctionTree(firFunction, firJsTree);
 			// 设置第二级功能
 			Set<Function> secFunctions = firFunction.getChildFunctions();
@@ -181,12 +186,14 @@ public class RoleService {
 				List<JsTreeVo> secJsTreeVos = new ArrayList<>(secFunctions.size());
 				for (Function secFunction : secFunctions) {
 					JsTreeVo secJsTree = new JsTreeVo();
+					if(!gnglQxpd(userVo.getUsername(), secFunction.getName())) continue;
 					setFunctionTree(secFunction, secJsTree);
 					// 设置第三级功能
 					Set<Function> thiFunctions = secFunction.getChildFunctions();
 					if (!CollectionUtils.isEmpty(thiFunctions)) {
 						List<JsTreeVo> thiTreeVos = new ArrayList<>(thiFunctions.size());
 						for (Function thiFunction : thiFunctions) {
+							if(!gnglQxpd(userVo.getUsername(), thiFunction.getName())) continue;
 							JsTreeVo thiJsTree = new JsTreeVo();
 							setFunctionTree(thiFunction, thiJsTree);
 							if (setFunctionTreeSelected(functions, thiFunction)) {
@@ -224,6 +231,20 @@ public class RoleService {
 		}
 		return resultJsTreeVos;
 	}
+
+	/**
+	 * 功能管理功能权限判断 只有super可以使用
+	 * @param userVo
+	 * @param thiFunction
+	 * @return true 用户有使用功能管理的权限
+	 * flase 用户没有使用功能管理的权限
+	 * 
+	 */
+	private boolean gnglQxpd(String userName, String functionName) {
+		return !(StringUtil.equals(functionName, "功能管理") && 
+				!StringUtil.equals(userName, "super"));
+	}
+
 
 	private void setFunctionTree(Function function, JsTreeVo jsTreeVo) {
 		jsTreeVo.setId(function.getId());

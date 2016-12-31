@@ -240,6 +240,9 @@ public class ContractController {
 		String message = StringUtil.equals(bczl, "tj") ? "合同申请" : "合同保存";
 		try{
 			contractService.newContractSave(contractVo, bczl, attachmentId);
+			
+			log.info("合同申请 sbd" + contractVo.getHtbt());
+			log.info("合同申请 sbd" + contractVo.getSbd());
 		}catch(Exception e) {
 			log.error("保存合同报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, message + "失败！").build());
@@ -380,6 +383,7 @@ public class ContractController {
 			String nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
 			contractVo.setHtshzt(nextCondition);
 			contractService.updateContract(contractVo, attachmentId);
+			contractService.addXzLcrz(contractVo.getId(), contractVo.getHtfl(), nextCondition);
 		}catch(Exception e) {
 			log.error("以保存合同提交时报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同提交出错，请重试").build());
