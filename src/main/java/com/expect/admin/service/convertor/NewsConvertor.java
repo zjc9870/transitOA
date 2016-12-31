@@ -13,7 +13,8 @@ public class NewsConvertor {
 		NewsVo newsVo = new NewsVo();
 		newsVo.setId(news.getId());
 		newsVo.setTittle(news.getTittle());
-		newsVo.setUserName(news.getUser().getFullName());
+		if(news.getUser() != null)
+			newsVo.setUserName(news.getUser().getFullName());
 		if(news.getSqsj() != null)
 			newsVo.setSqsj(DateUtil.format(news.getSqsj(), DateUtil.fullFormat));
 		else newsVo.setSqsj("");

@@ -13,7 +13,6 @@ $(document).on('click', "#dtgg, #djgz, #gwfc", function() {
 
 $(document).on('click', '.xwbt', function() {
 	var xwid = $(this).data('id');
-	alert(xwid);
 	AjaxTool.post('news/getNewsDetail', {id : xwid}, function(html){
 		$('.page-content').html(html);
 	})

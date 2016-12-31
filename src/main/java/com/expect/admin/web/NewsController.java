@@ -32,7 +32,7 @@ public class NewsController {
 	
 	@PostMapping("/getNewsDetail")
 	public ModelAndView getNewsDetail(@RequestParam(name = "id", required = true)String newsId) {
-		ModelAndView mv = new ModelAndView(viewPath + "newsDetail");
+		ModelAndView mv = new ModelAndView(viewPath + "newDetail");
 		NewsVo newsVo = newsService.getNewsById(newsId);
 		mv.addObject("newsVo", newsVo);
 		return mv;

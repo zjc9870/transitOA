@@ -35,7 +35,7 @@ public class News {
 	
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
-	@Column(name = "content",columnDefinition="CLOB NOT NULL", nullable = true)
+	@Column(name = "content", nullable = true)
 	private String content;//内容
 	
 	@Column(name = "category", length = 10)
