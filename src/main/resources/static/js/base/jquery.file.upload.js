@@ -41,11 +41,13 @@
         
         var trHtml='<tr id="${fileId}"><td class="file-name">${fileName}</td>'
         			+'<td class="file-progress"><span class="size">${fileSize}KB</span><div class="progress"><div class="progress-bar progress-bar-success"></div></div><span class="upload-result"></span></td>'
-					+'<td class="file-button"><a href="javascript:;" class="btn btn-xs blue fileinput-upload">上传</a><a href="javascript:;" class="btn btn-xs green fileinput-abort">取消</a><a href="javascript:;" class="btn btn-xs red fileinput-remove">移除</a></td></tr>';
+					+'<td class="file-button"><a href="javascript:;" class="btn btn-xs blue fileinput-upload">上传</a><a href="javascript:;" class="btn btn-xs green fileinput-abort">取消</a>'
+					// +'<a href="javascript:;" class="btn btn-xs red fileinput-remove">移除</a>'
+					+'</td></tr>';
         var fileAllHtml='<div class="files-template"><div class="file-select-template"><div class="fileinput input-group"><div class="form-control">'
 						+'<i class="glyphicon glyphicon-file"></i> <span class="file-name-all"></span></div>'
 						+'<span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">选择</span><input type="file" name="files"/></span>'
-						+'<a href="javascript:;" class="input-group-addon btn btn-default fileinput-exists fileinput-remove-all">移除</a>'
+						// +'<a href="javascript:;" class="input-group-addon btn btn-default fileinput-exists fileinput-remove-all">移除</a>'
 						+'<a href="javascript:;" class="input-group-addon btn btn-default fileinput-exists fileinput-upload-all">上传</a>'
 						+'</div><div class="progress"><div class="progress-bar progress-bar-success"></div></div></div>'
 						+'<table class="files-exist-template table table-striped table-bordered table-hover"><tbody></tbody></table></div>';
@@ -102,7 +104,7 @@
     				}
     				var fileId=Tools.getUUID();
     				data.id=fileId;
-    				var html=trHtml.replace("${fileId}",fileId).replace("${fileName}",file.name).replace("${fileSize}",file.size);
+    				var html=trHtml.replace("${fileId}",fileId).replace("${fileName}",file.name).replace("${fileSize}",Math.round(file.size/1024));
     				$element.find(".files-exist-template tbody").append(html);
     				var jqXHR;
     				$element.find(".files-exist-template tbody tr:last").find(".fileinput-upload").click(function(){
