@@ -63,9 +63,9 @@ function seeApprove(id,tabId) {
 
 function pass(id) {
     AjaxTool.post('contract/addLcrz',{
-        cljg: '通过', id:id},function () {
-        alert('操作成功!');
-        window.location.reload();
+        cljg: '通过', id:id},function (data) {
+        alert(data.message);
+        $('#dsp').trigger("click");
     });
 }
 
