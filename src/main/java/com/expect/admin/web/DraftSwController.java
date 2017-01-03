@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +15,6 @@ import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.LcService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DraftSwVo;
-import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
@@ -26,7 +24,7 @@ import com.expect.admin.utils.StringUtil;
 @Controller
 @RequestMapping(value = "/admin/draftSw")
 public class DraftSwController {
-private final Logger log = LoggerFactory.getLogger(ContractController.class);
+private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	
 	@Autowired
 	private DraftSwService draftSwService;
@@ -46,13 +44,17 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 			return;
 		}
 		String message = StringUtil.equals(bczl, "tj") ? "收文提交":"收文保存";
-		String startCondition = lcService.getStartCondition("4");
-		String condition;
-		if(StringUtil.equals(bczl, "tj")){
-			condition = lcService.getNextCondition("4", startCondition);
-		}else condition = startCondition;
-		draftSwVo.setZt(condition);
-		draftSwService.save(draftSwVo);
+		try{
+			String startCondition = lcService.getStartCondition("4");
+			String condition;
+			if(StringUtil.equals(bczl, "tj")){
+				condition = lcService.getNextCondition("4", startCondition);
+			}else condition = startCondition;
+			draftSwVo.setZt(condition);
+			draftSwService.save(draftSwVo);
+		}catch(Exception e) {
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false,  message + "失败！").build());
+		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true,  message + "成功！").build());
 	}
 	

@@ -91,6 +91,7 @@ public class DraftSw {
 			this.rq = DateUtil.parse(draftSwVo.getRq(), DateUtil.zbFormat);
 		this.wh = draftSwVo.getWh();
 		this.wjbt = draftSwVo.getWjbt();
+		this.swzt = draftSwVo.getZt();
 	}
 
 	public String getBlqk() {
