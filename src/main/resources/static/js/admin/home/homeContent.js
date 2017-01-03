@@ -27,6 +27,7 @@ $(document).on('click', '.lcbt', function () {
 
 function seeConApprove(id,tabId) {
 	AjaxTool.html('contract/htspckxq',{id: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
 		$('.portlet-body').html(html);
 		switch (tabId) {
 			case "ysp":
