@@ -4,6 +4,7 @@
 
 .page-header.navbar {
     background: url(../../../images/header.png) fixed no-repeat top;
+    background-size: 100%;
 }
 
 .page-content {

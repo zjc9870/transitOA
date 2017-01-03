@@ -57,15 +57,22 @@ public class DraftSwService {
 		return draftSwVo;
 	}
 	
-	public List<DraftSwVo> getDraftSwVoByUserAndCondition(final String userId,final String condition) {
+	
+	public List<DraftSwVo> getDraftSwVoByUserAndCondition(String userId,String condition,String lx) {
 		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
 		List<DraftSw> draftSwList = new ArrayList<DraftSw>();
+		if(StringUtil.isBlank(condition)) return new ArrayList<>();
+		//未提交
+		if(StringUtil.equals(lx, "wtj")){
+			draftSwList = draftSwRepository.findBySwr_idAndSwztOrderByTjsjDesc(userId, condition);
+		}
 		//待批示
-		//已批示
+		if(StringUtil.equals(lx, "dps")) {
+//			draftSwList = draftSwRepository.
+		}
 		//待传阅
 		//待办理
-		//待选择传阅人
-		//待选择办理人
+		//已完成
 		if(draftSwList==null){
 			return draftSwVoList;
 		}

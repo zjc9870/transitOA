@@ -88,7 +88,7 @@ public class DraftSw {
 		this.bz = draftSwVo.getBz();
 		this.lwdw = draftSwVo.getLwdw();
 		if (!StringUtil.isBlank(draftSwVo.getRq()))
-			this.rq = DateUtil.parse(draftSwVo.getRq(), DateUtil.webFormat);
+			this.rq = DateUtil.parse(draftSwVo.getRq(), DateUtil.zbFormat);
 		this.wh = draftSwVo.getWh();
 		this.wjbt = draftSwVo.getWjbt();
 	}

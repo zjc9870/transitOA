@@ -7,14 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.LcService;
+import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DraftSwVo;
+import com.expect.admin.service.vo.RoleJdgxbGxbVo;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.JsonResult;
+import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.ResponseBuilder;
 import com.expect.admin.utils.StringUtil;
 
@@ -27,6 +32,8 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	private DraftSwService draftSwService;
 	@Autowired
 	private  LcService lcService;
+	@Autowired
+	private UserService userService;
 	
 	private final String viewName = "admin/draftSw/";
 	
@@ -35,17 +42,18 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	public void saveSw(DraftSwVo draftSwVo,@RequestParam(name = "bczl", required = true)String bczl,HttpServletResponse response) throws IOException{
 		if(draftSwVo==null){
 			log.error("试图保存空收文");
-			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的合同失败！").build());
+			ResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存空的收文失败！").build());
 			return;
 		}
-		String startCondition = lcService.getStartCondition("收文流程");
+		String message = StringUtil.equals(bczl, "tj") ? "收文提交":"收文保存";
+		String startCondition = lcService.getStartCondition("4");
 		String condition;
 		if(StringUtil.equals(bczl, "tj")){
 			condition = lcService.getNextCondition("4", startCondition);
 		}else condition = startCondition;
 		draftSwVo.setZt(condition);
 		draftSwService.save(draftSwVo);
-		return;
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true,  message + "成功！").build());
 	}
 	
 	//领导批示
@@ -148,9 +156,25 @@ private final Logger log = LoggerFactory.getLogger(ContractController.class);
 	public ModelAndView swRecord() {
 		DraftSwVo draftSwVo = new DraftSwVo();
 		ModelAndView mv = new ModelAndView(viewName + "s_records");
-		mv.addObject("draftSwVo", draftSwVo);
+		UserVo userVo = userService.getLoginUser();
+//		List<DraftSwVo> draftSwVoList = draftSwService.getDraftSwVoByUserAndCondition(userVo.getId(), condition);
+//		mv.addObject("draftSwVoList", draftSwVoList);
 		return mv;
 	}
+	
+	/**
+	 * 申请记录
+	 */
+//	@GetMapping(value = "/sqjl")
+//	public ModelAndView sqjl(@RequestParam(name = "lx", required = false)String lx) {
+//		if(StringUtil.isBlank(lx)) lx = "wtj";
+//		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
+//		UserVo userVo = userService.getLoginUser();
+//		RoleJdgx bGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
+//		modelAndView.addObject("contractVoList", 
+//				contractService.getContractByUserIdAndCondition(userVo.getId(), condition.getJdId(), lx));
+//		return modelAndView;
+//	}
 	
 	/**
 	 * 收文批示
