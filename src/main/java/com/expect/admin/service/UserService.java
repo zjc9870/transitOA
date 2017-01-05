@@ -1,6 +1,7 @@
 package com.expect.admin.service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -298,7 +299,8 @@ public class UserService implements UserDetailsService {
 			Cookie usernameCookie = new Cookie("username", user.getUsername());
 			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
 			response.addCookie(usernameCookie);
-			Cookie passwordCookie = new Cookie("password", user.getPassword());
+			
+			Cookie passwordCookie = new Cookie("password", URLEncoder.encode(user.getPassword(),"UTF-8"));
 			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
 			response.addCookie(passwordCookie);
 
