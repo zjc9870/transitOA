@@ -27,7 +27,7 @@
                             </li>
                             <li>
                                 <div class="pform-title">新密码:</div>
-                                <input id="password1" class="pform-content" type="password"/>
+                                <input id="password1" name="password" class="pform-content" type="password"/>
                                 <span class="pfrom-tips">密码必须是字母、数字、连接符号,不能是汉字。密码设置6~8位</span>
                             </li>
                             <li>
@@ -98,6 +98,8 @@
         </div>
     </div>
 </div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
 <script type="text/javascript" th:src="@{/js/admin/personalCon/personalCon.js}"></script>
 </body>
 </html>

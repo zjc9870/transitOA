@@ -213,3 +213,8 @@
 .pform-disabled {
     background: #ddd;
 }
+
+.error-tips {
+    color: red;
+    margin-left: 10px;
+}
