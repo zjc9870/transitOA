@@ -12,6 +12,13 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 
 	public Contract findById(String id);
 	
+	/**
+	 * 合同编号
+	 * @param htbh
+	 * @return
+	 */
+	public Contract findByBh(String htbh);
+	
 	public List<Contract> findAll(Specification<Contract> spec);
 	
 	public List<Contract> findByHtflAndHtshzt(String htfl, String htshzt);

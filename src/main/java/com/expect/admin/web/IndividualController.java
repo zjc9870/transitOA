@@ -38,8 +38,9 @@ public class IndividualController {
 	public ModelAndView getIndividualMessage() {
 		UserVo userVo = userService.getLoginUser();
 		if(userVo == null) return new ModelAndView("admin/login");
+		UserVo realUser = userService.getUserById(userVo.getId());
 		ModelAndView mv = new ModelAndView(viewPath + "personalCon");
-		mv.addObject("userVo", userVo);
+		mv.addObject("userVo", realUser);
 		return mv;
 	}
 	

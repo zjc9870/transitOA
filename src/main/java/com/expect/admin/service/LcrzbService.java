@@ -13,11 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdgxbRepository;
 import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.UserRepository;
-import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.Lcjdgxb;
 import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.User;
@@ -42,8 +40,6 @@ public class LcrzbService {
 	private UserService userService;
 	@Autowired
 	private LcjdgxbRepository lcjdgxbRepository;
-	@Autowired
-	private ContractRepository contractRepository;
 	
 	/**
 	 * 获取某个文件的所有可显示的审批记录（sfxs）
@@ -143,7 +139,7 @@ public class LcrzbService {
 	 * @param cunCondition 此条记录关联的流程节点
 	 */
 	@Transactional
-	public void save(LcrzbVo lcrzbVo, String clnrid, String clnrfl, String curCondition) {
+	public String save(LcrzbVo lcrzbVo, String clnrid, String clnrfl, String curCondition) {
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
 		
@@ -152,10 +148,8 @@ public class LcrzbService {
 		if(StringUtil.equals(lcrzbVo.getCljg(), "不通过") && !StringUtil.equals(curCondition, "3")){
 			lcrzb.setSfxs("N");
 		}else lcrzb.setSfxs("Y");
-		lcrzbRepository.save(lcrzb);
-		
-		Contract contract = contractRepository.findOne(clnrid);
-		contract.getLcrzSet().add(lcrzb);
+		Lcrzb savedLcrz = lcrzbRepository.save(lcrzb);
+		return savedLcrz.getId();
 	}
 	
 	

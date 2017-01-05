@@ -40,7 +40,6 @@ import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
-import com.expect.admin.utils.ResponseBuilder;
 import com.expect.admin.utils.StringUtil;
 
 @Controller
@@ -165,12 +164,30 @@ public class ContractController {
 		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
 		if(condition == null) return modelAndView;
 		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+		String roleName = roleVo.getName();
+		modelAndView.addObject("xsth", sfxsTab(roleName, "yth"));
 		modelAndView.addObject("role", roleVo.getName());
-//		List<ContractVo> contractVoList = new ArrayList<>();
 		modelAndView.addObject("contractVoList", 
 				contractService.getContractByUserIdAndCondition(userVo.getId(),
 						condition.getJdId(), lx));
 		return modelAndView;
+	}
+
+	/**
+	 * 判断某些tab是否显示
+	 * @param tj  判断条件
+	 * @param tabName 要判断的tab 
+	 * @return true tab显示 <br>
+	 * false tab不显示
+	 */
+	//TODO
+	private boolean sfxsTab(String tj, String tabName) {
+		//已退回tab 用户角色是
+		if(StringUtil.equals(tabName, "yth"))
+		return !StringUtil.isBlank(tj) &&
+				 (tj.endsWith("文员") || 
+						 StringUtil.equals(tj, "部门负责人"));
+		return false;
 	}
 	
 	
@@ -240,9 +257,8 @@ public class ContractController {
 		String message = StringUtil.equals(bczl, "tj") ? "合同申请" : "合同保存";
 		try{
 			contractService.newContractSave(contractVo, bczl, attachmentId);
-			
-			log.info("合同申请 sbd" + contractVo.getHtbt());
-			log.info("合同申请 sbd" + contractVo.getSbd());
+//			log.info("合同申请 sbd" + contractVo.getHtbt());
+//			log.info("合同申请 sbd" + contractVo.getSbd());
 		}catch(Exception e) {
 			log.error("保存合同报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, message + "失败！").build());
@@ -316,6 +332,9 @@ public class ContractController {
 	
 	/**
 	 * 编号回填
+	 * 1.合同编号最多20个字符，并且唯一
+	 * 2.编号回填后修改合同状态为T（已回填）
+	 * 3.增加编号回填流程日志
 	 * @param response
 	 * @param bh
 	 * @param id
@@ -323,14 +342,23 @@ public class ContractController {
 	 */
 	@RequestMapping(value = "/bhht", method = RequestMethod.POST)
 	public void bhht(HttpServletResponse response,
-			@RequestParam(name = "bh", required = false)String bh,
+			@RequestParam(name = "bh", required = true)String bh,
 			@RequestParam(name = "id", required = true) String id) throws IOException{
+		if(bh.length() > 20){ 
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同编号过长，最多20个字符！").build());
+			return;
+		}
+		if(!contractService.isHtbhUnique(bh)) { 
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同编号已存在，请重新填写！").build());
+			return;
+		}
 		ContractVo contractVo = contractService.getContractById(id);
 //		if(StringUtil.equals(contractVo.getHtshzt(), "T"))
 		contractVo.setBh(bh);
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo, null);
-		lcrzbService.save(new LcrzbVo("编号回填", bh), id, contractVo.getHtfl(), "T");
+		String lcrzId = lcrzbService.save(new LcrzbVo("编号回填", bh), id, contractVo.getHtfl(), "T");
+		contractService.bindContractWithLcrz(contractVo.getId(), lcrzId);
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
 	}
 	
@@ -446,12 +474,47 @@ public class ContractController {
 		try{
 			if(!StringUtil.isBlank(startTime)) start = DateUtil.parse(startTime, DateUtil.zbFormat);
 			if(!StringUtil.isBlank(endTime)) end = DateUtil.parse(endTime, DateUtil.zbFormat);
-			contractVoList = contractService.searchContract(htbt, htbh, start, end, htzt, fqr);
+			contractVoList = contractService.searchContract(htbt, htbh, start, end, htzt, fqr, "");
 		}catch(Exception e) {
 			log.error("合同查询失败", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "搜索合同失败！").build());
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList).build());
+	}
+	
+	/**
+	 * 个人使用的部分合同查询
+	 * 只能查询与当前登录用户相关（当前用户参与了合同的申请或审批）的合同
+	 * @param htbt 合同标题
+	 * @param htbh 合同编号
+	 * @param startTime 开始时间（搜索的时间段，以申请时间为准）
+	 * @param endTime 结束时间
+	 * @param htzt 合同状态（0 ：全部， 1：待审批， 2 ：已审批， 3 ： 已回填）
+	 * @param fqr 发起人（合同的申请人）姓名
+	 * @throws IOException
+	 */
+	@PostMapping("/searchContractOfUser")
+	public void contractSearchResultOfUser(HttpServletResponse response,
+				@RequestParam(name = "htbt", required = false)String htbt,
+				@RequestParam(name = "htbh", required = false)String htbh,
+				@RequestParam(name = "startTime", required = false)String startTime,
+				@RequestParam(name = "endTime", required = false)String endTime,
+				@RequestParam(name = "htzt", required = false)String htzt,
+				@RequestParam(name = "fqr", required = false)String fqr) throws IOException {
+			
+			UserVo userVo = userService.getLoginUser();//获取当前登录用户
+			Date start = null,end = null;
+			List<ContractVo> contractVoList = null;
+			try{
+				if(!StringUtil.isBlank(startTime)) start = DateUtil.parse(startTime, DateUtil.zbFormat);
+				if(!StringUtil.isBlank(endTime)) end = DateUtil.parse(endTime, DateUtil.zbFormat);
+				contractVoList = contractService.searchContract(htbt, htbh, start, end, htzt, fqr, userVo.getId());
+			}catch(Exception e) {
+				log.error("合同查询失败", e);
+				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "搜索合同失败！").build());
+			}
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "", contractVoList).build());
+		
 	}
 	
 	/**

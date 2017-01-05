@@ -38,6 +38,7 @@ public class RoleJdgxbGxbService {
 	public RoleJdgxbGxbVo getWjzt(String bz, String wjzl){
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
+//		User user = userRepository.findOne("2c913b71590fcb3201590fd15ada0007");
 		if(user.getRoles() == null || user.getRoles().size() == 0) return new RoleJdgxbGxbVo();
 		List<String> roleIds = new ArrayList<>(user.getRoles().size());
 		for (Role role : user.getRoles()) {

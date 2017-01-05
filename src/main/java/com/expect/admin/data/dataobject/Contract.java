@@ -182,7 +182,7 @@ public class Contract {
 		this.sfth = sfth;
 	}
 
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "s_contract_attachment", joinColumns = @JoinColumn(name = "contract_id"), 
 	inverseJoinColumns = @JoinColumn(name = "attachment_id"))
 	public Set<Attachment> getAttachments() {
@@ -203,7 +203,7 @@ public class Contract {
 	}
 
 
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "s_contract_lcrzb", joinColumns = @JoinColumn(name = "contract_id"),
 	inverseJoinColumns = @JoinColumn(name = "lcrzb_id"))
 	public Set<Lcrzb> getLcrzSet() {
@@ -213,16 +213,5 @@ public class Contract {
 	public void setLcrzSet(Set<Lcrzb> lcrzSet) {
 		this.lcrzSet = lcrzSet;
 	}
-	
-
-//	@ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-//	@JoinColumn(name = "department_id")
-//	public Department getDepartment() {
-//		return department;
-//	}
-//
-//	public void setDepartment(Department department) {
-//		this.department = department;
-//	}
 	
 }

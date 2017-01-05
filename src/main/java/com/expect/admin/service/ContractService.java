@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.ContractRepository;
 import com.expect.admin.data.dao.LcjdbRepository;
+import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
@@ -65,7 +66,8 @@ public class ContractService {
 	private UserRepository userRepository;
 	@Autowired
 	private AttachmentRepository attachmentRepository;
-	
+	@Autowired
+	private LcrzbRepository lcrzbRepository;
 	@Transactional
 	public String save(ContractVo contractVo, String[] attachmentId){
 		Contract contract = new Contract(contractVo);
@@ -116,9 +118,23 @@ public class ContractService {
 	 * 新增是增加流程日志
 	 * @param contract
 	 */
+	@Transactional
 	public void addXzLcrz(String id, String htfl, String htshzt) {
 		LcrzbVo lcrzbVo = new LcrzbVo("新增", "");
-		lcrzbService.save(lcrzbVo, id, htfl, htshzt);
+		String lcrzId = lcrzbService.save(lcrzbVo, id, htfl, htshzt);
+		bindContractWithLcrz(id, lcrzId);
+	}
+
+	/**
+	 * 流程日志和合同的绑定
+	 * @param id
+	 * @param lcrzId
+	 */
+	public void bindContractWithLcrz(String ContractId, String lcrzId) {
+		Contract contract = contractRepository.findOne(ContractId);
+		Lcrzb lcrz = lcrzbRepository.findOne(lcrzId);
+		contract.getLcrzSet().add(lcrz);
+		contractRepository.save(contract);
 	}
 	
 	@Transactional
@@ -308,22 +324,6 @@ public class ContractService {
 		else contractVo.setHtshzt("");
 	}
 
-	/*private void sortContractVoListBySqsjDesc(List<ContractVo> contractVoList) {
-		Collections.sort(contractVoList, new Comparator<ContractVo>() {
-
-			@Override
-			public int compare(ContractVo c1, ContractVo c2) {
-				if(StringUtil.isBlank(c1.getSqsj())) return -1;
-				if(StringUtil.isBlank(c2.getSqsj())) return 1;
-				Date d1 = DateUtil.parse(c1.getSqsj(), DateUtil.fullFormat);
-				Date d2 = DateUtil.parse(c2.getSqsj(), DateUtil.fullFormat);
-				long dif = DateUtil.getDiffSeconds(d1, d2);
-				return (dif > 0) ? -1 : 
-					((dif < 0) ? 1 : 0);
-			}
-		});
-	}*/
-	
 	/**
 	 * 申请记录界面已审批合同
 	 * @param userId
@@ -403,7 +403,8 @@ public class ContractService {
 		String curCondition = contractVo.getHtshzt();
 		String sfth = "N";//合同是否被退回
 		//添加流程日志
-		lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, curCondition);
+		String lcrzId = lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, curCondition);
+		bindContractWithLcrz(clnrid, lcrzId);
 		//处理意见是“不通过”，并且不是法务审核就是退回
 		if(StringUtil.equals(cljg, "不通过") && !StringUtil.equals(curCondition, "3")){
 			sfth = "Y";
@@ -428,6 +429,18 @@ public class ContractService {
 	 */
 	public void updateHtbh(String id, String htbh) {
 		contractRepository.updateHtbh(id, htbh);
+	}
+	
+	/**
+	 * 判断当前要使用的合同编号是不是唯一的
+	 * @param htbh
+	 * @return true 合同编号是唯一的<br>
+	 * @return false 合同编号已经存在（不唯一）
+	 */
+	public boolean isHtbhUnique(String htbh) {
+		if(StringUtil.isBlank(htbh)) throw new BaseAppException("要验证的合同编号为空！");
+		if(contractRepository.findByBh(htbh) == null) return true;
+		return false;
 	}
 	
 	private void update(Contract contract, ContractVo contractVo) {
@@ -501,10 +514,11 @@ public class ContractService {
 	 * @param endTime 结束时间
 	 * @param htzt 合同状态（0 ：全部， 1：待审批， 2 ：已审批， 3 ： 已回填）
 	 * @param fqr 发起人（合同的申请人）姓名
+	 * @param xgryId 相关的人员的ID（用于查询个人相关的合同）
 	 * @return
 	 */
 	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
-			final Date endTime, final String htzt, final String fqr) {
+			final Date endTime, final String htzt, final String fqr, final String xgryId) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> contractList = contractRepository.findAll(new Specification<Contract>() {
 			@Override
@@ -527,10 +541,20 @@ public class ContractService {
 				
 				//申请时间（时间段内的申请）
 				if(startTime != null && endTime != null) list.add(cb.between(root.get("sqsj").as(Date.class), startTime, endTime));
-				Join<Contract, User> leftJoin = root.join(root.getModel().getSingularAttribute("nhtr", User.class), JoinType.LEFT);
+				
 //				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("id").as(String.class), fqr));
 				//合同申请人（发起人）
-				if(!StringUtil.isBlank(fqr)) list.add(cb.equal(leftJoin.get("fullName").as(String.class), fqr));//发起人
+				if(!StringUtil.isBlank(fqr)){
+					Join<Contract, User> contractUserLeftJoin = root.join(root.getModel().getSingularAttribute("nhtr", User.class), JoinType.LEFT);
+					list.add(cb.equal(contractUserLeftJoin.get("fullName").as(String.class), fqr));//发起人
+				}
+				
+				//相关的人员的ID（用于查询个人相关的合同）
+				if(!StringUtil.isBlank(xgryId)){
+					Join<Contract, Lcrzb> contractLcrzbLeftJoin = root.joinSet("lcrzSet", JoinType.LEFT);
+					list.add(cb.equal(contractLcrzbLeftJoin.get("user").get("id").as(String.class), xgryId));
+				}
+				
 				Predicate[] predicate = new Predicate[list.size()];
 				Predicate psssredicate = cb.and(list.toArray(predicate));
 				return psssredicate;
