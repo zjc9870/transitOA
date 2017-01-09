@@ -2,6 +2,13 @@ var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         var tabId = this.id;
+        //若当前按钮已选中则点击不再触发事件
+        if($(this).hasClass('button')) {return};
+        if(tabId == 'yht') {
+            $('#table-title').prepend("<th id='htbh'>合同编号</th>");
+        } else {
+            $('#htbh').remove();
+        }
         AjaxTool.get('contract/sqjlTab', {
                 lx: this.id, bz:'ht'},function (data) {
                 if(data.success) {
@@ -9,11 +16,12 @@ for(var i=0; i<tabs.length; i++) {
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
                         str += "<tr>";
+                        if(tabId == 'yht') {
+                            str += "<td>"+cons[i].bh+"</td>";
+                        }
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         str += "<td>"+cons[i].userName+"</td>";
-                        str += "<td>-</td>";
-                        str += "<td>-</td>";
                         str += "<td><div onclick='backfillDetail(\""+cons[i].id +'\",\"'+cons[i].bh + '\",\"'+tabId + "\")'>查看</div>" +
                             "<div onclick='print(\""+cons[i].id+"\")'>打印</div></td>";
                         str += "</tr>";
@@ -49,13 +57,15 @@ function print(id) {
 }
 
 function init() {
-	mTable=DatatableTool.initDatatable("c-backfill-table", [ {
-		'orderable' : false,
-		'targets' : [ 5 ]
-	}, {
-		"searchable" : false,
-		"targets" : [ 5 ]
-	}], [ [ 1, "desc" ] ]);
+	mTable=DatatableTool.initDatatable("c-backfill-table",
+    [ {
+        'orderable' : false,
+        'targets' : [ 3 ]
+    }, {
+        "searchable" : false,
+        "targets" : [ 3 ]
+    }],
+    [ [ 1, "desc" ] ]);
 }
 
 jQuery(document).ready(function() {

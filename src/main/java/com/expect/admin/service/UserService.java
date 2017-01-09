@@ -1,6 +1,7 @@
 package com.expect.admin.service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,8 +15,6 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -296,13 +295,14 @@ public class UserService implements UserDetailsService {
 
 			String ip = RequestUtil.getIpAddr(request);
 			loginLog(user.getId(), user.getUsername(), ip);
-
-			Cookie usernameCookie = new Cookie("username", user.getUsername());
-			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
-			response.addCookie(usernameCookie);
-			Cookie passwordCookie = new Cookie("password", user.getPassword());
-			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
-			response.addCookie(passwordCookie);
+//
+//			Cookie usernameCookie = new Cookie("username", user.getUsername());
+//			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
+//			response.addCookie(usernameCookie);
+//			
+//			Cookie passwordCookie = new Cookie("password", URLEncoder.encode(user.getPassword(),"UTF-8"));
+//			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
+//			response.addCookie(passwordCookie);
 
 			response.sendRedirect("/admin/home");
 		}

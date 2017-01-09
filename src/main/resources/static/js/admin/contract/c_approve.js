@@ -2,6 +2,8 @@ var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         var tabId = this.id;
+        //若当前按钮已选中则点击不再触发事件
+        if($(this).hasClass('button')) {return};
         AjaxTool.get('contract/sqjlTab', {
             lx: this.id, bz: 'sp'},function (data) {
                 if(data.success) {
