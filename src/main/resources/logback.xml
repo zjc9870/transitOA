@@ -5,10 +5,12 @@
     <logger name="org.springframework.web" level="ERROR" />
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/Users/joker/java/New_workspace/transitOA/log/log.log</file>
+        <file>C:/Users/zcz/git/transitOA/log/log.log</file>
+        <!-- <file>D:/transitOA/log/log.log</file> -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>C:/Users/zcz/git/transitOA/log/log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- <fileNamePattern>D:/transitOA/log/log.%d{yyyy-MM-dd}.log</fileNamePattern> -->
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
         </rollingPolicy>

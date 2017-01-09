@@ -295,6 +295,7 @@ public class UserService implements UserDetailsService {
 
 			String ip = RequestUtil.getIpAddr(request);
 			loginLog(user.getId(), user.getUsername(), ip);
+
 //
 //			Cookie usernameCookie = new Cookie("username", user.getUsername());
 //			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
@@ -303,6 +304,7 @@ public class UserService implements UserDetailsService {
 //			Cookie passwordCookie = new Cookie("password", URLEncoder.encode(user.getPassword(),"UTF-8"));
 //			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
 //			response.addCookie(passwordCookie);
+
 
 			response.sendRedirect("/admin/home");
 		}
