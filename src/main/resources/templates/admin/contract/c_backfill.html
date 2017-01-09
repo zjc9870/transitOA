@@ -15,15 +15,12 @@
                     <button id="dht" class="button">待回填</button>
                     <button id="yht" class="button-active">已回填</button>
                 </div>
-                <table id="c-backfill-table"
-                       class="table table-striped table-bordered table-hover">
+                <table id="c-backfill-table" class="table table-striped table-bordered table-hover">
                     <thead>
-                    <tr class="table-title">
+                    <tr id="table-title" class="table-title">
                         <th>合同名称</th>
                         <th>申请时间</th>
                         <th>申请人</th>
-                        <th>审批时间</th>
-                        <th>审批意见</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -35,34 +32,12 @@
                             <td th:text='${con.htbt}'></td>
                             <td><div th:text='${con.date}'></div><div th:text='${con.time}'></div></td>
                             <td th:text='${con.userName}'></td>
-                            <td>-</td>
-                            <td>-</td>
                             <td><div onclick="backfillDetail($(this.parentNode.parentNode.childNodes[1]).val(),'','dht')">查看</div>
                                 <div onclick="print($(this.parentNode.parentNode.childNodes[1]).val())">打印</div></td>
                             </th:block>
                         </tr>
                     </th:block>
                     </tbody>
-                    <!--<tbody class="mt-td-checkbox">-->
-                    <!--<tr>-->
-                        <!--<td>XX合同</td>-->
-                        <!--<td>2016/3/23</td>-->
-                        <!--<td>张三(部门或子公司)</td>-->
-                        <!--<td>2016/3/23</td>-->
-                        <!--<td>同意</td>-->
-                        <!--<td>待回填</td>-->
-                        <!--<td style="color:blue;cursor:pointer" onclick="backfillDetail()">查看详情 修改编号</td>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                        <!--<td>XX合同</td>-->
-                        <!--<td>2016/3/23</td>-->
-                        <!--<td>张三(部门或子公司)</td>-->
-                        <!--<td>2016/3/23</td>-->
-                        <!--<td>同意</td>-->
-                        <!--<td>已回填</td>-->
-                        <!--<td style="color:blue;cursor:pointer" onclick="backfill_recordDetail()">查看详情 修改编号 打印申办单</td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
                 </table>
             </div>
         </div>

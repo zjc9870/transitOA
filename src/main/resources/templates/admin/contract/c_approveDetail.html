@@ -78,8 +78,8 @@
             <form id="c_approveForm" class="op-form">
                 <div class="yj-input">
                     <span>办理人意见:</span>
-                    <label><input type="radio" name="cljg" value="通过" />通过</label>
-                    <label><input type="radio" name="cljg" value="不通过" />不通过</label>
+                    <input type="radio" name="cljg" value="通过" />通过
+                    <input type="radio" name="cljg" value="不通过" />不通过
                 </div>
                 <div class="yj-disagree">
                     <div class="form-title">审批意见:</div>
@@ -87,9 +87,12 @@
                 </div>
             </form>
             <input type="hidden" th:value="${contractVo.id}" id="data" />
-            <button id="submit" onclick="submitForm()" class="button" style="margin-left:20%">提交</button>
+            <button id="submit"  class="button" style="margin-left:20%">提交</button>
         </div>
     </div>
+
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/admin/contract/c_approveDetail.js}" type="text/javascript"></script>
 </body>
 </html>
