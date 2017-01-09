@@ -47,6 +47,11 @@ var Login = function() {
 
             submitHandler: function(form) {
                 form.submit(); // form validation success, call ajax form submit
+                if($("input[name='remember-me']").is(':checked')) {
+                    setCookies();
+                }else {
+                    removeCookies();
+                }
             }
         });
 
@@ -59,22 +64,31 @@ var Login = function() {
             }
         });
     }
-    
-    // var cookies=function(){
-    //     var username=$.cookie('username');
-    //     console.info(username);
-    //     if(username){
-    //         var password=$.cookie('password');
-    //         $("input[name='username']").val(username);
-    //         $("input[name='password']").val(password);
-    //         $("input[name='remember-me']").attr("checked","checked");
-    //     }
-    // }
+
+    var setCookies=function () {
+        $.cookie('username',$("input[name='username']").val());
+        $.cookie('password',$("input[name='password']").val());
+    }
+
+    var removeCookies=function () {
+        $.removeCookie('username');
+        $.removeCookie('password');
+    }
+
+    var getCookies=function(){
+        var username=$.cookie('username');
+        if(username){
+            var password=$.cookie('password');
+            $("input[name='username']").val(username);
+            $("input[name='password']").val(password);
+            $("input[name='remember-me']").attr("checked","checked");
+        }
+    }
 
     return {
         init: function() {
             handleLogin();
-            cookies();
+            getCookies();
         }
 
     };
