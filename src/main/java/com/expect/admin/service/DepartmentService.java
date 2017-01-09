@@ -39,6 +39,11 @@ public class DepartmentService {
 	private UserRepository userRepository;
 	@Autowired
 	private UserService userService;
+	
+	/**
+	 * 子公司分类
+	 */
+	private final String ZGS_CATEGORY = "2";
 
 	/**
 	 * 获取所有的部门信息
@@ -66,21 +71,29 @@ public class DepartmentService {
 		return departmentVos;
 	}
 	
+	/**
+	 * 如果是超级管理员 子公司选项的内容就是所有公司，父部门的选项就是所有部门, 部门负责人就是集团所有人<br>
+	 * 如果不是吵架管理员 子公司选项就是管理员的所属公司， 父部门选项就行子公司的所有部门， 部门负责人是子公司的所有人
+	 * 新增部门是的初始化信息
+	 * @return
+	 */
 	public DepartmentVo getANewDepartmentVo(){
 		DepartmentVo departmentVo = new DepartmentVo();
+		setSsgs(departmentVo);
 		UserVo userVo = userService.getLoginUser();
-		if(StringUtil.equals("super", userVo.getSsgsId())) {
-			
-		}
-		else if(!StringUtil.isBlank(userVo.getSsgsId())){
-			Department ssgsDepartment = departmentRepository.findOne(userVo.getSsgsId());
-			departmentVo.getSsgsSov().addOption(ssgsDepartment.getId(), 
-					ssgsDepartment.getName(), true);
-		}else return getDepartmentById("-1");
-		List<UserVo> users = userService.getAllUsers();
+		//父部门
+		List<DepartmentVo> departments = getGsDepartmentsBySsgs(userVo.getSsgsId());
+		SelectOptionVo parentDepartmentSov = DepartmentConvertor.convertSov(departments, null);
+		departmentVo.setParentDepartmentSov(parentDepartmentSov);
+		
+		//部门负责人
+		List<UserVo> users = userService.getUserBySsgsId(userVo.getSsgsId());
 		SelectOptionVo managerSov = null;
 		managerSov = UserConvertor.convertSov(users, null);
 		departmentVo.setManagerSov(managerSov);
+		
+		setGsfl(departmentVo);
+		
 		return departmentVo;
 	}
 
@@ -114,19 +127,52 @@ public class DepartmentService {
 		SelectOptionVo parentDepartmentSov = DepartmentConvertor.convertSov(departments, checkedDepartment);
 		departmentVo.setParentDepartmentSov(parentDepartmentSov);
 		departmentVo.setManagerSov(managerSov);
+		
+		//所属公司
+		setSsgs(departmentVo);
+		//公司分类
+		setGsfl(departmentVo);
+		
 		return departmentVo;
+	}
+
+	/**
+	 * 设置公司分类
+	 * @param departmentVo
+	 */
+	private void setGsfl(DepartmentVo departmentVo) {
+		boolean isZgs = StringUtil.equals(departmentVo.getCategory(), "2");//是否是子公司
+		departmentVo.getCategorySov().addOption("1", "普通部门", !isZgs);
+		departmentVo.getCategorySov().addOption("2", "子公司", isZgs);
+	}
+
+	/**
+	 * 设置departmentVO的所属公司
+	 * @param departmentVo
+	 */
+	private void setSsgs(DepartmentVo departmentVo) {
+		UserVo loginUserVo = userService.getLoginUser();
+		if(StringUtil.equals("super", loginUserVo.getSsgsId())) {
+				List<Department> zgs = departmentRepository.findByCategory(ZGS_CATEGORY);//子公司
+				for (Department department : zgs) {
+					if(StringUtil.equals(department.getId(), departmentVo.getSsgsId())){
+						departmentVo.getSsgsSov().addOption(department.getId(), department.getName(), true);
+						continue;
+					}
+					departmentVo.getSsgsSov().addOption(department.getId(), department.getName());
+				}
+		}
+		else {
+			Department ssgsDepartment = departmentRepository.findOne(loginUserVo.getSsgsId());
+			departmentVo.getSsgsSov().addOption(ssgsDepartment.getId(), 
+					ssgsDepartment.getName(), true);
+			
+		}
 	}
 
 	/**
 	 * 根据userId获取该用户的所有部门
 	 */
-//	public DepartmentVo getDepartmentsByUserId(String userId) {
-//		User user = userRepository.findOne(userId);
-//		if (user == null) {
-//			return null;
-//		}
-//		return DepartmentConvertor.convert(user.getDepartment());
-//	}
 	public List<DepartmentVo> getDepartmentsByUserId(String userId) {
 		User user = userRepository.findOne(userId);
 		if (user == null) {

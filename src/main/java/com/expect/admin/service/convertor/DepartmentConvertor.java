@@ -15,6 +15,7 @@ import com.expect.admin.service.vo.component.html.CheckboxsVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableButtonFactory;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
+import com.expect.admin.utils.StringUtil;
 
 public class DepartmentConvertor {
 
@@ -53,6 +54,10 @@ public class DepartmentConvertor {
 			departmentVo.setParentId(department.getParentDepartment().getId());
 			departmentVo.setParentName(department.getParentDepartment().getName());
 		}
+		if(department.getSsgs() != null) {
+			departmentVo.setSsgsId(department.getSsgs().getId());
+			departmentVo.setSsgsName(department.getSsgs().getName());
+		}
 		return departmentVo;
 	}
 
@@ -62,6 +67,7 @@ public class DepartmentConvertor {
 	public static List<DepartmentVo> convert(Collection<Department> departments) {
 		List<DepartmentVo> departmentVos = new ArrayList<>();
 		for (Department department : departments) {
+			if(StringUtil.equals("super", department.getId())) continue;
 			DepartmentVo departmentVo = convert(department);
 			departmentVos.add(departmentVo);
 		}

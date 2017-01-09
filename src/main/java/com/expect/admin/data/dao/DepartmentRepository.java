@@ -45,5 +45,12 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
 	 * @return
 	 */
 	public List<Department> findBySsgs_id(String ssgsId);
+	
+	/**
+	 * 根据公司分类获取公司
+	 * @param category 部门的类型（1 普通部门  2：子公司）
+	 * @return
+	 */
+	public List<Department> findByCategory(String category);
 
 }
