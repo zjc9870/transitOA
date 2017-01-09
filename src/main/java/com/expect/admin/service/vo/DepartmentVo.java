@@ -12,6 +12,8 @@ public class DepartmentVo {
 	private String managerName;
 	private String parentId;
 	private String parentName;
+	private String ssgsId;
+	private String ssgsName;
 	private SelectOptionVo parentDepartmentSov = new SelectOptionVo();
 	private SelectOptionVo managerSov = new SelectOptionVo();
 	private SelectOptionVo categorySov = new SelectOptionVo();
@@ -120,6 +122,22 @@ public class DepartmentVo {
 
 	public void setSsgsSov(SelectOptionVo ssgsSov) {
 		this.ssgsSov = ssgsSov;
+	}
+
+	public String getSsgsId() {
+		return ssgsId;
+	}
+
+	public void setSsgsId(String ssgsId) {
+		this.ssgsId = ssgsId;
+	}
+
+	public String getSsgsName() {
+		return ssgsName;
+	}
+
+	public void setSsgsName(String ssgsName) {
+		this.ssgsName = ssgsName;
 	}
 	
 	
