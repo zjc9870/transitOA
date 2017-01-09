@@ -39,7 +39,7 @@ public class User implements UserDetails {
 	private String id;
 	@Column(name = "username", length = 32)
 	private String username;// 用户名
-	@Column(name = "password", length = 32)
+	@Column(name = "password", length = 100)
 	private String password;// 密码
 	@Column(name = "full_name", length = 32)
 	private String fullName;// 姓名
