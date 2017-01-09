@@ -163,5 +163,60 @@
 		</ul>
 		<!-- <input type="hidden" th:value="${userVo.id}" id="userId" /> -->
 	</form>
+	<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+	<script type="text/javascript">
+		var validator = $('#user-form').validate({
+			errorElement: 'span', //default input error message container
+			errorClass: 'error-tips', // default input error message class
+			rules: {
+				username: {
+					required: true
+				},
+				password: {
+					required: true
+				},
+				fullName: {
+					required: true
+				},
+				phoneNumber1: {
+					phoneUS: true
+				},
+				phoneNumber2: {
+					phoneUS: true
+				},
+				email: {
+					email: true
+				},
+				sex: {
+					required: true
+				}
+			},
+
+			messages: {
+				username: {
+					required: "请输入用户名"
+				},
+				password: {
+					required: "请输入密码"
+				},
+				fullName: {
+					required: "请输入姓名"
+				},
+				phoneNumber1: {
+					phoneUS: "请输入正确的手机号"
+				},
+				phoneNumber2: {
+					phoneUS: "请输入正确的手机号"
+				},
+				email: {
+					email: "请输入正确的邮箱"
+				},
+				sex: {
+					required: "请选择性别"
+				}
+			}
+		});
+	</script>
 </body>
 </html>
