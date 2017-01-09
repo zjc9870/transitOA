@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html class="login-alone">
+    <head>
+        <title>微信登录</title>
+		<meta name="keywords" content="公交OA系统微信登录页面" />
+		<meta name="description" content="南京江宁公交OA系统微信登录页面" />
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <link rel="" type="" href="" />
+        <link rel="" type="text/css" href=""/>
+        <link rel="stylesheet" type="text/css" href=""/>
+        
+        
+		<link th:href="@{/plugins/res/ui/css/screen.css?v=3.9}" media="screen, projection" rel="stylesheet" type="text/css" />
+		<link th:href="@{/plugins/res/homepage/favicon.ico?v=3.9}" rel="shortcut icon" type="image/x-icon" />
+		<link th:href="@{/plugins/res/ui/css/base.css?v=3.9}" rel="stylesheet" type="text/css" />
+		<link th:href="@{/plugins/res/passport/css/login.css?v=3.9}" rel="stylesheet" type="text/css" />
+        
+        
+        <!--[if lt IE 9]>
+        <script>
+        window.location="homepage/support";
+        </script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="logina-logo" style="height: 55px">
+            <a href="">
+                <img src="res/passport/images/toplogo.png?v=3.9" height="60" alt=""/>
+            </a>
+        </div>
+        <div class="logina-main main clearfix">
+            <div class="tab-con">
+                <form id="form-login" method="post" action="passport/ajax-login">
+                    <div id='login-error' class="error-tip"></div>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr>
+                                <th>账户</th>
+                                <td width="245">
+                                    <input id="email" type="text" name="email" placeholder="请输入账号" autocomplete="off" value=""/></td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>密码</th>
+                                <td width="245">
+                                    <input id="password" type="password" name="password" placeholder="请输入密码" autocomplete="off"/>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td width="245"><input class="confirm" type="submit" value="登  录"/></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input type="hidden" name="refer" value="site/"/>
+                </form>
+            </div>
+        </div>
+        <div id="footer">
+            <div class="copyright">Copyright © 2017 All Rights Reserved. 南京大学 版权所有</div>
+        </div>
+        <script src="res/skin/js/lib/jquery-2.0.3.min.js?v=3.9"></script>
+        <script src="res/skin/js/ui.common.js?v=3.9"></script>
+        <script src="res/passport/js/login.js?v=3.9"></script>       
+    </body>
+</html>

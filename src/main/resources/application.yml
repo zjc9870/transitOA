@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/spring-boot-admin
+    url: jdbc:mysql://127.0.0.1/gongjiao
 #    url: jdbc:mysql://120.76.138.55/transitOA
     username: root
     password: 123456
