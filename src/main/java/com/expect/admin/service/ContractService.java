@@ -19,6 +19,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,7 +192,6 @@ public class ContractService {
 	}
 	
 	/**
-	 * 还要修改
 	 * @param userId
 	 * @param condition
 	 * @param start
@@ -199,6 +199,7 @@ public class ContractService {
 	 * @param lx
 	 * @return
 	 */
+	@Cacheable(cacheNames = "CONTRACT_CACHE")
 	public List<ContractVo> getContractByUserIdAndCondition(String userId, String condition, String lx) {
 		List<Contract> contractList = null;
 		
@@ -329,6 +330,7 @@ public class ContractService {
 	 * @param userId
 	 * @return
 	 */
+	@Cacheable(cacheNames = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlYspList(String userId){
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> yspList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, "Y");
@@ -355,6 +357,7 @@ public class ContractService {
 	 * @param userId
 	 * @return
 	 */
+	@Cacheable(cacheNames = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlWspList(String userId, String condition) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);
@@ -517,6 +520,7 @@ public class ContractService {
 	 * @param xgryId 相关的人员的ID（用于查询个人相关的合同）
 	 * @return
 	 */
+	@Cacheable(cacheNames = "CONTRACT_CACHE")
 	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
 			final Date endTime, final String htzt, final String fqr, final String xgryId) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();

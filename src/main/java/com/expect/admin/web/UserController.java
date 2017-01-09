@@ -12,27 +12,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.config.Settings;
 import com.expect.admin.service.AttachmentService;
-import com.expect.admin.service.DepartmentService;
+//import com.expect.admin.service.DepartmentService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.AttachmentVo;
-import com.expect.admin.service.vo.DepartmentVo;
+//import com.expect.admin.service.vo.DepartmentVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.FileResultVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 import com.expect.admin.utils.IOUtil;
-import com.expect.admin.utils.JsonResult;
-import com.expect.admin.utils.ResponseBuilder;
-import com.expect.admin.utils.StringUtil;
+//import com.expect.admin.utils.JsonResult;
+//import com.expect.admin.utils.ResponseBuilder;
+//import com.expect.admin.utils.StringUtil;
 
 @Controller
 @RequestMapping("/admin/user")
@@ -46,8 +46,8 @@ public class UserController {
 	private AttachmentService attachmentService;
 	@Autowired
 	private Settings settings;
-	@Autowired
-	private DepartmentService departmentService;
+//	@Autowired
+//	private DepartmentService departmentService;
 
 	/**
 	 * 用户管理页面

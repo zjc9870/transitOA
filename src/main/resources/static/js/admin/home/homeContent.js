@@ -1,9 +1,20 @@
 ;
 
 $(document).on('click', '#htdb, #htyb', function() {
+	var roleName = $('#userRolesName').val();
 	var fl = $(this).data("fl");
+	var url = 'contract/sqjlTab';
+	var bz = 'sp';
+	//如果是合同申请人登录时，主页合同待办显示未提交的合同，合同已办显示已提交的合同（未审批完成）
+	//否则合同待办显示显示待审批合同， 合同已办显示已审批的合同
+	if(roleName.indexOf("文员") != -1){
+		bz = 'sq';
+		if(fl == 'dsp')
+			fl = 'wtj';
+		else fl = 'dsp';
+	}
 	setTheClickButtonSelect($(this).parent());
-	getAndDisplayHtsjByFl(fl);
+	getAndDisplayHtsjByFl(url, fl, bz);
 });
 $(document).on('click', "#dtgg, #djgz, #gwfc", function() {
 	var fl = $(this).data("fl");
@@ -48,6 +59,7 @@ function setTheClickButtonSelect(button) {
 	button.addClass("tab-box-selected");
 }
 
+//根据新闻的分类获取并展示新闻
 function getAndDisplayNewsByFl(fl) {
 	AjaxTool.post('news/getNewsList', {
 		xwlx : fl
@@ -69,10 +81,10 @@ function getAndDisplayNewsByFl(fl) {
 	})
 }
 // 根据显示的分类（合同待办 ：待审批（dsp），合同已办： 已审批（ysp））获取并显示合同的数据
-function getAndDisplayHtsjByFl(fl) {
-	AjaxTool.get('contract/sqjlTab', {
+function getAndDisplayHtsjByFl(url, fl, bzStr) {
+	AjaxTool.get(url, {
 		lx : fl,
-		bz : 'sp'
+		bz : bzStr
 	}, function(data) {
 		if (data.success) {
 			var leftUlStr = "<ul>";

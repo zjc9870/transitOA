@@ -1,0 +1,13 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+	
+	<diskStore path="java.io.tmpdir/EhCacheSpringAnnotationsExampleApp" />
+	<defaultCache eternal="false" maxElementsInMemory="1000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
+		timeToLiveSeconds="300" memoryStoreEvictionPolicy="LRU" />
+	<!-- 合同缓存 -->	
+	<cache name = "CONTRACT_CACHE" maxElementsInMemory="1000" 
+		timeToLiveSeconds="600" overflowToDisk="false" diskPersistent="false"
+		timeToIdleSeconds="0" eternal="false" memoryStoreEvictionPolicy="LRU">
+	</cache>
+</ehcache>

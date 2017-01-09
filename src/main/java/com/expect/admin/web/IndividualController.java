@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,7 +51,13 @@ public class IndividualController {
 			@RequestParam(name = "newPassword", required = false)String newPassword,
 			HttpServletResponse response) throws IOException{
 		UserVo loginUserVo = userService.getLoginUser();
-		if(!StringUtil.isBlank(newPassword)) userVo.setPassword(newPassword);
+		if(!StringUtil.isBlank(newPassword)){
+			BCryptPasswordEncoder encoder  = new BCryptPasswordEncoder();
+			String encodeNewPassword = encoder.encode(newPassword);
+			System.out.println(newPassword);
+			System.out.println(encodeNewPassword);
+			userVo.setPassword(encodeNewPassword);
+		}
 		else userVo.setPassword(loginUserVo.getPassword());
 		return userService.update(userVo);
 	}
