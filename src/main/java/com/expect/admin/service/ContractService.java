@@ -19,10 +19,13 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.ContractRepository;
@@ -116,7 +119,7 @@ public class ContractService {
 		else return lcService.getNextCondition(lcbs, startCondition);
 	}
 	/**
-	 * 新增是增加流程日志
+	 * 新增时增加流程日志
 	 * @param contract
 	 */
 	@Transactional
@@ -199,7 +202,7 @@ public class ContractService {
 	 * @param lx
 	 * @return
 	 */
-	@Cacheable(cacheNames = "CONTRACT_CACHE")
+	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> getContractByUserIdAndCondition(String userId, String condition, String lx) {
 		List<Contract> contractList = null;
 		
@@ -330,7 +333,7 @@ public class ContractService {
 	 * @param userId
 	 * @return
 	 */
-	@Cacheable(cacheNames = "CONTRACT_CACHE")
+	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlYspList(String userId){
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> yspList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, "Y");
@@ -357,7 +360,7 @@ public class ContractService {
 	 * @param userId
 	 * @return
 	 */
-	@Cacheable(cacheNames = "CONTRACT_CACHE")
+	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlWspList(String userId, String condition) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
 		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);
@@ -400,6 +403,7 @@ public class ContractService {
 	 * @param clnrfl
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = { "CONTRACT_CACHE" }, removeAll = true)
 	public void saveContractLcrz(String cljg, String message, String clnrid, String clnrfl) {
 		ContractVo contractVo = getContractById(clnrid);
 		String nextCondition;//合同的下一个状态，根据是否被退回确定
@@ -520,7 +524,7 @@ public class ContractService {
 	 * @param xgryId 相关的人员的ID（用于查询个人相关的合同）
 	 * @return
 	 */
-	@Cacheable(cacheNames = "CONTRACT_CACHE")
+	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> searchContract(final String htbt, final String htbh, final Date startTime,
 			final Date endTime, final String htzt, final String fqr, final String xgryId) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();

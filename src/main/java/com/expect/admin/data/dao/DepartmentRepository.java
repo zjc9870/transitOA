@@ -38,5 +38,12 @@ public interface DepartmentRepository extends JpaRepository<Department, String> 
 	 */
 	@Query("from Department dept where not exists (select 1 from Department oDept where oDept.parentDepartment.id = dept.id)")
 	public List<Department> findByLastDepartment();
+	
+	/**
+	 * 获取某个公司的所有部门
+	 * @param ssgsId 所属公司Id
+	 * @return
+	 */
+	public List<Department> findBySsgs_id(String ssgsId);
 
 }

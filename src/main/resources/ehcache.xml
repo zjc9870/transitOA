@@ -10,4 +10,16 @@
 		timeToLiveSeconds="600" overflowToDisk="false" diskPersistent="false"
 		timeToIdleSeconds="0" eternal="false" memoryStoreEvictionPolicy="LRU">
 	</cache>
+	
+	<!-- 用户缓存 -->	
+	<cache name = "USER_CACHE" maxElementsInMemory="1000" 
+		timeToLiveSeconds="600" overflowToDisk="false" diskPersistent="false"
+		timeToIdleSeconds="0" eternal="false" memoryStoreEvictionPolicy="LRU">
+	</cache>
+	
+	<!-- 部门缓存 -->	
+	<cache name = "DEPARTMENT_CACHE" maxElementsInMemory="1000" 
+		timeToLiveSeconds="600" overflowToDisk="false" diskPersistent="false"
+		timeToIdleSeconds="0" eternal="false" memoryStoreEvictionPolicy="LRU">
+	</cache>
 </ehcache>

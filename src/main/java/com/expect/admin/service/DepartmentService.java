@@ -24,6 +24,8 @@ import com.expect.admin.service.vo.component.html.JsTreeVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 import com.expect.admin.utils.StringUtil;
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 
 /**
  * 部门Service
@@ -41,6 +43,7 @@ public class DepartmentService {
 	/**
 	 * 获取所有的部门信息
 	 */
+	@Cacheable(cacheName = "DEPARTMENT_CACHE")
 	public List<DepartmentVo> getDepartments() {
 		List<Department> departments = departmentRepository.findAll();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departments);
@@ -53,10 +56,11 @@ public class DepartmentService {
 	 * 如果ssgs为空就返回所有部门
 	 * @return
 	 */
+	@Cacheable(cacheName = "DEPARTMENT_CACHE")
 	public List<DepartmentVo> getGsDepartmentsBySsgs(String ssgs) {
 		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司部门时公司id为空");
 		if(StringUtil.equals(ssgs, "super")) return getDepartments();
-		List<Department> departmentList = departmentRepository.findByParentDepartmentId(ssgs);
+		List<Department> departmentList = departmentRepository.findBySsgs_id(ssgs);
 		if(departmentList == null || departmentList.isEmpty()) return new ArrayList<>();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departmentList);
 		return departmentVos;
@@ -65,10 +69,13 @@ public class DepartmentService {
 	public DepartmentVo getANewDepartmentVo(){
 		DepartmentVo departmentVo = new DepartmentVo();
 		UserVo userVo = userService.getLoginUser();
-		if(!StringUtil.isBlank(userVo.getSsgsId())){
-			Department parentDepartment = departmentRepository.findOne(userVo.getSsgsId());
-			departmentVo.getParentDepartmentSov().addOption(parentDepartment.getId(), 
-					parentDepartment.getName(), true);
+		if(StringUtil.equals("super", userVo.getSsgsId())) {
+			
+		}
+		else if(!StringUtil.isBlank(userVo.getSsgsId())){
+			Department ssgsDepartment = departmentRepository.findOne(userVo.getSsgsId());
+			departmentVo.getSsgsSov().addOption(ssgsDepartment.getId(), 
+					ssgsDepartment.getName(), true);
 		}else return getDepartmentById("-1");
 		List<UserVo> users = userService.getAllUsers();
 		SelectOptionVo managerSov = null;
@@ -140,6 +147,7 @@ public class DepartmentService {
 	 * 保存部门
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = { "DEPARTMENT_CACHE" }, removeAll = true)
 	public DataTableRowVo save(DepartmentVo departmentVo) {
 		DataTableRowVo dtrv = new DataTableRowVo();
 		dtrv.setMessage("增加失败");
@@ -183,6 +191,7 @@ public class DepartmentService {
 	 * 更新部门
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = { "DEPARTMENT_CACHE" }, removeAll = true)
 	public DataTableRowVo update(DepartmentVo departmentVo) {
 		DataTableRowVo dtrv = new DataTableRowVo();
 		dtrv.setMessage("修改失败");
@@ -244,6 +253,7 @@ public class DepartmentService {
 	 * 删除部门
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = { "DEPARTMENT_CACHE" }, removeAll = true)
 	public ResultVo delete(String id) {
 		ResultVo resultVo = new ResultVo();
 		resultVo.setMessage("删除失败");

@@ -38,6 +38,8 @@ import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
 import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.StringUtil;
+import com.googlecode.ehcache.annotations.Cacheable;
+import com.googlecode.ehcache.annotations.TriggersRemove;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -72,6 +74,7 @@ public class UserService implements UserDetailsService {
 	/**
 	 * 获取所有的用户
 	 */
+	@Cacheable(cacheName = "USER_CACHE")
 	public List<UserVo> getAllUsers() {
 		List<User> users = userRepository.findAll();
 		return UserConvertor.convert(users);
@@ -87,6 +90,7 @@ public class UserService implements UserDetailsService {
 		return UserConvertor.convert(user);
 	}
 
+	@Cacheable(cacheName = "USER_CACHE")
 	public List<UserVo> getUserBySsgsId(String ssgsId) {
 		List<User> userList;
 		if(StringUtil.isBlank(ssgsId)) throw new BaseAppException("获取某公司部门时公司id为空"); 
@@ -99,6 +103,7 @@ public class UserService implements UserDetailsService {
 	 * 保存用户
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
 	public DataTableRowVo save(UserVo userVo) {
 		User checkUser = userRepository.findByUsername(userVo.getUsername());
 		DataTableRowVo dtrv = new DataTableRowVo();
@@ -127,6 +132,7 @@ public class UserService implements UserDetailsService {
 	 * 更新
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
 	public DataTableRowVo update(UserVo userVo) {
 		DataTableRowVo dtrv = new DataTableRowVo();
 		dtrv.setMessage("修改失败");
@@ -157,6 +163,7 @@ public class UserService implements UserDetailsService {
 	 * 删除
 	 */
 	@Transactional
+	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
 	public ResultVo delete(String id) {
 		ResultVo resultVo = new ResultVo();
 		User user = userRepository.findOne(id);

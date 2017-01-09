@@ -10,16 +10,16 @@ var User = {
 	init : function() {
 		var mTable=DatatableTool.initDatatable("user-table", [ {
 			'orderable' : false,
-			'targets' : [ 0, 9 ]
+			'targets' : [ 0, 8 ]
 		}, {
 			"searchable" : false,
-			"targets" : [ 0, 9 ]
+			"targets" : [ 0, 8 ]
 		}, {
 			"width" : "30px",
 			"targets" : 0
 		}, {
 			"width" : "220px",
-			"targets" : 9
+			"targets" : 8
 		} ], [ [ 1, "asc" ] ]);
 		
 		

@@ -15,6 +15,7 @@ public class DepartmentVo {
 	private SelectOptionVo parentDepartmentSov = new SelectOptionVo();
 	private SelectOptionVo managerSov = new SelectOptionVo();
 	private SelectOptionVo categorySov = new SelectOptionVo();
+	private SelectOptionVo ssgsSov = new SelectOptionVo();
 	private String category;//部门的类型（1 不同部门  2：子公司）
 
 	public String getId() {
@@ -103,6 +104,22 @@ public class DepartmentVo {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public SelectOptionVo getCategorySov() {
+		return categorySov;
+	}
+
+	public void setCategorySov(SelectOptionVo categorySov) {
+		this.categorySov = categorySov;
+	}
+
+	public SelectOptionVo getSsgsSov() {
+		return ssgsSov;
+	}
+
+	public void setSsgsSov(SelectOptionVo ssgsSov) {
+		this.ssgsSov = ssgsSov;
 	}
 	
 	

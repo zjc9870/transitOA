@@ -130,7 +130,7 @@ public class UserConvertor {
 		dtrv.setObj(userVo);
 		dtrv.setCheckbox(true);
 		dtrv.addData(userVo.getUsername());
-		dtrv.addData(userVo.getPassword());
+//		dtrv.addData(userVo.getPassword());
 		dtrv.addData(userVo.getFullName());
 		dtrv.addData(userVo.getSex());
 		dtrv.addData(userVo.getPhone());

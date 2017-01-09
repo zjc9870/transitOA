@@ -68,20 +68,20 @@ public class MD5Util extends MessageDigestPasswordEncoder{
 		return s;
 	}
 	
-	public static void main(String[] args) {
-		String a = "1234";
-		String b = "12";
-		String c = new String(a);
-		long start = System.currentTimeMillis();
-		String aMd5 = getMD5String(a);
-		String bMd5 = getMD5String(b);
-		String cMd5 = getMD5String(c);
-		long end = System.currentTimeMillis();
-		System.out.println(end - start);
-		System.out.println(aMd5);
-		System.out.println(bMd5);
-		System.out.println(cMd5);
-		System.out.println(StringUtil.equals(aMd5, bMd5));
-		System.out.println(StringUtil.equals(aMd5, cMd5));
-	}
+//	public static void main(String[] args) {
+//		String a = "1234";
+//		String b = "12";
+//		String c = new String(a);
+//		long start = System.currentTimeMillis();
+//		String aMd5 = getMD5String(a);
+//		String bMd5 = getMD5String(b);
+//		String cMd5 = getMD5String(c);
+//		long end = System.currentTimeMillis();
+//		System.out.println(end - start);
+//		System.out.println(aMd5);
+//		System.out.println(bMd5);
+//		System.out.println(cMd5);
+//		System.out.println(StringUtil.equals(aMd5, bMd5));
+//		System.out.println(StringUtil.equals(aMd5, cMd5));
+//	}
 }

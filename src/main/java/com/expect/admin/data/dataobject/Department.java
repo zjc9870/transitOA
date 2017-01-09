@@ -32,6 +32,7 @@ public class Department {
 	private List<Department> childDepartments;
 	private Set<User> users;
 	
+	private Department ssgs;//所属公司
 	private String category;//部门的类型（1 普通部门  2：子公司）
 
 	@Id
@@ -46,7 +47,7 @@ public class Department {
 		this.id = id;
 	}
 
-	@Column(name = "name", length = 31)
+	@Column(name = "name", length = 32)
 	public String getName() {
 		return name;
 	}
@@ -64,7 +65,7 @@ public class Department {
 		this.code = code;
 	}
 
-	@Column(name = "description", length = 511)
+	@Column(name = "description", length = 512)
 	public String getDescription() {
 		return description;
 	}
@@ -119,6 +120,18 @@ public class Department {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "ssgs_id")
+	public Department getSsgs() {
+		return ssgs;
+	}
+
+	public void setSsgs(Department ssgs) {
+		this.ssgs = ssgs;
+	}
+	
+	
 	
 	
 
