@@ -39,6 +39,8 @@ public class DepartmentService {
 	private UserRepository userRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RoleService roleService;
 	
 	/**
 	 * 子公司分类
@@ -58,13 +60,13 @@ public class DepartmentService {
 	/**
 	 * 获取某个公司的所有部门
 	 * @param ssgs 所属公司Id（父部门Id）<br>
-	 * 如果ssgs为空就返回所有部门
+	 * 如果ssgs为 super(超级管理员) 就返回所有部门
 	 * @return
 	 */
 	@Cacheable(cacheName = "DEPARTMENT_CACHE")
 	public List<DepartmentVo> getGsDepartmentsBySsgs(String ssgs) {
 		if(StringUtil.isBlank(ssgs)) throw new BaseAppException("获取某公司部门时公司id为空");
-		if(StringUtil.equals(ssgs, "super")) return getDepartments();
+		if(roleService.isSuperRole()) return getDepartments();
 		List<Department> departmentList = departmentRepository.findBySsgs_id(ssgs);
 		if(departmentList == null || departmentList.isEmpty()) return new ArrayList<>();
 		List<DepartmentVo> departmentVos = DepartmentConvertor.convert(departmentList);
@@ -152,7 +154,7 @@ public class DepartmentService {
 	 */
 	private void setSsgs(DepartmentVo departmentVo) {
 		UserVo loginUserVo = userService.getLoginUser();
-		if(StringUtil.equals("super", loginUserVo.getSsgsId())) {
+		if(roleService.isSuperRole()) {
 				List<Department> zgs = departmentRepository.findByCategory(ZGS_CATEGORY);//子公司
 				for (Department department : zgs) {
 					if(StringUtil.equals(department.getId(), departmentVo.getSsgsId())){

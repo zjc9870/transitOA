@@ -242,7 +242,20 @@ public class RoleService {
 	 */
 	private boolean gnglQxpd(String userName, String functionName) {
 		return !(StringUtil.equals(functionName, "功能管理") && 
-				!StringUtil.equals(userName, "super"));
+				!isSuperRole());
+	}
+
+	/**
+	 * 判断登录用户有没有超级管理员权限
+	 */
+	public boolean isSuperRole() {
+		UserVo userVo = userService.getLoginUser();
+		User user = userRepository.findOne(userVo.getId());
+		Set<Role> roles = user.getRoles();
+		for (Role role : roles) {
+			if(StringUtil.equals(role.getName(), "超级管理员")) return true;
+		}
+		return false;
 	}
 
 
