@@ -45,7 +45,7 @@ var User = {
 		},function(id){
 			DatatableTool.deleteRow("user-table","user/delete",id);
 		},function(ids){
-			DatatableTool.deleteRows("user-table","user/batchDelete",ids);
+			DatatableTool.deleteRows("user-table","user/deleteBatch",ids);
 		});
 		DatatableTool.initAddModal(function(id){
 			//部门
