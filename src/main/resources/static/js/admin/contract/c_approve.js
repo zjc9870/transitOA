@@ -76,7 +76,11 @@ function pass(id) {
 }
 
 function init() {
-	mTable=DatatableTool.initDatatable("c-approve-table", [ {
+	mTable=DatatableTool.initDatatable("c-approve-table", [{
+	    'width': '30%',
+        'targets': 0
+        },
+	    {
 		'orderable' : false,
 		'targets' : [ 5 ]
 	}, {

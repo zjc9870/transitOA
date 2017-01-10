@@ -14,7 +14,7 @@ var DatatableTool = function() {
 			"bStateSave" : true,
 			"columnDefs" : columnDefs,
 			"order" : order,
-			"bProcessing": true
+			"processing": true,
 		});
 		$('#' + tableId).find('.group-checkable').change(function() {
 			var set = jQuery(this).attr("data-set");
