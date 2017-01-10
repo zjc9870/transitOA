@@ -68,7 +68,10 @@ function pass(id) {
     AjaxTool.post('contract/addLcrz',{
         cljg: '通过', id:id},function (data) {
         alert(data.message);
-        $('#dsp').trigger("click");
+        $('#ysp').trigger("click");
+        setTimeout(function () {
+            $('#dsp').trigger("click");
+        },100);
     });
 }
 

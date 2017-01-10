@@ -166,7 +166,7 @@
 	<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
 	<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
 	<script type="text/javascript">
-		var validator = $('#user-form').validate({
+		var userValidator = $('#user-form').validate({
 			errorElement: 'span', //default input error message container
 			errorClass: 'error-tips', // default input error message class
 			rules: {
