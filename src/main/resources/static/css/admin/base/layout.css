@@ -532,10 +532,11 @@ Page Header
       .page-header.navbar .search-form.open {
         margin: -52px 0 0 0; }
     .page-header.navbar .page-top {
-      padding: 0;
-      display: block;
-      clear: both;
-      width: 100%; }
+      /*padding: 0;*/
+      /*display: block;*/
+      /*clear: both;*/
+      /*width: 100%; */
+    }
     .page-header.navbar .top-menu {
       margin: 1px 0 0 0;
       padding: 0;

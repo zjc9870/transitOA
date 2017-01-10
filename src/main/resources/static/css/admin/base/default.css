@@ -331,11 +331,12 @@ body {
 @media (max-width: 767px) {
   /* 767px */
   .page-header.navbar {
-    background: #3B3F51;
-    border-bottom: 1px solid #41465a;
+    /*background: #3B3F51;*/
+    /*border-bottom: 1px solid #41465a;*/
     /* Top menu */ }
     .page-header.navbar .page-top {
-      background: #3B3F51; }
+      /*background: #3B3F51; */
+    }
     .page-header.navbar .top-menu .navbar-nav > li.dropdown > .dropdown-toggle:hover {
       background-color: #393d4e; } }
 

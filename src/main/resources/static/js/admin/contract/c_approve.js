@@ -69,7 +69,9 @@ function pass(id) {
         cljg: '通过', id:id},function (data) {
         alert(data.message);
         var table = $('#c-approve-table').DataTable();
-        table.rows('#'+id).remove().draw();
+        if(data.success) {
+            table.rows('#'+id).remove().draw();
+        }
     });
 }
 
