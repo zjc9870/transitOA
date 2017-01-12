@@ -15,6 +15,7 @@ public class DraftSwVo {
 	private String zt;//状态
 	private String ldps;//领导批示
 	private String blqk;//办理情况
+	private String mj;//密级
 	
 	public DraftSwVo() {
 		
@@ -106,6 +107,12 @@ public class DraftSwVo {
 	public void setLdps(String ldps) {
 		this.ldps = ldps;
 	}
-	
-	
+
+	public String getMj() {
+		return mj;
+	}
+
+	public void setMj(String mj) {
+		this.mj = mj;
+	}
 }

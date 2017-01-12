@@ -1,7 +1,8 @@
 package com.expect.admin.data.dataobject;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -22,15 +24,45 @@ import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 
 /**
- * 收文表 办理人 传阅人存在Xgryb（相关人员表）中 处理结果，意见存在Lcrzb（流程日志表）中
- * 
+ * @seeDraftSwUserLcrzbGxb
+ * 将收文表 办理人 传阅人 处理意见（Lcrzb）（流程日志表）关联起来
+ * 附件信息用c_draftSw_attachment关联附件表
+ * 收文分类（，'Y':首轮 已提交，'N' : 不是首轮 已提交， 'W': 未提交）
+ * 密级（1：绝密  2.机密 3.秘密）
+ * 首轮 发起人发起——领导审批——发起人选择传阅人（每次最多50人）——传阅人完成——发起人选择办理人（每次最多50人）——办理人完成——
+ * 发起人四个选择（1.完成 2.领导批阅， 3.传阅人 4.办理人）（最后一步可以多次循环知道发起人选择完成，每次处理完成后都回到发起人）
  * @author zcz
  *
  */
 @Entity
 @Table(name = "draft_sw")
 public class DraftSw {
-
+	/**
+	 * 密级 绝密
+	 */
+	public static final String MJ_JM = "1";
+	/**
+	 * 密级 机密
+	 */
+	public static final String MJ_JIM = "2";
+	/**
+	 * 密级 秘密
+	 */
+	public static final String MJ_MM = "3";
+	
+	/**
+	 * 收文分类 未提交
+	 */
+	public static final String SWFL_WTJ = "W";
+	/**
+	 * 收文分类 首轮 已提交
+	 */
+	public static final String SWFL_SLYTJ = "Y";
+	/**
+	 * 收文分类 多轮 已提交
+	 */
+	public static final String SWFL_DLYTJ = "N";
+	
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
@@ -68,15 +100,19 @@ public class DraftSw {
 	@Column(name = "swzt", length = 32)
 	private String swzt;// 收文状态
 	
-	@Column(name = "blr", length = 32)
-	private String blr;//办理人
-
-	@Column(name = "blqk",length = 100)
-	private String blqk;
+	@Column(name = "swfl", length = 10)
+	private String swfl;//收文分类（，'Y':首轮 已提交，'N' : 不是首轮 已提交， 'W': 未提交）
 	
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-	@JoinTable(name = "c_draftSw_user", joinColumns = @JoinColumn(name = "draftSw_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<User> pyrs;
+	@Column(name = "mj", length = 2)
+	private String mj;//密级（1：绝密  2.机密 3.秘密）
+
+	@OneToMany(mappedBy = "draftSw" , fetch = FetchType.EAGER)
+	private Set<DraftSwUserLcrzbGxb> draftSwUserLcrzbGxbs = new HashSet<>();
+	
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinTable(name = "s_draftSw_attachment", joinColumns = @JoinColumn(name = "draftSw_id"), inverseJoinColumns = @JoinColumn(name = "attachment_id"))
+	private Set<Attachment> attachments = new HashSet<>();//附件
+	
 	
 	public DraftSw() {
 
@@ -92,14 +128,7 @@ public class DraftSw {
 		this.wh = draftSwVo.getWh();
 		this.wjbt = draftSwVo.getWjbt();
 		this.swzt = draftSwVo.getZt();
-	}
-
-	public String getBlqk() {
-		return blqk;
-	}
-
-	public void setBlqk(String blqk) {
-		this.blqk = blqk;
+		this.mj = draftSwVo.getMj();
 	}
 
 	public String getId() {
@@ -114,23 +143,12 @@ public class DraftSw {
 		return bh;
 	}
 
-	
-	
-
-	public List<User> getPyrs() {
-		return pyrs;
+	public Set<Attachment> getAttachments() {
+		return attachments;
 	}
 
-	public void setPyrs(List<User> pyrs) {
-		this.pyrs = pyrs;
-	}
-
-	public String getBlr() {
-		return blr;
-	}
-
-	public void setBlr(String blr) {
-		this.blr = blr;
+	public void setAttachments(Set<Attachment> attachments) {
+		this.attachments = attachments;
 	}
 
 	public void setBh(String bh) {
@@ -207,6 +225,22 @@ public class DraftSw {
 
 	public void setSwr(User swr) {
 		this.swr = swr;
+	}
+
+	public String getSwfl() {
+		return swfl;
+	}
+
+	public void setSwfl(String swfl) {
+		this.swfl = swfl;
+	}
+
+	public Set<DraftSwUserLcrzbGxb> getDraftSwUserLcrzbGxbs() {
+		return draftSwUserLcrzbGxbs;
+	}
+
+	public void setDraftSwUserLcrzbGxbs(Set<DraftSwUserLcrzbGxb> draftSwUserLcrzbGxbs) {
+		this.draftSwUserLcrzbGxbs = draftSwUserLcrzbGxbs;
 	}
 
 }
