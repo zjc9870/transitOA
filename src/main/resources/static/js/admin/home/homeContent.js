@@ -65,7 +65,7 @@ function getAndDisplayNewsByFl(fl) {
 		xwlx : fl
 	}, function(data) {
 		if (data.success) {
-			var leftUlStr = "<ul>";
+			var leftUlStr = "<ul class='home-content-block'>";
 			var rightUlStr = "<ul>";
 			var cons = data.content;
 			for (var i = 0; i < cons.length; i++) {
@@ -87,12 +87,12 @@ function getAndDisplayHtsjByFl(url, fl, bzStr) {
 		bz : bzStr
 	}, function(data) {
 		if (data.success) {
-			var leftUlStr = "<ul>";
+			var leftUlStr = "<ul class='home-content-block'>";
 			var rightUlStr = "<ul>"
 			var cons = data.content;
 			for (var i = 0; (i < cons.length && i < 7); i++) {
-				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].htbt + "</sapn></li>";
-				rightUlStr += "<li class = 'lcbt'><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</sapn></li>";
+				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].htbt + "</span></li>";
+				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</span></li>";
 			}
 			leftUlStr += "</ul>";
 			rightUlStr += "</ul>";

@@ -136,3 +136,10 @@
 .xwbt,.lcbt {
     cursor: pointer;
 }
+
+.home-content-block {
+    width: 400px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

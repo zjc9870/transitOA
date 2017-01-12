@@ -40,11 +40,13 @@ $(document).ready(function () {
                     return false;
                 }
             }
-            AjaxTool.post('draftSw/saveSw', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
-                    alert(data.message);
-                    toSqjl();
-                }
-            )
+            if(validator.form()) {
+                AjaxTool.post('draftSw/saveSw', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                        alert(data.message);
+                        toSqjl();
+                    }
+                )
+            }
         };
     }
 
@@ -53,6 +55,54 @@ $(document).ready(function () {
             $('.page-content').html(html);
         });
     }
+
+    $('.date-picker').datetimepicker({
+        format:'yyyy/mm/dd',
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+    var validator = $('#s_incoming_form').validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'error-tips', // default input error message class
+        rules: {
+            wjbt: {
+                maxlength: 50
+            },
+            lwdw: {
+                maxlength: 50
+            },
+            wh: {
+                maxlength: 50
+            },
+            mj: {
+                required: true
+            }
+        },
+        messages: {
+            wjbt: {
+                maxlength: "标题超过50个字"
+            },
+            lwdw: {
+                maxlength: "单位超过50个字"
+            },
+            wh: {
+                maxlength: "文号超过50个字"
+            },
+            mj: {
+                required: "请选择密级"
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.appendTo(element.closest('li'));
+        },
+    });
 });
 
 
