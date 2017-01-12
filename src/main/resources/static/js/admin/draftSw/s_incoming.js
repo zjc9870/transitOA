@@ -41,7 +41,7 @@ $(document).ready(function () {
                 }
             }
             if(validator.form()) {
-                AjaxTool.post('draftSw/saveSw', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                AjaxTool.post('draftSw/saveSw', $('#s_incoming_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
                         alert(data.message);
                         toSqjl();
                     }
