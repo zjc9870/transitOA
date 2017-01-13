@@ -222,6 +222,7 @@ public class DepartmentService {
 		if (!StringUtils.isEmpty(departmentVo.getManagerId())) {
 			manager = userRepository.findOne(departmentVo.getManagerId());
 		}
+		
 		Department ssgs = null;
 		if(!StringUtils.isEmpty(departmentVo.getSsgsId())){
 			ssgs = departmentRepository.findOne(departmentVo.getSsgsId());

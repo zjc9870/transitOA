@@ -95,7 +95,7 @@ public class DraftSwService {
 			if(StringUtil.equals(tab, "ywc")) return getYwcSw(userId);
 		}
 		else if(StringUtil.equals(ym, "swps")) {//待确定
-			if(StringUtil.equals(tab, "dps")) return null;
+			if(StringUtil.equals(tab, "dps")) return getDps();
 			if(StringUtil.equals(tab, "yps")) return null;
 		}
 		else {
@@ -142,6 +142,13 @@ public class DraftSwService {
 		return getDraftSwVoListFromDraftSwList(wclDraftSwList);
 	}
 
+	/**
+	 * 领导待批示
+	 * @return
+	 */
+	public List<DraftSwVo> getDps(){
+		return getDraftSwVoListFromDraftSwList(draftSwRepository.findBySwzt("16"));
+	}
 	/**
 	 * 获取某用户未提交的收文（收文人id是userid 收文分类是‘W’）
 	 * @param userId
@@ -233,74 +240,74 @@ public class DraftSwService {
 		return draftSwVo;
 	}
 	
-	public List<DraftSwVo> getDraftSwVoByUserAndCondition(String userId,String condition,String lx) {
-		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
-		List<DraftSw> draftSwList = new ArrayList<DraftSw>();
-		if(StringUtil.isBlank(condition)) return new ArrayList<>();
-		//未提交
-		if(StringUtil.equals(lx, "wtj")){
-			draftSwList = draftSwRepository.findBySwr_idAndSwztOrderByTjsjDesc(userId, condition);
-		}
-		//待批示
-		if(StringUtil.equals(lx, "dps")) {
-//			draftSwList = draftSwRepository.
-		}
-		//待传阅
-		//待办理
-		//已完成
-		if(draftSwList==null){
-			return draftSwVoList;
-		}
-		for(DraftSw sw:draftSwList){
-			draftSwVoList.add(new DraftSwVo(sw));
-		}
-		return draftSwVoList;
-	}
-	public void addPyr(List<String> userIdList, final DraftSwVo swVo){
-		Role role = roleRepository.getOne("roleid");//改成批阅人的roleid
-		List<User> userDoList = new ArrayList<User>();
-
-		if(role!=null){
-			for(String userId:userIdList){
-				User user = userRepository.getOne(userId);
-				if(user!=null){
-					userDoList.add(user);
-					role.getUsers().add(user);
-					user.getRoles().add(role);
-					userRepository.save(user);
-				}
-			}
-		}
-		roleRepository.save(role);
-		DraftSw sw = new DraftSw(swVo);
-		sw.setPyrs(userDoList);
-		draftSwRepository.save(sw);
-		return;
-	}
-	
-	public void addBlr(String userId,DraftSwVo draftSwVo){
-		Role role = roleRepository.findOne("roleid");//改成办理人的id
-		User user = userRepository.findOne("userId");
-		if(role!=null){
-			role.getUsers().add(user);
-		}
-		if(user!=null){
-			user.getRoles().add(role);
-		}
-		DraftSw draftSw = new DraftSw(draftSwVo);
-		draftSw.setBlr(userId);
-		draftSwRepository.save(draftSw);
-	}
-
-	public boolean py(String draftSwId, String pyrId) {
-		User pyr = userRepository.getOne(pyrId);
-		DraftSw draftSw = draftSwRepository.getOne(draftSwId);
-		if(draftSw!=null){
-			draftSw.getPyrs().remove(pyr);
-			draftSwRepository.save(draftSw);
-			return draftSw.getPyrs().size() == 0;
-		}else{
-			return false;
-		}
-	}
+//	public List<DraftSwVo> getDraftSwVoByUserAndCondition(String userId,String condition,String lx) {
+//		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
+//		List<DraftSw> draftSwList = new ArrayList<DraftSw>();
+//		if(StringUtil.isBlank(condition)) return new ArrayList<>();
+//		//未提交
+//		if(StringUtil.equals(lx, "wtj")){
+//			draftSwList = draftSwRepository.findBySwr_idAndSwztOrderByTjsjDesc(userId, condition);
+//		}
+//		//待批示
+//		if(StringUtil.equals(lx, "dps")) {
+////			draftSwList = draftSwRepository.
+//		}
+//		//待传阅
+//		//待办理
+//		//已完成
+//		if(draftSwList==null){
+//			return draftSwVoList;
+//		}
+//		for(DraftSw sw:draftSwList){
+//			draftSwVoList.add(new DraftSwVo(sw));
+//		}
+//		return draftSwVoList;
+//	}
+//	public void addPyr(List<String> userIdList, final DraftSwVo swVo){
+//		Role role = roleRepository.getOne("roleid");//改成批阅人的roleid
+//		List<User> userDoList = new ArrayList<User>();
+//
+//		if(role!=null){
+//			for(String userId:userIdList){
+//				User user = userRepository.getOne(userId);
+//				if(user!=null){
+//					userDoList.add(user);
+//					role.getUsers().add(user);
+//					user.getRoles().add(role);
+//					userRepository.save(user);
+//				}
+//			}
+//		}
+//		roleRepository.save(role);
+//		DraftSw sw = new DraftSw(swVo);
+//		sw.setPyrs(userDoList);
+//		draftSwRepository.save(sw);
+//		return;
+//	}
+//	
+//	public void addBlr(String userId,DraftSwVo draftSwVo){
+//		Role role = roleRepository.findOne("roleid");//改成办理人的id
+//		User user = userRepository.findOne("userId");
+//		if(role!=null){
+//			role.getUsers().add(user);
+//		}
+//		if(user!=null){
+//			user.getRoles().add(role);
+//		}
+//		DraftSw draftSw = new DraftSw(draftSwVo);
+//		draftSw.setBlr(userId);
+//		draftSwRepository.save(draftSw);
+//	}
+//
+//	public boolean py(String draftSwId, String pyrId) {
+//		User pyr = userRepository.getOne(pyrId);
+//		DraftSw draftSw = draftSwRepository.getOne(draftSwId);
+//		if(draftSw!=null){
+//			draftSw.getPyrs().remove(pyr);
+//			draftSwRepository.save(draftSw);
+//			return draftSw.getPyrs().size() == 0;
+//		}else{
+//			return false;
+//		}
+//	}
 }

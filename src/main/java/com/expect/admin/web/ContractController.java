@@ -167,6 +167,7 @@ public class ContractController {
 		String roleName = roleVo.getName();
 		modelAndView.addObject("xsth", sfxsTab(roleName, "yth"));
 		modelAndView.addObject("roleName", roleVo.getName());
+		System.out.println(roleVo.getName());
 		modelAndView.addObject("contractVoList", 
 				contractService.getContractByUserIdAndCondition(userVo.getId(),
 						condition.getJdId(), lx));

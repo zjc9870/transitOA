@@ -105,6 +105,8 @@ public class DraftSw {
 	
 	@Column(name = "mj", length = 2)
 	private String mj;//密级（1：绝密  2.机密 3.秘密）
+	@Column(name = "sqsj")
+	private Date fqsj;//发起时间（收文的申请时间）
 
 	@OneToMany(mappedBy = "draftSw" , fetch = FetchType.EAGER)
 	private Set<DraftSwUserLcrzbGxb> draftSwUserLcrzbGxbs = new HashSet<>();
@@ -241,6 +243,22 @@ public class DraftSw {
 
 	public void setDraftSwUserLcrzbGxbs(Set<DraftSwUserLcrzbGxb> draftSwUserLcrzbGxbs) {
 		this.draftSwUserLcrzbGxbs = draftSwUserLcrzbGxbs;
+	}
+
+	public String getMj() {
+		return mj;
+	}
+
+	public void setMj(String mj) {
+		this.mj = mj;
+	}
+
+	public Date getFqsj() {
+		return fqsj;
+	}
+
+	public void setFqsj(Date fqsj) {
+		this.fqsj = fqsj;
 	}
 
 }

@@ -158,41 +158,41 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		return modelAndView;
 	}
 	
-	//添加批阅人
-	@RequestMapping(value = "/addPyr" , method = RequestMethod.POST)
-	public void addPyr(DraftSwVo draftSwVo,
-			@RequestParam(name = "userIdList", required = true)List<String> pyrIdList,
-			HttpServletResponse response){
-		
-		String currentCondition = draftSwVo.getZt();
-		String condition = lcService.getNextCondition("4", currentCondition);
-		draftSwVo.setZt(condition);
-		draftSwService.addPyr(pyrIdList, draftSwVo);
-	}
-	
-	//添加办理人
-	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
-	public void addBlr(DraftSwVo draftSwVo,
-			@RequestParam(name = "userId", required = true)String blrId ,
-			HttpServletResponse response){
-		String currentCondition = draftSwVo.getZt();
-		String condition = lcService.getNextCondition("4", currentCondition);
-		draftSwVo.setZt(condition);
-		draftSwService.addBlr(blrId, draftSwVo);
-	}
-	
-	//批阅 批阅要先对VO进行处理再根据是否所有批阅人都批阅完决定是否进入下一状态
-	@RequestMapping(value = "/py" , method = RequestMethod.POST)
-	public void py(DraftSwVo draftSwVo,
-			@RequestParam(name = "userId" , required = true)String pyrId , 
-			HttpServletResponse response){
-		if(draftSwService.py(draftSwVo.getId(), pyrId)){
-			String currentCondition = draftSwVo.getZt();
-			String condition = lcService.getNextCondition("4", currentCondition);
-			draftSwVo.setZt(condition);
-			draftSwService.update(draftSwVo);
-		}
-	}
+//	//添加批阅人
+//	@RequestMapping(value = "/addPyr" , method = RequestMethod.POST)
+//	public void addPyr(DraftSwVo draftSwVo,
+//			@RequestParam(name = "userIdList", required = true)List<String> pyrIdList,
+//			HttpServletResponse response){
+//		
+//		String currentCondition = draftSwVo.getZt();
+//		String condition = lcService.getNextCondition("4", currentCondition);
+//		draftSwVo.setZt(condition);
+//		draftSwService.addPyr(pyrIdList, draftSwVo);
+//	}
+//	
+//	//添加办理人
+//	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
+//	public void addBlr(DraftSwVo draftSwVo,
+//			@RequestParam(name = "userId", required = true)String blrId ,
+//			HttpServletResponse response){
+//		String currentCondition = draftSwVo.getZt();
+//		String condition = lcService.getNextCondition("4", currentCondition);
+//		draftSwVo.setZt(condition);
+//		draftSwService.addBlr(blrId, draftSwVo);
+//	}
+//	
+//	//批阅 批阅要先对VO进行处理再根据是否所有批阅人都批阅完决定是否进入下一状态
+//	@RequestMapping(value = "/py" , method = RequestMethod.POST)
+//	public void py(DraftSwVo draftSwVo,
+//			@RequestParam(name = "userId" , required = true)String pyrId , 
+//			HttpServletResponse response){
+//		if(draftSwService.py(draftSwVo.getId(), pyrId)){
+//			String currentCondition = draftSwVo.getZt();
+//			String condition = lcService.getNextCondition("4", currentCondition);
+//			draftSwVo.setZt(condition);
+//			draftSwService.update(draftSwVo);
+//		}
+//	}
 	
 	//办理
 	@RequestMapping(value = "/bl", method = RequestMethod.POST)
