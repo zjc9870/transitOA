@@ -38,7 +38,7 @@
                 <li>
                     <div class="form-title">选择批示领导:</div>
                     <select name="ldId" th:if='${not #lists.isEmpty(ldList)}'>
-                        <option th:each='ld : ${ldList}' th:value="${ld.id}" th:text="${ld.username}"></option>
+                        <option th:each='ld : ${ldList}' th:value="${ld.id}" th:text="${ld.fullName}"></option>
                     </select>
                 </li>
             </ul>
