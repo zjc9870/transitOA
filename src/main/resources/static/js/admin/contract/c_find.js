@@ -18,7 +18,7 @@ $('#searchCon').click(function () {
             }
             var mTable = $('#c-find-table').DataTable();
             mTable.destroy();
-            $('#c-find-tbody').html(str);
+            $('#c-approve-tbody').html(str);
             init();
         }
     });
@@ -47,4 +47,16 @@ function init() {
 
 jQuery(document).ready(function() {
     init();
+});
+
+$('.date-picker').datetimepicker({
+    format:'yyyy/mm/dd',
+    language: 'zh-CN',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
 });
