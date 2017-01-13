@@ -43,7 +43,7 @@ $(document).ready(function () {
 
 
     $('#back').click(function () {
-        var tabId = ($('#back').data('tabId'));
+        var tabId = $('#back').data('tabId');
         AjaxTool.getHtml('contract/htsp',function (html) {
             $('.page-content').html(html);
             $('#'+tabId).trigger('click');

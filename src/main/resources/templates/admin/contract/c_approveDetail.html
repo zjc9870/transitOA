@@ -60,17 +60,15 @@
 	                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
 	                        </th:block>
 	                        <th:block th:if="${lcrz.cljg=='新增'}">
-	                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
-	                            +'&#10;处理时间:'+ lcrz.clsj}"
+	                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
 	                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
 	                        </th:block>
+                             <th:block th:if="${lcrz.cljg=='已审核'}">
+                                 <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                      class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                             </th:block>
                     	</li>
                     </th:block>
-                    <!--<li><div class="process-title">集团专员发起</div></li>-->
-                    <!--<li><div class="process-title">负责人</div><div class="process-content-pass">通过</div></li>-->
-                    <!--<li><div class="process-title">核稿</div><div class="process-content-pass">通过</div></li>-->
-                    <!--<li><div class="process-title">签发</div><div class="process-content-nopass">不通过</div></li>-->
-                    <!--<li><div class="process-title">集团专员发起</div></li>-->
                 </ul>
             </th:block>
         </div>
@@ -78,7 +76,7 @@
             <form id="c_approveForm" class="op-form">
                 <div class="yj-input">
                     <span>办理人意见:</span>
-                    <input type="radio" name="cljg" value="通过" />通过
+                    <input type="radio" name="cljg" value="通过" checked="checked"/>通过
                     <input type="radio" name="cljg" value="不通过" />不通过
                 </div>
                 <div class="yj-disagree">

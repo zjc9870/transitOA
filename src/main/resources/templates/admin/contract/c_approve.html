@@ -28,6 +28,7 @@
                     </tr>
                     </thead>
                     <tbody id="c-approve-tbody" class="mt-td-checkbox">
+                        <input type="hidden" id="roleName" th:value="${roleName}" />
                         <th:block th:if='${not #lists.isEmpty(contractVoList)}'>
                             <tr th:each='con : ${contractVoList}' th:id="${con.id}">
                                 <th:block >

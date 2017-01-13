@@ -1,4 +1,5 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
+var roleName = $('#roleName').val();
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         var tabId = this.id;
@@ -50,6 +51,7 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
+
 function seeApprove(id,tabId) {
     AjaxTool.html('contract/htspckxq',{id: id},function (html) {
         $('.portlet-body').html(html);
@@ -61,6 +63,9 @@ function seeApprove(id,tabId) {
                 break;
         }
         $('#back').data('tabId',tabId);
+        if(roleName=='法务') {
+            $('.yj-input').html("<input type='hidden' name='cljg' value='已审核'/>");
+        }
     });
 }
 
@@ -76,7 +81,7 @@ function pass(id) {
 }
 
 function init() {
-	mTable=DatatableTool.initDatatable("c-approve-table", [{
+	DatatableTool.initDatatable("c-approve-table", [{
 	    'width': '30%',
         'targets': 0
         },
