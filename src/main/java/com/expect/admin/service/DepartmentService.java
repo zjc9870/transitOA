@@ -222,9 +222,14 @@ public class DepartmentService {
 		if (!StringUtils.isEmpty(departmentVo.getManagerId())) {
 			manager = userRepository.findOne(departmentVo.getManagerId());
 		}
+		Department ssgs = null;
+		if(!StringUtils.isEmpty(departmentVo.getSsgsId())){
+			ssgs = departmentRepository.findOne(departmentVo.getSsgsId());
+		}
 		Department department = DepartmentConvertor.convert(departmentVo);
 		department.setParentDepartment(parentDepartment);
 		department.setManager(manager);
+		department.setSsgs(ssgs);
 
 		Department result = departmentRepository.save(department);
 		if (result != null) {
