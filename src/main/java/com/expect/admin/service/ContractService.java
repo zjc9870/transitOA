@@ -217,7 +217,7 @@ public class ContractService {
 		if(StringUtil.equals(lx, "yth"))//已退回
 			contractList = contractRepository.findYthContract(userId, condition);
 		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
-			return getHtspYspList(userId);
+			return getHtspYspList(userId, condition);
 		}
 		
 		return filter(userId, condition, contractList);
@@ -265,12 +265,15 @@ public class ContractService {
 	}
 
 	/**
+	 * 对于一些退回的合同，可能会存在在待审批，已审批中出现同一条记录的情况，现在通过condition
+	 * （合同审核状态=condition的说明是当前用户待审批的合同，将这种合同从已审批的合同列表中去除）
+	 *  去除这种情况
 	 * @param userId
 	 * @return
 	 */
-	private List<ContractVo> getHtspYspList(String userId) {
+	private List<ContractVo> getHtspYspList(String userId, String condition) {
 		List<ContractVo> contractVoList = new ArrayList<>();
-		List<Contract> contractList = contractRepository.findYspContract(userId);
+		List<Contract> contractList = contractRepository.findYspContract(userId, condition);
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		if(contractList != null && !contractList.isEmpty()){
 			for (Contract contract : contractList) {

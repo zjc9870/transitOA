@@ -53,14 +53,16 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	
 	/**
 	 * 某用户已审批的合同记录
+	 * 对于一些退回的合同，可能会存在在待审批，已审批中出现同一条记录的情况，
+	 * 现在通过“and c.htshzt <> ?2” 去除这种情况
 	 * @param userId
 	 * @param start
 	 * @param end
 	 * @return
 	 */
 //	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and l.cljg = '通过'")
-	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 order by c.sqsj desc")
-	List<Contract> findYspContract(String userId);
+	@Query("select distinct c from Contract c, Lcrzb l where c.id = l.clnrid and l.user.id = ?1 and c.htshzt <> ?2 order by c.sqsj desc")
+	List<Contract> findYspContract(String userId, String condition);
 	
 	/**
 	 * 已退回
