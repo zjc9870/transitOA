@@ -84,7 +84,7 @@ public class ContractService {
 			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
 			if(attachmentList != null && attachmentList.size() > 0)
 				contract.setAttachments(new HashSet<>(attachmentList));
-		}else contract.setAttachments(new HashSet<>());
+		}else contract.setAttachments(new HashSet<Attachment>());
 		
 		contract = contractRepository.save(contract);
 		return contract.getId();
