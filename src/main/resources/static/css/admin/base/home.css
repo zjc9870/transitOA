@@ -4,7 +4,6 @@
 
 .page-header.navbar {
     background: url(../../../images/header.png) fixed no-repeat top;
-    background-size: 100%;
 }
 
 .page-content {
@@ -13,4 +12,11 @@
 
 .page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle > i {
     color: #ffffff;
+}
+
+@media (min-width: 1440px) {
+    .page-header.navbar {
+        background: url(../../../images/header.png) fixed no-repeat top;
+        background-size: 100%;
+    }
 }

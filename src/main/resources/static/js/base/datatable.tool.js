@@ -10,10 +10,11 @@ var DatatableTool = function() {
 			"bFilter" : true, // 搜索
 			"bLengthChange" : true,// 改变每页长度
 			"lengthMenu" : [ [ 10, 20, 30 ], [ 10, 20, 30 ] ],// 可以改变的每页长度
-			responsive : true,
+			// responsive : true,
 			"bStateSave" : true,
 			"columnDefs" : columnDefs,
-			"order" : order
+			"order" : order,
+			"processing": true,
 		});
 		$('#' + tableId).find('.group-checkable').change(function() {
 			var set = jQuery(this).attr("data-set");

@@ -161,9 +161,9 @@
     margin-left: 20%;
 }
 
-/*.yj-disagree {*/
-    /*visibility: hidden;*/
-/*}*/
+.yj-disagree {
+    margin-top: 12px;
+}
 
 .text-content {
     display: inline-block;
@@ -217,4 +217,8 @@
 .error-tips {
     color: red;
     margin-right: 10px;
+}
+
+.hidden {
+    display: none;
 }

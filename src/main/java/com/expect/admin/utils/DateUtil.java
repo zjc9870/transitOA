@@ -18,7 +18,7 @@ public class DateUtil {
 	public final static String timeFormat = "HH:mm:ss";
 	public final static String monthFormat = "yyyyMM";
 	public final static String chineseDtFormat = "yyyy年MM月dd日";
-	public final static String fullFormat = "yyyy-MM-dd HH:mm:ss";
+	public final static String fullFormat = "yyyy/MM/dd HH:mm:ss";
 
 	public final static String newFormat = "yyyy-MM-dd";
 	public final static String zbFormat = "yyyy/MM/dd";

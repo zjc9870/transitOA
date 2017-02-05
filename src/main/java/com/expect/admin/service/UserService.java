@@ -1,14 +1,12 @@
 package com.expect.admin.service;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -53,13 +51,13 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private LogLoginRepository logLoginRepository;
 	@Autowired
-	private UserService userService;
+	private RoleService roleService;
 
 	/**
 	 * 根据id获取用户
 	 */
 	public UserVo getUserById(String id) {
-		UserVo userVo = userService.getLoginUser();
+		UserVo userVo = getLoginUser();
 		if (StringUtils.isEmpty(id) || StringUtil.equals(id, "-1")) {
 			UserVo newUserVo= new UserVo();
 			newUserVo.setSsgsId(userVo.getSsgsId());
@@ -94,7 +92,7 @@ public class UserService implements UserDetailsService {
 	public List<UserVo> getUserBySsgsId(String ssgsId) {
 		List<User> userList;
 		if(StringUtil.isBlank(ssgsId)) throw new BaseAppException("获取某公司部门时公司id为空"); 
-		if(StringUtil.equals(ssgsId, "super")) return getAllUsers();
+		if(roleService.isSuperRole()) return getAllUsers();
 		else userList = userRepository.findBySsgs_id(ssgsId);
 		if(userList == null || userList.isEmpty()) return new ArrayList<>();
 		return UserConvertor.convert(userList);

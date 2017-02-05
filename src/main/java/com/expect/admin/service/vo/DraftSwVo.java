@@ -15,6 +15,10 @@ public class DraftSwVo {
 	private String zt;//状态
 	private String ldps;//领导批示
 	private String blqk;//办理情况
+	private String mj;//密级
+	private String fqsj;//发起时间
+//	private String fqsjDate;//发起时间的年月日（YYYY/mm/dd）
+//	private String fasjTime;//
 	
 	public DraftSwVo() {
 		
@@ -30,6 +34,9 @@ public class DraftSwVo {
 		this.swr = draftSw.getSwr().getFullName();
 		this.wh = draftSw.getWh();
 		this.wjbt = draftSw.getWjbt();
+		if(draftSw.getFqsj() != null) {
+			this.fqsj = DateUtil.format(draftSw.getFqsj(), DateUtil.fullFormat);
+		}else this.fqsj = "";
 	}
 	 
 	
@@ -106,6 +113,21 @@ public class DraftSwVo {
 	public void setLdps(String ldps) {
 		this.ldps = ldps;
 	}
-	
+
+	public String getMj() {
+		return mj;
+	}
+
+	public void setMj(String mj) {
+		this.mj = mj;
+	}
+
+	public String getFqsj() {
+		return fqsj;
+	}
+
+	public void setFqsj(String fqsj) {
+		this.fqsj = fqsj;
+	}
 	
 }
