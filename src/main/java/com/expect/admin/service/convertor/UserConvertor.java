@@ -1,11 +1,12 @@
 package com.expect.admin.service.convertor;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.expect.admin.data.dataobject.Department;
@@ -15,6 +16,7 @@ import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableButtonFactory;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
+import com.expect.admin.utils.StringUtil;
 
 public class UserConvertor {
 
@@ -73,7 +75,7 @@ public class UserConvertor {
 	/**
 	 * dos To vos
 	 */
-	public static List<UserVo> convert(List<User> users) {
+	public static List<UserVo> convert(Collection<User> users) {
 		List<UserVo> userVos = new ArrayList<>();
 		if (!CollectionUtils.isEmpty(users)) {
 			for (User user : users) {
@@ -210,7 +212,7 @@ public class UserConvertor {
 		if (!CollectionUtils.isEmpty(userVos)) {
 			sov.addOption("", "无");
 			for (UserVo userVo : userVos) {
-				if (StringUtils.isEmpty(username)) {
+				if (StringUtil.isEmpty(username)) {
 					sov.addOption(userVo.getId(), userVo.getUsername());
 					continue;
 				}

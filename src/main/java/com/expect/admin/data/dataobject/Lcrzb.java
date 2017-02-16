@@ -65,6 +65,12 @@ public class Lcrzb {
 		this.clnrfl = clnrfl;
 		this.clnrid = clnrid;
 	}
+	
+	public Lcrzb(String cljg, String clyj, User clr) {
+		this.cljg = cljg;
+		this.message = clyj;
+		this.user = clr;
+	}
 	public String getId() {
 		return id;
 	}

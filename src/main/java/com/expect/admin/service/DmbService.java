@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.expect.admin.data.dao.DmbRepository;
 import com.expect.admin.data.dataobject.Dmb;
@@ -17,6 +18,7 @@ import com.expect.admin.utils.StringUtil;
  * @author zcz
  *
  */
+@Service
 public class DmbService {
 
 	@Autowired

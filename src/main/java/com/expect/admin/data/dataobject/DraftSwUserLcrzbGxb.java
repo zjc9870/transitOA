@@ -16,13 +16,25 @@ import org.hibernate.annotations.GenericGenerator;
  * 一个收文对应多条记录
  * 每条记录关联一个收文 一个人 一条流程日志表记录
  * 
- * ryfl（人员分类）字段用来区分传阅人("cyr") 办理人("blr")
+ * ryfl（人员分类）字段用来区分传阅人("cyr") 办理人("blr"), 领导（“ld”）
  * @author zcz
  *
  */
 @Entity
 @Table(name = "s_draftSw_user_lcrzb")
 public class DraftSwUserLcrzbGxb {
+	/**
+	 * 人员分类 领导
+	 */
+	public static final String RYFL_LD = "ld";
+	/**
+	 * 人员分类 传阅人
+	 */
+	public static final String RYFL_CYR = "cyr";
+	/**
+	 * 人员分类 办理人
+	 */
+	public static final String RYFL_BLR = "blr";
 	
 	@Id
 	@GeneratedValue(generator = "uuid")
@@ -45,6 +57,15 @@ public class DraftSwUserLcrzbGxb {
 	@Column(name = "ryfl", length = 10)
 	private String ryfl;//人员分类
 	
+	public DraftSwUserLcrzbGxb(){}
+	
+	public DraftSwUserLcrzbGxb(User user, DraftSw draftSw, String ryfl) {
+		super();
+		this.user = user;
+		this.draftSw = draftSw;
+		this.ryfl = ryfl;
+	}
+
 	public String getId() {
 		return id;
 	}

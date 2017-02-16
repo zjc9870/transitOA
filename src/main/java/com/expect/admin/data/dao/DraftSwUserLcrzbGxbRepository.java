@@ -10,5 +10,14 @@ public interface DraftSwUserLcrzbGxbRepository extends JpaRepository<DraftSwUser
 
 	public List<DraftSwUserLcrzbGxb> findByUserIdAndDraftSwId(String userId,String draftSwId);
 	
+	public DraftSwUserLcrzbGxb findByUserIdAndDraftSwIdAndRyflAndLcrzIsNull(String userId, String draftSwId, String ryfl);
+	/**
+	 * 获取某个收文记录的某类人员的未审批的记录
+	 * @param draftSwId收文id
+	 * @param ryfl 人员分类
+	 * @return
+	 */
+	public List<DraftSwUserLcrzbGxb> findByDraftSwIdAndRyflAndLcrzIsNull(String draftSwId, String ryfl);
+	
 	public List<DraftSwUserLcrzbGxb> findBylcrz_cljg(String cljg);
 }

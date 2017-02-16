@@ -22,6 +22,7 @@ import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.RoleConvertor;
+import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.ResultVo;
@@ -52,6 +53,19 @@ public class RoleService {
 		List<Role> roles = roleRepository.findAll();
 		List<RoleVo> roleVos = RoleVo.convert(roles);
 		return roleVos;
+	}
+	
+	/**
+	 *  获取有某个角色的用户列表
+	 * @param roleId 角色id
+	 * @return
+	 */
+	public List<UserVo> getUserOfRole(String roleId) {
+		if(StringUtil.isBlank(roleId)) return new ArrayList<>(0);
+		Role role = roleRepository.findOne(roleId);
+		Set<User> userSet = role.getUsers();
+		if(userSet == null || userSet.isEmpty()) return new ArrayList<>(0);
+		return UserConvertor.convert(userSet);
 	}
 
 	/**
