@@ -101,8 +101,8 @@ public class UserConvertor {
 	public static void convert(User user, UserVo userVo) {
 //		BeanUtils.copyProperties(userVo, user);
 //		user.setUsername(userVo.getUsername());
-		user.setPassword(userVo.getPassword());
-//		user.setFullName(userVo.getFullName());
+//		user.setPassword(userVo.getPassword());
+		user.setFullName(userVo.getFullName());
 		user.setEmail(userVo.getEmail());
 		user.setPhone(userVo.getPhone());
 		user.setPhoneNumber1(userVo.getPhoneNumber1());

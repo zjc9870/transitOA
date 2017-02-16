@@ -33,6 +33,7 @@ import com.expect.admin.utils.IOUtil;
 //import com.expect.admin.utils.JsonResult;
 //import com.expect.admin.utils.ResponseBuilder;
 //import com.expect.admin.utils.StringUtil;
+import com.expect.admin.utils.StringUtil;
 
 @Controller
 @RequestMapping("/admin/user")
@@ -69,9 +70,10 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/userFormPage", method = RequestMethod.POST)
 	public ModelAndView userForm(String id) {
-		UserVo user = userService.getUserById(id);
+		UserVo userVo = userService.getUserById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/userForm");
-		modelAndView.addObject("userVo", user);
+		userVo.setPassword("");
+		modelAndView.addObject("userVo", userVo);
 		return modelAndView;
 	}
 
@@ -92,6 +94,10 @@ public class UserController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo save(UserVo userVo) {
+		if(!StringUtil.isBlank(userVo.getPassword())){
+			String encodePassword = userService.encodePassword(userVo.getPassword());
+			userVo.setPassword(encodePassword);
+		}
 		return userService.save(userVo);
 	}
 
