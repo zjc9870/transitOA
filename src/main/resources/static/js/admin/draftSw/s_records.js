@@ -4,7 +4,7 @@ for(var i=0; i<tabs.length; i++) {
         var tabId = this.id;
         //若当前按钮已选中则点击不再触发事件
         if($(this).hasClass('button')) {return};
-        AjaxTool.get('draftSw/tabRequest', {
+        AjaxTool.post('draftSw/tabRequest', {
                 tab: this.id, ym: 'swjl'},function (data) {
                 if(data.success) {
                     var str = "";
@@ -16,26 +16,20 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+drafts[i].zt+"</td>";
                         switch(tabId){
                             case "wtj":
-                                str += "<td><div onclick='seeApplyRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                str += "<td><div onclick='seeSwRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>" +
                                     "<div onclick='submitWtjForm(\""+ drafts[i].id +"\")'>提交</div>" +
-                                    "<div onclick='deleteWtjCon(\""+ drafts[i].id +"\")'>删除</div></td>";
+                                    "<div onclick='deleteWtjDraft(\""+ drafts[i].id +"\")'>删除</div></td>";
                                 break;
-                            case "dsp":
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
-                                break;
-                            case "ysp":
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
-                                break;
-                            case "yth":
-                                str += "<td><div onclick='seeApplyRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                            case "dcl":
+                                str += "<td><div onclick='seeSwRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             default:
+                                str += "<td><div onclick='seeSwRecordNE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                         }
                         str += "</tr>";
                     }
-//                    mTable.fnClearTable();
-                    var mTable = $('#c-apply-record-table').DataTable();
+                    var mTable = $('#s-records-table').DataTable();
                     mTable.destroy();
                     $('#c-approve-tbody').html(str);
                     init();
@@ -51,7 +45,7 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
-function seeApplyRecordE(id,tabId) {
+function seeSwRecordE(id,tabId) {
     AjaxTool.html('contract/sqjlxqE',{id: id},function (html) {
         $('.portlet-body').html(html);
         if(tabId == "yth") {
@@ -61,7 +55,7 @@ function seeApplyRecordE(id,tabId) {
     });
 }
 
-function seeApplyRecordNE(id,tabId) {
+function seeSwRecordNE(id,tabId) {
     AjaxTool.html('contract/sqjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
         $('#back').data('tabId',tabId);
@@ -77,7 +71,7 @@ function submitWtjForm(id) {
     )
 };
 
-function deleteWtjCon(id) {
+function deleteWtjDraft(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
         alert(data.message);
@@ -86,7 +80,7 @@ function deleteWtjCon(id) {
 }
 
 function init() {//dataTable初始化
-    mTable=DatatableTool.initDatatable("c-apply-record-table", [ {
+    mTable=DatatableTool.initDatatable("s-records-table", [ {
         'orderable' : false,
         'targets' : [ 3 ]
     }, {

@@ -28,7 +28,7 @@
             	}
 				return array;
 			},
-            fileType : null,
+            fileType : "word",
             maxFileSizes:20*1024*1024,
             templateSelector:".files-template-wrapper",
             isMultiFile : false,
@@ -38,6 +38,7 @@
         var imageFormat='.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$';
         var videoFormat='.+(.swf|.flv|.mp4)$';
         var textFormat='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
+        var wordFormat='.+(.doc|.docx|.DOC|.DOCX|)$';
         
         var trHtml='<tr id="${fileId}"><td class="file-name">${fileName}</td>'
         			+'<td class="file-progress"><span class="size">${fileSize}KB</span><div class="progress"><div class="progress-bar progress-bar-success"></div></div><span class="upload-result"></span></td>'
@@ -196,11 +197,13 @@
     		}
     		var regExp;
     		if(fileType=='image'){
-    			regExp='.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$';
+    			regExp=imageFormat;
     		}else if(fileType=='video'){
-    			regExp='.+(.swf|.flv|.mp4)$';
+    			regExp=vedioFormat;
     		}else if(fileType=='text'){
-    			regExp='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
+    			regExp=textFormat;
+    		}else if(fileType=='word'){
+    			regExp=wordFormat;
     		}
     		var reg = new RegExp(regExp);
     		if (!reg.test(fileName)) {

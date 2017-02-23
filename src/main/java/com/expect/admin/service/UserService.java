@@ -313,6 +313,7 @@ public class UserService implements UserDetailsService {
 
 			String ip = RequestUtil.getIpAddr(request);
 			loginLog(user.getId(), user.getUsername(), ip);
+			request.getSession().setAttribute("user", user);
 
 //
 //			Cookie usernameCookie = new Cookie("username", user.getUsername());

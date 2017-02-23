@@ -2,9 +2,9 @@
     height: 75px;
 }
 
-.page-header.navbar {
-    background: url(../../../images/header.png) fixed no-repeat top;
-}
+/*.page-header.navbar {*/
+    /*background: url(../../../images/header.png) fixed no-repeat top;*/
+/*}*/
 
 .page-content {
     padding-top: 0!important;
@@ -14,9 +14,9 @@
     color: #ffffff;
 }
 
-@media (min-width: 1440px) {
-    .page-header.navbar {
-        background: url(../../../images/header.png) fixed no-repeat top;
-        background-size: 100%;
-    }
-}
+/*@media (min-width: 1440px) {*/
+    /*.page-header.navbar {*/
+        /*background: url(../../../images/header.png) fixed no-repeat top;*/
+        /*background-size: 100%;*/
+    /*}*/
+/*}*/
