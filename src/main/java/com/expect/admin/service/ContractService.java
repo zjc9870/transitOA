@@ -581,6 +581,32 @@ public class ContractService {
 		}
 		return contractVoList;
 	}
+
+    /**
+     * 撤销合同
+     * 合同申请人有权利撤销合同 撤销后的合同只能查看基本属性，不能查看和下载已上传的附件
+     * 1.在数据库中查找相应id的合同（未找到抛出异常，指示合同没有找到）
+     * 2.在流程日志表中插入一条合同撤销的记录
+     * 3.修改合同的状态为已撤销，并保存
+     * @param contractId 要撤销的合同的id
+     * @param reason 
+     * @param reaconCategory 
+     */
+	@Transactional
+	@TriggersRemove(cacheName = { "CONTRACT_CACHE" }, removeAll = true)
+    public void revocationContract(String contractId, String reason) {
+        if(StringUtil.isBlank(contractId)) throw new BaseAppException("要撤销的合同id为空");
+        Contract contract = contractRepository.getOne(contractId);
+        if(contract == null) throw new BaseAppException("没有找到要撤销的合同！");
+        
+        //插入撤销合同的记录
+        String lcrzId = lcrzbService.save(new LcrzbVo("撤销", reason), contractId, "", "revocation");
+        bindContractWithLcrz(contractId, lcrzId);
+        //记录与合同绑定
+        contract.setHtshzt("revocation");
+        //保存合同
+        contractRepository.save(contract);
+    }
 	
 
 }
