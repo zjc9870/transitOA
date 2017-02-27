@@ -151,10 +151,7 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		UserConvertor.convert(user, userVo);
-//		if(!StringUtil.isBlank(userVo.getPassword())){
-//			String encodePassword = encodePassword(userVo.getPassword());
-//			user.setPassword(encodePassword);
-//		}
+		userRepository.save(user);
 		UserConvertor.convertDtrv(dtrv, user);
 		dtrv.setMessage("修改成功");
 		dtrv.setResult(true);
