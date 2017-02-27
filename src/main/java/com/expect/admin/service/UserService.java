@@ -20,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
@@ -164,7 +165,10 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		UserConvertor.convert(user, userVo);
-
+		if(!StringUtil.isBlank(userVo.getPassword())){
+			String encodePassword = encodePassword(userVo.getPassword());
+			user.setPassword(encodePassword);
+		}
 		UserConvertor.convertDtrv(dtrv, user);
 		dtrv.setMessage("修改成功");
 		dtrv.setResult(true);
@@ -301,6 +305,15 @@ public class UserService implements UserDetailsService {
 		logLogin.setUsername(username);
 		logLoginRepository.save(logLogin);
 	}
+	
+	/**
+	 * 对用户密码进行加密
+	 * @param originalPassword 不能为空
+	 */
+	public String encodePassword(String originalPassword) {
+		BCryptPasswordEncoder encoder  = new BCryptPasswordEncoder();
+		return encoder.encode(originalPassword);
+	}
 
 	/**
 	 * 登录成功后的回调，右spring-security管理
@@ -314,6 +327,7 @@ public class UserService implements UserDetailsService {
 
 			String ip = RequestUtil.getIpAddr(request);
 			loginLog(user.getId(), user.getUsername(), ip);
+			request.getSession().setAttribute("user", user);
 
 //
 //			Cookie usernameCookie = new Cookie("username", user.getUsername());

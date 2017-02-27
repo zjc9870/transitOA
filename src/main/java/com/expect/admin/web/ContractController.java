@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.config.Settings;
+import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.ContractService;
 import com.expect.admin.service.LcService;
@@ -154,7 +155,7 @@ public class ContractController {
 	}
 	
 	/**
-	 * 合同审批
+	 * 合同审批列表页面
 	 */
 	@GetMapping(value = "/htsp")
 	public ModelAndView htsp(@RequestParam(name = "lx", required = false)String lx) {
@@ -329,6 +330,29 @@ public class ContractController {
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同审核成功！").build());
 		
+	}
+	
+	/**
+	 * 撤销合同（只有合同申请人可以撤销）
+	 * @param response
+	 * @param contractId 要撤销的合同的id
+	 * @param revocationReason 撤销合同理由
+	 * @throws IOException 
+	 */
+	@PostMapping("/revocationContract")
+	public void revocationContract(HttpServletResponse response, 
+            @RequestParam(name = "id", required = true)String contractId,
+            @RequestParam(name = "revocationReason", required = true)String revocationReason) throws IOException {
+	    try{
+	        contractService.revocationContract(contractId, revocationReason);
+	    }catch(BaseAppException be) {
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()));
+	        log.error("撤销合同是失败，合同id为" + contractId, be);
+	    }catch(Exception e) {
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销合同失败"));
+            log.error("撤销合同是失败，合同id为" + contractId, e);
+	    }
+	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "撤销合同成功"));
 	}
 	
 	/**
