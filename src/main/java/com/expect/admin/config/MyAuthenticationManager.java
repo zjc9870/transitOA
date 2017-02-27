@@ -7,8 +7,6 @@ import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.expect.admin.service.UserService;
 import com.expect.admin.utils.MD5Util;
 

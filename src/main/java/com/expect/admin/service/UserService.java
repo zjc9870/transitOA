@@ -9,11 +9,13 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -52,6 +54,8 @@ public class UserService implements UserDetailsService {
 	private LogLoginRepository logLoginRepository;
 	@Autowired
 	private RoleService roleService;
+	@Autowired  
+	private HttpSession session;
 
 	/**
 	 * 根据id获取用户
@@ -68,6 +72,11 @@ public class UserService implements UserDetailsService {
 			return UserConvertor.convert(user);
 		}
 	}
+	
+	public User getUsernameAndPasswordById(String id){
+		User user = userRepository.findOne(id);
+		return user;
+	}
 
 	/**
 	 * 获取所有的用户
@@ -83,7 +92,12 @@ public class UserService implements UserDetailsService {
 	 * @return
 	 */
 	public UserVo getLoginUser() {
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user;
+		if(SecurityContextHolder.getContext().getAuthentication()!=null){
+			user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		}else{
+			user = (User) ( (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT") ).getAuthentication().getPrincipal();
+		}
 		if(user == null) return null;
 		return UserConvertor.convert(user);
 	}

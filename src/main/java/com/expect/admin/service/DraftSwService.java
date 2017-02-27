@@ -13,7 +13,6 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 
 import com.expect.admin.data.dao.DraftSwRepository;
@@ -23,7 +22,6 @@ import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.DraftSw;
 import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
 import com.expect.admin.data.dataobject.Lcrzb;
-import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.vo.DraftSwVo;

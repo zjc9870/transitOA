@@ -12,8 +12,8 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 //import org.springframework.security.authentication.dao.SaltSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,8 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.authenticationProvider(getDaoAuthenticationProvider());
-//		auth.parentAuthenticationManager(getAuthenticationManager());
+		auth.authenticationProvider(getDaoAuthenticationProvider());
+		auth.parentAuthenticationManager(getAuthenticationManager());
 		auth.userDetailsService(userService)
 			.passwordEncoder(passwordEncoder());
 		auth.eraseCredentials(false);
@@ -52,8 +52,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin().loginPage("/admin/login").failureUrl("/admin/login?error")
 				.successHandler(loginSuccessHandler()).permitAll().and().logout().invalidateHttpSession(true)
 				.permitAll().and().rememberMe().tokenValiditySeconds(1209600).tokenRepository(tokenRepository());
+//		http.authorizeRequests().antMatchers("/weixin/**").permitAll().anyRequest().authenticated().and()
+//				.formLogin().loginPage("/weixin/authorize").failureUrl("/weixin/authorize")
+//				.successHandler(loginSuccessHandler()).permitAll().and().logout().invalidateHttpSession(true)
+//				.permitAll().and().rememberMe().tokenValiditySeconds(1209600).tokenRepository(tokenRepository());
 	}
 
+	@Override
+
+	public void configure(WebSecurity web) throws Exception {
+
+		web.ignoring().antMatchers("/weixin/**");
+
+//		web.ignoring().antMatchers("/weixin/authorize/");
+	}
+	
 	@Bean
 	public LoginSuccessHandler loginSuccessHandler() {
 		return userService.new LoginSuccessHandler();
@@ -73,15 +86,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		MD5Util md5encoder = new MD5Util("MD5"); 
 		DaoAuthenticationProvider daoAuthenticationProvider  = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(userService);
-		daoAuthenticationProvider.setPasswordEncoder(md5encoder);
+//		daoAuthenticationProvider.setPasswordEncoder(md5encoder);
 		return daoAuthenticationProvider;
 	}
 	
-//	@Bean
-//	@Override
-//	public UserDetailsService userDetailsServiceBean() throws Exception {
-//		return super.userDetailsServiceBean();
-//	}
+	@Bean
+	@Override
+	public UserDetailsService userDetailsServiceBean() throws Exception {
+		return super.userDetailsServiceBean();
+	}
 	
 	 @Bean
 	 public AuthenticationManager getAuthenticationManager() throws Exception {
