@@ -78,6 +78,12 @@ $(document).ready(function () {
             },
             htnr: {
                 maxlength: 300
+            },
+            nqdrq: {
+                dateISO: true
+            },
+            qx: {
+                dateISO: true
             }
         },
         messages: {
@@ -86,6 +92,12 @@ $(document).ready(function () {
             },
             htnr: {
                 maxlength: "内容超过300个字"
+            },
+            nqdrq: {
+                dateISO: "日期格式不正确"
+            },
+            qx: {
+                dateISO: "日期格式不正确"
             }
         }
     });

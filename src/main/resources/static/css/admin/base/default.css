@@ -18,7 +18,7 @@ body {
     ***********/
 /* Header search bar, toggler button & top menu */
 .page-header.navbar {
-  background: #3B3F51;
+  background: linear-gradient(to right, rgb(72,173,67),rgb(14,119,61));
   border-bottom: 1px solid #e9ecf3;
   /* Top notification menu/bar */
   /* Header seaech box */

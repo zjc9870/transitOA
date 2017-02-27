@@ -27,8 +27,7 @@
 <link th:href="@{/css/admin/base/custom.css}" rel="stylesheet" type="text/css" />
 <link th:href="@{/css/admin/base/home.css}" rel="stylesheet" type="text/css"  />
 </head>
-<body
-	class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo page-md">
+<body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo page-md">
 	<input type="hidden" name="userId" th:value="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id}" />
 	<div th:replace="admin/base/header :: header"></div>
 	<div class="clearfix"></div>
