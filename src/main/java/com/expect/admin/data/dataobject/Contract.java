@@ -43,6 +43,9 @@ public class Contract {
 	private Set<Attachment> attachments;//附件
 	private String sbd;//申办单名称
 	private Set<Lcrzb> lcrzSet = new HashSet<>();//流程日志
+	
+	//电子序号，负责人审批后自定添加 序号格式是 日期+四位的序号（最后四位序号每年恢复到0001，否则递加） 如201701020001
+	private String sequenceNumber;
 //	private Department department;//合同所属部门
 	
 	public Contract() {
@@ -213,5 +216,14 @@ public class Contract {
 	public void setLcrzSet(Set<Lcrzb> lcrzSet) {
 		this.lcrzSet = lcrzSet;
 	}
+
+	@Column(name = "sequenceNumber", length = 12)
+    public String getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(String sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
 	
 }

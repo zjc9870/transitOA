@@ -336,7 +336,7 @@ public class ContractController {
 	 * 撤销合同（只有合同申请人可以撤销）
 	 * @param response
 	 * @param contractId 要撤销的合同的id
-	 * @param revocationReason 撤销合同理由
+	 * @param revocationReason 撤销合同理由（最多为100个字）
 	 * @throws IOException 
 	 */
 	@PostMapping("/revocationContract")
@@ -344,7 +344,10 @@ public class ContractController {
             @RequestParam(name = "id", required = true)String contractId,
             @RequestParam(name = "revocationReason", required = true)String revocationReason) throws IOException {
 	    try{
-	        contractService.revocationContract(contractId, revocationReason);
+	        if(revocationReason.length() > 100){  
+	            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销理由过长，最多100个字"));
+	        }
+	        else contractService.revocationContract(contractId, revocationReason);
 	    }catch(BaseAppException be) {
 	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()));
 	        log.error("撤销合同是失败，合同id为" + contractId, be);
