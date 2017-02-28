@@ -4,7 +4,7 @@ $(document).ready(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
         var uploader = $("#fileUploadForm").FileUpload({
             url: "contract/uploadContractAttachment",
-            isMultiFile: true,
+            isMultiFile: true
         });
         uploader.done(function(data) {
             ids.push(data.result.id);
