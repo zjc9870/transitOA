@@ -22,7 +22,8 @@ for(var i=0; i<tabs.length; i++) {
                                 break;
                             case "dsp":
                                 str += "<td>待审批</td>";
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                    "<div onclick='revoke(\""+ cons[i].id +"\")'>撤回</div></td>";
                                 break;
                             case "ysp":
                                 str += "<td><div>"+cons[i].htshzt+"</div></td>";
@@ -83,6 +84,17 @@ function submitWtjForm(id) {
 function deleteWtjCon(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
+        alert(data.message);
+        window.location.reload();
+    })
+}
+
+function revoke(id) {
+    var reason = prompt('提示','合同撤销理由');
+    reason = reason?reason:'无';
+    console.log(id+'  '+reason);
+    AjaxTool.post('contract/revocationContract',{
+        id:id,revocationReason:reason},function (data) {
         alert(data.message);
         window.location.reload();
     })
