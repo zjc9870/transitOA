@@ -66,8 +66,8 @@ var Login = function() {
     }
 
     var setCookies=function () {
-        $.cookie('username',$("input[name='username']").val());
-        $.cookie('password',$("input[name='password']").val());
+        $.cookie('username',$("input[name='username']").val(),{expires:7});
+        $.cookie('password',$("input[name='password']").val(),{expires:7});
     }
 
     var removeCookies=function () {

@@ -70,8 +70,8 @@ function getAndDisplayNewsByFl(fl) {
 			var cons = data.content;
 			for (var i = 0; i < cons.length; i++) {
 //				leftUlStr += ";
-				leftUlStr += "<li class = 'xwbt' data-id = '"+cons[i].id+"'><span>" + cons[i].tittle + "</sapn></li>";
-				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].sqsj + "</sapn></li>";
+				leftUlStr += "<li class = 'xwbt' data-id = '"+cons[i].id+"'><span>" + cons[i].tittle + "</span></li>";
+				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].sqsj + "</span></li>";
 			}
 			leftUlStr += "</ul>";
 			rightUlStr += "</ul>";

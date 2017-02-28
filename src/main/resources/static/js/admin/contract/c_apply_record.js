@@ -91,13 +91,13 @@ function deleteWtjCon(id) {
 
 function revoke(id) {
     var reason = prompt('提示','合同撤销理由');
-    reason = reason?reason:'无';
-    console.log(id+'  '+reason);
-    AjaxTool.post('contract/revocationContract',{
-        id:id,revocationReason:reason},function (data) {
-        alert(data.message);
-        window.location.reload();
-    })
+    if(reason !== null) {
+        AjaxTool.post('contract/revocationContract',{
+            id:id,revocationReason:reason},function (data) {
+            alert(data.message);
+            window.location.reload();
+        })
+    }
 }
 
 function init() {//dataTable初始化
