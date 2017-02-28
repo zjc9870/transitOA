@@ -558,4 +558,22 @@ public class ContractController {
 		mv.addObject("contractVo", contractVo);
 		return mv;
 	}
+	
+	/**
+	 * @param attachmentId
+	 * @param contractId
+	 * @param reponse
+	 * @return
+	 */
+	@GetMapping("/contractAttachmentDownload")
+	public String contractAttachmentDownload(
+	        @RequestParam(name = "attachmentId", required = true)String attachmentId,
+	        @RequestParam(name = "contractId", required = true)String contractId,
+	        HttpServletResponse reponse) {
+	    UserVo userVo = userService.getLoginUser();
+	    if(contractService.attachmentDownloadAuthorityJudgement(contractId, userVo.getId())){
+	        return "forward:/admin/attachment/download?id=" + attachmentId;
+	    }
+	    return "forward:/admin/attachment/downloadAttachmentAsPdf?id=" + attachmentId;
+	}
 }

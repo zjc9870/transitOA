@@ -657,5 +657,27 @@ public class ContractService {
 	    String numSequence = String.format("%04d", countOfYear + 1);//四位的序号，不足四位的在前面补零
 	    return dateSequence + numSequence;
 	}
+	
+	/**
+	 * 判断用户是不是可以下载某个合同附件的word版本
+	 * @param contractId
+	 * @return
+	 */
+	public boolean attachmentDownloadAuthorityJudgement(String contractId, String loginUserId) {
+    	final Contract contract = contractRepository.findById(contractId);
+    	if(contract == null) return false;
+    	boolean isAuditFinaish = (StringUtil.equals(contract.getHtshzt(), "Y") 
+    	        || StringUtil.equals(contract.getHtshzt(), "T"));//合同审核是否完成
+    	User user = userRepository.getOne(loginUserId);
+    	Set<Role> roleSet = user.getRoles();
+    	boolean isZichanguanlibu = false;
+    	for (Role role : roleSet) {
+            if(StringUtil.equals(role.getName(), "资产管理部合同审核员")) {
+                isZichanguanlibu = true;
+                break;
+            }
+        }
+	    return (isAuditFinaish && isZichanguanlibu);
+	}
 
 }
