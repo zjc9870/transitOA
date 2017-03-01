@@ -43,7 +43,9 @@ public class AdminController {
 	}
 
 	@RequestMapping("/home1")
-	public String home1() {
+	public String home1(Model model) {
+		UserVo userVo = userService.getLoginUser();
+		model.addAttribute("userVo", userVo);
 		return "admin/homeContent";
 	}
 

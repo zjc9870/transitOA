@@ -136,7 +136,24 @@ var SweetAlert = function() {
            }
        });
 	}
-	
+
+	var initSwalContent = function (title,content,confirm) {
+		swal({
+			title: title,
+			type: "content",
+			content: content,
+			showCancelButton: true,
+			closeOnConfirm: false,
+			animation: "slide-from-top",
+			confirmButtonText: "确定",
+			cancelButtonText: "取消"
+		},function (isConfirm) {
+			if(isConfirm && confirm) {
+				confirm();
+			}
+		})
+	}
+
 	return {
 		init: function (sweetalertId) {
 			initSweetAlert(sweetalertId);
@@ -146,6 +163,9 @@ var SweetAlert = function() {
     	},
     	swalInput:function(title,text,inputPlaceholder,confirm){
     		initSwalInput(title,text,inputPlaceholder,confirm);
-    	}
+    	},
+		swalContent: function (title,content,confirm) {
+			initSwalContent(title,content,confirm);
+		}
 	}
 }();

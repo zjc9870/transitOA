@@ -90,14 +90,22 @@ function deleteWtjCon(id) {
 }
 
 function revoke(id) {
-    var reason = prompt('提示','合同撤销理由');
-    if(reason !== null) {
+    var s = "<form id='revoke-form'><select id='select' class='form-control'>" +
+        "<option value='提交人发现有误'>提交人发现有误</option>" +
+        "<option value='资产部建议修改'>资产部建议修改</option>" +
+        "<option value='其他'>其他</option></select>" +
+        "<input type='text' name='reason' placeholder='选择其他时理由自填' class='form-control' style='margin:20px 0'/></form>";
+    SweetAlert.swalContent("确认撤回",s,function () {
+        var reason = $('#select').val();
+        if(reason === '其他') {
+            reason = $('#revoke-form input[name="reason"]').val();
+        }
         AjaxTool.post('contract/revocationContract',{
             id:id,revocationReason:reason},function (data) {
             alert(data.message);
             window.location.reload();
         })
-    }
+    })
 }
 
 function init() {//dataTable初始化

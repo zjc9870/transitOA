@@ -1,4 +1,4 @@
-;
+var userRole = $('input[name="userRole"]').val().split(',');
 
 $(document).on('click', '#htdb, #htyb', function() {
 	var roleName = $('#userRolesName').val();
@@ -32,9 +32,34 @@ $(document).on('click', '.xwbt', function() {
 $(document).on('click', '.lcbt', function () {
 	var id = $(this).data('id');
 	var tabId = $(this).data('fl');
-	seeConApprove(id,tabId);
+	if(userRole.indexOf('集团文员') !== -1) {
+		if(tabId == "wtj") {
+			seeApplyRecordE(id,tabId);
+		}else {
+			seeApplyRecordNE(id,tabId);
+		}
+	}
+	else {
+		seeConApprove(id,tabId);
+	}
 })
 
+function seeApplyRecordE(id,tabId) {
+	AjaxTool.html('contract/sqjlxqE',{id: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+	});
+}
+
+function seeApplyRecordNE(id,tabId) {
+	AjaxTool.html('contract/sqjlxqNE',{id: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+	});
+
+}
 
 function seeConApprove(id,tabId) {
 	AjaxTool.html('contract/htspckxq',{id: id},function (html) {
@@ -69,7 +94,6 @@ function getAndDisplayNewsByFl(fl) {
 			var rightUlStr = "<ul>";
 			var cons = data.content;
 			for (var i = 0; i < cons.length; i++) {
-//				leftUlStr += ";
 				leftUlStr += "<li class = 'xwbt' data-id = '"+cons[i].id+"'><span>" + cons[i].tittle + "</span></li>";
 				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].sqsj + "</span></li>";
 			}
