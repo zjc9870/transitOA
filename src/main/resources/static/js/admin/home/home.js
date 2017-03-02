@@ -1,14 +1,14 @@
 $(document).ready(function() {
 	showAvatar();
-	Pjax.init(".nav-pajx", ".page-content", "admin/home","home1", function() {
+	Pjax.init(".nav-pajx", ".page-content", "admin/home",function() {
 	}, function($current) {
 		clearNavStatus($current);
 	});
-	Pjax.refresh(".page-content", "admin/home","home1", function(functionUrl) {
+	Pjax.refresh(".page-content", "admin/home",function(functionUrl) {
 		functionUrl = Tools.replaceAll(functionUrl, "/", "");
 		clearNavStatus($("." + functionUrl));
 	});
-	Pjax.onpopstate(".page-content", "admin/home","home1", function(functionUrl) {
+	Pjax.onpopstate(".page-content", "admin/home",function(functionUrl) {
 		functionUrl = Tools.replaceAll(functionUrl, "/", "");
 		clearNavStatus($("." + functionUrl));
 	});
