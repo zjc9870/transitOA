@@ -18,6 +18,23 @@ var AjaxTool = function() {
 		});
 	}
 
+	var getHtml = function(url, successFunction) {
+		var promise = $.ajax({
+			url : url,
+			dataType : "html",
+			type : "get"
+		});
+		promise.then(function(response) {
+			if(response.code && response.code == '100'){
+				Toast.show("提醒",response.message);
+			}else{
+				if (successFunction != null) {
+					successFunction(response);
+				}
+			}
+		});
+	}
+
 	var post = function(url, data, successFunction) {
 		var promise = $.ajax({
 			url : url,
@@ -60,6 +77,9 @@ var AjaxTool = function() {
 	return {
 		get : function(url, data, successFunction) {
 			get(url, data, successFunction);
+		},
+		getHtml : function(url, successFunction) {
+			getHtml(url, successFunction);
 		},
 		post : function(url, data, successFunction) {
 			post(url, data, successFunction);

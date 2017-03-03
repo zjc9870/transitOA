@@ -115,6 +115,9 @@ public class FunctionService {
 		}
 		//排序
 		Collections.sort(resultFunctions);
+		for (FunctionVo f : resultFunctions) {
+			System.out.println(f.getName());
+		}
 		for (int i = 0; i < resultFunctions.size(); i++) {
 			FunctionVo parentParentFunction = resultFunctions.get(i);
 			List<FunctionVo> childFunctions = parentParentFunction.getChildFunctionVos();

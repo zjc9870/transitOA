@@ -85,7 +85,7 @@ public class ContractController {
 	 * 合同审批查看详情
 	 * @return
 	 */
-	@PostMapping(value = "/htspckxq")
+	@GetMapping(value = "/htspckxq")
 	public ModelAndView htspckxq(@RequestParam(name = "id", required = true)String contractId){
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approveDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
@@ -234,7 +234,7 @@ public class ContractController {
 	/**
 	 * 编号回填详情
 	 */
-	@PostMapping("/bhhtxq")
+	@GetMapping("/bhhtxq")
 	public ModelAndView bhhtxq(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfillDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
@@ -551,7 +551,7 @@ public class ContractController {
 	 * @param response
 	 * @return
 	 */
-	@PostMapping("/ssxq")
+	@GetMapping("/ssxq")
 	public ModelAndView getSsxq(String id, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView(viewName + "c_findDetail");
 		ContractVo contractVo = contractService.getContractById(id);

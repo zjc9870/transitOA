@@ -26,7 +26,7 @@ public class FunctionConvertor {
 		BeanUtils.copyProperties(function, functionVo);
 		String url = functionVo.getUrl();
 		if (!StringUtils.isBlank(url)) {
-			// // 如果是导航的function转换，则需要加上functionId=xxx
+			// 如果是导航的function转换，则需要加上functionId=xxx
 			if (isNav) {
 				url = handleUrl(function.getId(), url);
 				functionVo.setUrl(url);
