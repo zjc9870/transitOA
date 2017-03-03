@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	showAvatar();
+	showHomeContent();
 	Pjax.init(".nav-pajx", ".page-content", "admin/home",function() {
 	}, function($current) {
 		clearNavStatus($current);
@@ -31,4 +32,10 @@ function showAvatar(){
 			$(".user-avatar").attr("src","user/showAvatar?userId="+userId);
 		}
 	});
+}
+
+function showHomeContent() {
+	AjaxTool.html("home1",null,function (html) {
+		$('.page-content').html(html);
+	})
 }

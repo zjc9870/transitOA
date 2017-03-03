@@ -63,14 +63,14 @@ public class FunctionService {
 								FunctionVo resultChildFunction = resultChildFunctions.get(j);
 								if (resultChildFunction.getId().equals(parentFunction.getId())) {
 									flag1 = true;
-									FunctionVo functionVo = FunctionConvertor.convert(function);
+									FunctionVo functionVo = FunctionConvertor.convert(function,true);
 									resultChildFunction.addChildFunction(functionVo);
 									break;
 								}
 							}
 							if (!flag1) {
-								FunctionVo functionVo = FunctionConvertor.convert(function);
-								FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction);
+								FunctionVo functionVo = FunctionConvertor.convert(function,true);
+								FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction,true);
 								parentFunctionVo.addChildFunction(functionVo);
 								for (FunctionVo functionTmpVo : resultFunctions) {
 									if (functionTmpVo.getName().equals(parentParentFunction.getName())) {
@@ -83,9 +83,9 @@ public class FunctionService {
 						}
 					}
 					if (!flag) {
-						FunctionVo functionVo = FunctionConvertor.convert(function);
-						FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction);
-						FunctionVo parentParentFunctionVo = FunctionConvertor.convert(parentParentFunction);
+						FunctionVo functionVo = FunctionConvertor.convert(function, true);
+						FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction, true);
+						FunctionVo parentParentFunctionVo = FunctionConvertor.convert(parentParentFunction, true);
 						parentFunctionVo.addChildFunction(functionVo);
 						parentParentFunctionVo.addChildFunction(parentFunctionVo);
 						resultFunctions.add(parentParentFunctionVo);
@@ -95,21 +95,21 @@ public class FunctionService {
 					for (int i = 0; i < resultFunctions.size(); i++) {
 						FunctionVo resultFunction = resultFunctions.get(i);
 						if ((parentFunction.getId()).equals(resultFunction.getId())) {
-							FunctionVo functionVo = FunctionConvertor.convert(function);
+							FunctionVo functionVo = FunctionConvertor.convert(function, true);
 							resultFunction.addChildFunction(functionVo);
 							flag = true;
 							break;
 						}
 					}
 					if (!flag) {
-						FunctionVo functionVo = FunctionConvertor.convert(function);
-						FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction);
+						FunctionVo functionVo = FunctionConvertor.convert(function, true);
+						FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction, true);
 						parentFunctionVo.addChildFunction(functionVo);
 						resultFunctions.add(parentFunctionVo);
 					}
 				}
 			} else {
-				FunctionVo functionVo = FunctionConvertor.convert(function);
+				FunctionVo functionVo = FunctionConvertor.convert(function, true);
 				resultFunctions.add(functionVo);
 			}
 		}
@@ -163,7 +163,7 @@ public class FunctionService {
 			if(function==null){
 				functionVo = new FunctionVo();
 			}else{
-				functionVo = FunctionConvertor.convert(function);
+				functionVo = FunctionConvertor.convert(function, false);
 			}
 		} else {
 			functionVo = new FunctionVo();

@@ -53,7 +53,7 @@ public class DepartmentController {
 	/**
 	 * 部门-表单页面
 	 */
-	@RequestMapping(value = "/departmentFormPage", method = RequestMethod.POST)
+	@RequestMapping(value = "/departmentFormPage", method = RequestMethod.GET)
 	public ModelAndView departmentFormPage(String id) {
 		DepartmentVo department;
 		if(StringUtil.equals(id, "-1")) department = departmentService.getANewDepartmentVo();

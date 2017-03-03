@@ -41,6 +41,8 @@
 		</a>
 	</div>
 	<div th:replace="admin/base/footer :: copy"></div>
+	<input type="hidden" name="ctx" th:value="${#httpServletRequest.getContextPath()}" />
+	
 	<!--[if lt IE 9]>
 	<script th:src="@{/plugins/respond.min.js}"></script>
 	<script th:src="@{/plugins/excanvas.min.js}"></script>

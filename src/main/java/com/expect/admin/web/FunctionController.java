@@ -42,7 +42,7 @@ public class FunctionController {
 	/**
 	 * 功能-表单页面
 	 */
-	@RequestMapping(value = "/functionFormPage", method = RequestMethod.POST)
+	@RequestMapping(value = "/functionFormPage", method = RequestMethod.GET)
 	public ModelAndView functionForm(String id) {
 		FunctionVo function = functionService.getFunctionById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/functionForm");

@@ -1,5 +1,7 @@
 var DatatableTool = function() {
 
+
+
 	var initDatatable = function(tableId, columnDefs, order) {
 		var i18nUrl = "/plugins/datatables/dataTables.chinese.txt";
 		var mTable = $('#' + tableId).DataTable({

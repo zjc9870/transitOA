@@ -312,17 +312,8 @@ public class UserService implements UserDetailsService {
 			loginLog(user.getId(), user.getUsername(), ip);
 			request.getSession().setAttribute("user", user);
 
-//
-//			Cookie usernameCookie = new Cookie("username", user.getUsername());
-//			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
-//			response.addCookie(usernameCookie);
-//			
-//			Cookie passwordCookie = new Cookie("password", URLEncoder.encode(user.getPassword(),"UTF-8"));
-//			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
-//			response.addCookie(passwordCookie);
-
-
 			response.sendRedirect("/admin/home");
 		}
 	}
+	
 }

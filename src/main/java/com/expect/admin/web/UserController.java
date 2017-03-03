@@ -68,7 +68,7 @@ public class UserController {
 	/**
 	 * 用户表单页面
 	 */
-	@RequestMapping(value = "/userFormPage", method = RequestMethod.POST)
+	@RequestMapping(value = "/userFormPage", method = RequestMethod.GET)
 	public ModelAndView userForm(String id) {
 		UserVo userVo = userService.getUserById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/userForm");

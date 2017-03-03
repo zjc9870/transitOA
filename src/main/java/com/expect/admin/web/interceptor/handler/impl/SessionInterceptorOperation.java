@@ -41,7 +41,8 @@ public class SessionInterceptorOperation implements InterceptorOperation {
 			ResultVo rv = new ResultVo();
 			rv.setMessage("登录超时，请重新登录");
 			rv.setResult(false);
-			rv.setObj(Constants.LOGIN_URL);
+			String url = Constants.LOGIN_URL.substring(1,Constants.LOGIN_URL.length());
+			rv.setObj(url);
 			rv.setCode(Constants.CODE_TIMEOUT);
 			ResponseBuilder.writeJsonResponse(response, rv);
 		} else {

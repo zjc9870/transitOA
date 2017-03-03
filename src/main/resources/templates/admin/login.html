@@ -20,7 +20,7 @@
 		</a>
 	</div>
 	<div class="content">
-		<form class="login-form" th:action="@{/admin/login}" action="/admin/login" method="post">
+		<form class="login-form" th:action="@{/admin/login}"  method="post">
 			<div th:if="${param.error}" class="alert alert-danger">
 				<button class="close" data-close="alert"></button>
 				<span th:if="${param.error}">用户名或密码错误</span>

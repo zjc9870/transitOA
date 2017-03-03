@@ -55,6 +55,7 @@ public class AdminController {
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
+		request.getSession().removeAttribute("user");
 		return "redirect:/admin/login";
 	}
 }
