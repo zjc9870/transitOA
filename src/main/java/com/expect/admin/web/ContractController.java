@@ -345,17 +345,17 @@ public class ContractController {
             @RequestParam(name = "revocationReason", required = true)String revocationReason) throws IOException {
 	    try{
 	        if(revocationReason.length() > 100){  
-	            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销理由过长，最多100个字"));
+	            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销理由过长，最多100个字").build());
 	        }
 	        else contractService.revocationContract(contractId, revocationReason);
 	    }catch(BaseAppException be) {
-	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()));
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()).build());
 	        log.error("撤销合同是失败，合同id为" + contractId, be);
 	    }catch(Exception e) {
-	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销合同失败"));
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销合同失败").build());
             log.error("撤销合同是失败，合同id为" + contractId, e);
 	    }
-	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "撤销合同成功"));
+	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "撤销合同成功").build());
 	}
 	
 	/**

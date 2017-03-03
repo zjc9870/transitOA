@@ -87,15 +87,15 @@ public class AttachmentController {
 	    AttachmentVo attachment = attachmentService.getAttachmentById(id);
 	    if(attachment != null) {
 	        //pdf文件的路径
-	        String toFileName = attachment.getPath() + File.separator + "convertToPdf" + File.separator + id;
+	        String toFileName = attachment.getPath() + File.separator + "convertToPdf" + File.separator + id + ".pdf";
 	        //源文件的路径
 	        String path = attachment.getPath() + File.separator + id;
-	        File pdfFile = new File(toFileName);
+//	        File pdfFile = new File(toFileName + ".pdf");//word转PDF后会自动加上.pdf的后缀
 	        //如果不存在转换过的PDF文件就转换，否则就直接下载
-	        if(!pdfFile.exists()) {
-	            Word2Pdf.wordToPDF(path, toFileName);
-	        }
-	        byte[] buffer = IOUtil.inputDataFromFile(path);
+//	        if(!pdfFile.exists()) {
+	        Word2Pdf.wordToPDF(path, toFileName);
+//	        }
+	        byte[] buffer = IOUtil.inputDataFromFile(toFileName);
 	        try {
 	            int lastDot = attachment.getName().lastIndexOf('.');
 	            String pdfFileName = attachment.getName().substring(0, lastDot) + ".pdf";

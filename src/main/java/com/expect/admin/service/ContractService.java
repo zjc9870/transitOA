@@ -232,8 +232,8 @@ public class ContractService {
 			contractList = contractRepository.findByHtshztOrderBySqsjDesc(condition);
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId);
-		if(StringUtil.equals(lx, "yth"))//已退回
-			contractList = contractRepository.findYthContract(userId, condition);
+		if(StringUtil.equals(lx, "yth"))//已撤销的合同
+			contractList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, REVOCATION_CONDITION);
 		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
 			return getHtspYspList(userId, condition);
 		}

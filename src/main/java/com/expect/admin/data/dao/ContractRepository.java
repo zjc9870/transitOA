@@ -42,6 +42,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 //	@Query("select distinct c from Contract c where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
 //	public List<Contract> findDspContract(String condition)
 	/**
+	 * 根据你合同人id 和合同的状态获取合同列表
 	 * 获取某人用户未提交的合同记录
 	 * @param userId
 	 * @param condition
