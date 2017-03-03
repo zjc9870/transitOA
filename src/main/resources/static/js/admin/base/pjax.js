@@ -21,14 +21,20 @@ var Pjax = function() {
                 type: "get",
                 dataType: "html"
             });
-            promise.then(function(html) {
-            	if (!redirectTimeoutUrl(html)) {
-            		 $(containerSelector).html(html);
-                     pushPage(url, baseUrl);
-                     if (endFunction) {
-                         endFunction($current);
-                     }
-                }
+            promise.then(function(html, textStatus, jqXHR) {
+            	if (!redirectTimeoutUrl(html,jqXHR)) {
+           		 	$(containerSelector).html(html);
+                    pushPage(url, baseUrl);
+                    if (endFunction) {
+                        endFunction($current);
+                    }
+               }
+            });
+            promise.then(function(){
+            	console.info("error");
+            });
+            promise.then(function(){
+            	console.info("complete");
             });
         });
     }
@@ -45,8 +51,8 @@ var Pjax = function() {
             type: "get",
             dataType: "html"
         });
-        promise.then(function(html) {
-        	if (!redirectTimeoutUrl(html)) {
+        promise.then(function(html, textStatus, jqXHR) {
+        	if (!redirectTimeoutUrl(html,jqXHR)) {
         		$(containerSelector).html(html);
                 if (endFunction) {
                     if (navUrl) {
@@ -75,8 +81,8 @@ var Pjax = function() {
                     type: "get",
                     dataType: "html"
                 });
-                promise.then(function(html) {
-                	if (!redirectTimeoutUrl(html)) {
+                promise.then(function(html, textStatus, jqXHR) {
+                	if (!redirectTimeoutUrl(html,jqXHR)) {
                 		$(containerSelector).html(html);
                         if (endFunction) {
                             if (navUrl) {
@@ -120,8 +126,8 @@ var Pjax = function() {
                 type: "get",
                 dataType: "html"
             });
-            promise.then(function(html) {
-                if (!redirectTimeoutUrl(html)) {
+            promise.then(function(html, textStatus, jqXHR) {
+                if (!redirectTimeoutUrl(html,jqXHR)) {
                 	$(containerSelector).html(html);
                     var navUrl = getCurrentUrl(baseUrl);
                     if (navUrl) {
@@ -181,7 +187,13 @@ var Pjax = function() {
         return url;
     }
     
-    function redirectTimeoutUrl(obj) {
+    function redirectTimeoutUrl(obj,jqXHR) {
+    	//获取Location字段，如果不为null，并且指向登录页面，就代表session已经过期
+    	var location=jqXHR.getResponseHeader("Location");
+    	if(location && location.indexOf("login")>=0){
+    		window.location.href = location;
+    		return true;
+    	}
     	try{
             var jsonObject = JSON.parse(obj);
             window.location.href = checkUrl(jsonObject.obj);

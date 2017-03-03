@@ -332,7 +332,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		return mv;
 	}
 	//查询id
-	@RequestMapping(value = "/cx", method = RequestMethod.POST)
+	@RequestMapping(value = "/cx", method = RequestMethod.GET)
 	public ModelAndView findDraftSwById(@RequestParam(name = "id", required = true)String id){
 		ModelAndView modelAndView = new ModelAndView();
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(id);

@@ -46,7 +46,7 @@ public class FunctionService {
 			}
 		}
 
-		//菜单分级
+		// 把相应功能归类到同一顶级功能下
 		List<FunctionVo> resultFunctions = new ArrayList<>();
 		for (Function function : functions) {
 			Function parentFunction = function.getParentFunction();
@@ -63,14 +63,14 @@ public class FunctionService {
 								FunctionVo resultChildFunction = resultChildFunctions.get(j);
 								if (resultChildFunction.getId().equals(parentFunction.getId())) {
 									flag1 = true;
-									FunctionVo functionVo = FunctionConvertor.convert(function,true);
+									FunctionVo functionVo = FunctionConvertor.convert(function, true);
 									resultChildFunction.addChildFunction(functionVo);
 									break;
 								}
 							}
 							if (!flag1) {
-								FunctionVo functionVo = FunctionConvertor.convert(function,true);
-								FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction,true);
+								FunctionVo functionVo = FunctionConvertor.convert(function, true);
+								FunctionVo parentFunctionVo = FunctionConvertor.convert(parentFunction, true);
 								parentFunctionVo.addChildFunction(functionVo);
 								for (FunctionVo functionTmpVo : resultFunctions) {
 									if (functionTmpVo.getName().equals(parentParentFunction.getName())) {
@@ -113,11 +113,8 @@ public class FunctionService {
 				resultFunctions.add(functionVo);
 			}
 		}
-		//排序
+		// 排序
 		Collections.sort(resultFunctions);
-		for (FunctionVo f : resultFunctions) {
-			System.out.println(f.getName());
-		}
 		for (int i = 0; i < resultFunctions.size(); i++) {
 			FunctionVo parentParentFunction = resultFunctions.get(i);
 			List<FunctionVo> childFunctions = parentParentFunction.getChildFunctionVos();
@@ -132,10 +129,9 @@ public class FunctionService {
 				}
 			}
 		}
-
 		return resultFunctions;
 	}
-
+	
 	/**
 	 * 获取所有的菜单
 	 */

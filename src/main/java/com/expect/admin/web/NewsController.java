@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,7 @@ public class NewsController {
 	
 	private final String viewPath = "admin/news/";
 	
-	@PostMapping("/getNewsDetail")
+	@GetMapping("/getNewsDetail")
 	public ModelAndView getNewsDetail(@RequestParam(name = "id", required = true)String newsId) {
 		ModelAndView mv = new ModelAndView(viewPath + "newDetail");
 		NewsVo newsVo = newsService.getNewsById(newsId);

@@ -27,6 +27,7 @@ public class GlobalInterceptor implements HandlerInterceptor {
 		// 排除登录
 		String url = request.getRequestURI();
 		if (url.contains(Constants.LOGIN_URL)) {
+			response.addHeader("Location", url);
 			return true;
 		}
 

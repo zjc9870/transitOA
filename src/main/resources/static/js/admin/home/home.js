@@ -6,11 +6,11 @@ $(document).ready(function() {
 		clearNavStatus($current);
 	});
 	Pjax.refresh(".page-content", "admin/home",function(functionUrl) {
-		functionUrl = Tools.replaceAll(functionUrl, "/", "");
+		functionUrl = Tools.replaceAll(functionUrl, "\\D", "");
 		clearNavStatus($("." + functionUrl));
 	});
 	Pjax.onpopstate(".page-content", "admin/home",function(functionUrl) {
-		functionUrl = Tools.replaceAll(functionUrl, "/", "");
+		functionUrl = Tools.replaceAll(functionUrl, "\\D", "");
 		clearNavStatus($("." + functionUrl));
 	});
 });
