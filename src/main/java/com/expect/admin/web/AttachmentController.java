@@ -23,8 +23,10 @@ import com.expect.admin.service.vo.component.FileResultVo;
 import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.utils.Base64Util;
 import com.expect.admin.utils.IOUtil;
+import com.expect.admin.utils.PdfWatermark;
 import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.Word2Pdf;
+import com.lowagie.text.DocumentException;
 
 @Controller
 @RequestMapping("/admin/attachment")
@@ -87,15 +89,18 @@ public class AttachmentController {
 	    AttachmentVo attachment = attachmentService.getAttachmentById(id);
 	    if(attachment != null) {
 	        //pdf文件的路径
-	        String toFileName = attachment.getPath() + File.separator + "convertToPdf" + File.separator + id + ".pdf";
+	        String toFileNameWithoutSuffix = attachment.getPath() + File.separator + "convertToPdf" + File.separator + id;
 	        //源文件的路径
 	        String path = attachment.getPath() + File.separator + id;
 //	        File pdfFile = new File(toFileName + ".pdf");//word转PDF后会自动加上.pdf的后缀
 	        //如果不存在转换过的PDF文件就转换，否则就直接下载
-//	        if(!pdfFile.exists()) {
-	        Word2Pdf.wordToPDF(path, toFileName);
-//	        }
-	        byte[] buffer = IOUtil.inputDataFromFile(toFileName);
+	        Word2Pdf.wordToPDF(path, toFileNameWithoutSuffix + ".pdf");
+	        try {
+                PdfWatermark.setWartermark(toFileNameWithoutSuffix + "-withWatermark.pdf", toFileNameWithoutSuffix + ".pdf", "保密");
+            } catch (Exception e) {
+                log.error("pdf文件加水印出错 文件id为 ： " + id, e);
+            }
+	        byte[] buffer = IOUtil.inputDataFromFile(toFileNameWithoutSuffix + "-withWatermark.pdf");
 	        try {
 	            int lastDot = attachment.getName().lastIndexOf('.');
 	            String pdfFileName = attachment.getName().substring(0, lastDot) + ".pdf";

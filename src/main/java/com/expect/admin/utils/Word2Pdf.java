@@ -14,10 +14,12 @@ public class Word2Pdf {
     private static final int wdFormatPDF = 17;// word转PDF 格式  
     private static final Logger log = LoggerFactory.getLogger(Word2Pdf.class);
     
+    /**
+     * @param sfileName
+     * @param toFileName
+     */
     public static void wordToPDF(String sfileName,String toFileName){    
-        
-//        System.out.println("启动Word...");      
-//        long start = System.currentTimeMillis();      
+        long start = System.currentTimeMillis();
         ActiveXComponent app = null;  
         Dispatch doc = null;  
         try {      
@@ -25,8 +27,6 @@ public class Word2Pdf {
             app.setProperty("Visible", new Variant(false));  
             Dispatch docs = app.getProperty("Documents").toDispatch();    
             doc = Dispatch.call(docs,  "Open" , sfileName).toDispatch();  
-//            System.out.println("打开文档..." + sfileName);  
-//            System.out.println("转换文档到PDF..." + toFileName);      
             File tofile = new File(toFileName);
             //如果文件已经存在就不在生成
             if (tofile.exists()) {      
@@ -37,12 +37,9 @@ public class Word2Pdf {
                           "SaveAs",      
                           toFileName, // FileName      
                           wdFormatPDF);      
-//            long end = System.currentTimeMillis();      
-//            System.out.println("转换完成..用时：" + (end - start) + "ms.");  
               
                 
         } catch (Exception e) {      
-//            System.out.println("========Error:文档转换失败：" + e.getMessage());      
             log.error("word转PDF失败", e);
         } finally {  
             Dispatch.call(doc,"Close",false);  
@@ -52,6 +49,7 @@ public class Word2Pdf {
             }  
           //如果没有这句话,winword.exe进程将不会关闭  
            ComThread.Release();     
+           System.out.println("word转换时间" + (System.currentTimeMillis() - start));
     }  
 
 //    public static void main(String[] args) {
