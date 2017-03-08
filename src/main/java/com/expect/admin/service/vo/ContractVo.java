@@ -59,7 +59,9 @@ public class ContractVo {
 			this.sbd = "";
 		else this.sbd = contract.getSbd();
 		
-		this.sequenceNumber = contract.getSequenceNumber();
+		if(StringUtil.isBlank(contract.getSequenceNumber())){
+		    this.sequenceNumber = null;
+		}else this.sequenceNumber = contract.getSequenceNumber();
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;
