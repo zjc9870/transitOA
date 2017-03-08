@@ -89,7 +89,9 @@ public class ContractController {
 	public ModelAndView htspckxq(@RequestParam(name = "id", required = true)String contractId){
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approveDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
+		UserVo userVo = userService.getLoginUser();
 		modelAndView.addObject("contractVo", contractVo);
+		modelAndView.addObject("userVo",userVo);
 		return modelAndView;
 	}
 	

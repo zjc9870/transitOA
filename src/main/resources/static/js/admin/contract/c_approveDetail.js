@@ -79,4 +79,8 @@ $(document).ready(function () {
             n += 1;
         }
     );
+
+    if($('#userRole').val() == "资产管理部合同审核员"){
+        $('#btg').addClass("hidden");
+    }
 })
