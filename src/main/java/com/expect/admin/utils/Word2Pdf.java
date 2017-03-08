@@ -19,7 +19,7 @@ public class Word2Pdf {
      * @param toFileName
      */
     public static void wordToPDF(String sfileName,String toFileName){    
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         ActiveXComponent app = null;  
         Dispatch doc = null;  
         try {      
@@ -49,7 +49,7 @@ public class Word2Pdf {
             }  
           //如果没有这句话,winword.exe进程将不会关闭  
            ComThread.Release();     
-           System.out.println("word转换时间" + (System.currentTimeMillis() - start));
+//           System.out.println("word转换时间" + (System.currentTimeMillis() - start));
     }  
 
 //    public static void main(String[] args) {

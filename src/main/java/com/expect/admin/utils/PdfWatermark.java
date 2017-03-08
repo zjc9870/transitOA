@@ -11,6 +11,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfGState;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfStamper;
 
@@ -28,7 +29,7 @@ public class PdfWatermark {
      */
     public static void setWartermark(String destFilePath, String sourceFilePath, String watermark
             ) throws IOException, DocumentException{
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         File destFile = new File(destFilePath);
         if(destFile.exists()) return;
         OutputStream destOs = new BufferedOutputStream(
@@ -40,16 +41,23 @@ public class PdfWatermark {
         BaseFont bf = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H",
                 BaseFont.EMBEDDED);
         for (int i = 0; i < totalPage; i++) {
-            over = stamper.getUnderContent(i + 1);
+//            over = stamper.getUnderContent(i + 1);//生成的水印在文字图片下方
+            over = stamper.getOverContent(i + 1);//生成的水印在文字图片下方
             over.beginText();
             over.setColorFill(Color.LIGHT_GRAY);  
             over.setFontAndSize(bf, 150);  
-            over.setTextMatrix(70, 200);  
-            over.showTextAligned(Element.ALIGN_CENTER, watermark, 300,350, 30);  
+            over.setTextMatrix(70, 200); 
+            //设置水印文字透明度
+            PdfGState ps = new PdfGState();
+            ps.setFillOpacity(0.3F);
+            over.setGState(ps);
+            
+            over.showTextAlignedKerned(Element.ALIGN_CENTER, watermark, 300,350, 30);  
+//            over.showTextAlignedgned(Element.ALIGN_CENTER, watermark, 300,350, 30);  
             over.endText();
         }
         stamper.close();
         pdfReader.close();
-        System.out.println("加水印时间" + (System.currentTimeMillis() - start));
+//        System.out.println("加水印时间" + (System.currentTimeMillis() - start));
     }
 }
