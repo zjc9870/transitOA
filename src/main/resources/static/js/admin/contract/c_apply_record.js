@@ -10,7 +10,7 @@ for(var i=0; i<tabs.length; i++) {
                     var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
-                        str += "<tr>";
+                        str += "<tr id='"+cons[i].id+"'>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         switch(tabId){
@@ -76,7 +76,10 @@ function seeApplyRecordNE(id,tabId) {
 function submitWtjForm(id) {
     AjaxTool.post('contract/submitWtj',{id: id}, function (data) {
             alert(data.message);
-            window.location.reload();
+            var table = $('#c-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
         }
     )
 };
@@ -85,7 +88,10 @@ function deleteWtjCon(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
         alert(data.message);
-        window.location.reload();
+        var table = $('#c-apply-record-table').DataTable();
+        if(data.success) {
+            table.rows('#' + id).remove().draw();
+        }
     })
 }
 
@@ -102,8 +108,10 @@ function revoke(id) {
         }
         AjaxTool.post('contract/revocationContract',{
             id:id,revocationReason:reason},function (data) {
-            alert(data.message);
-            window.location.reload();
+            var table = $('#c-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
         })
     })
 }

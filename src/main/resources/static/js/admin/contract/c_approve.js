@@ -11,7 +11,7 @@ for(var i=0; i<tabs.length; i++) {
                     var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
-                        str += "<tr>";
+                        str += "<tr id='"+cons[i].id+"'>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         str += "<td>"+cons[i].userName+"</td>";

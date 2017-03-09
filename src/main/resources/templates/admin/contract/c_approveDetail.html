@@ -34,6 +34,12 @@
                     <div class="form-title">期限:</div>
                     <pre class="pre-form-content" th:text="${contractVo.qx}"></pre>
                 </li>
+                <th:block th:if='${contractVo.sequenceNumber}'>
+                    <li>
+                        <div class="form-title">电子序号:</div>
+                        <pre class="pre-form-content" th:text="${contractVo.sequenceNumber}"></pre>
+                    </li>
+                </th:block>
                 <input id="attachList" type="hidden" th:value="${contractVo.attachmentList}" />
                 <input id="contractId" type="hidden" th:value="${contractVo.id}"/>
                 <input id="userRole" type="hidden" th:value="${userVo.roleName}"/>

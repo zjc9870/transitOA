@@ -30,7 +30,7 @@
                     </thead>
                     <tbody id="c-approve-tbody" class="mt-td-checkbox">
                     <th:block th:if='${not #lists.isEmpty(contractVoList)}'>
-                        <tr th:each='con : ${contractVoList}'>
+                        <tr th:each='con : ${contractVoList}' th:id="${con.id}">
                             <th:block >
                             <input type="hidden" th:value="${con.id}" />
                             <td th:text='${con.htbt}'></td>
