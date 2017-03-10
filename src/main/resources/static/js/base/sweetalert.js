@@ -143,7 +143,7 @@ var SweetAlert = function() {
 			type: "content",
 			content: content,
 			showCancelButton: true,
-			closeOnConfirm: false,
+			closeOnConfirm: true,
 			animation: "slide-from-top",
 			confirmButtonText: "确定",
 			cancelButtonText: "取消"
