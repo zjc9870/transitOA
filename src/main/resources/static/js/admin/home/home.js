@@ -1,15 +1,16 @@
 $(document).ready(function() {
 	showAvatar();
-	Pjax.init(".nav-pajx", ".page-content", "admin/home","home1", function() {
+	showHomeContent();
+	Pjax.init(".nav-pajx", ".page-content", "admin/home",function() {
 	}, function($current) {
 		clearNavStatus($current);
 	});
-	Pjax.refresh(".page-content", "admin/home","home1", function(functionUrl) {
-		functionUrl = Tools.replaceAll(functionUrl, "/", "");
+	Pjax.refresh(".page-content", "admin/home",function(functionUrl) {
+		functionUrl = Tools.replaceAll(functionUrl, "\\D", "");
 		clearNavStatus($("." + functionUrl));
 	});
-	Pjax.onpopstate(".page-content", "admin/home","home1", function(functionUrl) {
-		functionUrl = Tools.replaceAll(functionUrl, "/", "");
+	Pjax.onpopstate(".page-content", "admin/home",function(functionUrl) {
+		functionUrl = Tools.replaceAll(functionUrl, "\\D", "");
 		clearNavStatus($("." + functionUrl));
 	});
 });
@@ -31,4 +32,10 @@ function showAvatar(){
 			$(".user-avatar").attr("src","user/showAvatar?userId="+userId);
 		}
 	});
+}
+
+function showHomeContent() {
+	AjaxTool.html("home1",null,function (html) {
+		$('.page-content').html(html);
+	})
 }

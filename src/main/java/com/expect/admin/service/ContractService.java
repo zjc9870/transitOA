@@ -16,6 +16,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Synchronization;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,11 @@ import com.expect.admin.utils.StringUtil;
 
 @Service
 public class ContractService {
+    
+    /**
+     * 撤销状态
+     */
+    private static final String REVOCATION_CONDITION = "revocation";
 	
 	@Autowired
 	private ContractRepository contractRepository;
@@ -157,6 +163,14 @@ public class ContractService {
 		contractRepository.save(contract);
 	}
 	
+	/**
+	 * 1.根据id找到相关合同，并将数据写入到对用Vo中
+	 * 2.获取相关的流程日志
+	 * 3.设置个流程日志相关联的合同状态的名称
+	 * 4.如果合同的状态不是已撤销（REVOCATION_CONDITION）就加载合同的附件信息，否则就不加载
+	 * @param contractId
+	 * @return
+	 */
 	public ContractVo getContractById(String contractId) {
 		Contract contract = contractRepository.findOne(contractId);
 		if(contract == null) throw new BaseAppException("id为 "+contractId+"的合同没有找到");
@@ -171,8 +185,12 @@ public class ContractService {
 		}
 //		contractVo.setLcrzList(lcrzbService.getKxsLcrzbVoList(contractId));//合同的流程日志信息
 		contractVo.setLcrzList(lcrzbVoList);
-		List<AttachmentVo> attachmentVoList = getContractAttachment(contract);
-		contractVo.setAttachmentList(attachmentVoList);
+		
+		//如果合同的状态不是已撤销就显示合同的附件信息，否则就不显示附件信息
+		if(!StringUtil.equals(contract.getHtshzt(), REVOCATION_CONDITION)){
+		    List<AttachmentVo> attachmentVoList = getContractAttachment(contract);
+		    contractVo.setAttachmentList(attachmentVoList);
+		}
 //		contractVo.setAttachmentList(attachmentService.getAttachmentsByXgid(contractId));//合同的附件信息
 		return contractVo;
 	}
@@ -214,8 +232,8 @@ public class ContractService {
 			contractList = contractRepository.findByHtshztOrderBySqsjDesc(condition);
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId);
-		if(StringUtil.equals(lx, "yth"))//已退回
-			contractList = contractRepository.findYthContract(userId, condition);
+		if(StringUtil.equals(lx, "yth"))//已撤销的合同(“yth”是历史原因已退回)
+			contractList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, REVOCATION_CONDITION);
 		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
 			return getHtspYspList(userId, condition);
 		}
@@ -227,6 +245,7 @@ public class ContractService {
 	 * 对数据进行过滤，并设置合同的状态
 	 * 1.过滤掉已经被标记为删除的合同
 	 * 2.如果是部门内部审批时过滤掉其他部门的合同
+	 * 3.如果是公司内部审批时过滤掉其他公司的合同
 	 * @param userId
 	 * @param condition
 	 * @param contractList
@@ -240,9 +259,17 @@ public class ContractService {
 		User user = userRepository.findOne(userId);
 		for (Contract contract : contractList) {
 			if(StringUtil.equals(contract.getSfsc(), "Y")) continue;//过滤掉已删除的合同
-			if(StringUtil.equals(lcjd.getShbm(), "Y"))
+			//需要部门内部审核的合同，只有申请人的部门内部人员有权限审核
+			if(StringUtil.equals(lcjd.getShbm(), "Y")){
 					if(!sfsybm(contract.getNhtr().getDepartments().iterator().next(), 
 							user.getDepartments())) continue;
+			}
+			
+			//需要公司内部审核的合同，只有同一个公司的人员才有权限审核
+			if(StringUtil.equals(lcjd.getShgs(), "Y")){
+			    String companyIdOfContract = contract.getNhtr().getSsgs().getId();
+			    if(!StringUtil.equals(companyIdOfContract, user.getSsgs().getId())) continue;
+			}
 			ContractVo contractVo = new ContractVo(contract);
 			
 			convertHtshzt(lcjdbMap, contractVo);
@@ -359,16 +386,20 @@ public class ContractService {
 	}
 	
 	/**
-	 * 申请记录界面未审批合同
+	 * 申请记录界面未审批合同 
+	 * 1.没有完成 状态不是Y
+	 * 2.没有回填 状态不是T
+	 * 3.没有撤销 状态不是revocation
 	 * @param userId
 	 * @return
 	 */
 	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlWspList(String userId, String condition) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
-		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);
+		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);//过滤掉合同状态是Y，T的合同
 		if(wspList != null && wspList.size() > 0)
 			for (Contract contract : wspList) {
+			    if(StringUtil.equals(REVOCATION_CONDITION, contract.getHtshzt())) continue;//过滤掉已撤销的合同
 				ContractVo contractVo = new ContractVo(contract);
 				contractVo.setHtshzt("待审批");
 				contractVoList.add(contractVo);
@@ -400,6 +431,7 @@ public class ContractService {
 	
 	/**
 	 * 合同审批
+	 * 没有退回合同的说法了，现在合同只能往下审批，申请人有撤销合同的权限。其他人不能退合同
 	 * @param cljg
 	 * @param message
 	 * @param clnrid
@@ -411,23 +443,28 @@ public class ContractService {
 		ContractVo contractVo = getContractById(clnrid);
 		String nextCondition;//合同的下一个状态，根据是否被退回确定
 		String curCondition = contractVo.getHtshzt();
-		String sfth = "N";//合同是否被退回
+//		String sfth = "N";//合同是否被退回
 		//添加流程日志
 		String lcrzId = lcrzbService.save(new LcrzbVo(cljg, message), clnrid, clnrfl, curCondition);
 		bindContractWithLcrz(clnrid, lcrzId);
-		//处理意见是“不通过”，并且不是法务审核就是退回
-		if(StringUtil.equals(cljg, "不通过") && !StringUtil.equals(curCondition, "3")){
-			sfth = "Y";
-			nextCondition = lcService.getThCondition(contractVo.getLcbs(), curCondition);
-			lcrzbService.setLcrzSfxs(clnrid, contractVo.getLcbs(), nextCondition);
-		}else{
-			//修改合同状态
-			nextCondition = lcService.getNextCondition(contractVo.getLcbs(), curCondition);
-		}
+//		//处理意见是“不通过”，并且不是法务审核就是退回
+//		if(StringUtil.equals(cljg, "不通过") && !StringUtil.equals(curCondition, "3")){
+//			sfth = "Y";
+//			nextCondition = lcService.getThCondition(contractVo.getLcbs(), curCondition);
+//			lcrzbService.setLcrzSfxs(clnrid, contractVo.getLcbs(), nextCondition);
+//		}
+//		else{
+	    //如果是负责人审核通过就生成电子序号
+	    if (StringUtil.equals(cljg, "通过") && StringUtil.equals(curCondition, "5")) {
+            contractVo.setSequenceNumber(generateContractSequenceNumber());
+        }
+		//修改合同状态
+		nextCondition = lcService.getNextCondition(contractVo.getLcbs(), curCondition);
+//		}
 		
 		if(!StringUtil.isBlank(nextCondition)){
 			contractVo.setHtshzt(nextCondition);
-			contractVo.setSfth(sfth);
+//			contractVo.setSfth(sfth);
 			updateContract(contractVo, null);
 		}
 	}
@@ -514,6 +551,7 @@ public class ContractService {
 		}
 		resultMap.put("T", "已回填");
 		resultMap.put("Y", "审核完成");
+		resultMap.put(REVOCATION_CONDITION, "已撤销");
 		return resultMap;
 	}
 	
@@ -589,8 +627,7 @@ public class ContractService {
      * 2.在流程日志表中插入一条合同撤销的记录
      * 3.修改合同的状态为已撤销，并保存
      * @param contractId 要撤销的合同的id
-     * @param reason 
-     * @param reaconCategory 
+     * @param reason （1.提交人发现有误  2.资产部建议修改  3.其他（理由自填））
      */
 	@Transactional
 	@TriggersRemove(cacheName = { "CONTRACT_CACHE" }, removeAll = true)
@@ -600,13 +637,51 @@ public class ContractService {
         if(contract == null) throw new BaseAppException("没有找到要撤销的合同！");
         
         //插入撤销合同的记录
-        String lcrzId = lcrzbService.save(new LcrzbVo("撤销", reason), contractId, "", "revocation");
+        String lcrzId = lcrzbService.save(new LcrzbVo("撤销", reason), contractId, "", REVOCATION_CONDITION);
         bindContractWithLcrz(contractId, lcrzId);
         //记录与合同绑定
-        contract.setHtshzt("revocation");
+        contract.setHtshzt(REVOCATION_CONDITION);
         //保存合同
         contractRepository.save(contract);
     }
 	
+	/**
+	 * 同步方法的访问保证生成的序号唯一
+	 * 生成合同的电子序号：序号格式是 日期+四位的序号 如201701020001
+	 * 1.取得当前日期并用适当的格式转化为字符串(dateSequence)
+	 * 2.从数据库中取出最大的序号（电子序号后四位）并加一(numSequence)
+	 * 3.二者合并生成当前审批合同的电子序号，保存到数据库中
+	 * @return 可以使用的电子序号
+	 */
+	private synchronized String generateContractSequenceNumber(){
+	    Date today = DateUtil.today();
+	    String dateSequence = DateUtil.format(today, DateUtil.shortFormat);
+	    String matchString = dateSequence.substring(0, 4) + "%";
+	    int countOfYear = contractRepository.countBySequenceNumberLike(matchString);
+	    String numSequence = String.format("%04d", countOfYear + 1);//四位的序号，不足四位的在前面补零
+	    return dateSequence + numSequence;
+	}
+	
+	/**
+	 * 判断用户是不是可以下载某个合同附件的word版本
+	 * @param contractId
+	 * @return
+	 */
+	public boolean attachmentDownloadAuthorityJudgement(String contractId, String loginUserId) {
+    	final Contract contract = contractRepository.findById(contractId);
+    	if(contract == null) return false;
+    	boolean isAuditFinaish = (StringUtil.equals(contract.getHtshzt(), "Y") 
+    	        || StringUtil.equals(contract.getHtshzt(), "T"));//合同审核是否完成
+    	User user = userRepository.getOne(loginUserId);
+    	Set<Role> roleSet = user.getRoles();
+    	boolean isZichanguanlibu = false;
+    	for (Role role : roleSet) {
+            if(StringUtil.equals(role.getName(), "资产管理部合同审核员")) {
+                isZichanguanlibu = true;
+                break;
+            }
+        }
+	    return (isAuditFinaish && isZichanguanlibu);
+	}
 
 }

@@ -165,10 +165,7 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		UserConvertor.convert(user, userVo);
-		if(!StringUtil.isBlank(userVo.getPassword())){
-			String encodePassword = encodePassword(userVo.getPassword());
-			user.setPassword(encodePassword);
-		}
+		userRepository.save(user);
 		UserConvertor.convertDtrv(dtrv, user);
 		dtrv.setMessage("修改成功");
 		dtrv.setResult(true);
@@ -329,17 +326,8 @@ public class UserService implements UserDetailsService {
 			loginLog(user.getId(), user.getUsername(), ip);
 			request.getSession().setAttribute("user", user);
 
-//
-//			Cookie usernameCookie = new Cookie("username", user.getUsername());
-//			usernameCookie.setMaxAge(24 * 60 * 60 * 30);
-//			response.addCookie(usernameCookie);
-//			
-//			Cookie passwordCookie = new Cookie("password", URLEncoder.encode(user.getPassword(),"UTF-8"));
-//			passwordCookie.setMaxAge(24 * 60 * 60 * 30);
-//			response.addCookie(passwordCookie);
-
-
 			response.sendRedirect("/admin/home");
 		}
 	}
+	
 }

@@ -26,6 +26,7 @@ public class ContractVo {
 	private String sbd;//合同的大标题
 	private String spyj;//审批意见
 	private List<AttachmentVo> attachmentList;//附件Vo
+	private String sequenceNumber;//电子序号
 	
 	public ContractVo() {
 	}
@@ -57,6 +58,10 @@ public class ContractVo {
 		if(StringUtil.isBlank(contract.getSbd()))
 			this.sbd = "";
 		else this.sbd = contract.getSbd();
+		
+		if(StringUtil.isBlank(contract.getSequenceNumber())){
+		    this.sequenceNumber = null;
+		}else this.sequenceNumber = contract.getSequenceNumber();
 	}
 	public List<LcrzbVo> getLcrzList() {
 		return lcrzList;
@@ -183,4 +188,13 @@ public class ContractVo {
 	public void setSpyj(String spyj) {
 		this.spyj = spyj;
 	}
+
+    public String getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(String sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+	
 }

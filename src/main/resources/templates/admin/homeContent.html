@@ -35,30 +35,10 @@
 					<div id = "gwyb" class="small-font smallsize-font word">公文已办</div>
 				</div>
 			</div>
-			<div id = "leftLc" class="md-block-content">
-				<!-- <ul>
-					<li><span>请在即日起三天内提交个人周工作总结</span></li>
-					<li><span>今天下班前请完成下周工作计划</span></li>
-					<li><span>上午十点参加小组项目进度讨论会</span></li>
-					<li><span>下午两点和见客户见面约谈</span></li>
-					<li><span>请在即日起三天内提交个人周工作总结</span></li>
-					<li><span>今天下班前请完成下周工作计划</span></li>
-					<li><span>上午十点参加小组项目进度讨论会</span></li>
-					<li><span>下午两点和见客户见面约谈</span></li>
-				</ul> -->
-			</div>
-			<div id = "rightLc" class="md-block-content-right">
-				<!-- <ul>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-					<li><span>李灵黛 2016-12-08</span></li>
-				</ul> -->
-			</div>
+			<!--标题-->
+			<div id = "leftLc" class="md-block-content"></div>
+			<!--日期-->
+			<div id = "rightLc" class="md-block-content-right"></div>
 		</div>
 		<!--公告中心-->
 		<div class="md-block">
@@ -76,35 +56,11 @@
 				<div class="tab-box">
 					<div id = "gwfc"  data-fl = "gwfc" class="small-font smallsize-font word">公文风采</div>
 				</div>
-				<!-- <div class="tab-box">
-					<div class="small-font smallsize-font word">人事新闻</div>
-				</div> -->
 			</div>
-			<!-- <img th:src="@{/images/news.png}" class="news-img"/> -->
-			<div id = 'newsLeft' class="md-block-content">
-				<!-- <ul>
-					<li><span>请在即日起三天内提交个人周工作总结</span></li>
-					<li><span>今天下班前请完成下周工作计划</span></li>
-					<li><span>上午十点参加小组项目进度讨论会</span></li>
-					<li><span>下午两点和见客户见面约谈</span></li>
-					<li><span>请在即日起三天内提交个人周工作总结</span></li>
-					<li><span>今天下班前请完成下周工作计划</span></li>
-					<li><span>上午十点参加小组项目进度讨论会</span></li>
-					<li><span>下午两点和见客户见面约谈</span></li>
-				</ul> -->
-			</div>
-			<div id = 'newsRight' class="md-block-content-right">
-				<!-- <ul>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-					<li><span>2016-12-08</span></li>
-				</ul> -->
-			</div>
+			<!--标题-->
+			<div id = 'newsLeft' class="md-block-content"></div>
+			<!--日期-->
+			<div id = 'newsRight' class="md-block-content-right"></div>
 		</div>
 	</div>
 
@@ -136,7 +92,7 @@
 	</div>
 	</div>
 	</div>
-
+	<input type="hidden" name="userRole" th:value="${userVo.roleName}"/>
 	<script th:src="@{/plugins/jquery-memo/js/jquery.memo.js}" type="text/javascript"></script>
 	<script th:src="@{/js/admin/home/homeContent.js}" type="text/javascript"></script>
 </body>

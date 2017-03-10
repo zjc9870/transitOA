@@ -83,6 +83,9 @@ $(document).ready(function () {
             },
             mj: {
                 required: true
+            },
+            rq: {
+                dateISO: true
             }
         },
         messages: {
@@ -97,6 +100,9 @@ $(document).ready(function () {
             },
             mj: {
                 required: "请选择密级"
+            },
+            rq: {
+                dateISO: "日期格式不正确"
             }
         },
         errorPlacement: function(error, element) {

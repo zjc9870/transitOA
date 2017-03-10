@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.StringUtils;
-
 import com.expect.admin.data.dataobject.Function;
 import com.expect.admin.service.vo.FunctionVo;
 import com.expect.admin.service.vo.component.html.SelectOptionVo;
@@ -19,15 +18,21 @@ public class FunctionConvertor {
 	/**
 	 * do to vo
 	 */
-	public static FunctionVo convert(Function function) {
+	public static FunctionVo convert(Function function,Boolean isNav) {
 		FunctionVo functionVo = new FunctionVo();
 		if (function == null) {
 			return functionVo;
 		}
 		BeanUtils.copyProperties(function, functionVo);
 		String url = functionVo.getUrl();
-		if (!StringUtils.isEmpty(url)) {
-			url = url.replace("/", "");
+		if (!StringUtils.isBlank(url)) {
+			// 如果是导航的function转换，则需要加上functionId=xxx
+			if (isNav) {
+				url = handleUrl(function.getId(), url);
+				functionVo.setUrl(url);
+			}
+			url = url.replaceAll("[a-zA-Z]", "");
+			url = url.replaceAll("\\D", "");
 			functionVo.setEncodeUrl(url);
 		}
 		// 设置父功能
@@ -44,7 +49,7 @@ public class FunctionConvertor {
 	public static List<FunctionVo> convert(List<Function> functions) {
 		List<FunctionVo> functionVos = new ArrayList<>();
 		for (Function function : functions) {
-			FunctionVo functionVo = convert(function);
+			FunctionVo functionVo = convert(function, true);
 			functionVos.add(functionVo);
 		}
 		return functionVos;
@@ -113,7 +118,7 @@ public class FunctionConvertor {
 	 * do to dtrv
 	 */
 	public static void convertDtrv(DataTableRowVo dtrv, Function function, Function parentFunction) {
-		FunctionVo functionVo = convert(function);
+		FunctionVo functionVo = convert(function, false);
 		dtrv.setObj(functionVo);
 		dtrv.setCheckbox(true);
 		dtrv.addData(function.getName());
@@ -155,4 +160,11 @@ public class FunctionConvertor {
 		return sov;
 	}
 
+	private static String handleUrl(String functionId, String url) {
+		if (url.indexOf("?") >= 0) {
+			return url + "&functionId=" + functionId;
+		} else {
+			return url + "?functionId=" + functionId;
+		}
+	}
 }

@@ -99,9 +99,7 @@ public class UserConvertor {
 	 * vo to do
 	 */
 	public static void convert(User user, UserVo userVo) {
-//		BeanUtils.copyProperties(userVo, user);
-//		user.setUsername(userVo.getUsername());
-//		user.setPassword(userVo.getPassword());
+		user.setPassword(userVo.getPassword());
 		user.setFullName(userVo.getFullName());
 		user.setEmail(userVo.getEmail());
 		user.setPhone(userVo.getPhone());
@@ -157,7 +155,7 @@ public class UserConvertor {
 		dtrv.setObj(userVo);
 		dtrv.setCheckbox(true);
 		dtrv.addData(user.getUsername());
-		dtrv.addData(user.getPassword());
+//		dtrv.addData(user.getPassword());
 		dtrv.addData(user.getFullName());
 		dtrv.addData(user.getSex());
 		dtrv.addData(user.getPhone());

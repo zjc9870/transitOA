@@ -43,7 +43,9 @@ public class AdminController {
 	}
 
 	@RequestMapping("/home1")
-	public String home1() {
+	public String home1(Model model) {
+		UserVo userVo = userService.getLoginUser();
+		model.addAttribute("userVo", userVo);
 		return "admin/homeContent";
 	}
 
@@ -53,6 +55,7 @@ public class AdminController {
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
+		request.getSession().removeAttribute("user");
 		return "redirect:/admin/login";
 	}
 }

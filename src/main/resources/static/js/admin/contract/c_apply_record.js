@@ -10,7 +10,7 @@ for(var i=0; i<tabs.length; i++) {
                     var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
-                        str += "<tr>";
+                        str += "<tr id='"+cons[i].id+"'>";
                         str += "<td>"+cons[i].htbt+"</td>";
                         str += "<td><div>"+cons[i].date+"</div><div>"+ cons[i].time +"</div></td>";
                         switch(tabId){
@@ -22,7 +22,8 @@ for(var i=0; i<tabs.length; i++) {
                                 break;
                             case "dsp":
                                 str += "<td>待审批</td>";
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                    "<div onclick='revoke(\""+ cons[i].id +"\")'>撤回</div></td>";
                                 break;
                             case "ysp":
                                 str += "<td><div>"+cons[i].htshzt+"</div></td>";
@@ -75,7 +76,10 @@ function seeApplyRecordNE(id,tabId) {
 function submitWtjForm(id) {
     AjaxTool.post('contract/submitWtj',{id: id}, function (data) {
             alert(data.message);
-            window.location.reload();
+            var table = $('#c-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
         }
     )
 };
@@ -84,7 +88,31 @@ function deleteWtjCon(id) {
     AjaxTool.post('contract/deleteWjt',{
         id:id},function (data) {
         alert(data.message);
-        window.location.reload();
+        var table = $('#c-apply-record-table').DataTable();
+        if(data.success) {
+            table.rows('#' + id).remove().draw();
+        }
+    })
+}
+
+function revoke(id) {
+    var s = "<form id='revoke-form'><select id='select' class='form-control'>" +
+        "<option value='提交人发现有误'>提交人发现有误</option>" +
+        "<option value='资产部建议修改'>资产部建议修改</option>" +
+        "<option value='其他'>其他</option></select>" +
+        "<input type='text' name='reason' placeholder='选择其他时理由自填' class='form-control' style='margin:20px 0'/></form>";
+    SweetAlert.swalContent("确认撤回",s,function () {
+        var reason = $('#select').val();
+        if(reason === '其他') {
+            reason = $('#revoke-form input[name="reason"]').val();
+        }
+        AjaxTool.post('contract/revocationContract',{
+            id:id,revocationReason:reason},function (data) {
+            var table = $('#c-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
+        })
     })
 }
 

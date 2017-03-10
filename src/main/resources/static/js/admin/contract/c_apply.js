@@ -4,7 +4,7 @@ $(document).ready(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
         var uploader = $("#fileUploadForm").FileUpload({
             url: "contract/uploadContractAttachment",
-            isMultiFile: true,
+            isMultiFile: true
         });
         uploader.done(function(data) {
             ids.push(data.result.id);
@@ -78,6 +78,12 @@ $(document).ready(function () {
             },
             htnr: {
                 maxlength: 300
+            },
+            nqdrq: {
+                dateISO: true
+            },
+            qx: {
+                dateISO: true
             }
         },
         messages: {
@@ -86,6 +92,12 @@ $(document).ready(function () {
             },
             htnr: {
                 maxlength: "内容超过300个字"
+            },
+            nqdrq: {
+                dateISO: "日期格式不正确"
+            },
+            qx: {
+                dateISO: "日期格式不正确"
             }
         }
     });

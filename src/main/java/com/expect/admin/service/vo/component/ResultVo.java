@@ -1,10 +1,11 @@
 package com.expect.admin.service.vo.component;
 
-public class ResultVo extends BaseVo{
+public class ResultVo extends BaseVo {
 
 	protected String message;
 	protected boolean result;
 	protected Object obj;
+	private String code;
 
 	public ResultVo() {
 
@@ -41,6 +42,14 @@ public class ResultVo extends BaseVo{
 
 	public void setObj(Object obj) {
 		this.obj = obj;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.expect.admin.data.dao.DraftSwUserLcrzbGxbRepository;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.DmbService;
 import com.expect.admin.service.DraftSwService;
-import com.expect.admin.service.LcService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DmbVo;
@@ -34,16 +32,16 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	
 	@Autowired
 	private DraftSwService draftSwService;
-	@Autowired
-	private  LcService lcService;
+//	@Autowired
+//	private  LcService lcService;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private DmbService dmbService;
 	@Autowired
 	private RoleService roleService;
-	@Autowired
-	private DraftSwUserLcrzbGxbRepository draftSwUserLcrzbGxbRepository;
+//	@Autowired
+//	private DraftSwUserLcrzbGxbRepository draftSwUserLcrzbGxbRepository;
 	
 	private final String viewName = "admin/draftSw/";
 	
@@ -141,9 +139,9 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	}
 	
 	/**
-	 * 添加传阅人
+	 * 添加参与人员
 	 * @param draftSwId 相关收文的id（不能为空）
-	 * @param cyrIdList 传阅人的id的列表（不能为空）
+	 * @param cyrIdList 参与人的id的列表（不能为空）
 	 * @param response
 	 * @throws IOException 
 	 */
@@ -151,9 +149,14 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	public void addCyr(
 			@RequestParam(name = "draftSwId", required = true) String draftSwId,
 			@RequestParam(name = "userIdList", required = true)List<String> cyrIdList,
+			@RequestParam(name = "ryfl", required = true)String ryfl,
 			HttpServletResponse response) throws IOException{
 		try{
-			draftSwService.addCyr(cyrIdList, draftSwId);
+		    if(StringUtil.equals(ryfl, "chyr")){//传阅人
+		        draftSwService.addCyr(cyrIdList, draftSwId);
+		    }else if(StringUtil.equals(ryfl, "blr")) {//办理人
+		        draftSwService.addBlr(cyrIdList, draftSwId);
+		    }
 		}catch(Exception e) {
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加传阅人出错！").build());
 			log.error("添加传阅人出错收文id： " + draftSwId + "传阅人id " + cyrIdList.toString(), e);
@@ -206,21 +209,21 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "收文传阅审批成功！").build());
 	}
-//	
-//	添加办理人
-	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
-	public void addBlr(
-			@RequestParam(name = "draftSwId", required = true) String draftSwId,
-			@RequestParam(name = "userIdList", required = true)List<String> blrIdList,
-			HttpServletResponse response) throws IOException{
-		try{
-			draftSwService.addBlr(blrIdList, draftSwId);
-		}catch(Exception e) {
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加办理人出错！").build());
-			log.error("添加办理人出错收文id： " + draftSwId + "办理人id " + blrIdList.toString(), e);
-		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加办理人成功！").build());
-	}
+	
+////	添加办理人
+//	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
+//	public void addBlr(
+//			@RequestParam(name = "draftSwId", required = true) String draftSwId,
+//			@RequestParam(name = "userIdList", required = true)List<String> blrIdList,
+//			HttpServletResponse response) throws IOException{
+//		try{
+//			draftSwService.addBlr(blrIdList, draftSwId);
+//		}catch(Exception e) {
+//			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加办理人出错！").build());
+//			log.error("添加办理人出错收文id： " + draftSwId + "办理人id " + blrIdList.toString(), e);
+//		}
+//		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加办理人成功！").build());
+//	}
 	
 	/**
 	 * 收文办理
@@ -302,19 +305,20 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}
 	}
 	
-	//返回或结束,设置一下流程节点
-	@RequestMapping(value = "/fh" , method = RequestMethod.POST)
-	public void fh(DraftSwVo draftSwVo,@RequestParam(name = "nextStep", required = true)String nextStep, HttpServletResponse response){
-		if(nextStep.equals("fh")){
-			String condition = lcService.getJd("4", "选择传阅人");
-			draftSwVo.setZt(condition);
-		}else if(nextStep.equals("js")){
-			String condition = "Y";
-			draftSwVo.setZt(condition);
-		}
-		
-		draftSwService.save(draftSwVo);
-	}
+//	//返回或结束,设置一下流程节点
+//	@RequestMapping(value = "/fh" , method = RequestMethod.POST)
+//	public void fh(DraftSwVo draftSwVo,@RequestParam(name = "nextStep", required = true)String nextStep, HttpServletResponse response){
+//		if(nextStep.equals("fh")){
+//			String condition = lcService.getJd("4", "选择传阅人");
+//			draftSwVo.setZt(condition);
+//		}else if(nextStep.equals("js")){
+//			String condition = "Y";
+//			draftSwVo.setZt(condition);
+//		}
+//		
+//		draftSwService.save(draftSwVo);
+//	}
+	
 	
 	/**
 	 * 收文查询
@@ -328,7 +332,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		return mv;
 	}
 	//查询id
-	@RequestMapping(value = "/cx", method = RequestMethod.POST)
+	@RequestMapping(value = "/cx", method = RequestMethod.GET)
 	public ModelAndView findDraftSwById(@RequestParam(name = "id", required = true)String id){
 		ModelAndView modelAndView = new ModelAndView();
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(id);

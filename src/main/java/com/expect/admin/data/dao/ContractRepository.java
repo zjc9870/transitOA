@@ -25,6 +25,14 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 	
 	List<Contract> findByHtshztOrderBySqsjDesc(String condition);
 	
+	/**
+	 * 这个方法用来统计某一年有多少个电子序号，用来生成电子序号的后四位
+	 * 如参数 "2017%" 用来统计2017年生成的电子序号数 
+	 * @param partOfSequenceNumber 电子序号的前四位 即 年份%（如"2017%"）
+	 * @return
+	 */
+	int countBySequenceNumberLike(String partOfSequenceNumber);
+	
 	@Query("select c from Contract c where c.nhtr.id = ?1 and c.htshzt <> 'T' and c.htshzt <> 'Y' and c.htshzt <> ?2 order by c.sqsj desc")
 	public List<Contract> findSqjlWspList(String userId, String condition);
 	
@@ -34,6 +42,7 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 //	@Query("select distinct c from Contract c where c.id = l.clnrid and l.user.id = ?1 and c.htshzt = ?2")
 //	public List<Contract> findDspContract(String condition)
 	/**
+	 * 根据你合同人id 和合同的状态获取合同列表
 	 * 获取某人用户未提交的合同记录
 	 * @param userId
 	 * @param condition

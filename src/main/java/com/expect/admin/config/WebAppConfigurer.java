@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.expect.admin.web.interceptor.GlobalInterceptor;
+
 /**
 	 * 控制层拦截器配置
 	 */
@@ -13,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 		@Override
 		public void addInterceptors(InterceptorRegistry registry) {
 			super.addInterceptors(registry);
-			registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/**");
+			registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/**");
 		}
 
 	}

@@ -27,8 +27,7 @@
 <link th:href="@{/css/admin/base/custom.css}" rel="stylesheet" type="text/css" />
 <link th:href="@{/css/admin/base/home.css}" rel="stylesheet" type="text/css"  />
 </head>
-<body
-	class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo page-md">
+<body class="page-container-bg-solid page-header-fixed page-sidebar-closed-hide-logo page-md">
 	<input type="hidden" name="userId" th:value="${session.SPRING_SECURITY_CONTEXT.authentication.principal.id}" />
 	<div th:replace="admin/base/header :: header"></div>
 	<div class="clearfix"></div>
@@ -42,6 +41,8 @@
 		</a>
 	</div>
 	<div th:replace="admin/base/footer :: copy"></div>
+	<input type="hidden" name="ctx" th:value="${#httpServletRequest.getContextPath()}" />
+	
 	<!--[if lt IE 9]>
 	<script th:src="@{/plugins/respond.min.js}"></script>
 	<script th:src="@{/plugins/excanvas.min.js}"></script>

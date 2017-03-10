@@ -8,12 +8,8 @@ var AjaxTool = function() {
 			type : "get"
 		});
 		promise.then(function(response) {
-			if(response.code && response.code == '100'){
-				Toast.show("提醒",response.message);
-			}else{
-				if (successFunction != null) {
-					successFunction(response);
-				}
+			if (successFunction != null) {
+				successFunction(response);
 			}
 		});
 	}
@@ -25,12 +21,8 @@ var AjaxTool = function() {
 			type : "get"
 		});
 		promise.then(function(response) {
-			if(response.code && response.code == '100'){
-				Toast.show("提醒",response.message);
-			}else{
-				if (successFunction != null) {
-					successFunction(response);
-				}
+			if (successFunction != null) {
+				successFunction(response);
 			}
 		});
 	}
@@ -43,12 +35,8 @@ var AjaxTool = function() {
 			type : "post"
 		});
 		promise.then(function(response) {
-			if(response.code && response.code == '100'){
-				Toast.show("提醒",response.message);
-			}else{
-				if (successFunction != null) {
-					successFunction(response);
-				}
+			if (successFunction != null) {
+				successFunction(response);
 			}
 		});
 	}
@@ -58,19 +46,12 @@ var AjaxTool = function() {
 			url : url,
 			data : data,
 			dataType : "html",
-			type : "get"
+			type : "post"
 		});
-		promise.then(function(html) {
-			try{
-	            var jsonObject = JSON.parse(html);
-	            if(jsonObject.code && jsonObject.code == '100'){
-					Toast.show("提醒",jsonObject.message);
-				}
-	    	}catch(e){
-	    		if (successFunction != null) {
-					successFunction(html);
-				}
-	    	}
+		promise.then(function(response) {
+			if (successFunction != null) {
+				successFunction(response);
+			}
 		});
 	}
 

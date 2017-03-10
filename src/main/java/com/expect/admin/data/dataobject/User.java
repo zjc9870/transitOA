@@ -45,17 +45,17 @@ public class User implements UserDetails {
 	private String fullName;// 姓名
 	@Column(name = "sex", length = 2)
 	private String sex;// 性别
-	@Column(name = "email", length = 63)
+	@Column(name = "email", length = 64)
 	private String email;// 电子邮件
 	@OneToOne
 	@JoinColumn(name = "avatar_id")
 	private Attachment avatar;// 头像
 	//每个人都有3个电话
-	@Column(name = "phone", length = 15)
+	@Column(name = "phone", length = 16)
 	private String phone;// 手机
-	@Column(name = "phoneNumber1", length = 15)
+	@Column(name = "phoneNumber1", length = 16)
 	private String phoneNumber1;
-	@Column(name = "phoneNumber2", length = 15)
+	@Column(name = "phoneNumber2", length = 16)
 	private String phoneNumber2;
 	/**
 	 * joinColumns代表维护端

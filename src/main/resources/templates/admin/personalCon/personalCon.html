@@ -21,7 +21,7 @@
                         <ul>
                             <li>
                                 <div class="pform-title">用户名:</div>
-                                <input name="username" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                <input name="username" class="pform-content pform-disabled" type="text" readonly="readonly"
                                 th:value="${userVo.username}"/>
                                 <span class="pfrom-tips">用户名一旦注册成功不得修改</span>
                             </li>
@@ -37,7 +37,7 @@
                             </li>
                             <li>
                                 <div class="pform-title">姓名:</div>
-                                <input name="fullName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                <input name="fullName" class="pform-content pform-disabled" type="text" readonly="readonly"
                                        th:value="${userVo.fullName}"/>
                                 <span class="pfrom-tips">如果需要修改自己的姓名,请联系管理员</span>
                             </li>
@@ -77,12 +77,12 @@
                             </li>
                             <li>
                                 <div class="pform-title">部门:</div>
-                                <input name="departmentName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                <input name="departmentName" class="pform-content pform-disabled" type="text" readonly="readonly"
                                        th:value="${userVo.departmentName}"/>
                             </li>
                             <li>
                                 <div class="pform-title">所属公司:</div>
-                                <input name="ssgsName" class="pform-content pform-disabled" type="text" disabled="disabled"
+                                <input name="ssgsName" class="pform-content pform-disabled" type="text" readonly="readonly"
                                        th:value="${userVo.ssgsName}"/>
                             </li>
                         </ul>

@@ -35,6 +35,7 @@
                     <pre class="pre-form-content" th:text="${contractVo.qx}"></pre>
                 </li>
                 <input id="attachList" type="hidden" th:value="${contractVo.attachmentList}" />
+                <input id="contractId" type="hidden" th:value="${contractVo.id}"/>
                 <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
             </ul>
         </th:block>
@@ -52,11 +53,11 @@
                     <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
                         <th:block th:if="${lcrz.cljg=='通过'}">
                             <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                                 class="process-content-pass" th:text="'已审核'+'('+${lcrz.userName}+')'"></div>
                         </th:block>
                         <th:block th:if="${lcrz.cljg=='不通过'}">
                             <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                                 class="process-content-nopass" th:text="'终止'+'('+${lcrz.userName}+')'"></div>
                         </th:block>
                         <th:block th:if="${lcrz.cljg=='新增'}">
                             <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)

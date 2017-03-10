@@ -6,7 +6,7 @@ import java.util.Map;
 public final class AppInfo {
 	
 	public static final int SUCCESS = 0;
-	public static final int MAX_SIZE = 1;
+	public static final int MAX_SIZE = 20;
 	public static final int PERMISSION_DENIED = 2;
 	public static final int FAILED_CREATE_FILE = 3;
 	public static final int IO_ERROR = 4;

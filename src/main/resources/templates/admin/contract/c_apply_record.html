@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <link th:href="@{/css/admin/base/table.css}" rel="stylesheet"  type="text/css"/>
+    <link th:href="@{/css/admin/base/index.css}" rel="stylesheet"  type="text/css"/>
 </head>
 <body>
 
@@ -15,9 +16,8 @@
                     <button id="wtj" class="button">未提交</button>
                     <button id="dsp" class="button-active">待审批</button>
                     <button id="ysp" class="button-active">已审批</button>
-                    <button id="yth" class="button-active">已退回</button>
+                    <button id="yth" class="button-active">已撤回</button>
                 </div>
-                <!-- <table id="department-table" -->
                 <table id="c-apply-record-table"
                        class="table table-striped table-bordered table-hover">
                     <thead>
@@ -30,7 +30,7 @@
                     </thead>
                     <tbody id="c-approve-tbody" class="mt-td-checkbox">
                     <th:block th:if='${not #lists.isEmpty(contractVoList)}'>
-                        <tr th:each='con : ${contractVoList}'>
+                        <tr th:each='con : ${contractVoList}' th:id="${con.id}">
                             <th:block >
                             <input type="hidden" th:value="${con.id}" />
                             <td th:text='${con.htbt}'></td>
@@ -43,32 +43,6 @@
                         </tr>
                     </th:block>
                     </tbody>
-                    <!--<tbody class="mt-td-checkbox">-->
-                            <!--<tr>-->
-                                <!--<td>XX合同</td>-->
-                                <!--<td>2016/3/23</td>-->
-                                <!--<td>未提交</td>-->
-                                <!--<td style="color:blue; cursor: pointer" onclick="apply_recordDetail()">查看 提交 删除</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>XX合同</td>-->
-                                <!--<td>2016/3/23</td>-->
-                                <!--<td>待审批</td>-->
-                                <!--<td style="color:blue;">查看 提交 删除</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>XX合同</td>-->
-                                <!--<td>2016/3/23</td>-->
-                                <!--<td>已审批</td>-->
-                                <!--<td style="color:blue;">查看 打印</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>XX合同</td>-->
-                                <!--<td>2016/3/23</td>-->
-                                <!--<td>已退回</td>-->
-                                <!--<td style="color:blue;">查看 提交</td>-->
-                            <!--</tr>-->
-                    <!--</tbody>-->
                 </table>
             </div>
         </div>

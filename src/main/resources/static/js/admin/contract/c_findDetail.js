@@ -5,6 +5,7 @@
         function () {
             if(n%2==1) {
                 var attachList = JSON.parse($('#attachList').val());
+                var contractId = $('#contractId').val();
                 for (var i = 0; i < attachList.length; i++) {
                     var li = document.createElement('li');
                     var div = document.createElement('div');
@@ -16,7 +17,7 @@
                     this.parentNode.appendChild(li);
                     div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
                     div.onclick = function () {
-                        window.location = "attachment/download?id=" + this.id;
+                        window.location = "contract/contractAttachmentDownload?attachmentId=" + this.id+"&contractId="+contractId;
                     }
                 }
             }

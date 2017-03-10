@@ -332,11 +332,11 @@ public class DraftSwService {
 		return draftSwVo;
 	}
 	
-	private DraftSw getDraftFromDraftSwVo(DraftSwVo draftSwVo){
-		DraftSw draftSw = new DraftSw();
-		BeanUtils.copyProperties(draftSwVo, draftSw);
-		return draftSw;
-	}
+//	private DraftSw getDraftFromDraftSwVo(DraftSwVo draftSwVo){
+//		DraftSw draftSw = new DraftSw();
+//		BeanUtils.copyProperties(draftSwVo, draftSw);
+//		return draftSw;
+//	}
 	
 	/**
 	 * 收文领导审批处理
@@ -372,7 +372,7 @@ public class DraftSwService {
 	
 	/**
 	 * 保存处理记录到流程日志表并且与收文关联
-	 * 如果是领导批示 就讲收文状态修改为待纪要专员处理的状态
+	 * 如果是领导批示 就讲收文状态修改为待机要专员处理的状态
 	 * 否则是传阅或者办理 只有所有的传阅人或办理人都处理完了才改变收文的装态到机要专员处理
 	 * 否则就不该变收文的状态
 	 * @param swId

@@ -85,11 +85,13 @@ public class ContractController {
 	 * 合同审批查看详情
 	 * @return
 	 */
-	@PostMapping(value = "/htspckxq")
+	@GetMapping(value = "/htspckxq")
 	public ModelAndView htspckxq(@RequestParam(name = "id", required = true)String contractId){
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approveDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
+		UserVo userVo = userService.getLoginUser();
 		modelAndView.addObject("contractVo", contractVo);
+		modelAndView.addObject("userVo",userVo);
 		return modelAndView;
 	}
 	
@@ -234,7 +236,7 @@ public class ContractController {
 	/**
 	 * 编号回填详情
 	 */
-	@PostMapping("/bhhtxq")
+	@GetMapping("/bhhtxq")
 	public ModelAndView bhhtxq(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_backfillDetail");
 		ContractVo contractVo = contractService.getContractById(contractId);
@@ -336,7 +338,7 @@ public class ContractController {
 	 * 撤销合同（只有合同申请人可以撤销）
 	 * @param response
 	 * @param contractId 要撤销的合同的id
-	 * @param revocationReason 撤销合同理由
+	 * @param revocationReason 撤销合同理由（最多为100个字）
 	 * @throws IOException 
 	 */
 	@PostMapping("/revocationContract")
@@ -344,15 +346,18 @@ public class ContractController {
             @RequestParam(name = "id", required = true)String contractId,
             @RequestParam(name = "revocationReason", required = true)String revocationReason) throws IOException {
 	    try{
-	        contractService.revocationContract(contractId, revocationReason);
+	        if(revocationReason.length() > 100){  
+	            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销理由过长，最多100个字").build());
+	        }
+	        else contractService.revocationContract(contractId, revocationReason);
 	    }catch(BaseAppException be) {
-	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()));
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, be.getMessage()).build());
 	        log.error("撤销合同是失败，合同id为" + contractId, be);
 	    }catch(Exception e) {
-	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销合同失败"));
+	        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "撤销合同失败").build());
             log.error("撤销合同是失败，合同id为" + contractId, e);
 	    }
-	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "撤销合同成功"));
+	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "撤销合同成功").build());
 	}
 	
 	/**
@@ -548,11 +553,29 @@ public class ContractController {
 	 * @param response
 	 * @return
 	 */
-	@PostMapping("/ssxq")
+	@GetMapping("/ssxq")
 	public ModelAndView getSsxq(String id, HttpServletResponse response) {
 		ModelAndView mv = new ModelAndView(viewName + "c_findDetail");
 		ContractVo contractVo = contractService.getContractById(id);
 		mv.addObject("contractVo", contractVo);
 		return mv;
+	}
+	
+	/**
+	 * @param attachmentId
+	 * @param contractId
+	 * @param reponse
+	 * @return
+	 */
+	@GetMapping("/contractAttachmentDownload")
+	public String contractAttachmentDownload(
+	        @RequestParam(name = "attachmentId", required = true)String attachmentId,
+	        @RequestParam(name = "contractId", required = true)String contractId,
+	        HttpServletResponse reponse) {
+	    UserVo userVo = userService.getLoginUser();
+	    if(contractService.attachmentDownloadAuthorityJudgement(contractId, userVo.getId())){
+	        return "forward:/admin/attachment/download?id=" + attachmentId;
+	    }
+	    return "forward:/admin/attachment/downloadAttachmentAsPdf?id=" + attachmentId;
 	}
 }
