@@ -232,7 +232,7 @@ public class ContractService {
 			contractList = contractRepository.findByHtshztOrderBySqsjDesc(condition);
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId);
-		if(StringUtil.equals(lx, "yth"))//已撤销的合同
+		if(StringUtil.equals(lx, "yth"))//已撤销的合同(“yth”是历史原因已退回)
 			contractList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, REVOCATION_CONDITION);
 		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
 			return getHtspYspList(userId, condition);
@@ -386,16 +386,20 @@ public class ContractService {
 	}
 	
 	/**
-	 * 申请记录界面未审批合同
+	 * 申请记录界面未审批合同 
+	 * 1.没有完成 状态不是Y
+	 * 2.没有回填 状态不是T
+	 * 3.没有撤销 状态不是revocation
 	 * @param userId
 	 * @return
 	 */
 	@Cacheable(cacheName = "CONTRACT_CACHE")
 	public List<ContractVo> getSqjlWspList(String userId, String condition) {
 		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
-		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);
+		List<Contract> wspList = contractRepository.findSqjlWspList(userId, condition);//过滤掉合同状态是Y，T的合同
 		if(wspList != null && wspList.size() > 0)
 			for (Contract contract : wspList) {
+			    if(StringUtil.equals(REVOCATION_CONDITION, contract.getHtshzt())) continue;//过滤掉已撤销的合同
 				ContractVo contractVo = new ContractVo(contract);
 				contractVo.setHtshzt("待审批");
 				contractVoList.add(contractVo);
