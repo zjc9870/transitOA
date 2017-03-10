@@ -1,5 +1,6 @@
 package com.expect.admin.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.expect.admin.config.WebSecurityConfig;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.data.dataobject.WxUser;
+import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.ContractService;
 import com.expect.admin.service.FunctionService;
 import com.expect.admin.service.RoleJdgxbGxbService;
@@ -37,14 +40,17 @@ import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.WxCpService;
 import com.expect.admin.service.WxUserService;
+import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.FunctionVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.utils.DateUtil;
+import com.expect.admin.utils.IOUtil;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
+import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.StringUtil;
 import com.expect.admin.weixin.common.exception.WxErrorException;
 import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
@@ -63,6 +69,9 @@ public class WeixinController {
 	WxCpService wxService;
 
 
+	@Autowired
+	private AttachmentService attachmentService;
+	
 	@Autowired
 	private ContractService contractService;
 	
@@ -88,67 +97,67 @@ public class WeixinController {
 	@Autowired
 	RoleJdgxbGxbService roleJdgxbGxbService;
 	@RequestMapping("/login")
-	protected ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
+	protected ModelAndView loginByCode(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
 
-//        //微信工具类
-//        WxCpService wxService=new WxCpServiceImpl();
-//	    response.setContentType("text/html;charset=utf-8");
-//	    response.setStatus(HttpServletResponse.SC_OK);
 	    String code = request.getParameter("code");
-	    String state = request.getParameter("state");
-//	    String wxid = (String) request.getAttribute("wxid");
-//	    String deviceid = (String) request.getAttribute("deviceid");
 	    try {
-//		      response.getWriter().println("<h1>code</h1>");
-//		      response.getWriter().println(code);
-//		      System.out.println(code);
-		      String[] res = wxService.oauth2getUserInfo(code);
-//		      response.getWriter().println("<h1>result</h1>");
-//		      response.getWriter().println(Arrays.toString(res));
-		    System.out.println(res[0]+" "+res[1]);
-		    if(wxUserService.isUserExisit(res[0], res[1])){
-//		    	response.getWriter().println("<h1>登陆成功</h1>");
-		    
-			    WxUser wxuser = wxUserService.findUserByWxidAndDeviceId(res[0],res[1]);
-			    User user = userService.getUsernameAndPasswordById(wxuser.getUserId());
-			    UserDetails detail = userService.loadUserByUsername(wxuser.getUserId());
-			    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(detail,detail.getPassword(),detail.getAuthorities());
-			    Authentication auth = webSecurityConfig.getDaoAuthenticationProvider().authenticate(authentication);
-			    SecurityContextHolder.getContext().setAuthentication(auth);  
-			    HttpSession session = request.getSession(true);  
-			    //在session中存放security context,方便同一个session中控制用户的其他操作  
-			    session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-			    	
-		    	System.out.println(userService.getLoginUser().getId()+"登录成功");
-//			    response.getWriter().println("<h1>"+userService.getLoginUser().getId()+"</h1>");
-		    	if(state.equals("submit")){
-		    		ContractVo contractVo = new ContractVo();
-		    		UserVo userVo = userService.getLoginUser();
-		    		contractVo.setUserName(userVo.getFullName());
-		    		ModelAndView mv = new ModelAndView(viewName+"contract_submit");
-		    		mv.addObject("contractVo", contractVo);
-		    		return mv;
-		    	}else if(state.equals("submit_record")){
-		    		ModelAndView mv = new ModelAndView(viewName+"contract_submit_record");
-		    		return mv;
-		    	}else if(state.equals("approve")){
-		    		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
-		    		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
-		    		ModelAndView mv = new ModelAndView(viewName + "contract_approve");
-		    		mv.addObject("roleName", roleVo.getName());
-		    		return mv;
-		    	}else if(state.equals("backfill")){
-		    		ModelAndView mv = new ModelAndView(viewName + "contract_backfill");
-		    		return mv;
-		    	}
-		    }else{
-		    	response.getWriter().println("<h1>登录失败</h1>");
-//		    	System.out.println("登录失败");
-		    }
-
+		   String[] res = wxService.oauth2getUserInfo(code);
+		   String wxId = res[0];
+		   String deviceId = res[1];
+		   return login(wxId,deviceId,request,response);
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    }
+		return null;
+	}
+	
+	private ModelAndView login(String wxId,String deviceId,HttpServletRequest request, HttpServletResponse response) throws IOException{
+		System.out.println(wxId+" "+deviceId);
+	    if(wxUserService.isUserExisit(wxId, deviceId)){
+	    	System.out.println("????");
+		    WxUser wxuser = wxUserService.findUserByWxidAndDeviceId(wxId,deviceId);
+		    User user = userService.getUsernameAndPasswordById(wxuser.getUserId());
+		    UserDetails detail = userService.loadUserByUsername(wxuser.getUserId());
+		    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(detail,detail.getPassword(),detail.getAuthorities());
+		    Authentication auth = webSecurityConfig.getDaoAuthenticationProvider().authenticate(authentication);
+		    SecurityContextHolder.getContext().setAuthentication(auth);  
+		    HttpSession session = request.getSession(true);  
+		    session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+		    	
+	    	System.out.println(userService.getLoginUser().getId()+"登录成功");
+	    	Cookie wxIdCookie = new Cookie("wxId",wxId);
+	    	Cookie deviceIdCookie = new Cookie("deviceId",deviceId);
+	    	response.addCookie(wxIdCookie);
+	    	response.addCookie(deviceIdCookie);
+	    	return home("approve");
+	    }else{
+	    	response.getWriter().println("<h1>登录失败</h1>");
+//	    	System.out.println("登录失败");
+	    }
+	    return null;
+	}
+	
+	private ModelAndView home(String state) {
+		if(state.equals("submit")){
+    		ContractVo contractVo = new ContractVo();
+    		UserVo userVo = userService.getLoginUser();
+    		contractVo.setUserName(userVo.getFullName());
+    		ModelAndView mv = new ModelAndView(viewName+"contract_submit");
+    		mv.addObject("contractVo", contractVo);
+    		return mv;
+    	}else if(state.equals("submit_record")){
+    		ModelAndView mv = new ModelAndView(viewName+"contract_submit_record");
+    		return mv;
+    	}else if(state.equals("approve")){
+    		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+    		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+    		ModelAndView mv = new ModelAndView(viewName + "contract_approve");
+    		mv.addObject("roleName", roleVo.getName());
+    		return mv;
+    	}else if(state.equals("backfill")){
+    		ModelAndView mv = new ModelAndView(viewName + "contract_backfill");
+    		return mv;
+    	}
 		return null;
 	}
 
@@ -407,7 +416,25 @@ public class WeixinController {
 		return modelAndView;
 	}
 	
-	
+	/**
+	 * 附件下载
+	 */
+	@RequestMapping(value = "/download", method = RequestMethod.GET)
+	public void download(String id, HttpServletResponse response) {
+		if (StringUtils.isEmpty(id)) {
+			return;
+		}
+		AttachmentVo attachment = attachmentService.getAttachmentById(id);
+		if (attachment != null) {
+			String path = attachment.getPath() + File.separator + attachment.getId();
+			byte[] buffer = IOUtil.inputDataFromFile(path);
+			try {
+				RequestUtil.downloadFile(buffer, attachment.getName(), response);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	@RequestMapping("/submit_record")
 	public ModelAndView submit_record() {
@@ -460,35 +487,17 @@ public class WeixinController {
 	}
 	
 	@RequestMapping("/authorize")
-	public void authorize(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
-//		ModelAndView mv = new ModelAndView(viewName + "authorize");
-//		return mv;
-//
-//		response.setContentType("text/html;charset=utf-8");
-//		response.setStatus(HttpServletResponse.SC_OK);
-//		String code = request.getParameter("code");
-//		try {
-//			response.getWriter().println("<h1>code</h1>");
-//			response.getWriter().println(code);
-//			String[] res = wxService.oauth2getUserInfo(code);
-//			response.getWriter().println("<h1>result</h1>");
-//			response.getWriter().println(Arrays.toString(res));
-//		} catch (WxErrorException e) {
-//			e.printStackTrace();
-//		}
-//		response.getWriter().flush();
-//		response.getWriter().close();
-		
-		String state = request.getParameter("state");
-		response.setContentType("text/html;charset=utf-8");
-		response.setStatus(HttpServletResponse.SC_OK);
-		
-		response.getWriter().println("<h1>code</h1>");
-		response.getWriter().println("<a href = "+wxService.oauth2buildAuthorizationUrl(state)+">");
-		response.getWriter().println("点击链接进行授权");
-		response.getWriter().println("</a>");
-//		response.getWriter().println("<a href = "+wxService.oauth2buildAuthorizationUrl("16r3r84766.51mypc.cn/weixin/login",null)+">");
-//		response.getWriter().println("点击链接进行授权");
-//		response.getWriter().println("</a>");
+	public ModelAndView authorize(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
+		Cookie[] cookies = request.getCookies();
+		if(cookies!=null){
+			return login(cookies[1].getValue(),cookies[0].getValue(),request, response);
+		}else{
+			String htsp = wxService.oauth2buildAuthorizationUrl("approve");
+			String htcx = wxService.oauth2buildAuthorizationUrl("search");
+			ModelAndView mv = new ModelAndView(viewName+"homepage");
+			mv.addObject("htsp", htsp);
+			mv.addObject("htcx", htcx);
+			return mv;
+		}
 	}
 }

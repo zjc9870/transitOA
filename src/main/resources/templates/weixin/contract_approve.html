@@ -11,12 +11,28 @@
 <body>
 <input type="hidden" id="roleName" th:value="${roleName}" />
 <div id="pre_body">
-	<div id="weui_body_ysp" class="weui_cells">
-	</div>
-	<div id="weui_body_dsp" class="weui_cells">
-	</div>
-	<div id="weui_body_yth" class="weui_cells">
-	</div>
+	
+	<div class="weui_tab">
+  <div class="weui_navbar">
+    <div class="weui_navbar_item" id="ysp_tab">
+      已审批
+    </div>
+    <div class="weui_navbar_item" id="dsp_tab">
+      待审批
+    </div>
+    <div class="weui_navbar_item" id="yth_tab">
+      已退回
+    </div>
+  </div>
+  <div class="weui_tab_bd">
+    <div id="weui_body_ysp" class="weui_cells">
+    </div>
+    <div id="weui_body_dsp" class="weui_cells">
+    </div>
+    <div id="weui_body_yth" class="weui_cells">
+    </div>
+  </div>
+  </div>
 </div>
 </body>
 

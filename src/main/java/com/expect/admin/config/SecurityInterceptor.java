@@ -18,7 +18,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		// 不过滤的uri
-		String[] notFilter = new String[] { "login", "index.jsp", "index.do","download.do","gateway.do","updateRecord.do"  };
+		String[] notFilter = new String[] { "login", "index.jsp", "index.do","download.do","gateway.do","updateRecord.do","weixin"  };
 
 		String[] notFilterEnd = new String[] { ".css", ".js",".jsp" ,".JPG",".PNG",".JPEG",".jpg",".png",".jpeg"};
 
