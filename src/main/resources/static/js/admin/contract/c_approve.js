@@ -25,7 +25,7 @@ for(var i=0; i<tabs.length; i++) {
                                     "<div onclick='pass(\"" + cons[i].id +"\")'>通过</div></td>";
                                 break;
                             case "yth":
-                                str += "<td>已退回</td>";
+                                str += "<td>已撤回</td>";
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                             default:
