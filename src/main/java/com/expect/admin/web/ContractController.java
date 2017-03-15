@@ -438,10 +438,11 @@ public class ContractController {
 				MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该合同").build());
 				return;
 			}
-			String nextCondition = lcService.getNextCondition(contractVo.getLcbs(), contractVo.getHtshzt());
+			String condition =  contractVo.getHtshzt();
+			String nextCondition = lcService.getNextCondition(contractVo.getLcbs(), condition);
 			contractVo.setHtshzt(nextCondition);
 			contractService.updateContract(contractVo, attachmentId);
-			contractService.addXzLcrz(contractVo.getId(), contractVo.getHtfl(), nextCondition);
+			contractService.addXzLcrz(contractVo.getId(), contractVo.getHtfl(), condition);
 		}catch(Exception e) {
 			log.error("以保存合同提交时报错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "合同提交出错，请重试").build());

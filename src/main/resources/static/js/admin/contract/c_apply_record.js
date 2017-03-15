@@ -30,8 +30,8 @@ for(var i=0; i<tabs.length; i++) {
                                 str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             case "yth":
-                                str += "<td>已退回</td>";
-                                str += "<td><div onclick='seeApplyRecordE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                str += "<td>已撤回</td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             default:
                                 break;
@@ -68,6 +68,9 @@ function seeApplyRecordE(id,tabId) {
 function seeApplyRecordNE(id,tabId) {
     AjaxTool.html('contract/sqjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
+        if(tabId == 'yth') {
+            $('#fjck').attr('style','display:none');
+        }
         $('#back').data('tabId',tabId);
     });
 

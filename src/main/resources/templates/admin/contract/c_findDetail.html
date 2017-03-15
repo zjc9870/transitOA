@@ -68,6 +68,10 @@
                             <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
                                  class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
                         </th:block>
+                        <th:block th:if="${lcrz.cljg=='撤销'}">
+                            <div th:title="${'撤回原因:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
                     </li>
                 </th:block>
             </ul>

@@ -16,11 +16,9 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.Synchronization;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,7 +113,7 @@ public class ContractService {
 		String id = save(contractVo, attachmentId);
 		contractVo.setId(id);
 		if(StringUtil.equals(bczl, "tj")) {
-			addXzLcrz(id, contractVo.getHtfl(), lcService.getStartCondition(lcbs));//如果是新增就增加一条日志记录 
+		    addXzLcrz(id, contractVo.getHtfl(), lcService.getStartCondition(lcbs));//如果是新增就增加一条日志记录 
 		}
 	}
 
