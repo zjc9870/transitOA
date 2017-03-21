@@ -13,8 +13,8 @@ public class WxUserService {
 	@Autowired
 	private WxUserRepository wxUserRepository;
 	
-	public boolean isUserExisit(String wxid,String deviceid){
-		if(wxUserRepository.findByWxIdAndDeviceId(wxid,deviceid).size()>0){
+	public boolean isUserExisit(String wxid){
+		if(wxUserRepository.findByWxId(wxid).size()>0){
 			return true;
 		}
 		return false;
@@ -22,6 +22,10 @@ public class WxUserService {
 	
 	public WxUser findUserByWxidAndDeviceId(String wxid,String deviceid){
 		return wxUserRepository.findByWxIdAndDeviceId(wxid,deviceid).get(0);
+	}
+	
+	public WxUser findUserByWxid(String wxid){
+		return wxUserRepository.findByWxId(wxid).get(0);
 	}
 	
 }

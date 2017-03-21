@@ -54,7 +54,6 @@ import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.StringUtil;
 import com.expect.admin.weixin.common.exception.WxErrorException;
 import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
-import com.expect.admin.weixin.cp.api.WxCpInMemoryConfigStorage;
 import com.expect.admin.weixin.cp.api.WxCpMessageRouter;
 import com.expect.admin.weixin.cp.util.crypto.WxCpCryptUtil;
 
@@ -92,7 +91,6 @@ public class WeixinController {
 	
 	WxCpMessageRouter wxCpMessageRouter = new WxCpMessageRouter(wxService);
 	
-	WxCpConfigStorage wxCpConfigStorage = new WxCpInMemoryConfigStorage();
 
 	@Autowired
 	RoleJdgxbGxbService roleJdgxbGxbService;
@@ -113,10 +111,8 @@ public class WeixinController {
 	
 	private ModelAndView login(String wxId,String deviceId,HttpServletRequest request, HttpServletResponse response) throws IOException{
 		System.out.println(wxId+" "+deviceId);
-	    if(wxUserService.isUserExisit(wxId, deviceId)){
-	    	System.out.println("????");
-		    WxUser wxuser = wxUserService.findUserByWxidAndDeviceId(wxId,deviceId);
-		    User user = userService.getUsernameAndPasswordById(wxuser.getUserId());
+	    if(wxUserService.isUserExisit(wxId)){
+		    WxUser wxuser = wxUserService.findUserByWxid(wxId);
 		    UserDetails detail = userService.loadUserByUsername(wxuser.getUserId());
 		    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(detail,detail.getPassword(),detail.getAuthorities());
 		    Authentication auth = webSecurityConfig.getDaoAuthenticationProvider().authenticate(authentication);
@@ -178,7 +174,7 @@ public class WeixinController {
 		        response.getWriter().println("非法请求");
 		        return;
 		      }
-		      WxCpCryptUtil cryptUtil = new WxCpCryptUtil(this.wxCpConfigStorage);
+		      WxCpCryptUtil cryptUtil = new WxCpCryptUtil(wxService.getWxCpConfig());
 		      String plainText = cryptUtil.decrypt(echostr);
 		      // 说明是一个仅仅用来验证的请求，回显echostr
 		      response.getWriter().println(plainText);
@@ -490,14 +486,15 @@ public class WeixinController {
 	public ModelAndView authorize(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
 		Cookie[] cookies = request.getCookies();
 		if(cookies!=null){
-			return login(cookies[1].getValue(),cookies[0].getValue(),request, response);
-		}else{
-			String htsp = wxService.oauth2buildAuthorizationUrl("approve");
-			String htcx = wxService.oauth2buildAuthorizationUrl("search");
-			ModelAndView mv = new ModelAndView(viewName+"homepage");
-			mv.addObject("htsp", htsp);
-			mv.addObject("htcx", htcx);
-			return mv;
+			if(cookies.length>1){
+				return login(cookies[1].getValue(),cookies[0].getValue(),request, response);
+			}
 		}
+		String htsp = wxService.oauth2buildAuthorizationUrl("approve");
+		String htcx = wxService.oauth2buildAuthorizationUrl("search");
+		ModelAndView mv = new ModelAndView(viewName+"homepage");
+		mv.addObject("htsp", htsp);
+		mv.addObject("htcx", htcx);
+		return mv;
 	}
 }

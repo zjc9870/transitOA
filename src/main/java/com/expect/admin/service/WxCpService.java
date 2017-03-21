@@ -16,20 +16,22 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.expect.admin.data.dataobject.WxCpInMemoryConfigStorage;
 import com.expect.admin.weixin.common.bean.WxAccessToken;
 import com.expect.admin.weixin.common.bean.WxJsapiSignature;
 import com.expect.admin.weixin.common.bean.menu.WxMenu;
 import com.expect.admin.weixin.common.bean.result.WxError;
 import com.expect.admin.weixin.common.bean.result.WxMediaUploadResult;
 import com.expect.admin.weixin.common.exception.WxErrorException;
-import com.expect.admin.weixin.common.session.*;
+import com.expect.admin.weixin.common.session.StandardSessionManager;
+import com.expect.admin.weixin.common.session.WxSession;
+import com.expect.admin.weixin.common.session.WxSessionManager;
 import com.expect.admin.weixin.common.util.RandomUtils;
 import com.expect.admin.weixin.common.util.crypto.SHA1;
 import com.expect.admin.weixin.common.util.fs.FileUtils;
-import com.expect.admin.weixin.common.util.http.ApacheHttpClientBuilder;
-import com.expect.admin.weixin.common.util.http.DefaultApacheHttpClientBuilder;
 import com.expect.admin.weixin.common.util.http.MediaDownloadRequestExecutor;
 import com.expect.admin.weixin.common.util.http.MediaUploadRequestExecutor;
 import com.expect.admin.weixin.common.util.http.RequestExecutor;
@@ -37,7 +39,7 @@ import com.expect.admin.weixin.common.util.http.SimpleGetRequestExecutor;
 import com.expect.admin.weixin.common.util.http.SimplePostRequestExecutor;
 import com.expect.admin.weixin.common.util.http.URIUtil;
 import com.expect.admin.weixin.common.util.json.GsonHelper;
-import com.expect.admin.weixin.cp.api.*;
+import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 import com.expect.admin.weixin.cp.bean.WxCpDepart;
 import com.expect.admin.weixin.cp.bean.WxCpMessage;
 import com.expect.admin.weixin.cp.bean.WxCpTag;
@@ -90,9 +92,8 @@ public class WxCpService {
    * 全局的是否正在刷新jsapi_ticket的锁
    */
   protected final Object globalJsapiTicketRefreshLock = new Object();
+ 
   
-  protected WxCpConfigStorage configStorage = new WxCpInMemoryConfigStorage();
-
   protected CloseableHttpClient httpClient;
 
   protected HttpHost httpProxy;
@@ -103,10 +104,14 @@ public class WxCpService {
   protected File tmpDirFile;
   private int retrySleepMillis = 1000;
   private int maxRetryTimes = 5;
-
+  private WxCpConfigStorage config = new WxCpInMemoryConfigStorage();
+  public WxCpConfigStorage getWxCpConfig(){
+	  return config;
+  }
+  
   public boolean checkSignature(String msgSignature, String timestamp, String nonce, String data) {
     try {
-      return SHA1.gen(this.configStorage.getToken(), timestamp, nonce, data)
+      return SHA1.gen(getWxCpConfig().getToken(), timestamp, nonce, data)
         .equals(msgSignature);
     } catch (Exception e) {
       return false;
@@ -124,14 +129,14 @@ public class WxCpService {
 
   public String getAccessToken(boolean forceRefresh) throws WxErrorException {
     if (forceRefresh) {
-      this.configStorage.expireAccessToken();
+      getWxCpConfig().expireAccessToken();
     }
-    if (this.configStorage.isAccessTokenExpired()) {
+    if (getWxCpConfig().isAccessTokenExpired()) {
       synchronized (this.globalAccessTokenRefreshLock) {
-        if (this.configStorage.isAccessTokenExpired()) {
+        if (getWxCpConfig().isAccessTokenExpired()) {
           String url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?"
-            + "&corpid=" + this.configStorage.getCorpId()
-            + "&corpsecret=" + this.configStorage.getCorpSecret();
+            + "&corpid=" + getWxCpConfig().getCorpId()
+            + "&corpsecret=" + getWxCpConfig().getCorpSecret();
           try {
             HttpGet httpGet = new HttpGet(url);
             if (this.httpProxy != null) {
@@ -151,7 +156,7 @@ public class WxCpService {
               throw new WxErrorException(error);
             }
             WxAccessToken accessToken = WxAccessToken.fromJson(resultContent);
-            this.configStorage.updateAccessToken(
+            getWxCpConfig().updateAccessToken(
               accessToken.getAccessToken(), accessToken.getExpiresIn());
           } catch (IOException e) {
             throw new RuntimeException(e);
@@ -159,7 +164,7 @@ public class WxCpService {
         }
       }
     }
-    return this.configStorage.getAccessToken();
+    return getWxCpConfig().getAccessToken();
   }
 
   public String getJsapiTicket() throws WxErrorException {
@@ -168,23 +173,23 @@ public class WxCpService {
 
   public String getJsapiTicket(boolean forceRefresh) throws WxErrorException {
     if (forceRefresh) {
-      this.configStorage.expireJsapiTicket();
+      getWxCpConfig().expireJsapiTicket();
     }
-    if (this.configStorage.isJsapiTicketExpired()) {
+    if (getWxCpConfig().isJsapiTicketExpired()) {
       synchronized (this.globalJsapiTicketRefreshLock) {
-        if (this.configStorage.isJsapiTicketExpired()) {
+        if (getWxCpConfig().isJsapiTicketExpired()) {
           String url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket";
           String responseContent = execute(new SimpleGetRequestExecutor(), url, null);
           JsonElement tmpJsonElement = new JsonParser().parse(responseContent);
           JsonObject tmpJsonObject = tmpJsonElement.getAsJsonObject();
           String jsapiTicket = tmpJsonObject.get("ticket").getAsString();
           int expiresInSeconds = tmpJsonObject.get("expires_in").getAsInt();
-          this.configStorage.updateJsapiTicket(jsapiTicket,
+          getWxCpConfig().updateJsapiTicket(jsapiTicket,
             expiresInSeconds);
         }
       }
     }
-    return this.configStorage.getJsapiTicket();
+    return getWxCpConfig().getJsapiTicket();
   }
 
   public WxJsapiSignature createJsapiSignature(String url) throws WxErrorException {
@@ -204,7 +209,7 @@ public class WxCpService {
     jsapiSignature.setSignature(signature);
 
     // Fixed bug
-    jsapiSignature.setAppid(this.configStorage.getCorpId());
+    jsapiSignature.setAppid(getWxCpConfig().getCorpId());
 
     return jsapiSignature;
   }
@@ -215,17 +220,17 @@ public class WxCpService {
   }
 
   public void menuCreate(WxMenu menu) throws WxErrorException {
-    menuCreate(this.configStorage.getAgentId(), menu);
+    menuCreate(getWxCpConfig().getAgentId(), menu);
   }
 
   public void menuCreate(Integer agentId, WxMenu menu) throws WxErrorException {
     String url = "https://qyapi.weixin.qq.com/cgi-bin/menu/create?agentid="
-      + this.configStorage.getAgentId();
+      + getWxCpConfig().getAgentId();
     post(url, menu.toJson());
   }
 
   public void menuDelete() throws WxErrorException {
-    menuDelete(this.configStorage.getAgentId());
+    menuDelete(getWxCpConfig().getAgentId());
   }
 
   public void menuDelete(Integer agentId) throws WxErrorException {
@@ -234,7 +239,7 @@ public class WxCpService {
   }
 
   public WxMenu menuGet() throws WxErrorException {
-    return menuGet(this.configStorage.getAgentId());
+    return menuGet(getWxCpConfig().getAgentId());
   }
 
   public WxMenu menuGet(Integer agentId) throws WxErrorException {
@@ -268,7 +273,7 @@ public class WxCpService {
     String url = "https://qyapi.weixin.qq.com/cgi-bin/media/get";
     return execute(
       new MediaDownloadRequestExecutor(
-        this.configStorage.getTmpDirFile()),
+        getWxCpConfig().getTmpDirFile()),
       url, "media_id=" + media_id);
   }
 
@@ -485,7 +490,7 @@ public class WxCpService {
   
   public String oauth2buildAuthorizationUrl(String state) {
     return this.oauth2buildAuthorizationUrl(
-      this.configStorage.getOauth2redirectUri(),
+      getWxCpConfig().getOauth2redirectUri(),
       state
     );
   }
@@ -493,7 +498,7 @@ public class WxCpService {
   
   public String oauth2buildAuthorizationUrl(String redirectUri, String state) {
     String url = "https://open.weixin.qq.com/connect/oauth2/authorize?";
-    url += "appid=" + this.configStorage.getCorpId();
+    url += "appid=" + getWxCpConfig().getCorpId();
     url += "&redirect_uri=" + URIUtil.encodeURIComponent(redirectUri);
     url += "&response_type=code";
     url += "&scope=snsapi_base";
@@ -506,7 +511,7 @@ public class WxCpService {
 
   
   public String[] oauth2getUserInfo(String code) throws WxErrorException {
-    return oauth2getUserInfo(this.configStorage.getAgentId(), code);
+    return oauth2getUserInfo(getWxCpConfig().getAgentId(), code);
   }
 
   
@@ -609,7 +614,7 @@ public class WxCpService {
        */
       if (error.getErrorCode() == 42001 || error.getErrorCode() == 40001) {
         // 强制设置wxCpConfigStorage它的access token过期了，这样在下一次请求里就会刷新access token
-        this.configStorage.expireAccessToken();
+        getWxCpConfig().expireAccessToken();
         return execute(executor, uri, data);
       }
       if (error.getErrorCode() != 0) {
@@ -629,25 +634,25 @@ public class WxCpService {
   }
 
   
-  public void setWxCpConfigStorage(WxCpConfigStorage wxConfigProvider) {
-    this.configStorage = wxConfigProvider;
-    ApacheHttpClientBuilder apacheHttpClientBuilder = this.configStorage
-      .getApacheHttpClientBuilder();
-    if (null == apacheHttpClientBuilder) {
-      apacheHttpClientBuilder = DefaultApacheHttpClientBuilder.get();
-    }
-
-    apacheHttpClientBuilder.httpProxyHost(this.configStorage.getHttpProxyHost())
-      .httpProxyPort(this.configStorage.getHttpProxyPort())
-      .httpProxyUsername(this.configStorage.getHttpProxyUsername())
-      .httpProxyPassword(this.configStorage.getHttpProxyPassword());
-
-    if (this.configStorage.getHttpProxyHost() != null && this.configStorage.getHttpProxyPort() > 0) {
-      this.httpProxy = new HttpHost(this.configStorage.getHttpProxyHost(), this.configStorage.getHttpProxyPort());
-    }
-
-    this.httpClient = apacheHttpClientBuilder.build();
-  }
+//  public void setWxCpConfigStorage(WxCpConfigStorage wxConfigProvider) {
+//    getWxCpConfig() = wxConfigProvider;
+//    ApacheHttpClientBuilder apacheHttpClientBuilder = getWxCpConfig()
+//      .getApacheHttpClientBuilder();
+//    if (null == apacheHttpClientBuilder) {
+//      apacheHttpClientBuilder = DefaultApacheHttpClientBuilder.get();
+//    }
+//
+//    apacheHttpClientBuilder.httpProxyHost(getWxCpConfig().getHttpProxyHost())
+//      .httpProxyPort(getWxCpConfig().getHttpProxyPort())
+//      .httpProxyUsername(getWxCpConfig().getHttpProxyUsername())
+//      .httpProxyPassword(getWxCpConfig().getHttpProxyPassword());
+//
+//    if (getWxCpConfig().getHttpProxyHost() != null && getWxCpConfig().getHttpProxyPort() > 0) {
+//      this.httpProxy = new HttpHost(getWxCpConfig().getHttpProxyHost(), getWxCpConfig().getHttpProxyPort());
+//    }
+//
+//    this.httpClient = apacheHttpClientBuilder.build();
+//  }
 
   
   public void setRetrySleepMillis(int retrySleepMillis) {

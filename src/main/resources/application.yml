@@ -1,36 +1,37 @@
 ##本机配置
-server:
-  port: 8080
-  context-path: /
-  
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/gongjiao
-#    url: jdbc:mysql://120.76.138.55/transitOA
-    username: root
-    password: 123456
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-  jackson:
-    serialization:
-      indent-output: true
-  http: 
-    multipart:
-      max-file-size: 20MB
-      max-request-size: 20MB
-#logging:
-#  file: C:/Users/zcz/git/transitOA/log/log.log
-#  level:
-#    com.expect: info
-    
-custom:
-  root-path: C:/Users/zcz/git/transitOA
-  avatar-path: C:/Users/zcz/git/transitOA/avatar
-  attachment-path:  C:/Users/zcz/git/transitOA/attachment
-  ueditor-path: C:/Users/zcz/git/transitOA/ueditor
+#server:
+#  port: 8080
+#  context-path: /
+#  
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1/spring-boot-admin
+##    url: jdbc:mysql://120.76.138.55/transitOA
+#    username: root
+#    password: 123456
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+#  jackson:
+#    serialization:
+#      indent-output: true
+#  http: 
+#    multipart:
+#      max-file-size: 20MB
+#      max-request-size: 20MB
+##logging:
+##  file: C:/Users/zcz/git/transitOA/log/log.log
+##  level:
+##    com.expect: info
+#    
+#custom:
+#  root-path: C:/Users/zcz/git/transitOA
+#  avatar-path: C:/Users/zcz/git/transitOA/avatar
+#  attachment-path:  C:/Users/zcz/git/transitOA/attachment
+#  attachment-pdf-path: C:/Users/zcz/git/transitOA/attachment/convertToPdf
+#  ueditor-path: C:/Users/zcz/git/transitOA/ueditor
 # 
 
 #服务器配置
@@ -45,7 +46,7 @@ custom:
 #    username: root
 #    password: jnptpassword
 #  jpa:
-#    show-sql: true
+#    show-sql: false
 #    hibernate:
 #      ddl-auto: update
 #  jackson:
@@ -68,33 +69,34 @@ custom:
   
   #测试服务器配置
   
-# server:
-#   port: 8080
-#   context-path: /
-# spring:
-#   datasource:
-#     driver-class-name: com.mysql.jdbc.Driver
-#     url: jdbc:mysql://127.0.0.1/transitOA
-#     username: root
-#     password: root
-# jpa:
-#     show-sql: true
-#     hibernate:
-#       ddl-auto: update
-# jackson:
-#     serialization:
-#       indent-output: true
-# http: 
-#    multipart:
-#      max-file-size: 20MB
-#      max-request-size: 20MB
-# #logging:
-# #  file: /Users/joker/java/New_workspace/transitOA/log/log.log
-# #  level:
-# #    com.expect: info
-#    
-# custom:
-#   root-path: D:/transitOA
-#   avatar-path: D:/transitOA/avatar
-#   attachment-path: D:/transitOA/attachment
-#   ueditor-path: D:/transitOA/ueditor
+ server:
+   port: 8080
+   context-path: /
+ spring:
+   datasource:
+     driver-class-name: com.mysql.jdbc.Driver
+     url: jdbc:mysql://127.0.0.1/transitOA
+     username: root
+     password: root
+ jpa:
+     show-sql: true
+     hibernate:
+       ddl-auto: update
+ jackson:
+     serialization:
+       indent-output: true
+ http: 
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+ #logging:
+ #  file: /Users/joker/java/New_workspace/transitOA/log/log.log
+ #  level:
+ #    com.expect: info
+    
+ custom:
+   root-path: D:/transitOA
+   avatar-path: D:/transitOA/avatar
+   attachment-path: D:/transitOA/attachment
+   attachment-pdf-path: D:/transitOA/attachment/convertToPdf
+   ueditor-path: D:/transitOA/ueditor

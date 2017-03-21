@@ -1,4 +1,4 @@
-﻿package me.aes;
+package me.aes;
 
 @SuppressWarnings("serial")
 public class AesException extends Exception {

@@ -1,19 +1,20 @@
 package com.expect.admin.utils;
 
-import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfGState;
-import com.lowagie.text.pdf.PdfReader;
-import com.lowagie.text.pdf.PdfStamper;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfGState;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+
 
 public class PdfWatermark {
 
@@ -44,7 +45,7 @@ public class PdfWatermark {
 //            over = stamper.getUnderContent(i + 1);//生成的水印在文字图片下方
             over = stamper.getOverContent(i + 1);//生成的水印在文字图片下方
             over.beginText();
-            over.setColorFill(Color.LIGHT_GRAY);  
+            over.setColorFill(BaseColor.LIGHT_GRAY);  
             over.setFontAndSize(bf, 150);  
             over.setTextMatrix(70, 200); 
             //设置水印文字透明度

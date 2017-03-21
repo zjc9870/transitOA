@@ -15,7 +15,7 @@ import com.expect.admin.web.interceptor.GlobalInterceptor;
 		@Override
 		public void addInterceptors(InterceptorRegistry registry) {
 			super.addInterceptors(registry);
-			registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/**");
+			registry.addInterceptor(new GlobalInterceptor()).addPathPatterns("/admin/**");
 		}
 
 	}
