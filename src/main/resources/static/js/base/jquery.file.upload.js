@@ -47,11 +47,13 @@
 					+'</td></tr>';
         var fileAllHtml='<div class="files-template"><div class="file-select-template"><div class="fileinput input-group"><div class="form-control">'
 						+'<i class="glyphicon glyphicon-file"></i> <span class="file-name-all"></span></div>'
-						+'<span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">选择</span><input type="file" name="files"/></span>'
+						+'<span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">选择</span><input type="file" name="files" '
+						+'accept="application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" /></span>'
 						// +'<a href="javascript:;" class="input-group-addon btn btn-default fileinput-exists fileinput-remove-all">移除</a>'
 						+'<a href="javascript:;" class="input-group-addon btn btn-default fileinput-exists fileinput-upload-all">上传</a>'
 						+'</div><div class="progress"><div class="progress-bar progress-bar-success"></div></div></div>'
-						+'<table class="files-exist-template table table-striped table-bordered table-hover"><tbody></tbody></table></div>';
+						+'<table class="files-exist-template table table-striped table-bordered table-hover"><tbody></tbody></table></div>'
+						+'<p class="tips">提示：不超过20MB，扩展名为doc、docx</p>';
         
         this.init = function () {
         	var templateSelector=options.templateSelector;
