@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+       <title>收文详情</title>
+        <link rel="stylesheet" href="//cdn.bootcss.com/weui/0.4.3/style/weui.min.css" type="text/css"/>
+		<link rel="stylesheet" href="//cdn.bootcss.com/jquery-weui/0.8.3/css/jquery-weui.min.css" type="text/css"/>
+		<link th:href="@{/css/admin/weixin/weixin.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" id="lx" th:value="${lx}" />
+<div class="page__hd">
+	<div class="page__title">
+		收文详情
+	</div>
+
+</div>
+<div class="page__bd">
+		<div class="weui_cells_title">
+	            收文信息
+	    </div>
+	    <div class="weui_cells">
+	  	<div class="weui_cell">
+	   	 <div class="weui_cell_hd"><label class="weui_label">公司名称</label></div>
+	   	 <div class="weui_cell_bd weui_cell_primary" style="float:right">
+	 	     <input id="sbd" name="sbd" class="weui_input" type="text" value="公司名称" readonly="readonly" style="text-align:right"/>
+	  	  </div>
+	 	 </div>
+	  	<div class="weui_cell">
+	    <div class="weui_cell_hd"><label class="weui_label">合同标题</label></div>
+	    <div class="weui_cell_bd weui_cell_primary">
+	      <input name="htbt" class="weui_input" type="text" value="收文标题" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  
+		<div class="weui_cell">
+		<div class="weui_cell_hd"><label class="weui_label">主要内容</label></div>
+		</div>
+		  <div class="weui_cell">
+		    <div class="weui_cell_bd weui_cell_primary">
+		      <textarea name="htnr" class="weui_textarea" text="主要内容" rows="3" readonly="readonly"></textarea>
+		    </div>
+		  </div>
+	  <div class="weui_cell">
+	    <div class="weui_cell_hd"><label for="" class="weui_label">发起人</label></div>
+	    <div class="weui_cell_bd weui_cell_primary">
+	      <input name="userName" class="weui_input" type="text" value="发起人" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  <div class="weui_cell">
+	    <div class="weui_cell_hd"><label for="" class="weui_label">发起日期</label></div>
+	    <div class="weui_cell_bd weui_cell_primary">
+	      <input name="nqdrq" class="weui_input" type="text" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  </div>
+	 </div>
+	<a id="submit" class="weui_btn weui_btn_primary">提交</a>
+            <script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+			<script src="//cdn.bootcss.com/jquery-weui/0.8.3/js/jquery-weui.min.js"></script>
+</body>
+
+
+</html>
