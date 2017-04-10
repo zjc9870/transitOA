@@ -1,6 +1,8 @@
 package com.expect.admin.utils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -86,7 +88,8 @@ public class RequestUtil {
 	/**
 	 * 下载文件
 	 */
-	public static void downloadFile(byte[] buffer, String filename, HttpServletResponse response) throws IOException {
+	public static void downloadFile(byte[] buffer, String filename, 
+	        HttpServletResponse response, HttpServletRequest request) throws IOException {
 		response.reset();
 //		response.setContentType("application/x-msdownload;");
 		response.setContentType("application/octet-stream;");//如果用x-msdownload Safari浏览器会给下载后的文件加.exe后缀
@@ -94,7 +97,8 @@ public class RequestUtil {
 
 		int length = buffer.length;
 		response.setHeader("Content-Length", String.valueOf(length));
-		String header = "attachment;filename=" + new String(filename.getBytes("utf-8"), "ISO8859-1");
+		boolean isIE = request.getHeader("User-Agent").toUpperCase().contains("MSIE");//判断用户使用的浏览器是否是IE浏览器
+		String header = "attachment;filename=" + fileNameEncode(isIE, filename);
 		response.setHeader("Content-Disposition", header);
 		ServletOutputStream sout = response.getOutputStream();
 
@@ -102,6 +106,22 @@ public class RequestUtil {
 		sout.flush();
 		sout.close();
 	}
+
+    /**
+     * 如果是IE浏览器就用utf-8编码文件名称，否则就用ISO8859-1编码
+     * @param isIE true是IE浏览器  false不是IE浏览器
+     * @param fileName 未编码的文件名称
+     * @return 编码后的文件名称
+     * @throws UnsupportedEncodingException
+     */
+    private static String fileNameEncode(boolean isIE, String fileName)
+            throws UnsupportedEncodingException {
+	    if(isIE){ 
+	        return URLEncoder.encode(fileName, "UTF-8");
+	    } else{ 
+	        return new String(fileName.getBytes("utf-8"), "ISO8859-1");
+	    }
+    }
 
 	/**
 	 * 得到客户端ip

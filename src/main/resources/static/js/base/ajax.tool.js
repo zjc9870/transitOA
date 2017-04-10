@@ -75,17 +75,9 @@ var AjaxTool = function() {
 	}
 
 	return {
-		get : function(url, data, successFunction) {
-			get(url, data, successFunction);
-		},
-		getHtml : function(url, successFunction) {
-			getHtml(url, successFunction);
-		},
-		post : function(url, data, successFunction) {
-			post(url, data, successFunction);
-		},
-		html : function(url,data,successFunction){
-			html(url, data, successFunction);
-		}
+		get : get,
+		getHtml : getHtml,
+		post : post,
+		html : html
 	}
 }();

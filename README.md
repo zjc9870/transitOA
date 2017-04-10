@@ -1,2 +1,2 @@
 # transitOA
-a OA system based on spring-boot
+An OA system based on spring-boot

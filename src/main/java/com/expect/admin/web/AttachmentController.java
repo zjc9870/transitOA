@@ -53,7 +53,7 @@ public class AttachmentController {
 	 * 附件下载
 	 */
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public void download(String id, HttpServletResponse response) {
+	public void download(String id, HttpServletResponse response, HttpServletRequest request) {
 		if (StringUtils.isEmpty(id)) {
 		    log.error("下载附件id为空");
 			return;
@@ -63,7 +63,7 @@ public class AttachmentController {
 			String path = attachment.getPath() + File.separator + attachment.getId();
 			byte[] buffer = IOUtil.inputDataFromFile(path);
 			try {
-				RequestUtil.downloadFile(buffer, attachment.getName(), response);
+				RequestUtil.downloadFile(buffer, attachment.getName(), response, request);
 			} catch (IOException e) {
 			    log.error("下载附件出错", e);
 			}
@@ -80,7 +80,7 @@ public class AttachmentController {
 	 * @param response
 	 */
 	@GetMapping("/downloadAttachmentAsPdf")
-	public void downloadAttachmentAsPdf(String id, HttpServletResponse response) {
+	public void downloadAttachmentAsPdf(String id, HttpServletResponse response, HttpServletRequest request) {
 	    if (StringUtils.isEmpty(id)) {
 	        log.error("下载附件id为空");
             return;
@@ -103,7 +103,7 @@ public class AttachmentController {
 	        try {
 	            int lastDot = attachment.getName().lastIndexOf('.');
 	            String pdfFileName = attachment.getName().substring(0, lastDot) + ".pdf";
-	            RequestUtil.downloadFile(buffer, pdfFileName, response);
+	            RequestUtil.downloadFile(buffer, pdfFileName, response, request);
 	        } catch (IOException e) {
 	            log.error("下载附件出错", e);
 	        }
