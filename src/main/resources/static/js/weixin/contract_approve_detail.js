@@ -1,6 +1,15 @@
 /**
  * 
  */
+var lx = $('#lx').val();
+$(document).ready(function () {
+	initDetail();
+	if(lx!='dsp'){
+      $('#c_approve_form').attr('style','display:none');
+      $('#submit').attr('style','display:none');
+	}
+});
+
 function initDetail() {
 	
 	

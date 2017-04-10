@@ -48,14 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.headers().frameOptions().sameOrigin().httpStrictTransportSecurity().disable();
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/", "/plugins/**").permitAll().anyRequest().authenticated().and()
+		http.authorizeRequests().antMatchers("/admin/**", "/plugins/**").permitAll().anyRequest().authenticated().and()
 				.formLogin().loginPage("/admin/login").failureUrl("/admin/login?error")
 				.successHandler(loginSuccessHandler()).permitAll().and().logout().logoutUrl("/admin/logout").invalidateHttpSession(true)
 				.permitAll().and().rememberMe().tokenValiditySeconds(1209600).tokenRepository(tokenRepository());
-//		http.authorizeRequests().antMatchers("/weixin/**").permitAll().anyRequest().authenticated().and()
-//				.formLogin().loginPage("/weixin/authorize").failureUrl("/weixin/authorize")
-//				.successHandler(loginSuccessHandler()).permitAll().and().logout().invalidateHttpSession(true)
-//				.permitAll().and().rememberMe().tokenValiditySeconds(1209600).tokenRepository(tokenRepository());
 	}
 
 	@Override

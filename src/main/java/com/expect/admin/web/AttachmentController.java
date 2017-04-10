@@ -26,7 +26,6 @@ import com.expect.admin.utils.IOUtil;
 import com.expect.admin.utils.PdfWatermark;
 import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.Word2Pdf;
-import com.lowagie.text.DocumentException;
 
 @Controller
 @RequestMapping("/admin/attachment")

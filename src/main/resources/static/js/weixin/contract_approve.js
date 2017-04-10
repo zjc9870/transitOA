@@ -76,23 +76,23 @@ $(document).ready(function () {
 });
 
 function seeApprove(id,tabId) {
-    AjaxTool.html('htspckxq',{id: id},function (html) {
-    	$('#pre_body').html(html);
-
-        switch (tabId) {
-            case "ysp":
-                $('#c_approve_form').attr('style','display:none');
-                $('#submit').attr('style','display:none');
-                break;
-            case "yth":
-                $('#c_approve_form').attr('style','display:none');
-                $('#submit').attr('style','display:none');
-                break;
-            default:
-                break;
-        }
-    	initDetail();
-    	
+//    AjaxTool.html('htspckxq',{id: id},function (html) {
+//    	$('#pre_body').html(html);
+//
+//        switch (tabId) {
+//            case "ysp":
+//                $('#c_approve_form').attr('style','display:none');
+//                $('#submit').attr('style','display:none');
+//                break;
+//            case "yth":
+//                $('#c_approve_form').attr('style','display:none');
+//                $('#submit').attr('style','display:none');
+//                break;
+//            default:
+//                break;
+//        }
+//    	initDetail();
+    	location.href="/weixin/htspckxq?id="+id+"&lx="+tabId;
 //        $('.portlet-body').html(html);
 //        switch (tabId) {
 //            case "ysp":
@@ -102,8 +102,8 @@ function seeApprove(id,tabId) {
 //                break;
 //        }
 //        $('#back').data('tabId',tabId);
-    	if(roleName=='法务') {
-            $('#yj_input').html("<input type='hidden' name='cljg' value='已审核'/>");
-        }
-    });
+//    	if(roleName=='法务') {
+//            $('#yj_input').html("<input type='hidden' name='cljg' value='已审核'/>");
+//        }
+//    });
 }
