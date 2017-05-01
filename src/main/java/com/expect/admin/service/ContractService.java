@@ -173,7 +173,7 @@ public class ContractService {
 		Contract contract = contractRepository.findOne(contractId);
 		if(contract == null) throw new BaseAppException("id为 "+contractId+"的合同没有找到");
 		ContractVo contractVo = new ContractVo(contract);//合同的基本信息
-		List<LcrzbVo> lcrzbVoList = lcrzbService.convert(contract.getLcrzSet());
+		List<LcrzbVo> lcrzbVoList = LcrzbService.convert(contract.getLcrzSet());
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		for (LcrzbVo lcrzbVo : lcrzbVoList) {
 			if(!StringUtil.isBlank(lcrzbVo.getLcjd())){

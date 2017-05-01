@@ -62,7 +62,7 @@ public class LcrzbService {
 	 * @param lcrzbList
 	 * @return
 	 */
-	public List<LcrzbVo> convert(Set<Lcrzb> lcrzbList) {
+	public static List<LcrzbVo> convert(Set<Lcrzb> lcrzbList) {
 		List<LcrzbVo> lcrzbVoList = new ArrayList<LcrzbVo>();
 		if(lcrzbList == null || lcrzbList.size() == 0) return lcrzbVoList;
 		for (Lcrzb lcrzb : lcrzbList) {

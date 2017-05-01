@@ -1,6 +1,10 @@
 package com.expect.admin.service.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.expect.admin.data.dataobject.DraftSw;
+import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
 import com.expect.admin.utils.DateUtil;
 
 public class DraftSwVo {
@@ -17,6 +21,10 @@ public class DraftSwVo {
 	private String blqk;//办理情况
 	private String mj;//密级
 	private String fqsj;//发起时间
+    private List<LcrzbVo> jyzyRecordList = new ArrayList<LcrzbVo>();
+    private List<LcrzbVo> ldRecordList = new ArrayList<LcrzbVo>();
+    private List<LcrzbVo> cyrRecordList = new ArrayList<LcrzbVo>();
+    private List<LcrzbVo> blrRecordList = new ArrayList<LcrzbVo>();
 //	private String fqsjDate;//发起时间的年月日（YYYY/mm/dd）
 //	private String fasjTime;//
 	
@@ -24,7 +32,7 @@ public class DraftSwVo {
 		
 	}
 	
-	public DraftSwVo(DraftSw draftSw) {
+    public DraftSwVo(DraftSw draftSw) {
 		this.id = draftSw.getId();
 		this.bh = draftSw.getBh();
 		this.bz = draftSw.getBz();
@@ -129,5 +137,35 @@ public class DraftSwVo {
 	public void setFqsj(String fqsj) {
 		this.fqsj = fqsj;
 	}
-	
+	public List<LcrzbVo> getJyzyRecordList() {
+        return jyzyRecordList;
+    }
+
+    public void setJyzyRecordList(List<LcrzbVo> jyzyRecordList) {
+        this.jyzyRecordList = jyzyRecordList;
+    }
+
+    public List<LcrzbVo> getLdRecordList() {
+        return ldRecordList;
+    }
+
+    public void setLdRecordList(List<LcrzbVo> ldRecordList) {
+        this.ldRecordList = ldRecordList;
+    }
+
+    public List<LcrzbVo> getCyrRecordList() {
+        return cyrRecordList;
+    }
+
+    public void setCyrRecordList(List<LcrzbVo> cyrRecordList) {
+        this.cyrRecordList = cyrRecordList;
+    }
+
+    public List<LcrzbVo> getBlrRecordList() {
+        return blrRecordList;
+    }
+
+    public void setBlrRecordList(List<LcrzbVo> blrRecordList) {
+        this.blrRecordList = blrRecordList;
+    }
 }

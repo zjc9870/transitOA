@@ -20,4 +20,12 @@ public interface DraftSwUserLcrzbGxbRepository extends JpaRepository<DraftSwUser
 	public List<DraftSwUserLcrzbGxb> findByDraftSwIdAndRyflAndLcrzIsNull(String draftSwId, String ryfl);
 	
 	public List<DraftSwUserLcrzbGxb> findBylcrz_cljg(String cljg);
+	
+	/**
+	 * 根据收文id获取所有相关的操作记录信息
+	 * @param draftSwId收文的ID
+	 * @return
+	 */
+	List<DraftSwUserLcrzbGxb> findByDraftSwId(String draftSwId);
+	
 }
