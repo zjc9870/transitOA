@@ -2,6 +2,8 @@ package com.expect.admin.web;
 
 import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.expect.admin.config.Settings;
 import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.DmbService;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.RoleService;
@@ -21,6 +27,8 @@ import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.UserVo;
+import com.expect.admin.service.vo.component.FileResultVo;
+import com.expect.admin.service.vo.component.ResultVo;
 import com.expect.admin.utils.JsonResult;
 import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.StringUtil;
@@ -40,6 +48,10 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	private DmbService dmbService;
 	@Autowired
 	private RoleService roleService;
+	@Autowired
+    private Settings settings;
+	@Autowired
+	private AttachmentService attachmentService;
 //	@Autowired
 //	private DraftSwUserLcrzbGxbRepository draftSwUserLcrzbGxbRepository;
 	
@@ -101,6 +113,18 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true,  message + "成功！").build());
 	}
+	
+	/**
+     * 收文附件上传
+     */
+    @RequestMapping(value = "/uploadContractAttachment", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo upload(MultipartFile files, HttpServletRequest request) {
+        String path = settings.getAttachmentPath();
+//      path = Base64Util.decode(path);
+        FileResultVo frv = attachmentService.save(files, path);
+        return frv;
+    }
 	
 	/**
 	 * 收文记录 直接返回页面 不做数据请求（暂定）
@@ -318,7 +342,6 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 //		
 //		draftSwService.save(draftSwVo);
 //	}
-	
 	
 	/**
 	 * 收文查询
