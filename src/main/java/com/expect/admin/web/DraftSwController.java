@@ -117,7 +117,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	/**
      * 收文附件上传
      */
-    @RequestMapping(value = "/uploadContractAttachment", method = RequestMethod.POST)
+    @RequestMapping(value = "/uploadDraftSwAttachment", method = RequestMethod.POST)
     @ResponseBody
     public ResultVo upload(MultipartFile files, HttpServletRequest request) {
         String path = settings.getAttachmentPath();
