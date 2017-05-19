@@ -75,16 +75,16 @@
  spring:
    datasource:
      driver-class-name: com.mysql.jdbc.Driver
-     url: jdbc:mysql://127.0.0.1/transitOA
+     url: jdbc:mysql://127.0.0.1:3306/gongjiao?characterEncoding=utf-8
      username: root
      password: root
- jpa:
-     show-sql: true
-     hibernate:
-       ddl-auto: update
- jackson:
-     serialization:
-       indent-output: true
+   jpa:
+       show-sql: true
+       hibernate:
+         ddl-auto: update
+   jackson:
+       serialization:
+         indent-output: true
  http: 
     multipart:
       max-file-size: 20MB
@@ -93,7 +93,7 @@
  #  file: /Users/joker/java/New_workspace/transitOA/log/log.log
  #  level:
  #    com.expect: info
-    
+
  custom:
    root-path: D:/transitOA
    avatar-path: D:/transitOA/avatar

@@ -68,3 +68,21 @@
     padding: 0 80px;
     word-wrap: break-word;
 }
+#d-approve-tbody tr td:last-child div{
+    color:blue;
+    cursor: pointer;
+    margin-left:10px;
+    display: inline;
+}
+#d-fw-notify-tbody tr td:last-child div{
+    color:blue;
+    cursor: pointer;
+    margin-left:10px;
+    display: inline;
+}
+#m-approve-tbody tr td:last-child div{
+    color:blue;
+    cursor: pointer;
+    margin-left:10px;
+    display: inline;
+}

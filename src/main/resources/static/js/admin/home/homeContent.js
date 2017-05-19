@@ -16,6 +16,28 @@ $(document).on('click', '#htdb, #htyb', function() {
 	setTheClickButtonSelect($(this).parent());
 	getAndDisplayHtsjByFl(url, fl, bz);
 });
+$(document).on('click','#fwdb,#fwyb',function(){
+	var roleName=$('#userRolesName').val();
+	var fl=$(this).data("fl");
+	var url='document/sqjlTab';
+	var bz='sp';
+
+	if(roleName.indexOf("机要专员") !=-1){
+		bz='sq';
+		if(fl=="dsp"){
+			fl='wtj';
+		}else{
+			fl='dsp';
+		}
+	}
+	setTheClickButtonSelect($(this).parent());
+
+	if (roleName.indexOf("董事长") !=-1 || roleName.indexOf("机要专员") !=-1){
+		getAndDisplayFwsjByFl(url,fl,bz);
+	}
+
+});
+
 $(document).on('click', "#dtgg, #djgz, #gwfc", function() {
 	var fl = $(this).data("fl");
 	setTheClickButtonSelect($(this).parent());
@@ -126,11 +148,32 @@ function getAndDisplayHtsjByFl(url, fl, bzStr) {
 	})
 }
 
+function getAndDisplayFwsjByFl(url,fl,bzStr){
+	AjaxTool.get(url, {
+		lx: fl,
+		bz: bzStr
+	}, function(data) {
+		if (data.success) {
+			var leftUlStr = "<ul class='home-content-block'>";
+			var rightUlStr = "<ul>"
+			var cons = data.content;
+			for (var i = 0; (i < cons.length && i < 7); i++) {
+				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].bt + "</span></li>";
+				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</span></li>";
+			}
+			leftUlStr += "</ul>";
+			rightUlStr += "</ul>";
+			$('#fwLeft').html(leftUlStr);
+			$('#fwRight').html(rightUlStr);
+		}
+	})
+}
 // 日历插件 备忘录
 jQuery(document).ready(function() {
+
 	$('#dtgg').trigger('click');
 	$('#htdb').trigger('click');
-	
+
 	var userid = $('input[name = "userId"]').val();
 	$(".memo").Memo({
 		requestQuery : {

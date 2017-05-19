@@ -427,23 +427,23 @@ public class WeixinController {
 	/**
 	 * 附件下载
 	 */
-	@RequestMapping(value = "/download", method = RequestMethod.GET)
-	public void download(String id, HttpServletResponse response) {
-		if (StringUtils.isEmpty(id)) {
-			return;
-		}
-		AttachmentVo attachment = attachmentService.getAttachmentById(id);
-		if (attachment != null) {
-			String path = attachment.getPath() + File.separator + attachment.getId();
-			byte[] buffer = IOUtil.inputDataFromFile(path);
-			try {
-				RequestUtil.downloadFile(buffer, attachment.getName(), response);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
+//	@RequestMapping(value = "/download", method = RequestMethod.GET)
+//	public void download(String id, HttpServletResponse response) {
+//		if (StringUtils.isEmpty(id)) {
+//			return;
+//		}
+//		AttachmentVo attachment = attachmentService.getAttachmentById(id);
+//		if (attachment != null) {
+//			String path = attachment.getPath() + File.separator + attachment.getId();
+//			byte[] buffer = IOUtil.inputDataFromFile(path);
+//			try {
+//				RequestUtil.downloadFile(buffer, attachment.getName(), response);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+//
 	@RequestMapping("/submit_record")
 	public ModelAndView submit_record() {
 		ModelAndView mv = new ModelAndView(viewName + "contract_submit_record");
