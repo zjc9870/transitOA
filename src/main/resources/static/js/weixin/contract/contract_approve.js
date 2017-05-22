@@ -6,13 +6,13 @@ $(document).ready(function () {
         if(data.success) {
             var str = "";
             var cons = data.content;
-            str+="<div class='weui_cell_hd'><div class='weui_cells_title'>待审批</div>";
+            str+="<div class='weui-cell__hd'><div class='weui-cells__title'>待审批</div>";
             for(var i=0;i<cons.length;i++) {
-            	str+="<a class='weui_cell weui_cells_access' href='javascript:;'>";
-            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'dsp'+"\")' class='weui_cell_bd weui_cell_primary'>";
+            	str+="<a class='weui-cell weui-cells_access' href='javascript:;'>";
+            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'dsp'+"\")' class='weui-cell__bd weui-cell_primary'>";
             	str+="<p>"+cons[i].htbt+"</p>";
             	str+="</div>";
-            	str+="<div class='weui_cell_ft'>";
+            	str+="<div class='weui-cell__ft'>";
             	str+="</div>";
             	str+="</a>";
             }
@@ -24,13 +24,13 @@ $(document).ready(function () {
         if(data.success) {
             var str = "";
             var cons = data.content;
-            str+="<div class='weui_cell_hd'><div class='weui_cells_title'>已审批</div>";
+            str+="<div class='weui-cell__hd'><div class='weui-cells__title'>已审批</div>";
             for(var i=0;i<cons.length;i++) {
-            	str+="<a class='weui_cell weui_cells_access' href='javascript:;'>";
-            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'ysp'+"\")' class='weui_cell_bd weui_cell_primary'>";
+            	str+="<a class='weui-cell weui-cells_access' href='javascript:;'>";
+            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'ysp'+"\")' class='weui-cell__bd weui-cell_primary'>";
             	str+="<p>"+cons[i].htbt+"</p>";
             	str+="</div>";
-            	str+="<div class='weui_cell_ft'>";
+            	str+="<div class='weui-cell__ft'>";
             	str+="</div>";
             	str+="</a>";
             }
@@ -42,13 +42,13 @@ $(document).ready(function () {
         if(data.success) {
             var str = "";
             var cons = data.content;
-            str+="<div class='weui_cell_hd'><div class='weui_cells_title'>已退回</div>";
+            str+="<div class='weui-cell__hd'><div class='weui-cells__title'>已退回</div>";
             for(var i=0;i<cons.length;i++) {
-            	str+="<a class='weui_cell weui_cells_access' href='javascript:;'>";
-            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'yth'+"\")' class='weui_cell_bd weui_cell_primary'>";
+            	str+="<a class='weui-cell weui-cells_access' href='javascript:;'>";
+            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'yth'+"\")' class='weui-cell__bd weui-cell_primary'>";
             	str+="<p>"+cons[i].htbt+"</p>";
             	str+="</div>";
-            	str+="<div class='weui_cell_ft'>";
+            	str+="<div class='weui-cell__ft'>";
             	str+="</div>";
             	str+="</a>";
             }

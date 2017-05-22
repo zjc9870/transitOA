@@ -1,12 +1,15 @@
 package com.expect.admin.data.dataobject;
 
 import java.io.File;
-
+import java.io.InputStream;
 
 import com.expect.admin.weixin.common.bean.WxAccessToken;
 import com.expect.admin.weixin.common.util.ToStringUtils;
 import com.expect.admin.weixin.common.util.http.ApacheHttpClientBuilder;
 import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
+import com.thoughtworks.xstream.XStream;
+
+import me.chanjar.weixin.common.util.xml.XStreamInitializer;
 
 /**
  * 基于内存的微信配置provider，在实际生产环境中应该将这些配置持久化
@@ -16,16 +19,16 @@ import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 
 public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
 
-  protected volatile String corpId = "wx9b77c621c69ea369";
-  protected volatile String corpSecret = "SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM";
+  protected volatile String corpId;
+  protected volatile String corpSecret;
 
-  protected volatile String token = "36L";
-  protected volatile String accessToken = "";
-  protected volatile String aesKey = "RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD";
-  protected volatile Integer agentId = 2;
+  protected volatile String token;
+  protected volatile String accessToken;
+  protected volatile String aesKey;
+  protected volatile Integer agentId;
   protected volatile long expiresTime;
 
-  protected volatile String oauth2redirectUri = "16r3r84766.51mypc.cn/weixin/login";
+  protected volatile String oauth2redirectUri;
 
   protected volatile String httpProxyHost;
   protected volatile int httpProxyPort;
@@ -225,4 +228,11 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.apacheHttpClientBuilder = apacheHttpClientBuilder;
   }
   
+  public static WxCpInMemoryConfigStorage fromXml(InputStream is) {
+	    XStream xstream = XStreamInitializer.getInstance();
+	    xstream.processAnnotations(WxCpInMemoryConfigStorage.class);
+	    return (WxCpInMemoryConfigStorage) xstream.fromXML(is);
+ }
+
+
 }

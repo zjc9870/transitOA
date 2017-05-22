@@ -78,6 +78,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
+
 @Service
 public class WxCpService {
 
@@ -105,7 +106,11 @@ public class WxCpService {
   private int retrySleepMillis = 1000;
   private int maxRetryTimes = 5;
   private WxCpConfigStorage config = new WxCpInMemoryConfigStorage();
+  
   public WxCpConfigStorage getWxCpConfig(){
+	  InputStream is1 = ClassLoader.getSystemResourceAsStream("weixinconfig.xml");
+	  config = WxCpInMemoryConfigStorage
+	          .fromXml(is1);
 	  return config;
   }
   
