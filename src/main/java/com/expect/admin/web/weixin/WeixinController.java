@@ -53,7 +53,6 @@ import com.expect.admin.utils.MyResponseBuilder;
 import com.expect.admin.utils.RequestUtil;
 import com.expect.admin.utils.StringUtil;
 import com.expect.admin.weixin.common.exception.WxErrorException;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 import com.expect.admin.weixin.cp.api.WxCpMessageRouter;
 import com.expect.admin.weixin.cp.util.crypto.WxCpCryptUtil;
 
@@ -165,6 +164,7 @@ public class WeixinController {
 	@RequestMapping("/core")
 	public void core(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
+		System.out.println("1");
 		 response.setContentType("text/html;charset=utf-8");
 		    response.setStatus(HttpServletResponse.SC_OK);
 
@@ -174,11 +174,13 @@ public class WeixinController {
 		    String echostr = request.getParameter("echostr");
 
 		    if (StringUtils.isNotBlank(echostr)) {
+		    	System.out.println("2");
 		      if (!this.wxService.checkSignature(msgSignature, timestamp, nonce, echostr)) {
 		        // 消息签名不正确，说明不是公众平台发过来的消息
 		        response.getWriter().println("非法请求");
 		        return;
 		      }
+		      System.out.println("3");
 		      WxCpCryptUtil cryptUtil = new WxCpCryptUtil(wxService.getWxCpConfig());
 		      String plainText = cryptUtil.decrypt(echostr);
 		      // 说明是一个仅仅用来验证的请求，回显echostr
@@ -192,7 +194,7 @@ public class WeixinController {
 //		    if (outMessage != null) {
 //		      response.getWriter().write(outMessage.toEncryptedXml(this.wxCpConfigStorage));
 //		    }
-
+		    System.out.println("1!");
 		    return;
 	}
 	
