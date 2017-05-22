@@ -67,7 +67,7 @@ public class Contract {
 			this.sqsj = new Date();
 		}else {
 			this.sqsj = DateUtil.parse(contractVo.getSqsj(), DateUtil.fullFormat);
-		}
+	}
 		if(!StringUtil.isBlank(contractVo.getSbd()))
 			this.sbd = contractVo.getSbd();
 	}

@@ -1,0 +1,72 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <button id="back" class="button">返回</button>
+    <div id="id" th:text="${documentVo.id}"  style="display:none;"></div>
+    <!--startprint-->
+    <div class="lg-block-title1" th:text="${documentVo.sbd}+集团发文单"></div>
+    <div class="lg-block-content">
+        <th:block>
+            <ul>
+                <li>
+                    <div class="form-title">公文标题:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.bt}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">主题词:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.ztc}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">主办人和拟公文人:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.userName}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input name="mj" type="radio" value="1" th:checked="${documentVo.mj=='1'}" th:disabled="true"/><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="2" th:checked="${documentVo.mj=='2' }" th:disabled="true"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="3" th:checked="${documentVo.mj=='3' }" th:disabled="true"/><span>秘密</span></div>
+                </li>
+                <li>
+                    <div class="form-title">门户网站发布:</div>
+                    <div class="pform-radio"><input name="sffb" type="radio" value="1" th:checked="${documentVo.sffb=='1' }" th:disabled="true"/><span>是</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="sffb" type="radio" value="2" th:checked="${documentVo.sffb=='2' }" th:disabled="true"/><span>否</span></div>
+                </li>
+            </ul>
+            <form id="d_apply_print_form" enctype="multipart/form-data">
+                <ul>
+                    <li>
+                        <div class="form-title">编号:</div>
+                        <input name="gwbh" class="form-content" type="text" id="gwbh"/>
+                    </li>
+                    <li>
+                        <div class="form-title">印发日期:</div>
+                        <input name="yfrq" class="form-content date-picker" type="text" />
+                    </li>
+                    <!--<li>-->
+                        <!--<div class="form-title">打印份数:</div>-->
+                        <!--<input name="dyfs" class="form-content" type="text" />-->
+                    <!--</li>-->
+                </ul>
+            </form>
+            <!--endprint-->
+            <ul>
+                <li class="right">
+                    <button id="print" class="button"  >打印</button>
+                </li>
+            </ul>
+
+        </th:block>
+    </div>
+</div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/document/d_apply_print.js}" type="text/javascript"></script>
+</body>
+</html>

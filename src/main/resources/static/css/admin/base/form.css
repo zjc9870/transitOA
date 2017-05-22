@@ -222,3 +222,6 @@
 .hidden {
     display: none;
 }
+.select-position{
+    float:left;
+}
