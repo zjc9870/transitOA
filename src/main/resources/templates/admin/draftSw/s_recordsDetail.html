@@ -15,19 +15,19 @@
             <ul>
                 <li>
                     <div class="form-title">文件标题:</div>
-                    <input name="wjbt" class="form-content" type="text" style="width:320px;"/>
+                    <input name="wjbt" class="form-content" type="text" th:value="${draftSwVo.wjbt}" style="width:320px;"/>
                 </li>
                 <li>
                     <div class="form-title">来文单位:</div>
-                    <input name="lwdw" class="form-content" type="text" style="width:320px;"/>
+                    <input name="lwdw" class="form-content" type="text" th:value="${draftSwVo.lwdw}" style="width:320px;"/>
                 </li>
                 <li>
                     <div class="form-title">文号:</div>
-                    <input name="wh" class="form-content" type="text"  style="width:320px;"/>
+                    <input name="wh" class="form-content" type="text"  th:value="${draftSwVo.wh}" style="width:320px;"/>
                 </li>
                 <li>
                     <div class="form-title">日期:</div>
-                    <input name="rq" class="form-content date-picker" type="text"  style="width:320px;"/>
+                    <input name="rq" class="form-content date-picker" type="text" th:value="${draftSwVo.rq}" style="width:320px;"/>
                 </li>
                 <li>
                     <div class="form-title">密级:</div>
@@ -40,7 +40,7 @@
                     <select name="ldId" th:if='${not #lists.isEmpty(ldList)}'>
                         <option th:each='ld : ${ldList}' th:value="${ld.id}" th:text="${ld.fullName}"></option>
                     </select>
-            </li>
+                </li>
             </ul>
         </form>
         <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
