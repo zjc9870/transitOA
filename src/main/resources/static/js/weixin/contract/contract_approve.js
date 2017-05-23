@@ -1,7 +1,7 @@
 
 var roleName = $('#roleName').val();
 $(document).ready(function () {
-	AjaxTool.get('sqjlTab', {
+	AjaxTool.get('contract/sqjlTab', {
         lx: 'dsp', bz: 'sp'},function (data) {
         if(data.success) {
             var str = "";
@@ -19,7 +19,7 @@ $(document).ready(function () {
             $('#weui_body_dsp').html(str);
         }
     });
-	AjaxTool.get('sqjlTab', {
+	AjaxTool.get('contract/sqjlTab', {
         lx: 'ysp', bz: 'sp'},function (data) {
         if(data.success) {
             var str = "";
@@ -37,7 +37,7 @@ $(document).ready(function () {
             $('#weui_body_ysp').html(str);
         }
     });
-	AjaxTool.get('sqjlTab', {
+	AjaxTool.get('contract/sqjlTab', {
         lx: 'yth', bz: 'sp'},function (data) {
         if(data.success) {
             var str = "";
@@ -92,7 +92,7 @@ function seeApprove(id,tabId) {
 //                break;
 //        }
 //    	initDetail();
-    	location.href="/weixin/htspckxq?id="+id+"&lx="+tabId;
+    	location.href="/weixin/contract/htspckxq?id="+id+"&lx="+tabId;
 //        $('.portlet-body').html(html);
 //        switch (tabId) {
 //            case "ysp":

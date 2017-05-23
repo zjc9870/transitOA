@@ -106,12 +106,13 @@ public class WxCpService {
   protected File tmpDirFile;
   private int retrySleepMillis = 1000;
   private int maxRetryTimes = 5;
-  
+  @Autowired
+  WxCpInMemoryConfigStorage config;
   public WxCpInMemoryConfigStorage getWxCpConfig(){
 //	  InputStream is1 = ClassLoader.getSystemResourceAsStream("weixinconfig.xml");
 //	  config = WxCpInMemoryConfigStorage
 //	          .fromXml(is1);
-	  WxCpInMemoryConfigStorage config = new WxCpInMemoryConfigStorage();
+//	  
 //	  InputStream xmlInputStream;
 //	try {
 //		xmlInputStream = new ClassPathResource("weixinconfig.xml").getInputStream();
@@ -122,7 +123,7 @@ public class WxCpService {
 
 	  return config;
 //	} catch (IOException e) {
-		// TODO Auto-generated catch block
+//		 //TODO Auto-generated catch block
 //		e.printStackTrace();
 //	}
 //	return config;

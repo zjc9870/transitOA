@@ -2,27 +2,31 @@ package com.expect.admin.data.dataobject;
 
 import java.io.File;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
 import com.expect.admin.weixin.common.bean.WxAccessToken;
 import com.expect.admin.weixin.common.util.ToStringUtils;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * 基于内存的微信配置provider，在实际生产环境中应该将这些配置持久化
  *
  * @author Daniel Qian
  */
-@XStreamAlias("WxCpInMemoryConfigStorage")  
+@Component
+
+@ConfigurationProperties(prefix = "WxCpInMemoryConfigStorage")
 public class WxCpInMemoryConfigStorage{
 
-  private  String corpId = "wx6cf85a5aafc0e3e7";
-  private  String corpSecret = "6jYIJeMF37cUQsSiS_OHat7s9VSvEtkwm05B86GXxQprEhnn7lya6Tq9DmVqWcFO";
-  private  String token = "36L";
+  private  String corpId ;
+  private  String corpSecret ;
+  private  String token ;
   private  String accessToken;
-  private  String aesKey = "RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD";
-  private  Integer agentId = 2;
+  private  String aesKey ;
+  private  Integer agentId ;
   private  long expiresTime;
 
-  private  String oauth2redirectUri = "16r3r84766.51mypc.cn/weixin/login";
+  private  String oauth2redirectUri ;
   private  String httpProxyHost;
   private  int httpProxyPort;
   private  String httpProxyUsername;
