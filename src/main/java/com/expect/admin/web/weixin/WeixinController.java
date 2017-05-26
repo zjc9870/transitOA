@@ -63,6 +63,8 @@ public class WeixinController {
 	@Autowired
 	WxCpService wxService;
 
+	@Autowired
+	WeixinContractController weixinContractController;
 
 	@Autowired
 	private AttachmentService attachmentService;
@@ -125,6 +127,7 @@ public class WeixinController {
 			String state = request.getParameter("state");
 			String url = wxService.oauth2buildAuthorizationUrl(state);
 			mv.addObject("url", url);
+			mv.addObject("fail", "true");
 			return mv;
 	    }
 	}
@@ -142,10 +145,10 @@ public class WeixinController {
     		ModelAndView mv = new ModelAndView(viewName+"contract_submit_record");
     		return mv;
     	}else if(state.equals("approve")){
-    		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
-    		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
-    		ModelAndView mv = new ModelAndView(viewName + "contract/contract_approve");
-    		mv.addObject("roleName", roleVo.getName());
+//    		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+//    		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+    		ModelAndView mv = new ModelAndView("redirect:/weixin/contract/approve");
+//    		mv.addObject("roleName", roleVo.getName());
     		return mv;
     	}else if(state.equals("draftSw")){
     		ModelAndView mv = new ModelAndView(viewName+"draftSw_list");
@@ -241,6 +244,7 @@ public class WeixinController {
 		String state = request.getParameter("state");
 		String url = wxService.oauth2buildAuthorizationUrl(state);
 		mv.addObject("url", url);
+		mv.addObject("fail", "false");
 		return mv;
 	}
 	
@@ -253,15 +257,7 @@ public class WeixinController {
 		return mv;
 	}
 	
-	@RequestMapping("/approve")
-	public ModelAndView approve() {
 
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
-		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
-		ModelAndView mv = new ModelAndView(viewName + "contract_approve");
-		mv.addObject("roleName", roleVo.getName());
-		return mv;
-	}
 
 	@RequestMapping("/submit_detail")
 	public ModelAndView submit_detail() {
