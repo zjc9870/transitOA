@@ -51,9 +51,7 @@ function initDetail() {
     });
 
     function toHtsp() {
-        AjaxTool.getHtml('htsp',function (html) {
-            $('.page-content').html(html);
-        });
+    	window.location = "approve";
     }
     
   //附件查看
