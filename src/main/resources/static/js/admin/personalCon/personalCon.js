@@ -3,6 +3,11 @@ $().ready(function () {
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
+            password: {
+                minlength: 6,
+                maxlength: 12,
+                isRightCode: ''
+            },
             newPassword: {
                 equalTo: "#password1"
             },
@@ -18,6 +23,11 @@ $().ready(function () {
         },
 
         messages: {
+            password: {
+                minlength: "密码长度至少6位",
+                maxlength: "密码长度不能超过12位",
+                isRightCode: "密码只能由英文字母和数字组成"
+            },
             newPassword: {
                 equalTo: "两次输入密码不一致"
             },
@@ -48,5 +58,3 @@ $().ready(function () {
         }
     });
 });
-
-
