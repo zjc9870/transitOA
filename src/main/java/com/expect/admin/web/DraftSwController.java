@@ -24,6 +24,7 @@ import com.expect.admin.service.DmbService;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
+import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.UserVo;
@@ -360,6 +361,17 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		ModelAndView modelAndView = new ModelAndView();
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(id);
 		modelAndView.addObject(draftSwVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 收文记录详情
+	 */
+	@RequestMapping(value = "/swjlxq")
+	public ModelAndView sqjlxq(@RequestParam(name = "id", required = true)String swId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsDetail");
+		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
+		modelAndView.addObject("draftSwVo", draftSwVo);
 		return modelAndView;
 	}
 

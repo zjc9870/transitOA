@@ -2,44 +2,41 @@ package com.expect.admin.data.dataobject;
 
 import java.io.File;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 import com.expect.admin.weixin.common.bean.WxAccessToken;
 import com.expect.admin.weixin.common.util.ToStringUtils;
-import com.expect.admin.weixin.common.util.http.ApacheHttpClientBuilder;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 
 /**
  * 基于内存的微信配置provider，在实际生产环境中应该将这些配置持久化
  *
  * @author Daniel Qian
  */
+@Component
 
-public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
+@ConfigurationProperties(prefix = "WxCpInMemoryConfigStorage")
+public class WxCpInMemoryConfigStorage{
 
-  protected volatile String corpId = "wx9b77c621c69ea369";
-  protected volatile String corpSecret = "SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM";
+  private  String corpId ;
+  private  String corpSecret ;
+  private  String token ;
+  private  String accessToken;
+  private  String aesKey ;
+  private  Integer agentId ;
+  private  long expiresTime;
 
-  protected volatile String token = "36L";
-  protected volatile String accessToken = "";
-  protected volatile String aesKey = "RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD";
-  protected volatile Integer agentId = 2;
-  protected volatile long expiresTime;
+  private  String oauth2redirectUri ;
+  private  String httpProxyHost;
+  private  int httpProxyPort;
+  private  String httpProxyUsername;
+  private  String httpProxyPassword;
+  private  String jsapiTicket;
+  private  long jsapiTicketExpiresTime;
 
-  protected volatile String oauth2redirectUri = "16r3r84766.51mypc.cn/weixin/login";
+  private  File tmpDirFile;
 
-  protected volatile String httpProxyHost;
-  protected volatile int httpProxyPort;
-  protected volatile String httpProxyUsername;
-  protected volatile String httpProxyPassword;
 
-  protected volatile String jsapiTicket;
-  protected volatile long jsapiTicketExpiresTime;
-
-  protected volatile File tmpDirFile;
-
-  private volatile ApacheHttpClientBuilder apacheHttpClientBuilder;
-
-  @Override
   public String getAccessToken() {
     return this.accessToken;
   }
@@ -48,28 +45,28 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.accessToken = accessToken;
   }
 
-  @Override
+  
   public boolean isAccessTokenExpired() {
     return System.currentTimeMillis() > this.expiresTime;
   }
 
-  @Override
+   
   public void expireAccessToken() {
     this.expiresTime = 0;
   }
 
-  @Override
+   
   public synchronized void updateAccessToken(WxAccessToken accessToken) {
     updateAccessToken(accessToken.getAccessToken(), accessToken.getExpiresIn());
   }
 
-  @Override
+   
   public synchronized void updateAccessToken(String accessToken, int expiresInSeconds) {
     this.accessToken = accessToken;
     this.expiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000l;
   }
 
-  @Override
+   
   public String getJsapiTicket() {
     return this.jsapiTicket;
   }
@@ -86,24 +83,24 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.jsapiTicketExpiresTime = jsapiTicketExpiresTime;
   }
 
-  @Override
+   
   public boolean isJsapiTicketExpired() {
     return System.currentTimeMillis() > this.jsapiTicketExpiresTime;
   }
 
-  @Override
+   
   public synchronized void updateJsapiTicket(String jsapiTicket, int expiresInSeconds) {
     this.jsapiTicket = jsapiTicket;
     // 预留200秒的时间
     this.jsapiTicketExpiresTime = System.currentTimeMillis() + (expiresInSeconds - 200) * 1000l;
   }
 
-  @Override
+   
   public void expireJsapiTicket() {
     this.jsapiTicketExpiresTime = 0;
   }
 
-  @Override
+   
   public String getCorpId() {
     return this.corpId;
   }
@@ -112,7 +109,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.corpId = corpId;
   }
 
-  @Override
+   
   public String getCorpSecret() {
     return this.corpSecret;
   }
@@ -121,7 +118,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.corpSecret = corpSecret;
   }
 
-  @Override
+   
   public String getToken() {
     return this.token;
   }
@@ -130,7 +127,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.token = token;
   }
 
-  @Override
+   
   public long getExpiresTime() {
     return this.expiresTime;
   }
@@ -139,7 +136,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.expiresTime = expiresTime;
   }
 
-  @Override
+   
   public String getAesKey() {
     return this.aesKey;
   }
@@ -148,7 +145,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.aesKey = aesKey;
   }
 
-  @Override
+   
   public Integer getAgentId() {
     return this.agentId;
   }
@@ -157,7 +154,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.agentId = agentId;
   }
 
-  @Override
+   
   public String getOauth2redirectUri() {
     return this.oauth2redirectUri;
   }
@@ -166,7 +163,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.oauth2redirectUri = oauth2redirectUri;
   }
 
-  @Override
+   
   public String getHttpProxyHost() {
     return this.httpProxyHost;
   }
@@ -175,7 +172,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.httpProxyHost = httpProxyHost;
   }
 
-  @Override
+   
   public int getHttpProxyPort() {
     return this.httpProxyPort;
   }
@@ -184,7 +181,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.httpProxyPort = httpProxyPort;
   }
 
-  @Override
+   
   public String getHttpProxyUsername() {
     return this.httpProxyUsername;
   }
@@ -193,7 +190,7 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.httpProxyUsername = httpProxyUsername;
   }
 
-  @Override
+   
   public String getHttpProxyPassword() {
     return this.httpProxyPassword;
   }
@@ -202,12 +199,12 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
     this.httpProxyPassword = httpProxyPassword;
   }
 
-  @Override
+   
   public String toString() {
     return ToStringUtils.toSimpleString(this);
   }
 
-  @Override
+   
   public File getTmpDirFile() {
     return this.tmpDirFile;
   }
@@ -215,14 +212,15 @@ public class WxCpInMemoryConfigStorage implements WxCpConfigStorage {
   public void setTmpDirFile(File tmpDirFile) {
     this.tmpDirFile = tmpDirFile;
   }
+//
+//  public ApacheHttpClientBuilder getApacheHttpClientBuilder() {
+//    return this.apacheHttpClientBuilder;
+//  }
+//
+//  public void setApacheHttpClientBuilder(ApacheHttpClientBuilder apacheHttpClientBuilder) {
+//    this.apacheHttpClientBuilder = apacheHttpClientBuilder;
+//  }
+//
 
-  @Override
-  public ApacheHttpClientBuilder getApacheHttpClientBuilder() {
-    return this.apacheHttpClientBuilder;
-  }
 
-  public void setApacheHttpClientBuilder(ApacheHttpClientBuilder apacheHttpClientBuilder) {
-    this.apacheHttpClientBuilder = apacheHttpClientBuilder;
-  }
-  
 }

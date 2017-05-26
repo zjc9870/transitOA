@@ -46,7 +46,7 @@ for(var i=0; i<tabs.length; i++) {
 }
 
 function seeSwRecordE(id,tabId) {
-    AjaxTool.html('contract/sqjlxqE',{id: id},function (html) {
+    AjaxTool.html('draftSw/swjlxq',{id: id},function (html) {
         $('.portlet-body').html(html);
         if(tabId == "yth") {
             $('#splc').attr('style','display:block');
@@ -93,3 +93,4 @@ jQuery(document).ready(function() {
     init();
 });
 
+$('#wtj').click();

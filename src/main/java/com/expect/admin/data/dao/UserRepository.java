@@ -29,4 +29,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Modifying
 	@Query("update User u set u.avatar.id=?2 where u.id=?1")
 	public int updateAvatarById(String id, String avatarId);
+
+	public User findByFullName(String fullName);
 }

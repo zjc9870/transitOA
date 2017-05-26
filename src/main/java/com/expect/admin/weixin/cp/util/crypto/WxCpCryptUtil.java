@@ -19,8 +19,8 @@ package com.expect.admin.weixin.cp.util.crypto;
 
 import org.apache.commons.codec.binary.Base64;
 
+import com.expect.admin.data.dataobject.WxCpInMemoryConfigStorage;
 import com.expect.admin.weixin.common.util.crypto.WxCryptUtil;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 
 public class WxCpCryptUtil extends WxCryptUtil {
 
@@ -29,7 +29,7 @@ public class WxCpCryptUtil extends WxCryptUtil {
    *
    * @param wxCpConfigStorage
    */
-  public WxCpCryptUtil(WxCpConfigStorage wxCpConfigStorage) {
+  public WxCpCryptUtil(WxCpInMemoryConfigStorage wxCpConfigStorage) {
     /*
      * @param token          公众平台上，开发者设置的token
      * @param encodingAesKey 公众平台上，开发者设置的EncodingAESKey

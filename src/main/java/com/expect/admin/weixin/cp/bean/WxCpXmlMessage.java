@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
+import com.expect.admin.data.dataobject.WxCpInMemoryConfigStorage;
 import com.expect.admin.weixin.common.util.xml.XStreamCDataConverter;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 import com.expect.admin.weixin.cp.util.crypto.WxCpCryptUtil;
 import com.expect.admin.weixin.cp.util.xml.XStreamTransformer;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -183,7 +183,7 @@ public class WxCpXmlMessage implements Serializable {
    */
   public static WxCpXmlMessage fromEncryptedXml(
           String encryptedXml,
-          WxCpConfigStorage wxCpConfigStorage,
+          WxCpInMemoryConfigStorage wxCpConfigStorage,
           String timestamp, String nonce, String msgSignature) {
     WxCpCryptUtil cryptUtil = new WxCpCryptUtil(wxCpConfigStorage);
     String plainText = cryptUtil.decrypt(msgSignature, timestamp, nonce, encryptedXml);
@@ -192,7 +192,7 @@ public class WxCpXmlMessage implements Serializable {
 
   public static WxCpXmlMessage fromEncryptedXml(
           InputStream is,
-          WxCpConfigStorage wxCpConfigStorage,
+          WxCpInMemoryConfigStorage wxCpConfigStorage,
           String timestamp, String nonce, String msgSignature) {
     try {
       return fromEncryptedXml(IOUtils.toString(is, "UTF-8"), wxCpConfigStorage, timestamp, nonce, msgSignature);

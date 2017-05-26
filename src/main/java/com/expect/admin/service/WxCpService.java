@@ -17,6 +17,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.expect.admin.data.dataobject.WxCpInMemoryConfigStorage;
@@ -39,7 +40,6 @@ import com.expect.admin.weixin.common.util.http.SimpleGetRequestExecutor;
 import com.expect.admin.weixin.common.util.http.SimplePostRequestExecutor;
 import com.expect.admin.weixin.common.util.http.URIUtil;
 import com.expect.admin.weixin.common.util.json.GsonHelper;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 import com.expect.admin.weixin.cp.bean.WxCpDepart;
 import com.expect.admin.weixin.cp.bean.WxCpMessage;
 import com.expect.admin.weixin.cp.bean.WxCpTag;
@@ -65,7 +65,7 @@ import com.expect.admin.weixin.cp.util.json.WxCpGsonBuilder;
 //import com.expect.admin.weixin.common.util.http.SimplePostRequestExecutor;
 //import com.expect.admin.weixin.common.util.http.URIUtil;
 //import com.expect.admin.weixin.common.util.json.GsonHelper;
-//import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
+//import com.expect.admin.weixin.cp.api.WxCpInMemoryConfigStorage;
 //import com.expect.admin.weixin.cp.api.WxCpInMemoryConfigStorage;
 //import com.expect.admin.weixin.cp.bean.WxCpDepart;
 //import com.expect.admin.weixin.cp.bean.WxCpMessage;
@@ -78,6 +78,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
+import com.thoughtworks.xstream.XStream;
+
 @Service
 public class WxCpService {
 
@@ -104,16 +106,35 @@ public class WxCpService {
   protected File tmpDirFile;
   private int retrySleepMillis = 1000;
   private int maxRetryTimes = 5;
-  private WxCpConfigStorage config = new WxCpInMemoryConfigStorage();
-  public WxCpConfigStorage getWxCpConfig(){
+  @Autowired
+  WxCpInMemoryConfigStorage config;
+  public WxCpInMemoryConfigStorage getWxCpConfig(){
+//	  InputStream is1 = ClassLoader.getSystemResourceAsStream("weixinconfig.xml");
+//	  config = WxCpInMemoryConfigStorage
+//	          .fromXml(is1);
+//	  
+//	  InputStream xmlInputStream;
+//	try {
+//		xmlInputStream = new ClassPathResource("weixinconfig.xml").getInputStream();
+//      XStream xStream = new XStream();
+//      xStream.alias("WxCpInMemoryConfigStorage", WxCpInMemoryConfigStorage.class);
+//      Object ob =  xStream.fromXML(xmlInputStream);
+//      config = (WxCpInMemoryConfigStorage) ob;
+
 	  return config;
+//	} catch (IOException e) {
+//		 //TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	return config;
   }
-  
   public boolean checkSignature(String msgSignature, String timestamp, String nonce, String data) {
     try {
+    	System.out.println("token="+getWxCpConfig().getToken());
       return SHA1.gen(getWxCpConfig().getToken(), timestamp, nonce, data)
         .equals(msgSignature);
     } catch (Exception e) {
+    	e.printStackTrace();
       return false;
     }
   }
@@ -613,7 +634,7 @@ public class WxCpService {
        * 42001 access_token超时
        */
       if (error.getErrorCode() == 42001 || error.getErrorCode() == 40001) {
-        // 强制设置wxCpConfigStorage它的access token过期了，这样在下一次请求里就会刷新access token
+        // 强制设置WxCpInMemoryConfigStorage它的access token过期了，这样在下一次请求里就会刷新access token
         getWxCpConfig().expireAccessToken();
         return execute(executor, uri, data);
       }
@@ -634,7 +655,7 @@ public class WxCpService {
   }
 
   
-//  public void setWxCpConfigStorage(WxCpConfigStorage wxConfigProvider) {
+//  public void setWxCpInMemoryConfigStorage(WxCpInMemoryConfigStorage wxConfigProvider) {
 //    getWxCpConfig() = wxConfigProvider;
 //    ApacheHttpClientBuilder apacheHttpClientBuilder = getWxCpConfig()
 //      .getApacheHttpClientBuilder();

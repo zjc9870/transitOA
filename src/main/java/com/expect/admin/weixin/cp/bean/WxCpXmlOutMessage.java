@@ -2,8 +2,8 @@ package com.expect.admin.weixin.cp.bean;
 
 import java.io.Serializable;
 
+import com.expect.admin.data.dataobject.WxCpInMemoryConfigStorage;
 import com.expect.admin.weixin.common.util.xml.XStreamCDataConverter;
-import com.expect.admin.weixin.cp.api.WxCpConfigStorage;
 import com.expect.admin.weixin.cp.bean.messagebuilder.ImageBuilder;
 import com.expect.admin.weixin.cp.bean.messagebuilder.NewsBuilder;
 import com.expect.admin.weixin.cp.bean.messagebuilder.TextBuilder;
@@ -108,7 +108,7 @@ public abstract class WxCpXmlOutMessage implements Serializable {
   /**
    * 转换成加密的xml格式
    */
-  public String toEncryptedXml(WxCpConfigStorage wxCpConfigStorage) {
+  public String toEncryptedXml(WxCpInMemoryConfigStorage wxCpConfigStorage) {
     String plainXml = toXml();
     WxCpCryptUtil pc = new WxCpCryptUtil(wxCpConfigStorage);
     return pc.encrypt(plainXml);

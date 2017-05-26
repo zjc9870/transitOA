@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <!--<button id="back" class="button">返回</button>-->
+    <div class="lg-block-title1" th:text="${documentVo.sbd}+集团发文单"></div>
+    <div class="lg-block-content">
+        <form id="d_apply_form" enctype="multipart/form-data">
+            <input name = "sbd" th:value = "${documentVo.sbd}" style = "display:none"></input>
+            <ul>
+                <li>
+                    <div class="form-title">公文标题:</div>
+                    <input name="bt" class="form-content" type="text" th:value="${documentVo.bt}" />
+                </li>
+                <li>
+                    <div class="form-title">主题词:</div>
+                    <textarea name="ztc" class="form-content text-content" th:text="${documentVo.ztc}"></textarea>
+                </li>
+                <li>
+                    <div class="form-title">主办人和拟公文人:</div>
+                    <input name="userName" class="form-content" type="text" disabled="disabled" th:value="${documentVo.userName}"/>
+                </li>
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input name="mj" type="radio" value="1" th:checked="${documentVo.mj=='1'}" /><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="2" th:checked="${documentVo.mj=='2'}"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="3" th:checked="${documentVo.mj=='3'}"/><span>秘密</span></div>
+                </li>
+                <li>
+                    <div class="form-title">门户网站发布:</div>
+                    <div class="pform-radio"><input name="sffb" type="radio" value="1" th:checked="${documentVo.sffb=='1'}" /><span>是</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="sffb" type="radio" value="2" th:checked="${documentVo.sffb=='2'}" /><span>否</span></div>
+                </li>
+
+            </ul>
+            <input type="hidden" name="id" th:value="${documentVo.id}" />
+        </form>
+        <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
+
+        <th:block th:if='${not #lists.isEmpty(documentVo.attachmentList)}'>
+            <ul id="fjlb"  th:each="attach : ${documentVo.attachmentList}">
+                <th:block>
+                    <li th:id="${attach.id}" th:text="${attach.name}"></li>
+                </th:block>
+            </ul>
+        </th:block>
+
+        <div id="upload-modal" class="modal modal-fixed-footer">
+            <div class="modal-header">
+                <h4 class="modal-title">上传附件</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" id="fileUploadForm">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="files-template-wrapper"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal"
+                        class="btn btn-outline dark">关闭</button>
+            </div>
+        </div>
+        <ul>
+            <li class="right">
+                <button id="tj" class="button">提交</button>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="lg-block2" id="splc">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">审批流程</span>
+        <span class="lg-block-subtitle2">Approval Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(documentVo.lcrzbList)}'>
+            <ul th:each="lcrz : ${documentVo.lcrzbList}">
+                <th:block>
+                    <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                        <th:block th:if="${lcrz.cljg=='通过'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='不通过'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+                            +'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='新增'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+                            +'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='已审核'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'(b'+${lcrz.userName}+')'"></div>
+                        </th:block>
+                    </li>
+                </th:block>
+            </ul>
+        </th:block>
+    </div>
+</div>
+<script th:src="@{/js/admin/components/components-date-time-pickers.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/document/d_applyRecordDetail.js}" type="text/javascript"></script>
+</body>
+</html>
