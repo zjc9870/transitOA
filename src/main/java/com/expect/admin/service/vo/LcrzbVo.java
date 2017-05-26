@@ -6,7 +6,7 @@ import com.expect.admin.utils.DateUtil;
 
 public class LcrzbVo {
 	private String userName;
-	private String userDepartmnet;
+	private String userDepartment;
 	private String clsj;//处理时间
 	private String message;//处理意见
 	private String cljg;//处理结果
@@ -24,9 +24,9 @@ public class LcrzbVo {
 	}
 	
 	public LcrzbVo(Lcrzb lcrzb) {
-		this.userName = lcrzb.getUser().getFullName();
+		this.userName = lcrzb.getUser().getUsername();
 		if(lcrzb.getUser().getDepartments() != null && lcrzb.getUser().getDepartments().size() > 0)
-			this.userDepartmnet = lcrzb.getUser().getDepartments().iterator().next().getName();
+			this.userDepartment = lcrzb.getUser().getDepartments().iterator().next().getName();
 		this.cljg = lcrzb.getCljg();
 		this.clsj = lcrzb.getClsj() == null? "" : 
 			DateUtil.format(lcrzb.getClsj(), DateUtil.fullFormat);
@@ -40,10 +40,10 @@ public class LcrzbVo {
 		this.userName = userName;
 	}
 	public String getUserDepartmnet() {
-		return userDepartmnet;
+		return userDepartment;
 	}
 	public void setUserDepartmnet(String userDepartmnet) {
-		this.userDepartmnet = userDepartmnet;
+		this.userDepartment = userDepartmnet;
 	}
 	public String getClsj() {
 		return clsj;
