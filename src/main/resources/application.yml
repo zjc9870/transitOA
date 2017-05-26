@@ -105,3 +105,4 @@ WxCpInMemoryConfigStorage:
   oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
   httpProxyPort: 0
   jsapiTicketExpiresTime: 0
+
