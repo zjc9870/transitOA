@@ -10,7 +10,7 @@
 <body>
 <div class="lg-block">
     <button id="back" class="button">返回</button>
-    <div class="lg-block-title1" th:text="${contractVo.sbd}+有限公司合同审办单"></div>
+    <div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${contractVo.sbd}+合同审办单"></div>
     <div class="lg-block-content">
         <form id="c_apply_form" enctype="multipart/form-data">
         	<input name = "sbd" th:value = "${contractVo.sbd}" style = "display:none" />
@@ -117,5 +117,6 @@
 </div>
 <script th:src="@{/js/admin/components/components-date-time-pickers.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/admin/contract/c_applyRecordDetail.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
 </body>
 </html>
