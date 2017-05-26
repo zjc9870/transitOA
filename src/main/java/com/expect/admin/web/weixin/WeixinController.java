@@ -234,12 +234,12 @@ public class WeixinController {
 
 	@RequestMapping("/authorize")
 	public ModelAndView authorize(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
-//		Cookie[] cookies = request.getCookies();
-//		if(cookies!=null){
-//			if(cookies.length>=1){
-//				return login(cookies[0].getValue(),request, response);
-//			}
-//		}
+		Cookie[] cookies = request.getCookies();
+		if(cookies!=null){
+			if(cookies.length>=1){
+				return login(cookies[0].getValue(),request, response);
+			}
+		}
 		ModelAndView mv = new ModelAndView(viewName+"homepage");
 		String state = request.getParameter("state");
 		String url = wxService.oauth2buildAuthorizationUrl(state);
