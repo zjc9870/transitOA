@@ -34,7 +34,8 @@ public class ContractVo {
 	public ContractVo(Contract contract) {
 		this.id = contract.getId();
 		this.bh = contract.getBh();
-		this.userName = contract.getNhtr().getFullName();
+//		this.userName = contract.getNhtr().getFullName();
+		this.userName = contract.getNhtr().getUsername();
 		this.htbt = contract.getHtbt();
 		this.htnr = contract.getHtnr();
 		if(contract.getNqdrq() != null)
