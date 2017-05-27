@@ -291,4 +291,15 @@ public class WeixinContractController {
 		return modelAndView;
 	}
 	
+	//合同审批列表
+	@RequestMapping("/approve")
+	public ModelAndView approve() {
+
+		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+		ModelAndView mv = new ModelAndView(viewName + "contract_approve");
+		mv.addObject("roleName", roleVo.getName());
+		return mv;
+	}
+	
 }

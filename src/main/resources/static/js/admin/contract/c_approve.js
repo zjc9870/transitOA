@@ -63,7 +63,7 @@ function seeApprove(id,tabId) {
                 break;
         }
         $('#back').data('tabId',tabId);
-        if(roleName=='法务') {
+        if(roleName !=='法务') {
             $('.yj-input').html("<input type='hidden' name='cljg' value='已审核'/>");
         }
     });
