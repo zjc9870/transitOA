@@ -35,7 +35,7 @@ custom:
 
 #服务器配置
 #server:
-#  port: 8888
+#  port: 80
 #  context-path: /
 #  
 #spring:
@@ -102,13 +102,13 @@ custom:
 #   ueditor-path: D:/transitOA/ueditor
 
 #微信企业号配置
-WxCpInMemoryConfigStorage:
-  corpId: wx9b77c621c69ea369
-  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
-  token: iuqM
-  aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
-  agentId: 2
-  expiresTime: 0
-  oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
-  httpProxyPort: 0
-  jsapiTicketExpiresTime: 0
+#WxCpInMemoryConfigStorage:
+#  corpId: wx9b77c621c69ea369
+#  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
+#  token: iuqM
+#  aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
+#  agentId: 2
+#  expiresTime: 0
+#  oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
+#  httpProxyPort: 0
+#  jsapiTicketExpiresTime: 0

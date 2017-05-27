@@ -231,13 +231,64 @@ public class ContractService {
 		if(StringUtil.equals(lx, "yht"))//已回填
 			contractList = contractRepository.findYhtContract(userId);
 		if(StringUtil.equals(lx, "yth"))//已撤销的合同(“yth”是历史原因已退回)
-			contractList = contractRepository.findByNhtr_idAndHtshztOrderBySqsjDesc(userId, REVOCATION_CONDITION);
+		    //所有已经审批过该合同的人可以看到这条合同的撤销记录
+			contractList = getYthContractList(userId);
 		if(StringUtil.equals(lx, "ysp")){ //已审批（已审批就是根据个人取出的所以不需要再进行过滤）
 			return getHtspYspList(userId, condition);
 		}
 		
 		return filter(userId, condition, contractList);
 	}
+	
+
+    /**
+     * 获取已退回的合同列表
+     * @param loginUserId
+     * @return
+     */
+    private List<Contract> getYthContractList(String loginUserId) {
+        if(isFzr(loginUserId)){
+            return fzrYthContractList();
+        }else {
+            return contractRepository.findByUserAndCondition(loginUserId, REVOCATION_CONDITION);
+        }
+    }
+
+    /**
+     * 判断当前登录用户是不是有 “负责人”角色
+     * @param loginUserId
+     * @return
+     */
+    private boolean isFzr(String loginUserId) {
+        User user = userRepository.getOne(loginUserId);
+        Set<Role> roleSet = user.getRoles();
+        for (Role role : roleSet) {
+            if(StringUtil.equals(role.getName(), "负责人")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 负责人只能看到资产管理部已经审核过的已撤销合同
+     * @return
+     */
+    private List<Contract> fzrYthContractList() {
+         List<Contract> allYthContract = contractRepository.findByHtshztOrderBySqsjDesc(REVOCATION_CONDITION);
+         List<Contract> resultList = new ArrayList<Contract>();
+         final String zcglbJd = "4"; //资产管理部审核对应的节点
+        for (Contract contract : allYthContract) {
+            Set<Lcrzb> Lcrz = contract.getLcrzSet();
+            for (Lcrzb lcrzb : Lcrz) {
+                if(StringUtil.equals(lcrzb.getDyjd(), zcglbJd)){
+                    resultList.add(contract);
+                    break;//跳出内层循环
+                }
+            }
+        }
+        return resultList;
+    }
 
 	/**
 	 * 对数据进行过滤，并设置合同的状态
