@@ -36,6 +36,7 @@ public class DraftSwVo {
 		this.id = draftSw.getId();
 		this.bh = draftSw.getBh();
 		this.bz = draftSw.getBz();
+		this.mj = draftSw.getMj();
 		this.lwdw = draftSw.getLwdw();
 		if(draftSw.getRq() != null)
 			this.rq = DateUtil.format(draftSw.getRq(), DateUtil.zbFormat);

@@ -2,8 +2,10 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,12 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.DraftSwRepository;
 import com.expect.admin.data.dao.DraftSwUserLcrzbGxbRepository;
+import com.expect.admin.data.dao.LcjdbRepository;
 import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
 import com.expect.admin.data.dataobject.DraftSw;
 import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
+import com.expect.admin.data.dataobject.Lcjdb;
 import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
@@ -62,6 +66,8 @@ public class DraftSwService {
     private LcrzbRepository lcrzbRepository;
     @Autowired
     private DmbService dmbService;
+    @Autowired
+    private LcjdbRepository lcjdbRepository;
 
     /**
      * 保存一个新的收文 如果不是提交 {<br>
@@ -95,6 +101,7 @@ public class DraftSwService {
         User user = userRepository.findOne(userVo.getId());
         DraftSw draftSw = new DraftSw(draftSwVo);
         draftSw.setSwr(user);
+        draftSw.setFqsj(new Date());
 
         draftSw.setSwzt(condition);// 收文当前所处的状态
         draftSw.setSwfl(swfl);// 收文分类
@@ -361,7 +368,7 @@ public class DraftSwService {
     public List<DraftSwVo> getDclSw(final String userId) {
         // String startCondition = lcService.getStartCondition(SWLC_ID);
         // lcService.getNextCondition(SWLC_ID, startCondition);
-        String condition = "16";
+        String condition = "15";
         List<DraftSw> dclDraftSwList = null;
         // 第一轮的待处理收文
         List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition, DraftSw.SWFL_SLYTJ);
@@ -426,10 +433,26 @@ public class DraftSwService {
         if (draftSwList == null || draftSwList.isEmpty())
             return new ArrayList<>(0);
         List<DraftSwVo> draftSwVoList = new ArrayList<>(draftSwList.size());
+        Map<String, String> swZtMap = getAllSwLcjdMapping();
         for (DraftSw draftSw : draftSwList) {
-            draftSwVoList.add(getDraftSwVoFromDraftSw(draftSw));
+            DraftSwVo draftSwVo = getDraftSwVoFromDraftSw(draftSw);
+            if(!StringUtil.isBlank(draftSw.getSwzt())) {
+                draftSwVo.setZt(swZtMap.get(draftSw.getSwzt()));
+            }
+            draftSwVoList.add(draftSwVo);
         }
         return draftSwVoList;
+    }
+    
+    public Map<String, String> getAllSwLcjdMapping() {
+        List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("4");
+        Map<String, String> resultMap = new HashMap<String, String>();
+        for (Lcjdb lcjdb : lcjdbList) {
+            resultMap.put(lcjdb.getId(), lcjdb.getName());
+        }
+        resultMap.put("T", "已回填");
+        resultMap.put("Y", "审核完成");
+        return resultMap;
     }
 
     /**
@@ -439,8 +462,8 @@ public class DraftSwService {
      * @return
      */
     private DraftSwVo getDraftSwVoFromDraftSw(DraftSw draftSw) {
-        DraftSwVo draftSwVo = new DraftSwVo();
-        BeanUtils.copyProperties(draftSw, draftSwVo);
+        DraftSwVo draftSwVo = new DraftSwVo(draftSw);
+//        BeanUtils.copyProperties(draftSw, draftSwVo);
         return draftSwVo;
     }
 
