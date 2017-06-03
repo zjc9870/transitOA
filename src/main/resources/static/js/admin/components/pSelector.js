@@ -32,8 +32,8 @@ var pSelector = {
                 //     });
                 // }
                 'data':[ {
-                    "id" : "rer",
-                    "text" : "公交部",
+                    "id" : "gg",
+                    "text" : "高管",
                     "state" : {
                         "selected" : false,
                         "opened" : false,
@@ -42,8 +42,8 @@ var pSelector = {
                     "icon" : null,
                     "sequence" : 0,
                     "children" : [ {
-                        "id" : "fdaf",
-                        "text" : "王伟",
+                        "id" : "dw",
+                        "text" : "党委",
                         "state" : {
                             "selected" : false,
                             "opened" : false,
@@ -53,8 +53,8 @@ var pSelector = {
                         "sequence" : 0,
                         "children" : [ ]
                     }, {
-                        "id" : "err",
-                        "text" : "系统部",
+                        "id" : "dsh",
+                        "text" : "董事会",
                         "state" : {
                             "selected" : false,
                             "opened" : false,
@@ -62,31 +62,230 @@ var pSelector = {
                         },
                         "icon" : null,
                         "sequence" : 0,
-                        "children" : [ {
-                            "id" : "erew",
-                            "text" : "刘欢欢",
-                            "state" : {
-                                "selected" : false,
-                                "opened" : false,
-                                "disabled" : false
-                            },
-                            "icon" : null,
-                            "sequence" : 0,
-                            "children" : [ ]
-                        } ]
+                        "children" : [ ]
                     }, {
-                        "id" : "rere",
-                        "text" : "业务部",
+                        "id" : "jsh",
+                        "text" : "监事会",
                         "state" : {
                             "selected" : false,
                             "opened" : false,
                             "disabled" : false
                         },
                         "icon" : null,
-                        "sequence" :0,
+                        "sequence" : 0,
+                        "children" : [ ]
+                    },{
+                        "id" : "zjl",
+                        "text" : "总经理",
+                        "state" : {
+                            "selected" : false,
+                            "opened" : false,
+                            "disabled" : false
+                        },
+                        "icon" : null,
+                        "sequence" : 0,
                         "children" : [ ]
                     } ]
-                } ]
+                } ,{
+                    "id" : "bm",
+                    "text" : "部门",
+                    "state" : {
+                        "selected" : false,
+                        "opened" : false,
+                        "disabled" : false
+                    },
+                    "icon" : null,
+                    "sequence" : 0,
+                    "children" : [ {
+                        "id": "bgs",
+                        "text": "办公室",
+                        "state": {
+                            "selected": false,
+                            "opened": false,
+                            "disabled": false
+                        },
+                        "icon": null,
+                        "sequence": 0,
+                        "children": [ ]
+                    },{
+                        "id": "cwb",
+                        "text": "财务部",
+                        "state": {
+                            "selected": false,
+                            "opened": false,
+                            "disabled": false
+                        },
+                        "icon": null,
+                        "sequence": 0,
+                        "children": [ ]
+                    },{
+                        "id": "rlzyb",
+                        "text": "人力资源部",
+                        "state": {
+                            "selected": false,
+                            "opened": false,
+                            "disabled": false
+                        },
+                        "icon": null,
+                        "sequence": 0,
+                        "children": [ ]
+                    },{
+                        "id": "dqgzb",
+                        "text": "党群工作部",
+                        "state": {
+                            "selected": false,
+                            "opened": false,
+                            "disabled": false
+                        },
+                        "icon": null,
+                        "sequence": 0,
+                        "children": [ ]
+                    },
+                        {
+                            "id": "zcglb",
+                            "text": "资产管理部",
+                            "state": {
+                                "selected": false,
+                                "opened": false,
+                                "disabled": false
+                            },
+                            "icon": null,
+                            "sequence": 0,
+                            "children": [ ]
+                        },{
+                            "id": "sjb",
+                            "text": "审计部",
+                            "state": {
+                                "selected": false,
+                                "opened": false,
+                                "disabled": false
+                            },
+                            "icon": null,
+                            "sequence": 0,
+                            "children": [ ]
+                        },{
+                            "id": "qyglb",
+                            "text": "企业管理部",
+                            "state": {
+                                "selected": false,
+                                "opened": false,
+                                "disabled": false
+                            },
+                            "icon": null,
+                            "sequence": 0,
+                            "children": [ ]
+                        },{
+                            "id": "aqbwb",
+                            "text": "安全保卫部",
+                            "state": {
+                                "selected": false,
+                                "opened": false,
+                                "disabled": false
+                            },
+                            "icon": null,
+                            "sequence": 0,
+                            "children": [ ]
+                        }]
+                }, {
+                    "id": "dsgj",
+                    "text": "南京东山公交客运有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": [ ]
+                }, {
+                    "id": "tsczqc",
+                    "text": "南京江宁公共交通集团有限公司通盛出租汽车分公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "czjs",
+                    "text": "南京江宁公共交通场站建设有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "xxkj",
+                    "text": "南京江宁公共交通信息科技有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "qcfw",
+                    "text": "南京江宁公共交通汽车服务有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "wz",
+                    "text": "南京江宁公共交通物资有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "zxcfw",
+                    "text": "南京江宁公共交通自行车服务有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "xcfw",
+                    "text": "南京江宁校车服务有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                },{
+                    "id": "tywh",
+                    "text": "南京江宁公共交通体育文化有限公司",
+                    "state": {
+                        "selected": false,
+                        "opened": false,
+                        "disabled": false
+                    },
+                    "icon": null,
+                    "sequence": 0,
+                    "children": []
+                }]
 
 
             },

@@ -374,6 +374,19 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		modelAndView.addObject("draftSwVo", draftSwVo);
 		return modelAndView;
 	}
-
+	
+	/**
+	 * 申请记录未提交
+	 */
+	@RequestMapping(value = "/swjlWtj")
+	public ModelAndView swjlWtj(@RequestParam(name = "id", required = true)String swId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsWtj");
+		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
+		DmbVo dmbVo = dmbService.getDmbVoByLbbhAndDmbh("draftSw", "ldjsId");
+		List<UserVo> ldList = roleService.getUserOfRole(dmbVo.getDmms());
+		modelAndView.addObject("draftSwVo", draftSwVo);
+		modelAndView.addObject("ldList", ldList);
+		return modelAndView;
+	}
 
 }

@@ -154,18 +154,32 @@ var SweetAlert = function() {
 		})
 	}
 
+	var initSwalPselect = function (title,content,confirm) {
+		swal({
+			title: title,
+			type: "content",
+			content: content,
+			showCancelButton: true,
+			closeOnConfirm: true,
+			animation: "slide-from-top",
+			confirmButtonText: "确定",
+			cancelButtonText: "取消"
+		},function (isConfirm) {
+			if(isConfirm && confirm) {
+				confirm();
+			}
+		})
+		pSelector.init();
+		$('.sweet-alert').css('margin-top','-200px');
+		$('.sweet-alert-content').css('text-align','left');
+		$('#person-tree').css({'max-height':'270px','overflow':'auto'});
+	}
+
 	return {
-		init: function (sweetalertId) {
-			initSweetAlert(sweetalertId);
-    	},
-    	swal:function(title,text,type,config,confirm,notConfirm){
-    		initSwal(title,text,type,config,confirm,notConfirm);
-    	},
-    	swalInput:function(title,text,inputPlaceholder,confirm){
-    		initSwalInput(title,text,inputPlaceholder,confirm);
-    	},
-		swalContent: function (title,content,confirm) {
-			initSwalContent(title,content,confirm);
-		}
+		init: initSweetAlert,
+    	swal:initSwal,
+    	swalInput: initSwalInput,
+		swalContent: initSwalContent,
+		swalPselect: initSwalPselect
 	}
 }();
