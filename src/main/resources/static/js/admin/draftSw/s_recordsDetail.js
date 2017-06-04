@@ -28,6 +28,15 @@
         }
     });
 
+    $('#end').click(function () {
+        AjaxTool.post('draftSw/terminate',{draftSwId:draftSwId},function (data) {
+            if(data.success) {
+                alert(data.message);
+                toSwjl();
+            }
+        })
+    })
+
     function toSwjl() {
         AjaxTool.getHtml('draftSw/swRecord',function (html) {
             $('.page-content').html(html);
