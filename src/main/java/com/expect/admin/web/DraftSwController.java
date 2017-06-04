@@ -203,17 +203,19 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 			@RequestParam(name = "userIdList", required = true)List<String> cyrIdList,
 			@RequestParam(name = "ryfl", required = true)String ryfl,
 			HttpServletResponse response) throws IOException{
+	    String message = "添加传阅人";
 		try{
 		    if(StringUtil.equals(ryfl, "chyr")){//传阅人
 		        draftSwService.addCyr(cyrIdList, draftSwId);
 		    }else if(StringUtil.equals(ryfl, "blr")) {//办理人
 		        draftSwService.addBlr(cyrIdList, draftSwId);
+		        message = "添加办理人";
 		    }
 		}catch(Exception e) {
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加传阅人出错！").build());
-			log.error("添加传阅人出错收文id： " + draftSwId + "传阅人id " + cyrIdList.toString(), e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, message + "出错！").build());
+			log.error(message + "出错收文id： " + draftSwId + "人员id " + cyrIdList.toString(), e);
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加传阅人成功！").build());
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, message + "成功！").build());
 	}
 	
 	
