@@ -47,7 +47,6 @@ function seeBl(id,tabId) {
         }
         $('#back').data('tabId',tabId);
     });
-
 }
 
 
