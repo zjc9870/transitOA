@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,6 @@ import com.expect.admin.service.DmbService;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
-import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.UserVo;
@@ -263,21 +263,6 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "收文传阅审批成功！").build());
 	}
-	
-////	添加办理人
-//	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
-//	public void addBlr(
-//			@RequestParam(name = "draftSwId", required = true) String draftSwId,
-//			@RequestParam(name = "userIdList", required = true)List<String> blrIdList,
-//			HttpServletResponse response) throws IOException{
-//		try{
-//			draftSwService.addBlr(blrIdList, draftSwId);
-//		}catch(Exception e) {
-//			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加办理人出错！").build());
-//			log.error("添加办理人出错收文id： " + draftSwId + "办理人id " + blrIdList.toString(), e);
-//		}
-//		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加办理人成功！").build());
-//	}
 	
 	/**
 	 * 收文办理

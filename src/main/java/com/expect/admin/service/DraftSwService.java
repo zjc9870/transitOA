@@ -29,6 +29,7 @@ import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
+import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.DraftSw;
 import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
 import com.expect.admin.data.dataobject.Lcjdb;
@@ -36,6 +37,7 @@ import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.LcrzbVo;
@@ -183,10 +185,24 @@ public class DraftSwService {
         if (draftSw == null)
             throw new BaseAppException("id为 " + id + "的收文没有找到");
         DraftSwVo draftSwVo = new DraftSwVo(draftSw);
-
+        
+        draftSwVo.setAttachmentList(
+                getDraftSwAttachment(draftSw.getAttachments()));
         // 流程信息
         processLcrz(id, draftSwVo);
         return draftSwVo;
+    }
+    
+    private List<AttachmentVo> getDraftSwAttachment(Set<Attachment> attachmentSet) {
+//        Set<Attachment> attachmentList = contract.getAttachments();
+        List<AttachmentVo> attachmentVoList = new ArrayList<>();
+        if(attachmentSet != null && !attachmentSet.isEmpty())
+            for (Attachment attachment : attachmentSet) {
+                AttachmentVo attachementVo = new AttachmentVo();
+                BeanUtils.copyProperties(attachment, attachementVo);
+                attachmentVoList.add(attachementVo);
+            }
+        return attachmentVoList;
     }
 
     /**
