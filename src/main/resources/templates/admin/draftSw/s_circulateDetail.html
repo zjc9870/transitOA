@@ -81,9 +81,12 @@
             </div>
         </form>
         <input type="hidden" th:value="${draftSwVo.id}" id="data" />
-        <button id="submit" onclick="submitForm()" class="button" style="margin-left:20%">提交</button>
+        <button id="submit" class="button" style="margin-left:20%">提交</button>
     </div>
 </div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
 <script th:src="@{/js/admin/draftSw/s_circulateDetail.js}" type="text/javascript"></script>
 </body>
 </html>
