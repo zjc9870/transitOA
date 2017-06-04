@@ -44,7 +44,7 @@ for(var i=0; i<tabs.length; i++) {
 
 
 function seePs(id,tabId) {
-    AjaxTool.html('draftSw/swPs',{id: id},function (html) {
+    AjaxTool.html('draftSw/swPs',{draftSwId: id},function (html) {
         $('.portlet-body').html(html);
         switch (tabId) {
             case "yps":
