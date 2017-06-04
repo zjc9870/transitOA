@@ -147,6 +147,14 @@ public class DraftSwService {
             return;
         draftSwRepository.save(new DraftSw(draftSwVo));
     }
+    
+    public void terminate(String draftSwId) {
+        if(StringUtil.isBlank(draftSwId)) throw new BaseAppException("要结束的收文ID为空");
+        DraftSw swToTernimate = draftSwRepository.findOne(draftSwId);
+        if(swToTernimate == null) throw new BaseAppException("没有找到要结束的收文");
+        swToTernimate.setSwzt("Y");//设置收文状态为已完成
+        draftSwRepository.save(swToTernimate);
+    }
 
     /**
      * 未实现
@@ -602,6 +610,7 @@ public class DraftSwService {
             throw new BaseAppException("没有找到想应的收文记录");
         // 获取相应的人员列表
         List<User> xgryList = userRepository.findAll(userIdList);
+        if(xgryList == null || xgryList.size() == 0) throw new BaseAppException("未选择要添加的人员");
         // 从代码表中获取传阅人角色的id
         String xgjsDmbh = getXgjsDmbh(ryfl);
         DmbVo cyrJsId = dmbService.getDmbVoByLbbhAndDmbh("draftSw", xgjsDmbh);

@@ -360,19 +360,17 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存批示成功！").build());
 	}
 	
-//	//返回或结束,设置一下流程节点
-//	@RequestMapping(value = "/fh" , method = RequestMethod.POST)
-//	public void fh(DraftSwVo draftSwVo,@RequestParam(name = "nextStep", required = true)String nextStep, HttpServletResponse response){
-//		if(nextStep.equals("fh")){
-//			String condition = lcService.getJd("4", "选择传阅人");
-//			draftSwVo.setZt(condition);
-//		}else if(nextStep.equals("js")){
-//			String condition = "Y";
-//			draftSwVo.setZt(condition);
-//		}
-//		
-//		draftSwService.save(draftSwVo);
-//	}
+	//收文结束
+	@RequestMapping(value = "/terminate" , method = RequestMethod.POST)
+	public void terminate(@RequestParam(name = "draftSwId", required = true)String draftSwId, HttpServletResponse response) throws IOException{
+	    try{
+	        draftSwService.terminate(draftSwId);
+	    }catch(BaseAppException baseAppE) {
+	        log.error("结束收文出错", baseAppE);
+            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, baseAppE.getMessage()).build());
+	    }
+	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "结束收文成功！").build());
+	}
 	
 	/**
 	 * 收文查询
