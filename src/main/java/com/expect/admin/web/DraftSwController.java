@@ -355,6 +355,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 			log.error("保存领导批示出错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存领导意见失败！").build());
 		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存批示成功！").build());
 	}
 	
 //	//返回或结束,设置一下流程节点
