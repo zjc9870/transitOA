@@ -54,6 +54,7 @@
     <div class="process">
         <th:block th:if='${not #lists.isEmpty(draftSwVo.blrRecordList)}'>
             <ul th:each="lcrz : ${draftSwVo.blrRecordList}">
+                <input id="attachList" type="hidden" th:value="${draftSwVo.attachmentList}" />
                 <th:block>
                     <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
                         <th:block th:if="${lcrz.cljg=='通过'}">
