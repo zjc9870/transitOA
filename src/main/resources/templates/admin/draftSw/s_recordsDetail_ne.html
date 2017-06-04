@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <div class="lg-block-content">
+        <div class="lg-block-title1">南京江宁公共交通集团公司办公室办文单</div>
+        <th:block>
+            <ul>
+                <li>
+                    <div class="form-title">文件标题:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.wjbt}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">来文单位:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.lwdw}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">文号:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.wh}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">日期:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.rq}"></pre>
+                </li>
+                <input id="mjVal" type="hidden" th:value="${draftSwVo.mj}" />
+                <input id="draftSwId" type="hidden" th:value="${draftSwVo.id}"/>
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input  type="radio" name="mj" value="1"
+                      disabled="disabled" /><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input  type="radio" name="mj" value="2"
+                      disabled="disabled"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input  type="radio" name="mj" value="3"
+                      disabled="disabled"/><span>秘密</span></div>
+                </li>
+                <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+            </ul>
+        </th:block>
+    </div>
+</div>
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">收文流程</span>
+        <span class="lg-block-subtitle2">Receiving Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.jyzyRecordList)}'>
+            <ul th:each="jr : ${draftSwVo.jyzyRecordList}">
+                <th:block>
+                    <li><div class="process-title" th:text="${jr.lcjd}"></div>
+                        <th:block th:if="${jr.cljg=='通过'}">
+                            <div th:title="${'处理意见:'+(jr.message==''?'无':jr.message)+'&#10;处理时间:'+ jr.clsj}"
+                            class="process-content-pass" th:text="'已审核'+'('+${jr.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${jr.cljg=='不通过'}">
+                            <div th:title="${'处理意见:'+(jr.message==''?'无':jr.message)+'&#10;处理时间:'+ jr.clsj}"
+                            class="process-content-nopass" th:text="'终止'+'('+${jr.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${jr.cljg=='新增'}">
+                            <div th:title="${'处理意见:'+(jr.message==''?'无':jr.message)+'&#10;处理时间:'+ jr.clsj}"
+                            class="process-content-pass" th:text="${jr.cljg}+'('+${jr.userName}+')'"></div>
+                        </th:block>
+                    </li>
+                </th:block>
+            </ul>
+        </th:block>
+    </div>
+</div>
+<script th:src="@{/js/admin/draftSw/s_recordsDetail.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -1,5 +1,4 @@
-(function () {
-    var draftSwId = $('#draftSwId').val();
+$(document).ready(function () {
     var mjVal = $('#mjVal').val();
     var mjInput = $('input[name="mj"]');
     for(var i=0;i<mjInput.length;i++) {
@@ -9,34 +8,52 @@
         }
     }
 
-    $('#selectCB').click(function(e){
-        var button = e.target;
-        if(button.name === "button") {
-            var title = button.id =="chyr" ? "选择传阅人":"选择办理人";
-            var s = "<form id='selectForm'> <div id='search-box'></div> "+
-            "<div id='person-tree' ></div></form>";
-            SweetAlert.swalPselect(title,s,function () {
-                var tree = $('#person-tree').jstree(true);
-                var ids = JSON.stringify(tree.get_bottom_checked());
-                AjaxTool.post('draftSw/addCyr',{
-                    draftSwId:draftSwId,ryfl:button.id,userIdList:ids},function (data) {
-                    if(data.success) {
-                        alert(data.message);
-                        toSwjl();
-                    }
-                })
-            })
+    var validator = $('#s_blForm').validate({
+        errorElement: 'div',
+        errorClass: 'error-tips',
+        rules: {
+            blqk: {
+                maxlength: 300
+            }
+        },
+        messages: {
+            blqk: {
+                maxlength: "字数不能超过300字"
+            }
+        },
+        errorPlacement: function(error, element) {
+            error.appendTo(element.parent());
         }
     });
 
-    function toSwjl() {
-        AjaxTool.getHtml('draftSw/swRecord',function (html) {
+    $('#submit').click(function () {
+        if(validator.form()) {
+            AjaxTool.post('draftSw/bl', $('#s_blForm').serialize()+"&draftSwId="+$('#data').val(), function (data) {
+                alert(data.message);
+                toSwbl();
+            })
+        } else {
+            alert("提交失败!");
+        }
+    });
+
+    function toSwbl() {
+        AjaxTool.getHtml('draftSw/swBlRecord',function (html) {
             $('.page-content').html(html);
         });
     }
 
 
-    //附件查看
+    $('#back').click(function () {
+        var tabId = $('#back').data('tabId');
+        AjaxTool.getHtml('draftSw/swBlRecord',function (html) {
+            $('.page-content').html(html);
+            $('#'+tabId).trigger('click');
+        });
+    });
+
+
+//附件查看
     var n = 1;
     $('#fjck').click(
         function () {
@@ -64,5 +81,4 @@
             n += 1;
         }
     );
-
-})();
+})

@@ -60,7 +60,7 @@ function seeSwRecordE(id,tabId) {
 }
 
 function seeSwRecordNE(id,tabId) {
-    AjaxTool.html('draftSw/sqjlxqNE',{id: id},function (html) {
+    AjaxTool.html('draftSw/swjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
         $('#back').data('tabId',tabId);
     });

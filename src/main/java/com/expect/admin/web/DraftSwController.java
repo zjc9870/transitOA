@@ -395,7 +395,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	 * 收文记录详情
 	 */
 	@RequestMapping(value = "/swjlxq")
-	public ModelAndView sqjlxq(@RequestParam(name = "id", required = true)String swId) {
+	public ModelAndView swjlxq(@RequestParam(name = "id", required = true)String swId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsDetail");
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
 		modelAndView.addObject("draftSwVo", draftSwVo);
@@ -403,7 +403,18 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	}
 	
 	/**
-	 * 申请记录未提交
+	 * 收文记录详情(不可编辑)
+	 */
+	@RequestMapping(value = "/swjlxqNE")
+	public ModelAndView swjlxqNE(@RequestParam(name = "id", required = true)String swId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsDetail_ne");
+		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
+		modelAndView.addObject("draftSwVo", draftSwVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 收文记录未提交
 	 */
 	@RequestMapping(value = "/swjlWtj")
 	public ModelAndView swjlWtj(@RequestParam(name = "id", required = true)String swId) {
