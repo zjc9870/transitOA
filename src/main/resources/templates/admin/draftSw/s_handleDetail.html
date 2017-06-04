@@ -52,21 +52,44 @@
         <span class="lg-block-subtitle2">Receive Process</span>
     </div>
     <div class="process">
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.jyzyRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.jyzyRecordList}">
+                <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                    <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已处理'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.ldRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.ldRecordList}">
+                <li><div class="process-title" th:text="领导批示"></div>
+                    <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已批示'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <!--<th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>-->
+        <!--<ul>-->
+        <!--<li>-->
+        <!--<div class="process-title" th:text="传阅"></div>-->
+        <!--<div id="cyrRecord" class="process-content-pass"></div>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</th:block>-->
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.cyrRecordList}">
+                <li><div class="process-title" th:text="传阅"></div>
+                    <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已传阅'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
         <th:block th:if='${not #lists.isEmpty(draftSwVo.blrRecordList)}'>
             <ul th:each="lcrz : ${draftSwVo.blrRecordList}">
-                <input id="attachList" type="hidden" th:value="${draftSwVo.attachmentList}" />
-                <th:block>
-                    <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
-                        <th:block th:if="${lcrz.cljg=='通过'}">
-                            <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
-                        </th:block>
-                        <th:block th:if="${lcrz.cljg=='不通过'}">
-                            <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
-                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
-                        </th:block>
-                    </li>
-                </th:block>
+                <li><div class="process-title" th:text="办理"></div>
+                    <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已办理'+'('+${lcrz.userName}+')'"></div>
+                </li>
             </ul>
         </th:block>
     </div>

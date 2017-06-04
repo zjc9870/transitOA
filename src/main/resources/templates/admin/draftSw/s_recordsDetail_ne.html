@@ -32,6 +32,7 @@
                 <input id="mjVal" type="hidden" th:value="${draftSwVo.mj}" />
                 <input id="draftSwId" type="hidden" th:value="${draftSwVo.id}"/>
                 <input id="attachList" type="hidden" th:value="${draftSwVo.attachmentList}" />
+                <input id="cyrRecordList" type="hidden" th:value="${draftSwVo.cyrRecordList}"/>
                 <li>
                     <div class="form-title">密级:</div>
                     <div class="pform-radio"><input  type="radio" name="mj" value="1"
@@ -56,7 +57,7 @@
             <ul th:each="lcrz : ${draftSwVo.jyzyRecordList}">
                 <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
                     <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
-                    class="process-content-pass" th:text="'已审核'+'('+${lcrz.userName}+')'"></div>
+                    class="process-content-pass" th:text="'已处理'+'('+${lcrz.userName}+')'"></div>
                 </li>
             </ul>
         </th:block>
@@ -68,6 +69,14 @@
                 </li>
             </ul>
         </th:block>
+        <!--<th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>-->
+            <!--<ul>-->
+                <!--<li>-->
+                    <!--<div class="process-title" th:text="传阅"></div>-->
+                    <!--<div id="cyrRecord" class="process-content-pass"></div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</th:block>-->
         <th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>
             <ul th:each="lcrz : ${draftSwVo.cyrRecordList}">
                 <li><div class="process-title" th:text="传阅"></div>
