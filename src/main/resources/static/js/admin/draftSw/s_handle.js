@@ -36,7 +36,7 @@ for(var i=0; i<tabs.length; i++) {
 
 
 function seeBl(id,tabId) {
-    AjaxTool.html('draftSw/swbl',{id: id},function (html) {
+    AjaxTool.html('draftSw/swbl',{draftSwId: id},function (html) {
         $('.portlet-body').html(html);
         switch (tabId) {
             case "ybl":

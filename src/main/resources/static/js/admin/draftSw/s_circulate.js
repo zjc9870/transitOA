@@ -36,7 +36,7 @@ for(var i=0; i<tabs.length; i++) {
 
 
 function seeCy(id,tabId) {
-    AjaxTool.html('draftSw/swCy',{id: id},function (html) {
+    AjaxTool.html('draftSw/swCy',{draftSwId: id},function (html) {
         $('.portlet-body').html(html);
         switch (tabId) {
             case "ycy":
