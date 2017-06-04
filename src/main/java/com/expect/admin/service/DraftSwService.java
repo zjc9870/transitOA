@@ -333,8 +333,9 @@ public class DraftSwService {
                     predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
                 else
                     predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
-                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
-                return cb.and(predicateA);
+//                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
+                Predicate[] predicate = new Predicate[predicateList.size()];
+                return cb.and(predicateList.toArray(predicate));
             }
         });
         return getDraftSwVoListFromDraftSwList(wclDraftSwList);
