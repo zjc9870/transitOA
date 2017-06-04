@@ -17,9 +17,8 @@
             "<div id='person-tree' ></div></form>";
             SweetAlert.swalPselect(title,s,function () {
                 var tree = $('#person-tree').jstree(true);
-                var ids = JSON.stringify(tree.get_bottom_checked());
-                AjaxTool.post('draftSw/addCyr',{
-                    draftSwId:draftSwId,ryfl:button.id,userIdList:ids},function (data) {
+                var ids = tree.get_bottom_checked();
+                AjaxTool.post('draftSw/addCyr',"draftSwId="+draftSwId+"&ryfl="+button.id+"&userIdList="+ids,function (data) {
                     if(data.success) {
                         alert(data.message);
                         toSwjl();

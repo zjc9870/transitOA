@@ -65,4 +65,4 @@ jQuery(document).ready(function() {
     init();
 });
 
-$('#ybl').click();
+$('#wbl').click();

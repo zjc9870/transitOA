@@ -10,7 +10,7 @@ for(var i=0; i<tabs.length; i++) {
                     var str = "";
                     var drafts = data.content;
                     for(var i=0;i<drafts.length;i++) {
-                        str += "<tr>";
+                        str += "<tr id='"+drafts[i].id+"'>";
                         str += "<td>"+drafts[i].wjbt+"</td>";
                         str += "<td>"+drafts[i].fqsj+"</td>";
                         str += "<td>"+drafts[i].swr+"</td>";

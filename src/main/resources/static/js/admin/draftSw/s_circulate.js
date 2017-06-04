@@ -66,4 +66,4 @@ jQuery(document).ready(function() {
     init();
 });
 
-$('#ycy').click();
+$('#dcy').click();
