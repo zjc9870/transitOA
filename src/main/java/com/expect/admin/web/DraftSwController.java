@@ -136,6 +136,33 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		ModelAndView mv = new ModelAndView(viewName + "s_records");
 		return mv;
 	}
+	/**
+     * 收文传阅列表界面  直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swCyRecord", method = RequestMethod.GET)
+    public ModelAndView swCyRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_circulate");
+        return mv;
+    }
+    /**
+     * 收文领导批示列表页面 直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swPsRecord", method = RequestMethod.GET)
+    public ModelAndView swPsRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_instructions");
+        return mv;
+    }
+    /**
+     * 收文办理列表页面 直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swBlRecord", method = RequestMethod.GET)
+    public ModelAndView swblRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_handle");
+        return mv;
+    }
 	
 	
 	/**
@@ -204,7 +231,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}catch(Exception e) {
 			log.error("收文传阅是获取收文记录失败 收文id" + draftSwId, e);
 		}
-		ModelAndView mv = new ModelAndView(viewName + "s_circulate");
+		ModelAndView mv = new ModelAndView(viewName + "s_circulateDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
@@ -263,7 +290,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}catch(Exception e) {
 			log.error("收文传阅是获取收文记录失败 收文id" + draftSwId, e);
 		}
-		ModelAndView mv = new ModelAndView(viewName + "s_handle");
+		ModelAndView mv = new ModelAndView(viewName + "s_handleDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
@@ -297,7 +324,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	public ModelAndView swPs(
 			@RequestParam(name = "draftSwId", required = true)String draftSwId) {
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(draftSwId);
-		ModelAndView mv = new ModelAndView(viewName + "s_instructions");
+		ModelAndView mv = new ModelAndView(viewName + "s_instructionsDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
