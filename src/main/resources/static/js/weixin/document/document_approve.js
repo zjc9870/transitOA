@@ -1,13 +1,19 @@
 
 var roleName = $('#roleName').val();
+
+var $searchBar = $('#searchBar'),
+$searchResult = $('#searchResult'),
+$searchText = $('#searchText'),
+$searchInput = $('#searchInput'),
+$searchClear = $('#searchClear'),
+$searchCancel = $('#searchCancel');
+
 $(document).ready(function () {
 	var dsp_count = 0;
 	var ysp_count = 0;
-	var yth_count = 0;
 	
 	var dsp_cons = "";
 	var ysp_cons = "";
-	var yth_cons = "";
 	AjaxTool.get('sqjlTab', {
         lx: 'dsp', bz: 'sp'},function (data) {
         if(data.success) {
@@ -119,7 +125,85 @@ $(document).ready(function () {
 		  $("#weui_content_ysp").append(str);
 		});
 	
+		//搜索
+	
+    $(function(){
+
+        function hideSearchResult(){
+            $searchResult.hide();
+            $searchInput.val('');
+        }
+        function cancelSearch(){
+            hideSearchResult();
+            $searchBar.removeClass('weui-search-bar_focusing');
+            $searchText.show();
+        }
+
+        $searchText.on('click', function(){
+            $searchBar.addClass('weui-search-bar_focusing');
+            $searchInput.focus();
+        });
+        $searchInput
+            .on('blur', function () {
+                if(!this.value.length) cancelSearch();
+            })
+            .on('input', function(){
+                if(this.value.length) {
+                	changeResult(this.value,dsp_cons,ysp_cons);
+                    $searchResult.show();
+                } else {
+                    $searchResult.hide();
+                }
+            })
+        ;
+        $searchClear.on('click', function(){
+            hideSearchResult();
+            $searchInput.focus();
+        });
+        $searchCancel.on('click', function(){
+            cancelSearch();
+            $searchInput.blur();
+        });
+    });
+	
 });
+
+
+function changeResult(keyword,dsp_cons,ysp_cons){
+	str = "";
+	str += searchCons(keyword,dsp_cons,"dsp");
+	str += searchCons(keyword,ysp_cons,"ysp");
+	$searchResult.html("");
+	$searchResult.html(str);
+}
+
+function searchCons(keyword,cons,lx){
+	var str = "";
+	for(var i=0;i<cons.length;i++) {
+		if(contain(cons[i].bt,keyword)==1){
+	      	str+="<a class='weui-cell weui-cells_access' href='javascript:;'>";
+	      	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+lx+"\")' class='weui-cell__bd weui-cell_primary'>";
+	      	str+="<p>"+cons[i].bt+"</p>";
+	      	str+="</div>";
+	      	str+="<div class='weui-cell__ft'>";
+	      	str+="</div>";
+	      	str+="</a>";
+		}
+      }
+	return str;
+}
+
+function contain(str,substr){
+	if(str){
+		if(str.indexOf(substr) >= 0 ){
+			   return 1;
+			}else{
+				return 0;
+			}
+	}
+	
+}
+
 
 function seeApprove(id,tabId) {
     	location.href="/weixin/document/gwspckxq?id="+id+"&lx="+tabId;
