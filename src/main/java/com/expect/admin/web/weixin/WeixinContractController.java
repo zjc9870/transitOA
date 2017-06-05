@@ -77,8 +77,6 @@ public class WeixinContractController {
 			                 HttpServletResponse response) throws IOException {
 		if(!contractCheck(contractVo, response)) return;
 		String message = StringUtil.equals(bczl, "tj") ? "合同申请" : "合同保存";
-		contractVo.setNqdrq(dateFormat(contractVo.getNqdrq()));
-		contractVo.setQx(dateFormat(contractVo.getQx()));
 		try{
 			contractService.newContractSave(contractVo, bczl, attachmentId);
 //			log.info("合同申请 sbd" + contractVo.getHtbt());
@@ -89,18 +87,7 @@ public class WeixinContractController {
 		}
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, message + "成功！").build());
 	}
-	
-	private String dateFormat(String sj) {
-		Date date = DateUtil.parse(sj, "yyyy-MM-dd");
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DateUtil.zbFormat);
-		return simpleDateFormat.format(date);
-	}
-	
-	private String dateFormat_2(String sj) {
-		Date date = DateUtil.parse(sj, DateUtil.zbFormat);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		return simpleDateFormat.format(date);
-	}
+
 
 	/**
 	 * 判断新申请的合同是不是满足要求
@@ -178,8 +165,6 @@ public class WeixinContractController {
 	public ModelAndView sqjlxqE(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "contract_submit_detail");
 		ContractVo contractVo = contractService.getContractById(contractId);
-		contractVo.setNqdrq(dateFormat_2(contractVo.getNqdrq()));
-		contractVo.setQx(dateFormat_2(contractVo.getQx()));
 		System.out.println(contractVo.getHtnr());
 		modelAndView.addObject("contractVo", contractVo);
 		return modelAndView;
@@ -192,8 +177,6 @@ public class WeixinContractController {
 	public ModelAndView sqjlxqNE(@RequestParam(name = "id", required = true)String contractId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "contract_submit_detail");
 		ContractVo contractVo = contractService.getContractById(contractId);
-		contractVo.setNqdrq(dateFormat_2(contractVo.getNqdrq()));
-		contractVo.setQx(dateFormat_2(contractVo.getQx()));
 		modelAndView.addObject("contractVo", contractVo);
 		return modelAndView;
 	}
@@ -206,12 +189,12 @@ public class WeixinContractController {
 	public ModelAndView htspckxq(@RequestParam(name = "id", required = true)String contractId,@RequestParam(name = "lx", required = true)String lx){
 		ModelAndView modelAndView = new ModelAndView(viewName + "contract_approve_detail");
 		ContractVo contractVo = contractService.getContractById(contractId);
-		contractVo.setNqdrq(dateFormat_2(contractVo.getNqdrq()));
-		contractVo.setQx(dateFormat_2(contractVo.getQx()));
 		modelAndView.addObject("contractVo", contractVo);
 		modelAndView.addObject("lx", lx);
 		return modelAndView;
 	}
+	
+	
 	
 	/**
 	 * 合同审批

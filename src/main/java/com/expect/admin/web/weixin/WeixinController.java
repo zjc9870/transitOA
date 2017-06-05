@@ -150,8 +150,8 @@ public class WeixinController {
     		ModelAndView mv = new ModelAndView("redirect:/weixin/contract/approve");
 //    		mv.addObject("roleName", roleVo.getName());
     		return mv;
-    	}else if(state.equals("draftSw")){
-    		ModelAndView mv = new ModelAndView(viewName+"draftSw_list");
+    	}else if(state.equals("documentApprove")){
+    		ModelAndView mv = new ModelAndView("redirect:/weixin/document/approve");
     		return mv;
     	}else if(state.equals("backfill")){
     		ModelAndView mv = new ModelAndView(viewName + "contract_backfill");
