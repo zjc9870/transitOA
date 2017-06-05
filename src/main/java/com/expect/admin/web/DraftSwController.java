@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,6 @@ import com.expect.admin.service.DmbService;
 import com.expect.admin.service.DraftSwService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
-import com.expect.admin.service.vo.ContractVo;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.UserVo;
@@ -136,6 +136,33 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		ModelAndView mv = new ModelAndView(viewName + "s_records");
 		return mv;
 	}
+	/**
+     * 收文传阅列表界面  直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swCyRecord", method = RequestMethod.GET)
+    public ModelAndView swCyRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_circulate");
+        return mv;
+    }
+    /**
+     * 收文领导批示列表页面 直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swPsRecord", method = RequestMethod.GET)
+    public ModelAndView swPsRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_instructions");
+        return mv;
+    }
+    /**
+     * 收文办理列表页面 直接返回页面 不做数据请求（暂定）
+     * @return
+     */
+    @RequestMapping(value = "/swBlRecord", method = RequestMethod.GET)
+    public ModelAndView swblRecord() {
+        ModelAndView mv = new ModelAndView(viewName + "s_handle");
+        return mv;
+    }
 	
 	
 	/**
@@ -176,17 +203,19 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 			@RequestParam(name = "userIdList", required = true)List<String> cyrIdList,
 			@RequestParam(name = "ryfl", required = true)String ryfl,
 			HttpServletResponse response) throws IOException{
+	    String message = "添加传阅人";
 		try{
 		    if(StringUtil.equals(ryfl, "chyr")){//传阅人
 		        draftSwService.addCyr(cyrIdList, draftSwId);
 		    }else if(StringUtil.equals(ryfl, "blr")) {//办理人
 		        draftSwService.addBlr(cyrIdList, draftSwId);
+		        message = "添加办理人";
 		    }
 		}catch(Exception e) {
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加传阅人出错！").build());
-			log.error("添加传阅人出错收文id： " + draftSwId + "传阅人id " + cyrIdList.toString(), e);
+			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, message + "出错！").build());
+			log.error(message + "出错收文id： " + draftSwId + "人员id " + cyrIdList.toString(), e);
 		}
-		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加传阅人成功！").build());
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, message + "成功！").build());
 	}
 	
 	
@@ -204,7 +233,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}catch(Exception e) {
 			log.error("收文传阅是获取收文记录失败 收文id" + draftSwId, e);
 		}
-		ModelAndView mv = new ModelAndView(viewName + "s_circulate");
+		ModelAndView mv = new ModelAndView(viewName + "s_circulateDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
@@ -235,21 +264,6 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "收文传阅审批成功！").build());
 	}
 	
-////	添加办理人
-//	@RequestMapping(value = "/addBlr" , method = RequestMethod.POST)
-//	public void addBlr(
-//			@RequestParam(name = "draftSwId", required = true) String draftSwId,
-//			@RequestParam(name = "userIdList", required = true)List<String> blrIdList,
-//			HttpServletResponse response) throws IOException{
-//		try{
-//			draftSwService.addBlr(blrIdList, draftSwId);
-//		}catch(Exception e) {
-//			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "添加办理人出错！").build());
-//			log.error("添加办理人出错收文id： " + draftSwId + "办理人id " + blrIdList.toString(), e);
-//		}
-//		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "添加办理人成功！").build());
-//	}
-	
 	/**
 	 * 收文办理
 	 * @return
@@ -263,7 +277,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		}catch(Exception e) {
 			log.error("收文传阅是获取收文记录失败 收文id" + draftSwId, e);
 		}
-		ModelAndView mv = new ModelAndView(viewName + "s_handle");
+		ModelAndView mv = new ModelAndView(viewName + "s_handleDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
@@ -297,7 +311,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	public ModelAndView swPs(
 			@RequestParam(name = "draftSwId", required = true)String draftSwId) {
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(draftSwId);
-		ModelAndView mv = new ModelAndView(viewName + "s_instructions");
+		ModelAndView mv = new ModelAndView(viewName + "s_instructionsDetail");
 		mv.addObject("draftSwVo", draftSwVo);
 		return mv;
 	}
@@ -328,21 +342,20 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 			log.error("保存领导批示出错", e);
 			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存领导意见失败！").build());
 		}
+		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存批示成功！").build());
 	}
 	
-//	//返回或结束,设置一下流程节点
-//	@RequestMapping(value = "/fh" , method = RequestMethod.POST)
-//	public void fh(DraftSwVo draftSwVo,@RequestParam(name = "nextStep", required = true)String nextStep, HttpServletResponse response){
-//		if(nextStep.equals("fh")){
-//			String condition = lcService.getJd("4", "选择传阅人");
-//			draftSwVo.setZt(condition);
-//		}else if(nextStep.equals("js")){
-//			String condition = "Y";
-//			draftSwVo.setZt(condition);
-//		}
-//		
-//		draftSwService.save(draftSwVo);
-//	}
+	//收文结束
+	@RequestMapping(value = "/terminate" , method = RequestMethod.POST)
+	public void terminate(@RequestParam(name = "draftSwId", required = true)String draftSwId, HttpServletResponse response) throws IOException{
+	    try{
+	        draftSwService.terminate(draftSwId);
+	    }catch(BaseAppException baseAppE) {
+	        log.error("结束收文出错", baseAppE);
+            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, baseAppE.getMessage()).build());
+	    }
+	    MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "结束收文成功！").build());
+	}
 	
 	/**
 	 * 收文查询
@@ -368,12 +381,36 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	 * 收文记录详情
 	 */
 	@RequestMapping(value = "/swjlxq")
-	public ModelAndView sqjlxq(@RequestParam(name = "id", required = true)String swId) {
+	public ModelAndView swjlxq(@RequestParam(name = "id", required = true)String swId) {
 		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsDetail");
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
 		modelAndView.addObject("draftSwVo", draftSwVo);
 		return modelAndView;
 	}
-
+	
+	/**
+	 * 收文记录详情(不可编辑)
+	 */
+	@RequestMapping(value = "/swjlxqNE")
+	public ModelAndView swjlxqNE(@RequestParam(name = "id", required = true)String swId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsDetail_ne");
+		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
+		modelAndView.addObject("draftSwVo", draftSwVo);
+		return modelAndView;
+	}
+	
+	/**
+	 * 收文记录未提交
+	 */
+	@RequestMapping(value = "/swjlWtj")
+	public ModelAndView swjlWtj(@RequestParam(name = "id", required = true)String swId) {
+		ModelAndView modelAndView = new ModelAndView(viewName + "s_recordsWtj");
+		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
+		DmbVo dmbVo = dmbService.getDmbVoByLbbhAndDmbh("draftSw", "ldjsId");
+		List<UserVo> ldList = roleService.getUserOfRole(dmbVo.getDmms());
+		modelAndView.addObject("draftSwVo", draftSwVo);
+		modelAndView.addObject("ldList", ldList);
+		return modelAndView;
+	}
 
 }

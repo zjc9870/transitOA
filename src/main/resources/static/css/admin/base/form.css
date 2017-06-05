@@ -230,3 +230,26 @@
     background-color: #007937 !important;
     border-color: #007937 !important;
 }
+
+.clearfix:after {
+    content: ".";
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    display:block;
+}
+
+.selectP {
+    float:left;
+    margin-left:20%;
+    padding:20px 0 20px 0;
+    line-height: 24px;
+}
+
+.person-tree {
+    display: inline-block;
+}
+
+.selectBu {
+    margin: 15px;
+}

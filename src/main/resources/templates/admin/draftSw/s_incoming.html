@@ -40,12 +40,11 @@
                     <select name="ldId" th:if='${not #lists.isEmpty(ldList)}'>
                         <option th:each='ld : ${ldList}' th:value="${ld.id}" th:text="${ld.fullName}"></option>
                     </select>
-            </li>
+                </li>
             </ul>
         </form>
         <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
-        <ul id="fjlb">
-        </ul>
+        <ul id="fjlb"></ul>
         <div id="upload-modal" class="modal modal-fixed-footer">
             <div class="modal-header">
                 <h4 class="modal-title">上传附件</h4>
@@ -70,7 +69,7 @@
         </div>
         <ul>
             <li id="saveDoc" class="right">
-                <button id="bc" class="button hover">保存</button>
+                <!--<button id="bc" class="button hover">保存</button>-->
                 <button id="tj" class="button hover">提交</button>
             </li>
         </ul>

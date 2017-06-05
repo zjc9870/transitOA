@@ -276,7 +276,7 @@
         
         //更新
         var setUpdateClick = function(){
-        	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
+        	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control date-picker" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
         	$element.find(".memo-update").unbind("click");
         	$element.find(".memo-update").bind("click",function(){
         		var $this=$(this);
@@ -331,6 +331,17 @@
                     		}
     			        }
                });
+                $('.date-picker').datetimepicker({
+                    format:'yyyy/mm/dd',
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn:  1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
         	});
         }
         
@@ -383,7 +394,7 @@
         }
         
         var setMemoFormClick=function(){
-        	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
+        	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control date-picker" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
         	$element.find(".memo-add").click(function(){
         		swal({   
         			title: "备忘录增加",   
@@ -401,6 +412,17 @@
                     		requestAdd(time,desc);
     			        }
                });
+                $('.date-picker').datetimepicker({
+                    format:'yyyy/mm/dd',
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn:  1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
         	});
 //            $element.find(".memo-add").click(function(){
 //                $(this).hide();

@@ -16,7 +16,7 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+drafts[i].zt+"</td>";
                         switch(tabId){
                             case "wtj":
-                                str += "<td><div onclick='seeSwRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                str += "<td><div onclick='seeSwRecordWtj(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>" +
                                     "<div onclick='submitWtjForm(\""+ drafts[i].id +"\")'>提交</div>" +
                                     "<div onclick='deleteWtjDraft(\""+ drafts[i].id +"\")'>删除</div></td>";
                                 break;
@@ -45,18 +45,22 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
+function seeSwRecordWtj(id,tabId) {
+    AjaxTool.html('draftSw/swjlWtj',{id: id},function (html) {
+        $('.portlet-body').html(html);
+        $('#back').data('tabId',tabId);
+    });
+}
+
 function seeSwRecordE(id,tabId) {
     AjaxTool.html('draftSw/swjlxq',{id: id},function (html) {
         $('.portlet-body').html(html);
-        if(tabId == "yth") {
-            $('#splc').attr('style','display:block');
-        }
         $('#back').data('tabId',tabId);
     });
 }
 
 function seeSwRecordNE(id,tabId) {
-    AjaxTool.html('contract/sqjlxqNE',{id: id},function (html) {
+    AjaxTool.html('draftSw/swjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
         $('#back').data('tabId',tabId);
     });
@@ -64,7 +68,7 @@ function seeSwRecordNE(id,tabId) {
 }
 
 function submitWtjForm(id) {
-    AjaxTool.post('contract/submitWtj',{id: id}, function (data) {
+    AjaxTool.post('draftSw/submitWtj',{id: id}, function (data) {
             alert(data.message);
             window.location.reload();
         }
@@ -72,7 +76,7 @@ function submitWtjForm(id) {
 };
 
 function deleteWtjDraft(id) {
-    AjaxTool.post('contract/deleteWjt',{
+    AjaxTool.post('draftSw/deleteWtj',{
         id:id},function (data) {
         alert(data.message);
         window.location.reload();
@@ -93,4 +97,5 @@ jQuery(document).ready(function() {
     init();
 });
 
-$('#wtj').click();
+// $('#wtj').click();
+$('#dcl').click();

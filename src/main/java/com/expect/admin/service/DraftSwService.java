@@ -2,8 +2,10 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,16 +24,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.expect.admin.data.dao.AttachmentRepository;
 import com.expect.admin.data.dao.DraftSwRepository;
 import com.expect.admin.data.dao.DraftSwUserLcrzbGxbRepository;
+import com.expect.admin.data.dao.LcjdbRepository;
 import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
+import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.DraftSw;
 import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
+import com.expect.admin.data.dataobject.Lcjdb;
 import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.Role;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.DmbVo;
 import com.expect.admin.service.vo.DraftSwVo;
 import com.expect.admin.service.vo.LcrzbVo;
@@ -62,6 +68,8 @@ public class DraftSwService {
     private LcrzbRepository lcrzbRepository;
     @Autowired
     private DmbService dmbService;
+    @Autowired
+    private LcjdbRepository lcjdbRepository;
 
     /**
      * 保存一个新的收文 如果不是提交 {<br>
@@ -95,6 +103,7 @@ public class DraftSwService {
         User user = userRepository.findOne(userVo.getId());
         DraftSw draftSw = new DraftSw(draftSwVo);
         draftSw.setSwr(user);
+        draftSw.setFqsj(new Date());
 
         draftSw.setSwzt(condition);// 收文当前所处的状态
         draftSw.setSwfl(swfl);// 收文分类
@@ -140,6 +149,14 @@ public class DraftSwService {
             return;
         draftSwRepository.save(new DraftSw(draftSwVo));
     }
+    
+    public void terminate(String draftSwId) {
+        if(StringUtil.isBlank(draftSwId)) throw new BaseAppException("要结束的收文ID为空");
+        DraftSw swToTernimate = draftSwRepository.findOne(draftSwId);
+        if(swToTernimate == null) throw new BaseAppException("没有找到要结束的收文");
+        swToTernimate.setSwzt("Y");//设置收文状态为已完成
+        draftSwRepository.save(swToTernimate);
+    }
 
     /**
      * 未实现
@@ -168,10 +185,24 @@ public class DraftSwService {
         if (draftSw == null)
             throw new BaseAppException("id为 " + id + "的收文没有找到");
         DraftSwVo draftSwVo = new DraftSwVo(draftSw);
-
+        
+        draftSwVo.setAttachmentList(
+                getDraftSwAttachment(draftSw.getAttachments()));
         // 流程信息
         processLcrz(id, draftSwVo);
         return draftSwVo;
+    }
+    
+    private List<AttachmentVo> getDraftSwAttachment(Set<Attachment> attachmentSet) {
+//        Set<Attachment> attachmentList = contract.getAttachments();
+        List<AttachmentVo> attachmentVoList = new ArrayList<>();
+        if(attachmentSet != null && !attachmentSet.isEmpty())
+            for (Attachment attachment : attachmentSet) {
+                AttachmentVo attachementVo = new AttachmentVo();
+                BeanUtils.copyProperties(attachment, attachementVo);
+                attachmentVoList.add(attachementVo);
+            }
+        return attachmentVoList;
     }
 
     /**
@@ -326,8 +357,9 @@ public class DraftSwService {
                     predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
                 else
                     predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
-                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
-                return cb.and(predicateA);
+//                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
+                Predicate[] predicate = new Predicate[predicateList.size()];
+                return cb.and(predicateList.toArray(predicate));
             }
         });
         return getDraftSwVoListFromDraftSwList(wclDraftSwList);
@@ -361,7 +393,7 @@ public class DraftSwService {
     public List<DraftSwVo> getDclSw(final String userId) {
         // String startCondition = lcService.getStartCondition(SWLC_ID);
         // lcService.getNextCondition(SWLC_ID, startCondition);
-        String condition = "16";
+        String condition = "15";
         List<DraftSw> dclDraftSwList = null;
         // 第一轮的待处理收文
         List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition, DraftSw.SWFL_SLYTJ);
@@ -426,10 +458,26 @@ public class DraftSwService {
         if (draftSwList == null || draftSwList.isEmpty())
             return new ArrayList<>(0);
         List<DraftSwVo> draftSwVoList = new ArrayList<>(draftSwList.size());
+        Map<String, String> swZtMap = getAllSwLcjdMapping();
         for (DraftSw draftSw : draftSwList) {
-            draftSwVoList.add(getDraftSwVoFromDraftSw(draftSw));
+            DraftSwVo draftSwVo = getDraftSwVoFromDraftSw(draftSw);
+            if(!StringUtil.isBlank(draftSw.getSwzt())) {
+                draftSwVo.setZt(swZtMap.get(draftSw.getSwzt()));
+            }
+            draftSwVoList.add(draftSwVo);
         }
         return draftSwVoList;
+    }
+    
+    public Map<String, String> getAllSwLcjdMapping() {
+        List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("4");
+        Map<String, String> resultMap = new HashMap<String, String>();
+        for (Lcjdb lcjdb : lcjdbList) {
+            resultMap.put(lcjdb.getId(), lcjdb.getName());
+        }
+        resultMap.put("T", "已回填");
+        resultMap.put("Y", "审核完成");
+        return resultMap;
     }
 
     /**
@@ -439,8 +487,8 @@ public class DraftSwService {
      * @return
      */
     private DraftSwVo getDraftSwVoFromDraftSw(DraftSw draftSw) {
-        DraftSwVo draftSwVo = new DraftSwVo();
-        BeanUtils.copyProperties(draftSw, draftSwVo);
+        DraftSwVo draftSwVo = new DraftSwVo(draftSw);
+//        BeanUtils.copyProperties(draftSw, draftSwVo);
         return draftSwVo;
     }
 
@@ -578,6 +626,7 @@ public class DraftSwService {
             throw new BaseAppException("没有找到想应的收文记录");
         // 获取相应的人员列表
         List<User> xgryList = userRepository.findAll(userIdList);
+        if(xgryList == null || xgryList.size() == 0) throw new BaseAppException("未选择要添加的人员");
         // 从代码表中获取传阅人角色的id
         String xgjsDmbh = getXgjsDmbh(ryfl);
         DmbVo cyrJsId = dmbService.getDmbVoByLbbhAndDmbh("draftSw", xgjsDmbh);

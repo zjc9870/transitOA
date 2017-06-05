@@ -1,6 +1,7 @@
 
 
 
+
 	$(document).ready(function () {
 		var isFail = $('#fail').val();
 

@@ -25,6 +25,7 @@ public class DraftSwVo {
     private List<LcrzbVo> ldRecordList = new ArrayList<LcrzbVo>();
     private List<LcrzbVo> cyrRecordList = new ArrayList<LcrzbVo>();
     private List<LcrzbVo> blrRecordList = new ArrayList<LcrzbVo>();
+    private List<AttachmentVo> attachmentList;//附件
 //	private String fqsjDate;//发起时间的年月日（YYYY/mm/dd）
 //	private String fasjTime;//
 	
@@ -36,6 +37,7 @@ public class DraftSwVo {
 		this.id = draftSw.getId();
 		this.bh = draftSw.getBh();
 		this.bz = draftSw.getBz();
+		this.mj = draftSw.getMj();
 		this.lwdw = draftSw.getLwdw();
 		if(draftSw.getRq() != null)
 			this.rq = DateUtil.format(draftSw.getRq(), DateUtil.zbFormat);
@@ -168,4 +170,13 @@ public class DraftSwVo {
     public void setBlrRecordList(List<LcrzbVo> blrRecordList) {
         this.blrRecordList = blrRecordList;
     }
+
+    public List<AttachmentVo> getAttachmentList() {
+        return attachmentList;
+    }
+
+    public void setAttachmentList(List<AttachmentVo> attachmentList) {
+        this.attachmentList = attachmentList;
+    }
+    
 }

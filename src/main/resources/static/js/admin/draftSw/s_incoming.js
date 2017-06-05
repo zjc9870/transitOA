@@ -42,7 +42,7 @@ $(document).ready(function () {
             }
             if(validator.form()) {
                 var ldId = document.getElementsByName('ldId')[0].value;
-                AjaxTool.post('draftSw/saveSw', $('#s_incoming_form').serialize()+"&ldId="+ldId+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                AjaxTool.post('draftSw/saveSw', $('#s_incoming_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
                         alert(data.message);
                         toSqjl();
                     }
