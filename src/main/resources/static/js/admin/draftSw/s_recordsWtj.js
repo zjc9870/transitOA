@@ -118,6 +118,15 @@ $(document).ready(function () {
             break;
         }
     }
+
+
+    $('#back').click(function () {
+        var tabId = $('#back').data('tabId');
+        AjaxTool.getHtml('draftSw/swRecord',function (html) {
+            $('.page-content').html(html);
+            $('#'+tabId).trigger('click');
+        });
+    });
 });
 
 

@@ -18,6 +18,11 @@
     color: rgb(150,150,150);
 }
 
+.md-block-subtitle3 {
+    color: rgb(150,150,150);
+    font-size: 13px;
+}
+
 .md-block-tab {
     height: 26px;
     border-top: 1px solid rgb(0,120,58);

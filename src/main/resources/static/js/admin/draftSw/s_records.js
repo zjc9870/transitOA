@@ -97,4 +97,5 @@ jQuery(document).ready(function() {
     init();
 });
 
-$('#wtj').click();
+// $('#wtj').click();
+$('#dcl').click();
