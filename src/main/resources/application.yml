@@ -6,9 +6,9 @@ spring:
   datasource:
     type: org.apache.tomcat.jdbc.pool.DataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/transitOA
+    url: jdbc:mysql://127.0.0.1/gongjiao
     username: root
-    password: 12345678
+    password: 123456
   jpa:
     show-sql: true
     hibernate:
@@ -97,12 +97,12 @@ custom:
 
 #微信企业号配置
 WxCpInMemoryConfigStorage:
-  corpId: wx6cf85a5aafc0e3e7
-  corpSecret: 6jYIJeMF37cUQsSiS_OHat7s9VSvEtkwm05B86GXxQprEhnn7lya6Tq9DmVqWcFO
-  token: 36L
+  corpId: wx9b77c621c69ea369
+  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
+  token: iuqM
   aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
   agentId: 2
   expiresTime: 0
-  oauth2redirectUri: www.jnptgroup.com:8888/weixin/login
+  oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
   httpProxyPort: 0
   jsapiTicketExpiresTime: 0
