@@ -1,6 +1,5 @@
 package com.expect.admin.data.dao;
 
-import com.expect.admin.data.dataobject.Fwtz;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -5,7 +5,6 @@ import com.expect.admin.data.dao.FwtzRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
 import com.expect.admin.data.dataobject.Document;
-import com.expect.admin.data.dataobject.Fwtz;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.vo.AttachmentVo;
