@@ -1,5 +1,7 @@
 package com.expect.admin.service.vo;
 
+import com.expect.admin.data.dataobject.Fwtz;
+
 /**
  * Created by qifeng on 17/3/26.
  */
