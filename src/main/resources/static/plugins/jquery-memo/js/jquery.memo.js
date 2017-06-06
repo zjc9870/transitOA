@@ -332,13 +332,13 @@
     			        }
                });
                 $('.date-picker').datetimepicker({
-                    format:'yyyy/mm/dd',
+                    format:'hh:ii',
                     language: 'zh-CN',
                     weekStart: 1,
                     todayBtn:  1,
                     autoclose: 1,
                     todayHighlight: 1,
-                    startView: 2,
+                    startView: 0,
                     minView: 2,
                     forceParse: 0
                 });
@@ -413,13 +413,13 @@
     			        }
                });
                 $('.date-picker').datetimepicker({
-                    format:'yyyy/mm/dd',
+                    format:'hh:ii',
                     language: 'zh-CN',
                     weekStart: 1,
                     todayBtn:  1,
                     autoclose: 1,
                     todayHighlight: 1,
-                    startView: 2,
+                    startView: 0,
                     minView: 2,
                     forceParse: 0
                 });

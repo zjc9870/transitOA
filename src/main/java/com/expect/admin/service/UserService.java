@@ -126,11 +126,11 @@ public class UserService implements UserDetailsService {
 		}
 
 		//增加用户姓名唯一性检查
-		User checkUserByFullName = userRepository.findByFullName(userVo.getFullName());
-		if (checkUserByFullName !=null){
-			dtrv.setMessage("用户姓名存在");
-			return dtrv;
-		}
+//		User checkUserByFullName = userRepository.findByFullName(userVo.getFullName());
+//		if (checkUserByFullName !=null){
+//			dtrv.setMessage("用户姓名存在");
+//			return dtrv;
+//		}
 
 		User user = UserConvertor.convert(userVo);
 		if(!StringUtil.isBlank(userVo.getSsgsId())){ 
