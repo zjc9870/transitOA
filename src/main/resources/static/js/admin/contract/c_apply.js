@@ -81,10 +81,10 @@ $(document).ready(function () {
             },
             nqdrq: {
                 dateISO: true
-            },
-            qx: {
-                dateISO: true
             }
+            // qx: {
+            //     dateISO: true
+            // }
         },
         messages: {
             htbt: {
@@ -95,10 +95,10 @@ $(document).ready(function () {
             },
             nqdrq: {
                 dateISO: "日期格式不正确"
-            },
-            qx: {
-                dateISO: "日期格式不正确"
             }
+            // qx: {
+            //     dateISO: "日期格式不正确"
+            // }
         }
     });
 });

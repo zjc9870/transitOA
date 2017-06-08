@@ -33,7 +33,7 @@ public class Contract {
 	private String htbt;//合同标题
 	private String htnr;//合同能容
 	private Date nqdrq;//拟签订日期
-	private Date qx;//期限
+	private String qx;//期限
 	private String htshzt;//合同审核状态
 	private String htfl;//合同分类（东交合同    集团合同  其他公司合同）
 	private String lcbs;//流程标识
@@ -58,8 +58,7 @@ public class Contract {
 		this.htnr = contractVo.getHtnr();
 		if(!StringUtil.isBlank(contractVo.getNqdrq()))
 			this.nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat);
-		if(!StringUtil.isBlank(contractVo.getQx()))
-			this.qx = DateUtil.parse(contractVo.getQx(), DateUtil.zbFormat);
+		this.qx = contractVo.getQx();
 		this.htshzt = contractVo.getHtshzt();
 		this.htfl = contractVo.getHtfl();
 		this.lcbs = contractVo.getLcbs();
@@ -149,11 +148,11 @@ public class Contract {
 	}
 	
 	@Column(name = "qx")
-	public Date getQx() {
+	public String getQx() {
 		return qx;
 	}
 
-	public void setQx(Date qx) {
+	public void setQx(String qx) {
 		this.qx = qx;
 	}
 

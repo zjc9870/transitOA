@@ -286,11 +286,12 @@ public class ContractController {
 			return false;
 		}
 		Date nqdrq = DateUtil.parse(contractVo.getNqdrq(), DateUtil.zbFormat);
-		Date qx = DateUtil.parse(contractVo.getQx(), DateUtil.zbFormat);
-		if(DateUtil.getDiffSeconds(qx, nqdrq) < 0) {
-			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "申请失败，合同期限必须在拟签订日期之后！").build());
-			return false;
-		}
+//		Date qx = DateUtil.parse(contractVo.getQx(), DateUtil.zbFormat);
+		String qx = contractVo.getQx();
+//		if(DateUtil.getDiffSeconds(qx, nqdrq) < 0) {
+//			MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "申请失败，合同期限必须在拟签订日期之后！").build());
+//			return false;
+//		}
 		return true;
 	}
 	

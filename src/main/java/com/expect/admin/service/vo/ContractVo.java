@@ -41,8 +41,7 @@ public class ContractVo {
 		if(contract.getNqdrq() != null)
 			this.nqdrq = DateUtil.format(contract.getNqdrq(), DateUtil.zbFormat);
 		
-		if(contract.getQx() != null)
-			this.qx = DateUtil.format(contract.getQx(), DateUtil.zbFormat);
+		this.qx = contract.getQx();
 		this.htshzt = contract.getHtshzt();
 		this.htfl = contract.getHtfl();
 		this.lcbs = contract.getLcbs();
