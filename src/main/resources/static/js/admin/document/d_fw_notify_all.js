@@ -14,14 +14,26 @@ for(var i=0; i<tabs.length; i++) {
                         switch(tabId){
                             case "yd":
                                 str += "<td>已读</td>";
+                                str +="<td>"+cons[i].tzlx+"</td>";
+                                if (!cons[i].ydsj){
+                                    str += "<td>-</td>";
+                                }
+                                else
+                                    str += "<td>"+cons[i].ydsj+"</td>";
+
                                 break;
                             case "wd":
                                 str += "<td>未读</td>";
+                                str +="<td>"+cons[i].tzlx+"</td>";
+                                if (!cons[i].tzsj){
+                                    str += "<td>-</td>";
+                                }
+                                else
+                                    str += "<td>"+cons[i].tzsj+"</td>";
                                 break;
                             default:
                                 break;
                         }
-                        str +="<td>"+cons[i].tzlx+"</td>";
                         if(cons[i].loginUserRole == '其他公司办公室' && tabId=='yd'){
                             str += "<td><div onclick='seeFwNotify(\""+ cons[i].id +'\",\"' + tabId +"\",\"" + cons[i].fwtzid +"\")'>查看</div>" +
                                 "<div onclick='notify(\""+ cons[i].id +'\",\"' + tabId +"\")'>通知</div></td>";
@@ -69,10 +81,10 @@ function notify(id,tabId){
 function init() {//dataTable初始化
     mTable=DatatableTool.initDatatable("d-fw-notify-table", [ {
         'orderable' : false,
-        'targets' : [ 2 ]
+        'targets' : [ 4 ]
     }, {
         "searchable" : false,
-        "targets" : [ 2 ]
+        "targets" : [ 4 ]
     }], [ [ 1, "desc" ] ]);
 }
 

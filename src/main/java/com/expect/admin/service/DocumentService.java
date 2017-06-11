@@ -6,10 +6,7 @@ import com.expect.admin.data.dataobject.Document;
 import com.expect.admin.data.dataobject.Lcrzb;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
-import com.expect.admin.service.vo.AttachmentVo;
-import com.expect.admin.service.vo.DocumentVo;
-import com.expect.admin.service.vo.LcrzbVo;
-import com.expect.admin.service.vo.UserVo;
+import com.expect.admin.service.vo.*;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 import com.googlecode.ehcache.annotations.Cacheable;
@@ -53,6 +50,10 @@ public class DocumentService {
     private UserRepository userRepository;
     @Autowired
     private LcrzbRepository lcrzbRepository;
+    @Autowired
+    private  FwtzRepository fwtzRepository;
+    @Autowired
+    private FwtzService fwtzService;
 
     public String save(DocumentVo documentVo, String[] attachmentId){
         Document document = new Document(documentVo);
@@ -262,6 +263,18 @@ public class DocumentService {
         return documentVo;
     }
 
+    public java.util.List<FwtzVo> getFwtzVosByDocumentId(String documentId) {
+        List<String> tzids = fwtzRepository.findTzidByDocumentId(documentId);
+        HashSet<String> tzidSet = new HashSet(tzids);
+        Iterator tzidIterator = tzidSet.iterator();
+        List<FwtzVo> fwtzVoList = new ArrayList();
+        while (tzidIterator.hasNext()) {
+            String tzid = tzidIterator.next().toString();
+            FwtzVo fwtzVo = fwtzService.getFwtzVoByTzid(tzid);
+            fwtzVoList.add(fwtzVo);
+        }
+        return fwtzVoList;
+    }
     /**
      * 获取所有的合同的节点id和名字的map
      * @return

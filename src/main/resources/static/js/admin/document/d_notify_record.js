@@ -15,15 +15,27 @@ for(var i=0; i<tabs.length; i++) {
                         switch(tabId){
                             case "yd":
                                 str += "<td>已读</td>";
+                                str += "<td>"+cons[i].tzlx+"</td>";
+                                str += "<td>"+cons[i].tzdx+"</td>";
+                                if (!cons[i].ydsj){
+                                    str += "<td>-</td>";
+                                }
+                                else
+                                    str += "<td>"+cons[i].ydsj+"</td>";
                                 break;
                             case "wd":
                                 str += "<td>未读</td>";
+                                str += "<td>"+cons[i].tzlx+"</td>";
+                                str += "<td>"+cons[i].tzdx+"</td>";
+                                if (!cons[i].tzsj){
+                                    str +="<td>-</td>"
+                                }
+                                else
+                                    str +="<td>"+cons[i].tzsj+"</td>";
                                 break;
                             default:
                                 break;
                         }
-                        str += "<td>"+cons[i].tzlx+"</td>";
-                        str += "<td>"+cons[i].tzdx+"</td>";
                         str += "</tr>";
                     }
 //                    mTable.fnClearTable();
@@ -46,10 +58,10 @@ for(var i=0; i<tabs.length; i++) {
 function init() {//dataTable初始化
     mTable=DatatableTool.initDatatable("d-notify-record-table", [ {
         'orderable' : false,
-        'targets' : [ 3 ]
+        'targets' : [ 4 ]
     }, {
         "searchable" : false,
-        "targets" : [ 3 ]
+        "targets" : [ 4 ]
     }], [ [ 1, "desc" ] ]);
 }
 

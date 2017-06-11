@@ -59,6 +59,7 @@ public class Document {
     private Set<Lcrzb> lcrzSet = new HashSet<>();//流程日志
     private String sbd;//申办单名称
     private String htbh;//打印回填编号
+    private String yfrq;
 
     public Document(){
 
@@ -245,5 +246,14 @@ public class Document {
 
     public void setHtbh(String htbh) {
         this.htbh = htbh;
+    }
+
+    @Column(name="yfrq", length=10)
+    public String getYfrq() {
+        return yfrq;
+    }
+
+    public void setYfrq(String yfrq) {
+        this.yfrq = yfrq;
     }
 }

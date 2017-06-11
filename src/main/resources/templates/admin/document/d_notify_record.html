@@ -21,11 +21,12 @@
                     <th>状态</th>
                     <th>通知类型</th>
                     <th>通知对象</th>
+                    <th id="sj">时间</th>
                 </tr>
                 </thead>
                 <tbody id="d-notify-record-tbody" class="mt-td-checkbox">
-                <th:block th:if='${not #lists.isEmpty(documentVoList)}'>
-                    <tr th:each="doc : ${documentVoList}">
+                <th:block th:if='${not #lists.isEmpty(documentVoListBytzsj)}'>
+                    <tr th:each="doc : ${documentVoListBytzsj}">
                         <th:block>
                             <input type="hidden" id="id" th:value="${doc.id}" />
                             <input type="hidden" id="fwtzid" th:value="${doc.fwtzid}" />
@@ -34,6 +35,13 @@
                             <td>未读</td>
                             <td th:text="${doc.tzlx}"></td>
                             <td th:text="${doc.tzdx}"></td>
+                            <td th:text="${doc.tzsj} ? ${doc.tzsj} : '-' "></td>
+                            <!--<th:block th:if="${not #lists.isEmpty(doc.tzsj)}">-->
+                                <!--<td>-</td>-->
+                            <!--</th:block>-->
+                            <!--<th:block th:if="${doc.tzsj !=''}">-->
+                                <!--<td th:text="${doc.tzsj}"></td>-->
+                            <!--</th:block>-->
                         </th:block>
                     </tr>
                 </th:block>

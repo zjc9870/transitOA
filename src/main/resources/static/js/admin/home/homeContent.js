@@ -35,6 +35,16 @@ $(document).on('click','#fwdb,#fwyb',function(){
 	if (roleName.indexOf("董事长") !=-1 || roleName.indexOf("机要专员") !=-1){
 		getAndDisplayFwsjByFl(url,fl,bz);
 	}
+	else
+	{
+		url='document/fwtzTab';
+		if(fl=="dsp"){
+			fl='wd';
+		}else{
+			fl='yd';
+		}
+		getAndDisplayTzByfl(url,fl);
+	}
 
 });
 
@@ -168,11 +178,47 @@ function getAndDisplayFwsjByFl(url,fl,bzStr){
 		}
 	})
 }
+
+function getAndDisplayTzByfl(url,fl){
+	AjaxTool.get(url, {
+			lx:fl
+		}, function(data) {
+			if (data.success){
+				var leftUlStr = "<ul class='home-content-block2'>";
+				var rightUlStr = "<ul>"
+				var fwtz = data.content;
+				for (var i = 0; (i < fwtz.length && i < 7); i++) {
+					leftUlStr += "<li class = 'lcbt' data-id = '"+fwtz[i].id+"' data-fl = '"+fl+"'><span>" + fwtz[i].bt + "</span></li>";
+					if (fl == 'wd'){
+						rightUlStr += "<li><span>" + fwtz[i].userName + "&nbsp;"+ fwtz[i].tzsj + "</span></li>";
+					}
+					else if (fl == 'yd'){
+						rightUlStr += "<li><span>" + fwtz[i].userName + "&nbsp;"+ fwtz[i].ydsj + "</span></li>";
+					}
+
+
+				}
+				leftUlStr += "</ul>";
+				rightUlStr += "</ul>";
+				console.log(rightUlStr);
+				$('#fwLeft').html(leftUlStr);
+				$('#fwRight').html(rightUlStr);
+			}
+
+		}
+	)
+}
 // 日历插件 备忘录
 jQuery(document).ready(function() {
+	var roleName = $('#userRolesName').val();
+	if (roleName.indexOf("董事长") ==-1 && roleName.indexOf("机要专员") ==-1){
+		$('#fwdb').text("发文未读");
+		$('#fwyb').text("发文已读");
+	}
 
 	$('#dtgg').trigger('click');
 	$('#htdb').trigger('click');
+	$('#fwdb').trigger('click');
 
 	var userid = $('input[name = "userId"]').val();
 	$(".memo").Memo({

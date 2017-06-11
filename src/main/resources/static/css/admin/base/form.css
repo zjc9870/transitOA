@@ -253,3 +253,11 @@
 .selectBu {
     margin: 15px;
 }
+.process2{
+    float: left;
+    width: 90%;
+}
+.process2 li {
+    list-style: none;
+    overflow: hidden;
+}

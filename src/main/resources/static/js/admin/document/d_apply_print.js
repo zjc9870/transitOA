@@ -14,17 +14,21 @@ $('#print').click(function() {
     // prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
     // window.document.body.innerHTML=prnhtml;
     if(validator.form()){
-        window.print();
+        // window.print();
         var id=$('#id').html();
         var gwbh=$('#gwbh').val();
-        AjaxTool.post('document/bhht',{id:id , gwbh:gwbh}, function (data) {
+        var yfrq=$('#yfrq').val();
+        AjaxTool.post('document/bhht',{id:id, gwbh:gwbh ,yfrq:yfrq}, function (data) {
+            if (data.success){
+                window.location = "/wjsc?xgdm=jtgw&xgid=" +id;
+            }
             alert(data.message);
         })
     }
 
-
-
 });
+
+
 
 
 $('.date-picker').datetimepicker({

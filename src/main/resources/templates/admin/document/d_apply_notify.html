@@ -10,7 +10,7 @@
 <body>
 <div class="lg-block">
     <button id="back" class="button">返回</button>
-    <div class="lg-block-title1" th:text="${documentVo.sbd}+集团发文单"></div>
+    <div class="lg-block-title1">南京江宁公共交通集团有限公司发文单</div>
     <div class="lg-block-content">
         <div id="id" th:text="${documentVo.id}"  style="display:none;"></div>
         <ul>
@@ -62,7 +62,7 @@
                                     <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                         <div th:each="object : ${notifyObjectVoList}">
                                             <th:block th:if="${object.tzdxfl == '集团高管'}">
-                                                <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                                <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                             </th:block>
                                         </div>
                                     </th:block>
@@ -81,7 +81,7 @@
                                     <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                         <div th:each="object : ${notifyObjectVoList}">
                                             <th:block th:if="${object.tzdxfl == '集团部门'}">
-                                                <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                                <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                             </th:block>
                                         </div>
                                     </th:block>
@@ -97,7 +97,7 @@
                                     <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                         <div th:each="object : ${notifyObjectVoList}">
                                             <th:block th:if="${object.tzdxfl == '其他公司办公室'}">
-                                                <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                                <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                             </th:block>
                                         </div>
                                     </th:block>
@@ -127,7 +127,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '集团高管'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>
@@ -143,7 +143,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '集团部门'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>
@@ -159,7 +159,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '其他公司办公室'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>
@@ -188,7 +188,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '集团高管'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>
@@ -204,7 +204,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '集团部门'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>
@@ -220,7 +220,7 @@
                                 <th:block th:if="${not #lists.isEmpty(notifyObjectVoList)}">
                                     <div th:each="object : ${notifyObjectVoList}">
                                         <th:block th:if="${object.tzdxfl == '其他公司办公室'}">
-                                            <option th:value="${object.userName}" th:text="${object.tzdx}"></option>
+                                            <option th:value="${object.tzdx}" th:text="${object.tzdx}"></option>
                                         </th:block>
                                     </div>
                                 </th:block>

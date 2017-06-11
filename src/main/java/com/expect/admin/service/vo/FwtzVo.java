@@ -1,6 +1,10 @@
 package com.expect.admin.service.vo;
 
 import com.expect.admin.data.dataobject.Fwtz;
+<<<<<<< Updated upstream
+=======
+import com.expect.admin.utils.DateUtil;
+>>>>>>> Stashed changes
 
 /**
  * Created by qifeng on 17/3/26.
@@ -32,6 +36,8 @@ public class FwtzVo {
     private String csgsgg;
     private String csgsbm;
     private String tzid;
+    private String tzsj;
+    private String ydsj;
 
     public FwtzVo(){
 
@@ -45,6 +51,17 @@ public class FwtzVo {
         this.tzlx=fwtz.getTzlx();
         this.isread=fwtz.getIsread();
         this.tzid=fwtz.getTzid();
+        if (fwtz.getTzsj() == null) {
+            this.tzsj = "";
+        }
+        else {
+            this.tzsj = DateUtil.format(fwtz.getTzsj(), "yyyy/MM/dd HH:mm:ss");
+        }
+        if (fwtz.getYdsj() == null) {
+            this.ydsj = "";
+        }
+        else
+            this.ydsj = DateUtil.format(fwtz.getYdsj(), "yyyy/MM/dd HH:mm:ss");
     }
     public String getId() {
         return id;
@@ -252,5 +269,21 @@ public class FwtzVo {
 
     public void setTzid(String tzid) {
         this.tzid = tzid;
+    }
+
+    public String getTzsj() {
+        return tzsj;
+    }
+
+    public void setTzsj(String tzsj) {
+        this.tzsj = tzsj;
+    }
+
+    public String getYdsj() {
+        return ydsj;
+    }
+
+    public void setYdsj(String ydsj) {
+        this.ydsj = ydsj;
     }
 }

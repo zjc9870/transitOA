@@ -271,23 +271,26 @@ public class DocumentController {
         if (StringUtil.isBlank(lx)) lx = "wd";
         try{
             UserVo userVo = userService.getLoginUser();
+            String fullName = userVo.getFullName();
             String userName= userVo.getUsername();
             String role=userVo.getRoleName();
-            List<FwtzVo> fwtzVoList=fwtzService.getFwtz(userName);
+            List<FwtzVo> fwtzVoList=fwtzService.getFwtzByFullName(fullName);
 
             if(StringUtil.equals(lx,"wd")){
                 List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
                 List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+                List<com.expect.admin.service.vo.DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
-                        JsonResult.useDefault(true, "获取未读发文通知成功", documentVoList).build());
+                        JsonResult.useDefault(true, "获取未读发文通知成功", documentVoListBytzsj).build());
                 return;
             }
 
             if(StringUtil.equals(lx,"yd")){
                 List<FwtzVo> ydFwtzVoList = fwtzService.getYdFwtzList(fwtzVoList);
                 List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
+                List<com.expect.admin.service.vo.DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
-                        JsonResult.useDefault(true, "获取已读发文通知成功", documentVoList).build());
+                        JsonResult.useDefault(true, "获取已读发文通知成功", documentVoListByydsj).build());
                 return;
             }
 
@@ -302,20 +305,26 @@ public class DocumentController {
                         HttpServletResponse response) throws IOException {
         if (StringUtil.isBlank(lx)) lx = "wd";
         try{
+            UserVo userVo = userService.getLoginUser();
+            String fullName = userVo.getFullName();
+            String userName= userVo.getUsername();
+            String role=userVo.getRoleName();
             List<FwtzVo> fwtzVoList=fwtzService.getAllFwtz();
             if(StringUtil.equals(lx,"wd")){
                 List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
-                List<DocumentVo> documentVoList=fwtzService.getRecordDocumentVo(wdFwtzVoList);
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+                List<DocumentVo> documentVoListBytzsj = this.fwtzService.sortDocumentListByTzsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
-                        JsonResult.useDefault(true, "获取未读发文通知成功", documentVoList).build());
+                        JsonResult.useDefault(true, "获取未读发文通知成功", documentVoListBytzsj).build());
                 return;
             }
 
             if(StringUtil.equals(lx,"yd")){
                 List<FwtzVo> ydFwtzVoList = fwtzService.getYdFwtzList(fwtzVoList);
-                List<DocumentVo> documentVoList=fwtzService.getRecordDocumentVo(ydFwtzVoList);
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
+                List<DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
-                        JsonResult.useDefault(true, "获取已读发文通知成功", documentVoList).build());
+                        JsonResult.useDefault(true, "获取已读发文通知成功", documentVoListByydsj).build());
                 return;
             }
 
@@ -343,7 +352,9 @@ public class DocumentController {
     public ModelAndView sqjlxqNE(@RequestParam(name = "id", required = true)String documentId) {
         ModelAndView modelAndView = new ModelAndView(viewName + "d_apply_recordDetail_ne");
         DocumentVo documentVo = documentService.getDocumentById(documentId);
+        FwtzVo fwtzVo = fwtzService.getFwtzVoByDocumentId(documentId);
         modelAndView.addObject("documentVo", documentVo);
+        modelAndView.addObject("fwtzVo", fwtzVo);
         return modelAndView;
     }
 
@@ -465,14 +476,24 @@ public class DocumentController {
     @PostMapping("/bhht")
     public void bhht(@RequestParam(name = "id", required = true) String documentId,
                      @RequestParam(name = "gwbh" ,required = true) String gwbh,
+                     @RequestParam(name = "yfrq", required=true) String yfrq,
                      HttpServletResponse response) throws IOException{
-        DocumentVo documentVo = documentService.getDocumentById(documentId);
-        if(documentVo == null){
-            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该公文").build());
-            return;
-        }
-        documentVo.setHtbh(gwbh);
-        documentService.updateDocument(documentVo, null);
+                         try{
+                             DocumentVo documentVo = documentService.getDocumentById(documentId);
+                             if(documentVo == null){
+                                 MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该公文").build());
+                                 return;
+                             }
+                             documentVo.setHtbh(gwbh);
+                             documentVo.setYfrq(yfrq);
+                             documentService.updateDocument(documentVo, null);
+                         }
+                         catch(Exception e){
+                             this.log.error("打印公文报错");
+                             MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "打印公文报错").build());
+                         }
+                         MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "打印公文成功").build());
+
     }
 
 
@@ -483,29 +504,37 @@ public class DocumentController {
      * @param response
      * @throws IOException
      */
-    @PostMapping("/savenotify")
-    public void savenotify(FwtzVo fwtzVo, @RequestParam(name="id" ,required=true) String documentId,
-                           HttpServletResponse response) throws IOException{
-        try{
-            fwtzService.saveFwtz(fwtzVo,documentId);
-        }catch(Exception e){
-            log.error("保存发文通知报错", e);
-            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "保存发文通知报错！").build());
+    @RequestMapping(value = "savenotify",method = RequestMethod.POST)
+    @ResponseBody
+    public ResultVo save(FwtzVo fwtzVo, String id) {
+        ResultVo resultVo = new ResultVo();
+        String objectRepeated;
+        try {
+            objectRepeated = this.fwtzService.saveFwtz(fwtzVo, id);
+        } catch (Exception e) {
+            this.log.error("保存发文通知报错", e);
+            resultVo.setResult(false);
+            resultVo.setMessage("保存发文通知报错");
+            return resultVo;
         }
-        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "保存发文通知成功！").build());
-
-    }
+        resultVo.setResult(true);
+        resultVo.setMessage("保存发文通知成功");
+        resultVo.setObj(objectRepeated);
+        return resultVo;
+  }
 
     @RequestMapping(value ="/fwtz",method = RequestMethod.GET)
     public ModelAndView fwtz(){
         UserVo userVo = userService.getLoginUser();
         ModelAndView modelAndView=new ModelAndView(viewName+"d_fw_notify_all");
         String userName= userVo.getUsername();
+        String fullName = userVo.getFullName();
         String role = userVo.getRoleName();
-        List<FwtzVo> fwtzVoList=fwtzService.getFwtz(userName);
+        List<FwtzVo> fwtzVoList=fwtzService.getFwtzByFullName(fullName);
         List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
         List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
-        modelAndView.addObject("documentVoList",documentVoList);
+        List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
+        modelAndView.addObject("documentVoListBytzsj",documentVoListBytzsj);
         return modelAndView;
     }
 
@@ -524,15 +553,20 @@ public class DocumentController {
             return;
         }
         fwtzService.updateFwtz(fwtzVo);
+        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "发文已读成功").build());
+
 
     }
     @RequestMapping(value="/fwtzjl",method=RequestMethod.GET)
     public ModelAndView fwtzjl(){
+        UserVo userVo = userService.getLoginUser();
+        String role=userVo.getRoleName();
         ModelAndView modelAndView=new ModelAndView(viewName+"d_notify_record");
         List<FwtzVo> fwtzVoList=fwtzService.getAllFwtz();
         List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
-        List<DocumentVo> documentVoList=fwtzService.getRecordDocumentVo(wdFwtzVoList);
-        modelAndView.addObject("documentVoList",documentVoList);
+        List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+        List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
+        modelAndView.addObject("documentVoListBytzsj",documentVoListBytzsj);
         return modelAndView;
 
     }

@@ -8,10 +8,7 @@ import com.expect.admin.data.dataobject.Document;
 import com.expect.admin.data.dataobject.Fwtz;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
-import com.expect.admin.service.vo.AttachmentVo;
-import com.expect.admin.service.vo.DocumentVo;
-import com.expect.admin.service.vo.FwtzVo;
-import com.expect.admin.service.vo.UserVo;
+import com.expect.admin.service.vo.*;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 import com.googlecode.ehcache.annotations.Cacheable;
@@ -42,120 +39,126 @@ public class FwtzService {
      * @param documentId
      */
     @Transactional
-    public void saveFwtz(FwtzVo fwtzVo, String documentId) {
-        if (fwtzVo == null) return;
+    public String saveFwtz(com.expect.admin.service.vo.FwtzVo fwtzVo, String documentId) {
+        String isExistNotifyObject = "";
+        if (fwtzVo == null) return isExistNotifyObject;
         if (fwtzVo.getZsjtgg() != null) {
             String[] zsjtgg = fwtzVo.getZsjtgg().split(",");
-            save(zsjtgg, documentId, "1","集团高管");
+            isExistNotifyObject = isExistNotifyObject + " " + save(zsjtgg, documentId, "1", "集团高管");
         }
         if (fwtzVo.getZsjtbm() != null) {
             String[] zsjtbm = fwtzVo.getZsjtbm().split(",");
-            save(zsjtbm, documentId, "1","集团部门");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(zsjtbm, documentId, "1", "集团部门");
         }
         if (fwtzVo.getZsgsgg() != null) {
             String[] zsgsgg = fwtzVo.getZsgsgg().split(",");
-            save(zsgsgg, documentId, "1","公司高管");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(zsgsgg, documentId, "1", "公司高管");
         }
         if (fwtzVo.getZsgsbm() != null) {
             String[] zsgsbm = fwtzVo.getZsgsbm().split(",");
-            save(zsgsbm, documentId, "1","公司部门");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(zsgsbm, documentId, "1", "公司部门");
         }
         if (fwtzVo.getZsqtgsbgs() != null) {
             String[] zsqtgsbgs = fwtzVo.getZsqtgsbgs().split(",");
-            save(zsqtgsbgs, documentId, "1","其他公司办公室");
+            isExistNotifyObject = isExistNotifyObject + " " + save(zsqtgsbgs, documentId, "1", "其他公司办公室");
         }
         if (fwtzVo.getZswbdw() != "") {
             String[] zswbdw = fwtzVo.getZswbdw().split(",");
-            save(zswbdw, documentId, "1","外部单位");
+            isExistNotifyObject = isExistNotifyObject + " " + save(zswbdw, documentId, "1", "外部单位");
         }
-
         if (fwtzVo.getCsjtgg() != null) {
             String[] csjtgg = fwtzVo.getCsjtgg().split(",");
-            save(csjtgg, documentId, "3","集团高管");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(csjtgg, documentId, "3", "集团高管");
         }
         if (fwtzVo.getCsjtbm() != null) {
             String[] csjtbm = fwtzVo.getCsjtbm().split(",");
-            save(csjtbm, documentId, "3","集团部门");
+            isExistNotifyObject = isExistNotifyObject + " " + save(csjtbm, documentId, "3", "集团部门");
         }
         if (fwtzVo.getCsqtgsbgs() != null) {
             String[] csjtbgs = fwtzVo.getCsqtgsbgs().split(",");
-            save(csjtbgs, documentId, "3","其他公司办公室");
+            isExistNotifyObject = isExistNotifyObject + " " + save(csjtbgs, documentId, "3", "其他公司办公室");
         }
         if (fwtzVo.getCsgsgg() != null) {
             String[] cssgsgg = fwtzVo.getCsgsgg().split(",");
-            save(cssgsgg, documentId, "3","公司高管");
+            isExistNotifyObject = isExistNotifyObject + " " + save(cssgsgg, documentId, "3", "公司高管");
         }
         if (fwtzVo.getCsgsbm() != null) {
             String[] csgsbm = fwtzVo.getCsgsbm().split(",");
-            save(csgsbm, documentId, "3","公司部门");
+            isExistNotifyObject = isExistNotifyObject + " " + save(csgsbm, documentId, "3", "公司部门");
         }
         if (fwtzVo.getCswbdw() != "") {
             String[] cswbdw = fwtzVo.getCswbdw().split(",");
-            save(cswbdw, documentId, "3","外部单位");
+           isExistNotifyObject = isExistNotifyObject + " " + save(cswbdw, documentId, "3", "外部单位");
         }
-
         if (fwtzVo.getCbjtgg() != null) {
             String[] cbjtgg = fwtzVo.getCbjtgg().split(",");
-            save(cbjtgg, documentId, "2","集团高管");
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbjtgg, documentId, "2", "集团高管");
         }
         if (fwtzVo.getCbjtbm() != null) {
             String[] cbjtbm = fwtzVo.getCbjtbm().split(",");
-            save(cbjtbm, documentId, "2","集团部门");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbjtbm, documentId, "2", "集团部门");
         }
         if (fwtzVo.getCbqtgsbgs() != null) {
             String[] cbjtbgs = fwtzVo.getCbqtgsbgs().split(",");
-            save(cbjtbgs, documentId, "2","其他公司办公室");
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbjtbgs, documentId, "2", "其他公司办公室");
         }
-
         if (fwtzVo.getCbgsgg() != null) {
             String[] cbgsgg = fwtzVo.getCbgsgg().split(",");
-            save(cbgsgg, documentId, "2","公司高管");
-
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbgsgg, documentId, "2", "公司高管");
         }
         if (fwtzVo.getCbgsbm() != null) {
             String[] cbgsbm = fwtzVo.getCbgsbm().split(",");
-            save(cbgsbm, documentId, "2","公司部门");
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbgsbm, documentId, "2", "公司部门");
         }
         if (fwtzVo.getCbwbdw() != "") {
             String[] cbwbdw = fwtzVo.getCbwbdw().split(",");
-            save(cbwbdw, documentId, "2","外部单位");
+            isExistNotifyObject = isExistNotifyObject + " " + save(cbwbdw, documentId, "2", "外部单位");
         }
-
-
-
-    }
-
-    private void save(String[] tzdx, String documentId, String tzlx,String tzdxfl) {
+        return isExistNotifyObject;
+ }
+    private String save(String[] tzdx, String documentId, String tzlx,String tzdxfl) {
         UserVo userVo = userService.getLoginUser();
         User user = userRepository.findOne(userVo.getId());
 
+        String isExistObject = "";
         for (String dx : tzdx) {
-            FwtzVo fwtzVo = new FwtzVo();
-            fwtzVo.setFwid(documentId);
-            fwtzVo.setTzlx(tzlx);
-            fwtzVo.setTzdx(dx);
-            fwtzVo.setTzdxfl(tzdxfl);
-            fwtzVo.setIsread("0");
-            Fwtz fwtz = new Fwtz(fwtzVo);
-            fwtz.setTzfqr(user);
-            fwtz.setTzid(randomString());
-            fwtzRepository.save(fwtz);
-            String id = fwtz.getId();
+            Boolean isExist = Boolean.valueOf(isNotifyObjectExist(dx, tzlx, documentId, tzdxfl));
+            if (isExist.equals(Boolean.valueOf(false))) {
+                isExistObject = isExistObject + " " + dx;
+            }
+            else{
+                FwtzVo fwtzVo = new FwtzVo();
+                fwtzVo.setFwid(documentId);
+                fwtzVo.setTzlx(tzlx);
+                fwtzVo.setTzdx(dx);
+                fwtzVo.setTzdxfl(tzdxfl);
+                fwtzVo.setIsread("0");
+                Fwtz fwtz = new Fwtz(fwtzVo);
+                fwtz.setTzfqr(user);
+                fwtz.setTzid(randomString());
+
+                Date tzsj = new Date();
+                fwtz.setTzsj(tzsj);
+                fwtzRepository.save(fwtz);
+                String id = fwtz.getId();
+            }
         }
+        return isExistObject;
     }
 
+    public boolean isNotifyObjectExist(String notifyObject, String tzlx, String documentId, String tzdxfl) { List<Fwtz> fwtzList = this.fwtzRepository.findByFwidAndTzdxAndTzlxAndTzdxfl(documentId, notifyObject, tzlx, tzdxfl);
+        if (fwtzList.size() == 0) {
+            return true;
+        }
+        return false;
+    }
     public String randomString(){
         Date date = new Date();
         String random= DateUtil.format(date, DateUtil.longFormat).substring(0,14);
         return random;
 
     }
-    public List<FwtzVo> getFwtz(String username) {
+    public List<FwtzVo> getFwtzByFullName(String username) {
         List<Fwtz> fwtzList = fwtzRepository.findByTzdx(username);
         List<FwtzVo> fwtzVos = new ArrayList<FwtzVo>();
         if (fwtzList != null) {
@@ -186,9 +189,13 @@ public class FwtzService {
                 String fwid = fwtzVo.getFwid();
                 String id = fwtzVo.getId();
                 String tzlx=fwtzVo.getTzlx();
+                String tzsj = fwtzVo.getTzsj();
+                String ydsj = fwtzVo.getYdsj();
                 DocumentVo documentVo=getDocumentById(fwid);
                 documentVo.setFwtzid(id);
                 documentVo.setLoginUserRole(loginUserRole);
+                documentVo.setYdsj(ydsj);
+                documentVo.setTzsj(tzsj);
                 if (StringUtil.equals(tzlx,"1")){
                     documentVo.setTzlx("主送");
                 }else if(StringUtil.equals(tzlx,"2")){
@@ -202,34 +209,7 @@ public class FwtzService {
         return documentVos;
     }
 
-    /**
-     * 得到未读发文通知记录
-     * @param fwtzVos
-     * @return
-     */
-    public List<DocumentVo> getRecordDocumentVo(List<FwtzVo> fwtzVos){
-        List<DocumentVo> documentVos=new ArrayList<>();
-        if(fwtzVos !=null ){
-            for (FwtzVo fwtzVo:fwtzVos){
-                String fwid = fwtzVo.getFwid();
-                String id = fwtzVo.getId();
-                String tzlx = fwtzVo.getTzlx();
-                String tzdx = fwtzVo.getTzdx();
-                DocumentVo documentVo=getDocumentById(fwid);
-                documentVo.setFwtzid(id);
-                documentVo.setTzdx(tzdx);
-                if (StringUtil.equals(tzlx,"1")){
-                    documentVo.setTzlx("主送");
-                }else if(StringUtil.equals(tzlx,"2")){
-                    documentVo.setTzlx("抄报");
-                }else if(StringUtil.equals(tzlx,"3")){
-                    documentVo.setTzlx("抄送");
-                }
-                documentVos.add(documentVo);
-            }
-        }
-        return documentVos;
-    }
+
     public DocumentVo getDocumentById(String id){
         Document document = documentRepository.findOne(id);
         if(document == null) throw new BaseAppException("id为 "+id+"的公文没有找到");
@@ -304,12 +284,38 @@ public class FwtzService {
         Fwtz fwtz = fwtzRepository.findOne(fwtzVo.getId());
         if (fwtz == null) throw new BaseAppException("id为 "+fwtzVo.getId()+"的发文通知没有找到");
         fwtz.setIsread("1");
+        Date date = new Date();
+        fwtz.setYdsj(date);
         fwtzRepository.save(fwtz);
     }
-    public FwtzVo getFwtzVo(String id){
-        Fwtz fwtz1=fwtzRepository.findOne(id);
-        List<Fwtz> fwtzList=fwtzRepository.findByTzid(fwtz1.getTzid());
-        FwtzVo fwtzVo=new FwtzVo();
+    public FwtzVo getFwtzVoByDocumentId(String documentId) {
+        List<Fwtz> fwtzList = this.fwtzRepository.findByFwid(documentId);
+        FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        getNewFwtzVo(fwtzVo, fwtzList);
+        return fwtzVo;
+    }
+    public FwtzVo getNewestFwtzVoByDocumentId(String documentId) {
+        List<Fwtz> fwtzList = this.fwtzRepository.findFwtz(documentId);
+        FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        getNewFwtzVo(fwtzVo, fwtzList);
+        return fwtzVo;
+    }
+
+    public FwtzVo getFwtzVo(String id)
+    {
+        Fwtz fwtz1 = (Fwtz)this.fwtzRepository.findOne(id);
+        List<Fwtz> fwtzList = this.fwtzRepository.findByTzid(fwtz1.getTzid());
+        com.expect.admin.service.vo.FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        getNewFwtzVo(fwtzVo, fwtzList);
+        return fwtzVo;
+    }
+    public FwtzVo getFwtzVoByTzid(String tzid) {
+        List<Fwtz> fwtzList = this.fwtzRepository.findByTzid(tzid);
+        com.expect.admin.service.vo.FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        getNewFwtzVo(fwtzVo, fwtzList);
+        return fwtzVo;
+    }
+    public void getNewFwtzVo(FwtzVo fwtzVo, List<Fwtz> fwtzList){
         String zsjtgg="";
         String zsjtbm="";
         String zsqtgsbgs="";
@@ -330,78 +336,78 @@ public class FwtzService {
         String cbwbdw="";
         String cbgsgg="";
         String cbgsbm="";
-        Map<String,String> map=getAllTzdxMap();
 
-        if (fwtzList !=null){
+        if (fwtzList != null) {
             for (Fwtz fwtz : fwtzList) {
-                if (fwtz.getTzlx() ==null) continue;
-                if (fwtz.getTzlx().equals("1")){
-                    if (fwtz.getTzdxfl() ==null) continue;
-                    if (fwtz.getTzdxfl().equals("集团高管")){
-                        zsjtgg+=map.get(fwtz.getTzdx())+" ";
+                if (fwtz.getTzlx() != null) {
+                    if (fwtz.getTzlx().equals("1")) {
+                        if (fwtz.getTzdxfl() != null) {
+                            if (fwtz.getTzdxfl().equals("集团高管")) {
+                                zsjtgg = mergeNotifyObject(fwtz.getIsread(), zsjtgg, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("集团部门")) {
+                                zsjtbm = mergeNotifyObject(fwtz.getIsread(), zsjtbm, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("外部单位")) {
+                                zswbdw = mergeNotifyObject(fwtz.getIsread(), zswbdw, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("其他公司办公室")) {
+                                zsqtgsbgs = mergeNotifyObject(fwtz.getIsread(), zsqtgsbgs, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司高管")) {
+                                zsgsgg = mergeNotifyObject(fwtz.getIsread(), zsgsgg, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司部门")) {
+                                zsgsbm = mergeNotifyObject(fwtz.getIsread(), zsgsbm, fwtz.getTzdx());
+                            }
+                        }
                     }
-                    if (fwtz.getTzdxfl().equals("集团部门")){
-                        zsjtbm+=map.get(fwtz.getTzdx())+" ";
+                    else if (fwtz.getTzlx().equals("2")) {
+                        if (fwtz.getTzdxfl() != null) {
+                            if (fwtz.getTzdxfl().equals("集团高管")) {
+                                cbjtgg = mergeNotifyObject(fwtz.getIsread(), cbjtgg, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("集团部门")) {
+                                cbjtbm = mergeNotifyObject(fwtz.getIsread(), cbjtbm, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("外部单位")) {
+                                cbwbdw = mergeNotifyObject(fwtz.getIsread(), cbwbdw, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("其他公司办公室")) {
+                                cbqtgsbgs = mergeNotifyObject(fwtz.getIsread(), cbqtgsbgs, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司高管")) {
+                                cbgsgg = mergeNotifyObject(fwtz.getIsread(), cbgsgg, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司部门")) {
+                                cbgsbm = mergeNotifyObject(fwtz.getIsread(), cbgsbm, fwtz.getTzdx());
+                            }
+                        }
                     }
-                    if (fwtz.getTzdxfl().equals("外部单位")){
-                        zswbdw+=fwtz.getTzdx()+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("其他公司办公室")){
-                        zsqtgsbgs+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司高管")){
-                        zsgsgg+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司部门")){
-                        zsgsbm+=map.get(fwtz.getTzdx())+" ";
-                    }
-                }
-
-                if (fwtz.getTzlx().equals("2")){
-                    if (fwtz.getTzdxfl() ==null) continue;
-                    if (fwtz.getTzdxfl().equals("集团高管")){
-                        cbjtgg+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("集团部门")){
-                        cbjtbm+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("外部单位")){
-                        cbwbdw+=fwtz.getTzdx()+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("其他公司办公室")){
-                        cbqtgsbgs+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司高管")){
-                        cbgsgg+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司部门")){
-                        cbgsbm+=map.get(fwtz.getTzdx())+" ";
-                    }
-                }
-
-                if (fwtz.getTzlx().equals("3")){
-                    if (fwtz.getTzdxfl() ==null) continue;
-                    if (fwtz.getTzdxfl().equals("集团高管")){
-                        csjtgg+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("集团部门")){
-                        csjtbm+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("外部单位")){
-                        cswbdw+=fwtz.getTzdx()+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("其他公司办公室")){
-                        csqtgsbgs+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司高管")){
-                        csgsgg+=map.get(fwtz.getTzdx())+" ";
-                    }
-                    if (fwtz.getTzdxfl().equals("公司部门")){
-                        csgsbm+=map.get(fwtz.getTzdx())+" ";
+                    else if (fwtz.getTzlx().equals("3")) {
+                        if (fwtz.getTzdxfl() != null) {
+                            if (fwtz.getTzdxfl().equals("集团高管")) {
+                                csjtgg = mergeNotifyObject(fwtz.getIsread(), csjtgg, fwtz.getTzdx());}
+                            if (fwtz.getTzdxfl().equals("集团部门")) {
+                                csjtbm = mergeNotifyObject(fwtz.getIsread(), csjtbm, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("外部单位")) {
+                                cswbdw = mergeNotifyObject(fwtz.getIsread(), cswbdw, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("其他公司办公室")) {
+                                csqtgsbgs = mergeNotifyObject(fwtz.getIsread(), csqtgsbgs, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司高管")) {
+                                csgsgg = mergeNotifyObject(fwtz.getIsread(), csgsgg, fwtz.getTzdx());
+                            }
+                            if (fwtz.getTzdxfl().equals("公司部门"))
+                                csgsbm = mergeNotifyObject(fwtz.getIsread(), csgsbm, fwtz.getTzdx());
+                        }
                     }
                 }
             }
         }
+
         fwtzVo.setZsjtgg(zsjtgg);
         fwtzVo.setZsjtbm(zsjtbm);
         fwtzVo.setZsqtgsbgs(zsqtgsbgs);
@@ -422,11 +428,33 @@ public class FwtzService {
         fwtzVo.setCswbdw(cswbdw);
         fwtzVo.setCsgsgg(csgsgg);
         fwtzVo.setCsgsbm(csgsbm);
+    }
 
-        if (fwtzVo ==null){
-            return null;
+    public String mergeNotifyObject(String isRead, String dxjh, String notifyObject) {
+        if (isRead.equals("0")) {
+            dxjh = dxjh + notifyObject + "(未读) ";
         }
-        return fwtzVo;
+        else if (isRead.equals("1")) {
+            dxjh = dxjh + notifyObject + "(已读) ";
+        }
+        return dxjh;
+    }
+    public List<DocumentVo> sortDocumentListByTzsj(List<DocumentVo> documentVoList) {
+        if (documentVoList.size() <= 1) {
+            return documentVoList;
+        }
+        TzsjCompare tzsjCompare = new TzsjCompare();
+        Collections.sort(documentVoList, tzsjCompare);
+        return documentVoList;
+    }
+
+    public List<DocumentVo> sortDocumentListByYdsj(List<DocumentVo> documentVoList) {
+        if (documentVoList.size() <= 1) {
+            return documentVoList;
+        }
+        YdsjCompare ydsjCompare = new YdsjCompare();
+        Collections.sort(documentVoList, ydsjCompare);
+        return documentVoList;
     }
     public Map<String,String> getAllTzdxMap(){
         Map<String,String> tzdxMap = new HashMap<>();

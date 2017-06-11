@@ -34,6 +34,9 @@ public class DocumentVo {
     private String loginUserRole;//登录用户角色
     private String tzdx;//发文通知对象
     private String tzlx;//发文通知类型(主送,抄送,抄报)
+    private String yfrq;
+    private String tzsj;
+    private String ydsj;
 
     public DocumentVo(){
     }
@@ -66,6 +69,7 @@ public class DocumentVo {
             this.sbd = "";
         else this.sbd = document.getSbd();
         this.htbh=document.getHtbh();
+        this.yfrq = document.getYfrq();
     }
 
     public String getId() {
@@ -258,5 +262,29 @@ public class DocumentVo {
 
     public void setTzlx(String tzlx) {
         this.tzlx = tzlx;
+    }
+
+    public String getYfrq() {
+        return yfrq;
+    }
+
+    public void setYfrq(String yfrq) {
+        this.yfrq = yfrq;
+    }
+
+    public String getTzsj() {
+        return tzsj;
+    }
+
+    public void setTzsj(String tzsj) {
+        this.tzsj = tzsj;
+    }
+
+    public String getYdsj() {
+        return ydsj;
+    }
+
+    public void setYdsj(String ydsj) {
+        this.ydsj = ydsj;
     }
 }

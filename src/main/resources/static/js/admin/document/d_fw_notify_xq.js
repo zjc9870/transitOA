@@ -3,6 +3,9 @@ $('#yd').click(function(){
     var fwtzid=$('#fwtzid').html();
     AjaxTool.post('document/updateFwtz',{fwtzid:fwtzid},function(data){
         alert(data.message);
+        if(data.success){
+            toNotifyAll();
+        }
     })
 } );
 
@@ -41,3 +44,8 @@ $('#back').click(function () {
         $('#'+tabId).trigger('click');
     });
 });
+function toNotifyAll() {
+    AjaxTool.getHtml('document/fwtz',function (html) {
+        $('.page-content').html(html);
+    });
+}

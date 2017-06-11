@@ -8,7 +8,11 @@ $('#tz').click(function (){
     // var zswbdw=$('#zswbdw option:selected').text()
     var id=$('#id').html();
     AjaxTool.post('document/savenotify',$('#d_apply_notify_form').serialize()+"&id="+id, function(data){
-            alert(data.message);
+        console.log("jjk"+data.obj+data.message);
+        Toast.show("通知保存提醒","通知对象重复");
+        if (data.obj !="" && data.obj !=" "){
+            Toast.show("通知保存提醒","通知对象重复");
+        }
         })
 
 });
@@ -92,3 +96,10 @@ $('#back').click(function () {
         $('#'+tabId).trigger('click');
     });
 });
+
+function toSqjl() {
+    AjaxTool.getHtml('document/sqjl',function (html) {
+        $('.page-content').html(html);
+    });
+
+}

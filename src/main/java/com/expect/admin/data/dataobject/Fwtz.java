@@ -4,6 +4,7 @@ import com.expect.admin.service.vo.FwtzVo;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by qifeng on 17/3/24.
@@ -19,6 +20,8 @@ public class Fwtz {
     private String tzlx;//通知类型(主送1,抄报2,抄送3)
     private String isread;//发文是否已读
     private String tzid;//一次通知id
+    private Date tzsj;
+    private Date ydsj;
 
 
     public Fwtz(){
@@ -109,6 +112,24 @@ public class Fwtz {
 
     public void setTzid(String tzid) {
         this.tzid = tzid;
+    }
+
+    public Date getTzsj() {
+        return tzsj;
+    }
+
+    @Column(name="tzsj")
+    public void setTzsj(Date tzsj) {
+        this.tzsj = tzsj;
+    }
+
+    @Column(name="ydsj")
+    public Date getYdsj() {
+        return ydsj;
+    }
+
+    public void setYdsj(Date ydsj) {
+        this.ydsj = ydsj;
     }
 }
 

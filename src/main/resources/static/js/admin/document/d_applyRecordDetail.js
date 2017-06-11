@@ -32,7 +32,7 @@
     $('#uploadFile').click(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
         var uploader = $("#fileUploadForm").FileUpload({
-            url: "contract/uploadDocumentAttachment",
+            url: "document/uploadDocumentAttachment",
             isMultiFile: true,
         });
         uploader.done(function(data) {
