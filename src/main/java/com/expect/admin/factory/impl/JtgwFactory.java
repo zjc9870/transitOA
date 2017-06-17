@@ -1,9 +1,12 @@
 package com.expect.admin.factory.impl;
 
+import com.expect.admin.data.dao.LcrzbRepository;
+import com.expect.admin.data.dataobject.User;
 import com.expect.admin.factory.WordXmlFactory;
 /*  4:   */import com.expect.admin.service.DocumentService;
 /*  5:   */import com.expect.admin.service.FwtzService;
-/*  6:   */import com.expect.admin.service.vo.DocumentVo;
+/*  6:   */import com.expect.admin.service.LcrzbService;
+import com.expect.admin.service.vo.DocumentVo;
 /*  7:   */import com.expect.admin.service.vo.FwtzVo;
 /*  8:   */import com.expect.admin.utils.WordXmlUtil;
 /*  9:   */import freemarker.template.TemplateException;
@@ -21,11 +24,13 @@ public class JtgwFactory implements WordXmlFactory
     DocumentService documentService;
     @Autowired
     FwtzService fwtzService;
+    @Autowired
+    LcrzbService lcrzbService;
 
     public byte[] create(String wjid) throws IOException, TemplateException {
         Map<String, Object> dataMap = new HashMap();
-        DocumentVo documentVo = this.documentService.getDocumentById(wjid);
-        FwtzVo fwtzVo = this.fwtzService.getNewestFwtzVoByDocumentId(wjid);
+        DocumentVo documentVo = documentService.getDocumentById(wjid);
+        FwtzVo fwtzVo = fwtzService.getFwtzVoByDocumentId(wjid);
         getDataMap(documentVo, fwtzVo, dataMap);
 
         byte[] content = WordXmlUtil.create(dataMap, "jtfw.ftl");
@@ -39,14 +44,28 @@ public class JtgwFactory implements WordXmlFactory
 
     public void getDataMap(DocumentVo documentVo, FwtzVo fwtzVo, Map<String, Object> dataMap) {
         Map<String, String> mjMap = getMjMap();
-        String mj = (String)mjMap.get(documentVo.getMj());
+        String mj = mjMap.get(documentVo.getMj());
         String sffb = "";
+        String yj="不通过";
+        String shr="";
+        String zs="";
+        String cb="";
+        String cs="";
+
+        zs=fwtzVo.getZsjtgg()+fwtzVo.getZsjtbm()+fwtzVo.getZsqtgsbgs()+fwtzVo.getZswbdw();
+        cb=fwtzVo.getCbjtgg()+fwtzVo.getCbjtbm()+fwtzVo.getCbqtgsbgs()+fwtzVo.getCbwbdw();
+        cs=fwtzVo.getCsjtgg()+fwtzVo.getCsjtbm()+fwtzVo.getCsqtgsbgs()+fwtzVo.getCswbdw();
         if (documentVo.getSffb().equals("1")) {
             sffb = "是";
         }
         if (documentVo.getSffb().equals("2")) {
             sffb = "否";
         }
+        if (documentVo.getGwshzt().equals("4")){
+            yj="通过";
+        }
+        User user = lcrzbService.getUser(documentVo.getId(),"gw");
+        shr = user.getFullName();
         dataMap.put("ngwr", documentVo.getUserName());
         dataMap.put("bh", documentVo.getHtbh());
         dataMap.put("bt", documentVo.getBt());
@@ -54,6 +73,11 @@ public class JtgwFactory implements WordXmlFactory
         dataMap.put("mj", mj);
         dataMap.put("sffb", sffb);
         dataMap.put("yfrq", documentVo.getYfrq());
+        dataMap.put("zs",zs);
+        dataMap.put("cs",cs);
+        dataMap.put("cb",cb);
+        dataMap.put("yj",yj);
+        dataMap.put("shr",shr);
     }
     public Map<String, String> getMjMap() {
         Map<String, String> map = new HashMap();

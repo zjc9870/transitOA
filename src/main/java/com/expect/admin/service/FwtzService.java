@@ -191,11 +191,13 @@ public class FwtzService {
                 String tzlx=fwtzVo.getTzlx();
                 String tzsj = fwtzVo.getTzsj();
                 String ydsj = fwtzVo.getYdsj();
+                String tzdx = fwtzVo.getTzdx();
                 DocumentVo documentVo=getDocumentById(fwid);
                 documentVo.setFwtzid(id);
                 documentVo.setLoginUserRole(loginUserRole);
                 documentVo.setYdsj(ydsj);
                 documentVo.setTzsj(tzsj);
+                documentVo.setTzdx(tzdx);
                 if (StringUtil.equals(tzlx,"1")){
                     documentVo.setTzlx("主送");
                 }else if(StringUtil.equals(tzlx,"2")){
@@ -290,28 +292,28 @@ public class FwtzService {
     }
     public FwtzVo getFwtzVoByDocumentId(String documentId) {
         List<Fwtz> fwtzList = this.fwtzRepository.findByFwid(documentId);
-        FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        FwtzVo fwtzVo = new FwtzVo();
         getNewFwtzVo(fwtzVo, fwtzList);
         return fwtzVo;
     }
     public FwtzVo getNewestFwtzVoByDocumentId(String documentId) {
         List<Fwtz> fwtzList = this.fwtzRepository.findFwtz(documentId);
-        FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        FwtzVo fwtzVo = new FwtzVo();
         getNewFwtzVo(fwtzVo, fwtzList);
         return fwtzVo;
     }
 
     public FwtzVo getFwtzVo(String id)
     {
-        Fwtz fwtz1 = (Fwtz)this.fwtzRepository.findOne(id);
+        Fwtz fwtz1 = this.fwtzRepository.findOne(id);
         List<Fwtz> fwtzList = this.fwtzRepository.findByTzid(fwtz1.getTzid());
-        com.expect.admin.service.vo.FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        FwtzVo fwtzVo = new FwtzVo();
         getNewFwtzVo(fwtzVo, fwtzList);
         return fwtzVo;
     }
     public FwtzVo getFwtzVoByTzid(String tzid) {
         List<Fwtz> fwtzList = this.fwtzRepository.findByTzid(tzid);
-        com.expect.admin.service.vo.FwtzVo fwtzVo = new com.expect.admin.service.vo.FwtzVo();
+        FwtzVo fwtzVo = new FwtzVo();
         getNewFwtzVo(fwtzVo, fwtzList);
         return fwtzVo;
     }

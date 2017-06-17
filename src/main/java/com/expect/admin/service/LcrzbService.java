@@ -175,5 +175,19 @@ public class LcrzbService {
 		lcrzbRepository.delete(
 				lcrzbRepository.findByClnridOrderByClsjAsc(wjId));
 	}
+
+	/**
+	 *
+	 * @param clnrid
+	 * @param clnrfl
+     * @return
+     */
+	public User getUser(String clnrid,String clnrfl){
+		List<Lcrzb> lcrzbList = lcrzbRepository.findByClnrflAndClnridOrderByClsjDesc(clnrfl,clnrid);
+		if (lcrzbList !=null && lcrzbList.size() >=0){
+			return lcrzbList.get(0).getUser();
+		}
+		return null;
+	}
 	
 }

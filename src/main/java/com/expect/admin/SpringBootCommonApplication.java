@@ -8,12 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class SpringBootCommonApplication{
 
-//    @Override
-//    protected SpringApplicationBuilder configure(
-//        SpringApplicationBuilder application) {
-//      return application.sources(SpringBootCommonApplication.class);
-//    }
-    
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootCommonApplication.class, args);
 	}

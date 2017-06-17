@@ -26,4 +26,5 @@ public interface LcrzbRepository extends JpaRepository<Lcrzb, String> {
 	 * @return
 	 */
 	List<Lcrzb> findByUserAndClsjBetweenOrderByClsjDesc(User user, Date start, Date end);
+	List<Lcrzb> findByClnrflAndClnridOrderByClsjDesc(String clnrfl,String clnrid);
 }

@@ -1,10 +1,9 @@
 package com.expect.admin.service.vo;
 
 import com.expect.admin.data.dataobject.Fwtz;
-<<<<<<< Updated upstream
-=======
+
 import com.expect.admin.utils.DateUtil;
->>>>>>> Stashed changes
+
 
 /**
  * Created by qifeng on 17/3/26.
