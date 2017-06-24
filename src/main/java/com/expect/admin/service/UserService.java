@@ -1,10 +1,7 @@
 package com.expect.admin.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import com.expect.admin.data.dao.*;
+import com.expect.admin.data.dataobject.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,14 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
-import com.expect.admin.data.dao.DepartmentRepository;
-import com.expect.admin.data.dao.LogLoginRepository;
-import com.expect.admin.data.dao.RoleRepository;
-import com.expect.admin.data.dao.UserRepository;
-import com.expect.admin.data.dataobject.Department;
-import com.expect.admin.data.dataobject.LogLogin;
-import com.expect.admin.data.dataobject.Role;
-import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.UserVo;
@@ -57,6 +48,8 @@ public class UserService implements UserDetailsService {
 	private RoleService roleService;
 	@Autowired  
 	private HttpSession session;
+	@Autowired
+	private AttachmentRepository attachmentRepository;
 
 	/**
 	 * 根据id获取用户
@@ -154,7 +147,7 @@ public class UserService implements UserDetailsService {
 	 */
 	@Transactional
 	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
-	public DataTableRowVo update(UserVo userVo) {
+	public DataTableRowVo update(UserVo userVo,String[] attachmentId) {
 		DataTableRowVo dtrv = new DataTableRowVo();
 		dtrv.setMessage("修改失败");
 
@@ -173,6 +166,13 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		UserConvertor.convert(user, userVo);
+
+		//将图片附件id和user_id绑定
+		if (attachmentId != null && attachmentId.length > 0) {
+			List<Attachment> attachmentList = attachmentRepository.findByIdIn(attachmentId);
+			if (!attachmentList.isEmpty()) user.setAttachments(new HashSet<>(attachmentList));
+		}
+
 		userRepository.save(user);
 		UserConvertor.convertDtrv(dtrv, user);
 		dtrv.setMessage("修改成功");

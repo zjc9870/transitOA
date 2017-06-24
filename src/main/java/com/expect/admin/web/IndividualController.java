@@ -2,15 +2,18 @@ package com.expect.admin.web;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.expect.admin.config.Settings;
+import com.expect.admin.data.dataobject.Attachment;
+import com.expect.admin.service.AttachmentService;
+import com.expect.admin.service.vo.component.FileResultVo;
+import com.expect.admin.service.vo.component.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.service.UserService;
@@ -31,6 +34,10 @@ public class IndividualController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private Settings settings;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	private final String viewPath = "admin/personalCon/";
 	
@@ -48,6 +55,7 @@ public class IndividualController {
 	@ResponseBody 
 	public DataTableRowVo updateIndividualMessage(UserVo userVo, 
 			@RequestParam(name = "newPassword", required = false)String newPassword,
+			@RequestParam(name = "attachmentId", required = false)String[] attachmentId,
 			HttpServletResponse response) throws IOException{
 		UserVo loginUserVo = userService.getLoginUser();
 		if(!StringUtil.isBlank(newPassword)){
@@ -55,6 +63,17 @@ public class IndividualController {
 			userVo.setPassword(encodeNewPassword);
 		}
 		else userVo.setPassword(loginUserVo.getPassword());
-		return userService.update(userVo);
+		return userService.update(userVo,attachmentId);
+	}
+	/**
+	 * 签名图片附件上传
+	 */
+	@RequestMapping(value = "/uploadIndividualAttachment", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo upload(MultipartFile files, HttpServletRequest request) {
+		String path = settings.getAttachmentPath();
+//		path = Base64Util.decode(path);
+		FileResultVo frv = attachmentService.save(files, path);
+		return frv;
 	}
 }

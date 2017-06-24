@@ -11,4 +11,5 @@ import java.util.List;
 
 public interface NotifyObjectRepository extends JpaRepository<NotifyObject,String> {
     List<NotifyObject> findByTzdxfl(String tzdxfl);
+    NotifyObject findByTzdx(String tzdx);
 }

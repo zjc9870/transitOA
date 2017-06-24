@@ -158,7 +158,7 @@ public class FwtzService {
         return random;
 
     }
-    public List<FwtzVo> getFwtzByFullName(String username) {
+    public List<FwtzVo> getFwtzByUserName(String username) {
         List<Fwtz> fwtzList = fwtzRepository.findByTzdx(username);
         List<FwtzVo> fwtzVos = new ArrayList<FwtzVo>();
         if (fwtzList != null) {

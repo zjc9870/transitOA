@@ -111,7 +111,7 @@ public class UserController {
 	        String encodeNewPassword = userService.encodePassword(userVo.getPassword());
             userVo.setPassword(encodeNewPassword);
 	    }
-		return userService.update(userVo);
+		return userService.update(userVo,null);
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.expect.admin.data.dataobject.Attachment;
+import com.expect.admin.service.vo.AttachmentVo;
 import org.apache.commons.collections.CollectionUtils;
 //import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -69,7 +71,26 @@ public class UserConvertor {
 			userVo.setSsgsName(user.getSsgs().getName());
 			userVo.setSsgsId(user.getSsgs().getId());
 		}
+		//设置签名附件
+		List<AttachmentVo> attachmentVos= getUserAttachment(user);
+		if (attachmentVos !=null && attachmentVos.size() >0){
+			userVo.setAttachmentVos(attachmentVos);
+		}
+
 		return userVo;
+
+	}
+	//
+	public static List<AttachmentVo> getUserAttachment(User user) {
+		Set<Attachment> attachmentList = user.getAttachments();
+		List<AttachmentVo> attachmentVoList = new ArrayList<>();
+		if(attachmentList != null && !attachmentList.isEmpty())
+			for (Attachment attachment : attachmentList) {
+				AttachmentVo attachementVo = new AttachmentVo();
+				BeanUtils.copyProperties(attachment, attachementVo);
+				attachmentVoList.add(attachementVo);
+			}
+		return attachmentVoList;
 	}
 
 	/**

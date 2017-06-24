@@ -63,7 +63,7 @@ public class AttachmentController {
 			String path = attachment.getPath() + File.separator + attachment.getId();
 			byte[] buffer = IOUtil.inputDataFromFile(path);
 			try {
-				RequestUtil.downloadFile(buffer, attachment.getName(), response, request);
+				RequestUtil.downloadFile(buffer, attachment.getName(), response,request);
 			} catch (IOException e) {
 			    log.error("下载附件出错", e);
 			}

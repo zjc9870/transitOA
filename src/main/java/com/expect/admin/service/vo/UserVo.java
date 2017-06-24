@@ -2,6 +2,8 @@ package com.expect.admin.service.vo;
 
 import com.expect.admin.utils.JacksonJsonUtil;
 
+import java.util.List;
+
 public class UserVo {
 
 	private String id;
@@ -18,6 +20,7 @@ public class UserVo {
 	private String ssgsId;//所属公司id
 	private String phoneNumber1;
 	private String phoneNumber2;
+	private List<AttachmentVo> attachmentVos;//签名图片附件
 
 	public String getId() {
 		return id;
@@ -136,4 +139,11 @@ public class UserVo {
 		return JacksonJsonUtil.getInstance().write(this);
 	}
 
+	public List<AttachmentVo> getAttachmentVos() {
+		return attachmentVos;
+	}
+
+	public void setAttachmentVos(List<AttachmentVo> attachmentVos) {
+		this.attachmentVos = attachmentVos;
+	}
 }

@@ -274,7 +274,7 @@ public class DocumentController {
             String fullName = userVo.getFullName();
             String userName= userVo.getUsername();
             String role=userVo.getRoleName();
-            List<FwtzVo> fwtzVoList=fwtzService.getFwtzByFullName(fullName);
+            List<FwtzVo> fwtzVoList=fwtzService.getFwtzByUserName(userName);
 
             if(StringUtil.equals(lx,"wd")){
                 List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
@@ -500,8 +500,8 @@ public class DocumentController {
     /**
      * 保存发文通知
      * @param fwtzVo
-     * @param documentId
-     * @param response
+     * @param
+     * @param
      * @throws IOException
      */
     @RequestMapping(value = "savenotify",method = RequestMethod.POST)
@@ -530,7 +530,7 @@ public class DocumentController {
         String userName= userVo.getUsername();
         String fullName = userVo.getFullName();
         String role = userVo.getRoleName();
-        List<FwtzVo> fwtzVoList=fwtzService.getFwtzByFullName(fullName);
+        List<FwtzVo> fwtzVoList=fwtzService.getFwtzByUserName(userName);
         List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
         List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
         List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);

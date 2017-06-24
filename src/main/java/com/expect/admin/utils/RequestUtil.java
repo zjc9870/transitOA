@@ -1,7 +1,6 @@
 package com.expect.admin.utils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 import java.util.Map;
@@ -88,18 +87,28 @@ public class RequestUtil {
 	/**
 	 * 下载文件
 	 */
-	public static void downloadFile(byte[] buffer, String filename, 
+	public static void downloadFile(byte[] buffer, String fileName,
 	        HttpServletResponse response, HttpServletRequest request) throws IOException {
 		response.reset();
 //		response.setContentType("application/x-msdownload;");
 		response.setContentType("application/octet-stream;");//如果用x-msdownload Safari浏览器会给下载后的文件加.exe后缀
 		response.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 
 		int length = buffer.length;
 		response.setHeader("Content-Length", String.valueOf(length));
-		boolean isIE = request.getHeader("User-Agent").toUpperCase().contains("MSIE");//判断用户使用的浏览器是否是IE浏览器
-		String header = "attachment;filename=" + fileNameEncode(isIE, filename);
-		response.setHeader("Content-Disposition", header);
+//		boolean isIE = request.getHeader("User-Agent").toUpperCase().contains("MSIE");//判断用户使用的浏览器是否是IE浏览器
+//		String header = "attachment;filename=" + fileNameEncode(isIE, fileName);
+
+		String header = request.getHeader("User-Agent").toUpperCase();
+		if (header.contains("MSIE") || header.contains("TRIDENT") || header.contains("EDGE")) {
+			fileName = URLEncoder.encode(fileName, "utf-8");
+			fileName = fileName.replace("+", "%20");    //IE下载文件名空格变+号问题
+		} else {
+			fileName = new String(fileName.getBytes(), "ISO8859-1");
+		}
+		String head =  "attachment; filename=\"" + fileName + "\"";
+		response.setHeader("Content-Disposition", head);
 		ServletOutputStream sout = response.getOutputStream();
 
 		sout.write(buffer, 0, length);
@@ -107,7 +116,8 @@ public class RequestUtil {
 		sout.close();
 	}
 
-    /**
+
+	/**
      * 如果是IE浏览器就用utf-8编码文件名称，否则就用ISO8859-1编码
      * @param isIE true是IE浏览器  false不是IE浏览器
      * @param fileName 未编码的文件名称

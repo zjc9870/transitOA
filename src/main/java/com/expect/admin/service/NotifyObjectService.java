@@ -78,7 +78,7 @@ public class NotifyObjectService {
             return  resultVo;
 
         resultVo = isUserExist(resultVo,tzdx);
-        if (resultVo.getMessage().equals("用户姓名不存在,请先建立此用户"))
+        if (resultVo.getMessage().equals("用户名不存在,请先建立此用户"))
             return resultVo;
 
         NotifyObjectVo notifyObjectVo=new NotifyObjectVo();
@@ -86,7 +86,7 @@ public class NotifyObjectService {
         notifyObjectVo.setTzdxfl(tzdxlx);
         NotifyObject notifyObject=new NotifyObject(notifyObjectVo);
 
-        User user = userRepository.findByFullName(tzdx);
+        User user = userRepository.findByUsername(tzdx);
         notifyObject.setUser(user);
 
         NotifyObject result=notifyObjectRepository.save(notifyObject);
@@ -99,16 +99,16 @@ public class NotifyObjectService {
     }
 
     /**
-     * 查询对象名在用户表中是否存在,存在的话(tzdx等于fullname)
+     * 查询对象名在用户表中是否存在
      * @param resultVo
      * @param tzdx
      * @return
      */
     public ResultVo isUserExist(ResultVo resultVo,String tzdx){
-        User user = userRepository.findByFullName(tzdx);
+        User user = userRepository.findByUsername(tzdx);
 
         if (user ==null){
-            resultVo.setMessage("用户姓名不存在,请先建立此用户");
+            resultVo.setMessage("用户名不存在,请先建立此用户");
         }
         return resultVo;
     }
@@ -138,7 +138,7 @@ public class NotifyObjectService {
             return  resultVo;
 
         resultVo = isUserExist(resultVo,tzdx);
-        if (resultVo.getMessage().equals("用户姓名不存在,请先建立此用户"))
+        if (resultVo.getMessage().equals("用户名不存在,请先建立此用户"))
             return resultVo;
 
         NotifyObject notifyObject = notifyObjectRepository.findOne(id);
@@ -146,6 +146,10 @@ public class NotifyObjectService {
             return resultVo;
         }
         notifyObject.setTzdx(tzdx);
+
+        User user = userRepository.findByUsername(tzdx);
+        notifyObject.setUser(user);
+
         NotifyObject result=notifyObjectRepository.save(notifyObject);
 
         if (result != null) {
