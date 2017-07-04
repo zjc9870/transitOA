@@ -153,8 +153,8 @@ public class WeixinController {
     	}else if(state.equals("documentApprove")){
     		ModelAndView mv = new ModelAndView("redirect:/weixin/document/approve");
     		return mv;
-    	}else if(state.equals("backfill")){
-    		ModelAndView mv = new ModelAndView(viewName + "contract_backfill");
+    	}else if(state.equals("documentNotifyRecord")){
+    		ModelAndView mv = new ModelAndView("redirect:/weixin/document/notifyRecord");
     		return mv;
     	}
 		return null;

@@ -10,7 +10,7 @@
 <body>
 <div class="lg-block">
     <button id="back" class="button">返回</button>
-    <div class="lg-block-title1">南京江宁公共交通集团公司办公室办文单</div>
+    	<div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${draftSwVo.sbd}+办文单"></div>
     <div class="lg-block-content">
         <th:block>
             <ul>
@@ -96,10 +96,7 @@
     </div>
     <div class="operation">
         <form id="s_cyForm" class="op-form">
-            <div class="yj-input">
-                <span>传阅人签字:</span>
-                <label><input type="radio" name="yy" value="已阅" />已阅</label>
-            </div>
+            <input type="hidden" name="yy" value="已阅"/>
             <div class="yj-disagree">
                 <div class="form-title">加注意见:</div>
                 <textarea class="sp-input" name="cyrYj"></textarea>

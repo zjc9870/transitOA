@@ -12,7 +12,7 @@
 <div class="lg-block">
     <button id="back" class="button">返回</button>
     <div class="lg-block-content">
-        <div class="lg-block-title1">南京江宁公共交通集团公司办公室办文单</div>
+    	<div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${draftSwVo.sbd}+办文单"></div>
         <ul>
             <li>
                 <div class="form-title">文件标题:</div>
@@ -52,23 +52,78 @@
         </ul>
     </div>
 </div>
+
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">收文流程</span>
+        <span class="lg-block-subtitle2">Receiving Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.jyzyRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.jyzyRecordList}">
+                <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                    <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                    class="process-content-pass" th:text="'已处理'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.ldRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.ldRecordList}">
+                <li><div class="process-title" th:text="领导批示"></div>
+                    <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已批示'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <!--<th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>-->
+            <!--<ul>-->
+                <!--<li>-->
+                    <!--<div class="process-title" th:text="传阅"></div>-->
+                    <!--<div id="cyrRecord" class="process-content-pass"></div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</th:block>-->
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.cyrRecordList}">
+                <li><div class="process-title" th:text="传阅"></div>
+                    <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已传阅'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.blrRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.blrRecordList}">
+                <li><div class="process-title" th:text="办理"></div>
+                    <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已办理'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+    </div>
+</div>
+
 <div class="lg-block2" id="selectCB">
     <div class="lg-block-title2">
         <span class="lg-block-subtitle1">传阅/办理</span>
         <span class="lg-block-subtitle2">Circulate/Handle</span>
     </div>
+            
     <div style="width:260px;margin:auto">
-        <button id="chyr"  class="button hover selectBu" name="button">选择传阅人</button>
-        <button id="blr"  class="button hover selectBu" name="button">选择办理人</button>
+    
+                <div class="pform-radio"><input  type="radio" name="button" value="chyr" id="chyr"
+                  /><span>选择传阅人</span></div>
+                <div class="pform-radio" style="margin-left: 35px"><input  type="radio" name="button" value="blr" id="blr"
+                 /><span>选择办理人</span></div>
+    
     </div>
 </div>
 <div class="lg-block2">
     <div class="lg-block-title2">
-        <span class="lg-block-subtitle1">结束流程</span>
+        <span class="lg-block-subtitle1">完成办文</span>
         <span class="lg-block-subtitle2">End Process</span>
     </div>
     <div style="width:120px;margin:auto">
-        <button id="end" class="button hover selectBu" name="button">结束流程</button>
+        <button id="end" class="button hover selectBu" name="button">完成办文</button>
     </div>
 </div>
 <!--<div class="lg-block2">-->

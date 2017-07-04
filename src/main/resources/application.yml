@@ -1,14 +1,14 @@
 #本机配置
 server:
-  port: 8080
+  port: 80
   context-path: /
 spring:
   datasource:
     type: org.apache.tomcat.jdbc.pool.DataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/gongjiao?characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1/transitoa?characterEncoding=utf-8
     username: root
-    password: root
+    password: jnptpassword
   jpa:
     show-sql: true
     hibernate:
@@ -21,11 +21,17 @@ spring:
 #  level:
 #    com.expect: info
     
+#custom:
+#  root-path: /Users/joker/java/New_workspace/transitOA
+#  avatar-path: /Users/joker/java/New_workspace/transitOA/avatar
+#  attachment-path: /Users/joker/java/New_workspace/transitOA/attachment
+#  ueditor-path: /Users/joker/java/New_workspace/transitOA/ueditor
 custom:
-  root-path: /Users/joker/java/New_workspace/transitOA
-  avatar-path: /Users/joker/java/New_workspace/transitOA/avatar
-  attachment-path: /Users/joker/java/New_workspace/transitOA/attachment
-  ueditor-path: /Users/joker/java/New_workspace/transitOA/ueditor
+  root-path: D:/transitOA
+  avatar-path: D:/transitOA/avatar
+  attachment-path: D:/transitOA/attachment
+  attachment-pdf-path: D:/transitOA/attachment/convertToPdf
+  ueditor-path: D:/transitOA/ueditor
 
 
 #服务器配置
@@ -97,12 +103,12 @@ custom:
 
 #微信企业号配置
 WxCpInMemoryConfigStorage:
-  corpId: wx9b77c621c69ea369
-  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
-  token: iuqM
+  corpId: wx6cf85a5aafc0e3e7
+  corpSecret: 6jYIJeMF37cUQsSiS_OHat7s9VSvEtkwm05B86GXxQprEhnn7lya6Tq9DmVqWcFO
+  token: 36L
   aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
   agentId: 2
   expiresTime: 0
-  oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
+  oauth2redirectUri: http://www.jnptgroup.com:80/weixin/login
   httpProxyPort: 0
   jsapiTicketExpiresTime: 0

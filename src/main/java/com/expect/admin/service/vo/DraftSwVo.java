@@ -21,6 +21,7 @@ public class DraftSwVo {
 	private String blqk;//办理情况
 	private String mj;//密级
 	private String fqsj;//发起时间
+	private String sbd;//合同的大标题
     private List<LcrzbVo> jyzyRecordList = new ArrayList<LcrzbVo>();
     private List<LcrzbVo> ldRecordList = new ArrayList<LcrzbVo>();
     private List<LcrzbVo> cyrRecordList = new ArrayList<LcrzbVo>();
@@ -44,6 +45,7 @@ public class DraftSwVo {
 		this.swr = draftSw.getSwr().getFullName();
 		this.wh = draftSw.getWh();
 		this.wjbt = draftSw.getWjbt();
+		this.sbd = draftSw.getSbd();
 		if(draftSw.getFqsj() != null) {
 			this.fqsj = DateUtil.format(draftSw.getFqsj(), DateUtil.fullFormat);
 		}else this.fqsj = "";
@@ -178,5 +180,13 @@ public class DraftSwVo {
     public void setAttachmentList(List<AttachmentVo> attachmentList) {
         this.attachmentList = attachmentList;
     }
+
+	public String getSbd() {
+		return sbd;
+	}
+
+	public void setSbd(String sbd) {
+		this.sbd = sbd;
+	}
     
 }

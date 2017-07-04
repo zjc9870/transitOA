@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.expect.admin.service.DocumentService;
+import com.expect.admin.service.FwtzService;
 import com.expect.admin.service.RoleJdgxbGxbService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
 import com.expect.admin.service.vo.DocumentVo;
+import com.expect.admin.service.vo.FwtzVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
@@ -51,7 +53,10 @@ public class WeixinDocumentController {
 
 	@Autowired
 	RoleService roleService;
-	//合同审批列表
+	
+	@Autowired
+	FwtzService fwtzService;
+	//发文审批列表
 	@RequestMapping("/approve")
 	public ModelAndView approve() {
 		UserVo userVo = userService.getLoginUser();
@@ -60,6 +65,20 @@ public class WeixinDocumentController {
         List<DocumentVo> documentVoList = new ArrayList<DocumentVo>();
         documentVoList=documentService.getDocumentByUserIdAndCondition(userVo.getId(),"2",lx);
         modelAndView.addObject("documentVoList",documentVoList);
+        return modelAndView;
+	}
+	
+	//通知列表
+	@RequestMapping("/notifyRecord")
+	public ModelAndView notifyRecord() {
+		UserVo userVo = userService.getLoginUser();
+        String role=userVo.getRoleName();
+        ModelAndView modelAndView=new ModelAndView(viewName+"document_notify_record");
+        List<FwtzVo> fwtzVoList=fwtzService.getAllFwtz();
+        List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
+        List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+        List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
+        modelAndView.addObject("documentVoListBytzsj",documentVoListBytzsj);
         return modelAndView;
 	}
 	
@@ -174,6 +193,43 @@ public class WeixinDocumentController {
         }
         MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "公文审核成功！").build());
 
+    }
+    
+    //发文通知记录
+    @GetMapping(value = "/fwtzRecordTab")
+    public void fwtzRecordTab(@RequestParam(name = "lx", required = false)String lx,
+                        HttpServletResponse response) throws IOException {
+    	System.out.println("lx="+lx);
+        if (StringUtil.isBlank(lx)) lx = "wd";
+        try{
+            UserVo userVo = userService.getLoginUser();
+            String fullName = userVo.getFullName();
+            String userName= userVo.getUsername();
+            String role=userVo.getRoleName();
+            List<FwtzVo> fwtzVoList=fwtzService.getAllFwtz();
+            if(StringUtil.equals(lx,"wd")){
+                List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+                List<DocumentVo> documentVoListBytzsj = this.fwtzService.sortDocumentListByTzsj(documentVoList);
+                MyResponseBuilder.writeJsonResponse(response,
+                        JsonResult.useDefault(true, "获取未读发文通知成功", documentVoListBytzsj).build());
+                return;
+            }
+
+            if(StringUtil.equals(lx,"yd")){
+                List<FwtzVo> ydFwtzVoList = fwtzService.getYdFwtzList(fwtzVoList);
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
+                List<DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
+                System.out.println("length="+documentVoListByydsj.size());
+                MyResponseBuilder.writeJsonResponse(response,
+                        JsonResult.useDefault(true, "获取已读发文通知成功", documentVoListByydsj).build());
+                return;
+            }
+
+        }catch(Exception e){
+            log.error("获取发文通知记录错误" + lx, e);
+            MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "获取发文通知记录出错").build());
+        }
     }
 	
 }

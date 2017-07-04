@@ -90,6 +90,9 @@ public class DraftSw {
 	@Column(name = "wjbt", length = 100)
 	private String wjbt;// 文件标题
 
+	@Column(name = "sbd", length = 100)
+	private String sbd;//副标题
+	
 	@Column(name = "bz", length = 200)
 	private String bz;// 备注
 
@@ -131,6 +134,7 @@ public class DraftSw {
 		this.wjbt = draftSwVo.getWjbt();
 		this.swzt = draftSwVo.getZt();
 		this.mj = draftSwVo.getMj();
+		this.sbd = draftSwVo.getSbd();
 	}
 
 	public String getId() {
@@ -175,6 +179,14 @@ public class DraftSw {
 
 	public void setNbwh(String nbwh) {
 		this.nbwh = nbwh;
+	}
+
+	public String getSbd() {
+		return sbd;
+	}
+
+	public void setSbd(String sbd) {
+		this.sbd = sbd;
 	}
 
 	public Date getTjsj() {
