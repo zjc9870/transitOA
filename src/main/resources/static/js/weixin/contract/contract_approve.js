@@ -9,14 +9,15 @@ var $searchBar = $('#searchBar'),
     $searchClear = $('#searchClear'),
     $searchCancel = $('#searchCancel');
 
+var dsp_count = 0;
+var ysp_count = 0;
+var yth_count = 0;
+
+var dsp_cons = "";
+var ysp_cons = "";
+var yth_cons = "";
 $(document).ready(function () {
-	var dsp_count = 0;
-	var ysp_count = 0;
-	var yth_count = 0;
-	
-	var dsp_cons = "";
-	var ysp_cons = "";
-	var yth_cons = "";
+
 	AjaxTool.get('sqjlTab', {
         lx: 'dsp', bz: 'sp'},function (data) {
         if(data.success) {
@@ -95,16 +96,19 @@ $(document).ready(function () {
 	$('#weui_body_ysp').hide();
 	$('#weui_body_yth').hide();
 	$('#ysp_tab').click(function() {
+		reload('ysp');
 		$('#weui_body_ysp').show();
 		$('#weui_body_dsp').hide();
 		$('#weui_body_yth').hide();
 	});
 	$('#dsp_tab').click(function() {
+		reload('dsp');
 		$('#weui_body_ysp').hide();
 		$('#weui_body_dsp').show();
 		$('#weui_body_yth').hide();
 	});
 	$('#yth_tab').click(function() {
+		reload('yth');
 		$('#weui_body_ysp').hide();
 		$('#weui_body_dsp').hide();
 		$('#weui_body_yth').show();
@@ -262,6 +266,62 @@ function contain(str,substr){
 	}
 }
 
+function reload(tabId){
+	var title;
+	var cons;
+	var count;
+	var content;
+	var loading;
+	switch(tabId){
+	case 'ysp':
+		title = "已审批";
+		cons = ysp_cons;
+		count = ysp_count;
+		content = $('#weui_content_ysp');
+		loading = $('#ysp_loading');
+		break;
+	case 'dsp':
+		title = "待审批";
+		cons = dsp_cons;
+		count = dsp_count;
+		content = $('#weui_content_dsp');
+		loading = $('#dsp_loading');
+		break;
+	case 'yth':
+		title = "已退回";
+		cons = yth_cons;
+		count = yth_count;
+		content = $('#weui_content_yth');
+		loading = $('#yth_loading');
+		break;
+	}
+	count = 0;
+	AjaxTool.get('sqjlTab', {
+        lx: tabId, bz: 'sp'},function (data) {
+        if(data.success) {
+            var str = "";
+            cons = data.content;
+            if(cons.length>count+15){
+            	loading.attr('style','display:block');
+            }
+            str+="<div class='weui-cell__hd'><div class='weui-cells__title'>"+title+"</div>";
+            for(var i=count;i<cons.length;i++) {
+            	str+="<a class='weui-cell weui-cells_access' href='javascript:;'>";
+            	str+="<div onclick='seeApprove(\""+ cons[i].id +'\",\"'+'dsp'+"\")' class='weui-cell__bd weui-cell_primary'>";
+            	str+="<p>"+cons[i].htbt+"</p>";
+            	str+="</div>";
+            	str+="<div class='weui-cell__ft'>";
+            	str+="</div>";
+            	str+="</a>";
+            	if(i>=count+15){
+            		count=count+16;
+            		break;
+            	}
+            }
+            content.html(str);
+        }
+    });
+}
 
 function seeApprove(id,tabId) {
 //    AjaxTool.html('htspckxq',{id: id},function (html) {

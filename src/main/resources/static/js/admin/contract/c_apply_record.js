@@ -53,6 +53,8 @@ for(var i=0; i<tabs.length; i++) {
             }
         }
     }
+    
+
 }
 
 function seeApplyRecordE(id,tabId) {
