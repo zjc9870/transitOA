@@ -12,7 +12,7 @@ public class LcrzbVo {
 	private String cljg;//处理结果
 	private String lcjd;
 //	private String clnrid;//处理内容的id（所处理的东西的id）
-//	private String clnrfl;
+	private String clnrfl;
 	
 	public LcrzbVo(){
 		
@@ -34,6 +34,7 @@ public class LcrzbVo {
 			DateUtil.format(lcrzb.getClsj(), DateUtil.fullFormat);
 		this.message = lcrzb.getMessage();//处理意见
 		this.lcjd = lcrzb.getDyjd();
+		this.clnrfl=lcrzb.getClnrfl();
 	}
 	public String getUserName() {
 		return userName;
@@ -72,6 +73,14 @@ public class LcrzbVo {
 
 	public void setLcjd(String lcjd) {
 		this.lcjd = lcjd;
+	}
+
+	public String getClnrfl() {
+		return clnrfl;
+	}
+
+	public void setClnrfl(String clnrfl) {
+		this.clnrfl = clnrfl;
 	}
 	
 	

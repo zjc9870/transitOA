@@ -237,10 +237,10 @@ public class DateUtil {
 	}
 
 	/**
-	 * 获得当天的开始时间
+	 * 获得当前的时间
 	 */
 	public static Date today() {
-		return parse(format(new Date(), webFormat), webFormat);
+		return parse(format(new Date(), noSecondFormat), noSecondFormat);
 	}
 	
 //	public static void main(String[] args) {

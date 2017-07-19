@@ -35,6 +35,10 @@ public class DraftSwUserLcrzbGxb {
 	 * 人员分类 办理人
 	 */
 	public static final String RYFL_BLR = "blr";
+	/**
+	 * 人员分类 发起人
+	 */
+	public static final String RYFL_SWR = "swr";
 	
 	@Id
 	@GeneratedValue(generator = "uuid")

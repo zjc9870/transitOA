@@ -91,6 +91,7 @@ public class DraftSwService {
     public void saveANewDraftSw(boolean sftj, DraftSwVo draftSwVo, String ldId, String[] attachmentIds) {
         String startCondition = lcService.getStartCondition(SWLC_ID);
         String condition = startCondition;
+        System.out.println("startCondition"+condition);
         String swfl = DraftSw.SWFL_WTJ;// 默认收文为未提交
         if (sftj) {
             if (StringUtil.isBlank(ldId))
@@ -117,13 +118,40 @@ public class DraftSwService {
 
         // 保存收文
         DraftSw savedDraftSw = draftSwRepository.save(draftSw);
-        // 保存审批领导的信息
+        
+        DraftSwUserLcrzbGxb draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(user, savedDraftSw, null);
+
+        Lcrzb swLcrz = new Lcrzb("发起收文", "发起收文", user);
+        swLcrz.setClsj(new Date());
+        swLcrz.setDyjd("新增");
+        Lcrzb savedLcrz = lcrzbRepository.save(swLcrz);
+
+        draftSwUserLcrzbGxb.setLcrz(savedLcrz);
+        draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
+        
+        // 保存审批领导的信息 
         if (!StringUtil.isBlank(ldId)) {
             User ldUser = userRepository.findOne(ldId);
-            DraftSwUserLcrzbGxb draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(ldUser, savedDraftSw,
+            draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(ldUser, savedDraftSw,
                     DraftSwUserLcrzbGxb.RYFL_LD);
             draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
         }
+        
+     // 保存审批领导的信息 
+//        if (!StringUtil.isBlank(ldId)) {
+//            User ldUser = userRepository.findOne(ldId);
+//            draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(ldUser, savedDraftSw,DraftSwUserLcrzbGxb.RYFL_LD);
+//            
+//            swLcrz = new Lcrzb("未审批", "领导审批", ldUser);
+//            swLcrz.setClsj(new Date());
+//            swLcrz.setDyjd("领导审批");
+//            savedLcrz = lcrzbRepository.save(swLcrz);
+//
+//            draftSwUserLcrzbGxb.setLcrz(savedLcrz);
+//            
+//            
+//            draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
+//        }
     }
 
     /**
@@ -221,6 +249,8 @@ public class DraftSwService {
         draftSwVo.setCyrRecordList(getLcrzList(draftSwRecordList, DraftSwUserLcrzbGxb.RYFL_CYR));
         // 办理人日志信息
         draftSwVo.setBlrRecordList(getLcrzList(draftSwRecordList, DraftSwUserLcrzbGxb.RYFL_BLR));
+     // 传阅人和办理人的日志信息
+        draftSwVo.setXgryRecordList(getLcrzList(draftSwRecordList, "XGRY"));
     }
 
     /**
@@ -238,6 +268,15 @@ public class DraftSwService {
             }
             if (StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), ryfl)) {
                 recordSet.add(lcrz);
+            }else if(StringUtil.equals("XGRY", ryfl)){
+            	//说明获取所有相关人员的日志
+            	if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_CYR)){
+            		lcrz.setClnrfl("传阅人");
+            		recordSet.add(lcrz);
+            	}else if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_BLR)){
+            		lcrz.setClnrfl("办理人");
+            		recordSet.add(lcrz);
+            	}
             }
         }
         return LcrzbService.convert(recordSet);
