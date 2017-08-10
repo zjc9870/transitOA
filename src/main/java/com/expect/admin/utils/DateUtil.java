@@ -24,6 +24,8 @@ public class DateUtil {
 	public final static String zbFormat = "yyyy/MM/dd";
 	public final static String tsfxFormat = "yyyy.MM.dd";
 	public final static String noSecondFormat = "yyyy-MM-dd HH:mm";
+
+	public final static String SecondFormat = "yyyy-MM-dd HH:mm:ss";
 	public final static String dateWithHour = "yyyy-MM-dd HH";
 	public final static long ONE_DAY_MILL_SECONDS = 86400000;
 
@@ -240,7 +242,7 @@ public class DateUtil {
 	 * 获得当前的时间
 	 */
 	public static Date today() {
-		return parse(format(new Date(), noSecondFormat), noSecondFormat);
+		return parse(format(new Date(), SecondFormat), SecondFormat);
 	}
 	
 //	public static void main(String[] args) {
