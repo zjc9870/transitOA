@@ -1,0 +1,139 @@
+.print-body{
+    width: 60%;
+    height: 380px;
+    border: 1px solid green;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20px;
+
+}
+.print-title{
+    text-align: center;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.print-content-zbr{
+    width:50%;
+    height:60px;
+    border-right: 1px solid green;
+    float: left;
+}
+.print-content-bh{
+    width:50%;
+    height: 60px;
+    float: left;
+}
+.print-content-title{
+    margin-top: 5px;
+    margin-left: 10px;
+}
+.print-content-zbr-xx{
+    padding-left: 130px;
+    margin-top: 10px;
+}
+.print-content-bh-title{
+    margin-left: 10px;
+    margin-top: 10px;
+    float: left;
+}
+.print-content-bh-title2{
+    margin-left: 10px;
+    margin-top: 10px;
+    float:left;
+}
+.print-content-bt{
+    border-top: 1px solid green;
+    margin-top: 60px;
+    height:60px;
+}
+.print-content-bh input{
+    display: block;
+    float: left;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.print-content-bt-xx {
+    margin-left:50px;
+    margin-top: 10px;
+}
+.print-content-ztc{
+    border-top: 1px solid green;
+    height:60px;
+}
+.print-content-ztc-xx{
+    margin-left:60px;
+    margin-top: 10px;
+}
+.print-content-xz{
+    height: 40px;
+    border-top: 1px solid green;
+    border-bottom: 1px solid green;
+
+}
+.print-content-mj-title{
+    margin-left: 10px;
+    height: 40px;
+    line-height: 40px;
+    overflow:hidden;
+}
+.print-content-xz input{
+    margin-left: 10px;
+}
+.print-content-sffb-title{
+    margin-left: 100px;
+}
+.print-content-sh{
+    height: 60px;
+    border-bottom: 1px solid green;
+}
+.print-content-dszsh{
+    width:50%;
+    border-right: 1px solid green;
+    height:60px;
+    float: left;
+}
+.print-content-dszsh-tilte{
+    margin-left: 10px;
+    padding-top: 5px;
+}
+.print-content-sh-xx{
+    margin-left: 80px;
+    margin-top: 10px;;
+}
+.print-content-dszyj{
+    width:50%;
+    float:left;
+    height: 60px;;
+}
+.print-content-dszyj-title{
+    margin-left: 10px;
+    padding-top: 5px;
+}
+.print-content-yfrq{
+    height: 40px;
+    border-bottom: 1px solid green;
+}
+.print-content-yfrq-title{
+    margin-left: 10px;
+    height: 40px;
+    line-height: 40px;
+    overflow:hidden;
+}
+.print-content-yfrq input{
+    margin-left: 10px;
+}
+.print-content-dyr{
+    height:60px;
+    /*border-bottom: 1px solid green;*/
+}
+.print-content-dyr-xx{
+    margin-left: 50px;
+    margin-top:  10px;
+}
+.print-form{
+    margin:0 auto;
+}
+.box-print{
+    margin-top: 10px;
+    text-align:center;
+}
