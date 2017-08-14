@@ -1,6 +1,6 @@
 #本机配置
 server:
-  port: 8080
+  port: 80
   context-path: /
 spring:
   datasource:
@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1/transitoa?characterEncoding=utf-8
     username: root
-    password: root
+    password: jnptpassword
   jpa:
     show-sql: true
     hibernate:

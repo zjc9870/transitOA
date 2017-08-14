@@ -11,7 +11,7 @@
 <div class="lg-block">
     <button id="back" class="button">返回</button>
     <div class="lg-block-content">
-        <div class="lg-block-title1">南京江宁公共交通集团公司办公室办文单</div>
+    	<div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${draftSwVo.sbd}+办文单"></div>
         <th:block>
             <ul>
                 <li>
@@ -64,10 +64,20 @@
         </th:block>
         <th:block th:if='${not #lists.isEmpty(draftSwVo.ldRecordList)}'>
             <ul th:each="lcrz : ${draftSwVo.ldRecordList}">
-                <li><div class="process-title" th:text="领导批示"></div>
-                    <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
-                         class="process-content-pass" th:text="'已批示'+'('+${lcrz.userName}+')'"></div>
-                </li>
+                
+	            <th:block th:if="${lcrz.cljg=='未处理'}">
+	            	<li><div class="process-title" th:text="领导批示"></div>
+	                <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+	              			 class="process-content-nopass" th:text="'未批示'+'('+${lcrz.userName}+')'"></div>
+	              	</li>
+	            </th:block>
+	            
+	            <th:block th:if="${lcrz.cljg=='已阅'}">
+	            	<li><div class="process-title" th:text="领导批示"></div>
+	                <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+	              			 class="process-content-pass" th:text="'已审批'+'('+${lcrz.userName}+')'"></div>
+	              	</li>
+	            </th:block>
             </ul>
         </th:block>
         <!--<th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>-->
@@ -78,7 +88,7 @@
                 <!--</li>-->
             <!--</ul>-->
         <!--</th:block>-->
-        <th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>
+        <!-- <th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>
             <ul th:each="lcrz : ${draftSwVo.cyrRecordList}">
                 <li><div class="process-title" th:text="传阅"></div>
                     <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
@@ -92,6 +102,41 @@
                     <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
                          class="process-content-pass" th:text="'已办理'+'('+${lcrz.userName}+')'"></div>
                 </li>
+            </ul>
+        </th:block>
+         -->
+         <th:block th:if='${not #lists.isEmpty(draftSwVo.xgryRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.xgryRecordList}">
+            	<th:block th:if="${lcrz.clnrfl=='办理人'}">
+            	
+	            	<th:block th:if="${lcrz.cljg=='未处理'}">
+		            	<li><div class="process-title" th:text="办理"></div>
+		                <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+		              			 class="process-content-nopass" th:text="'未办理'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+            	
+                	<th:block th:if="${lcrz.cljg=='已阅'}">
+		            	<li><div class="process-title" th:text="办理"></div>
+		                <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+		              			 class="process-content-pass" th:text="'已办理'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                </th:block>
+                <th:block th:if="${lcrz.clnrfl=='传阅人'}">
+                	<th:block th:if="${lcrz.cljg=='未处理'}">
+		            	<li><div class="process-title" th:text="传阅"></div>
+		                <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+		              			 class="process-content-nopass" th:text="'未传阅'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                	<th:block th:if="${lcrz.cljg=='已阅'}">
+		            	<li><div class="process-title" th:text="传阅"></div>
+		                <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+		              			 class="process-content-pass" th:text="'已传阅'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                </th:block>
             </ul>
         </th:block>
     </div>
