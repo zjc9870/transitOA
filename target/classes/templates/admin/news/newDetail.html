@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+<link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<div class="lg-block" style="min-height: 560px;">
+		<div class="lg-block-content">
+			<!--<div class="lg-block-title1" th:text="${newsVo.tittle}"></div>-->
+			<!--<div class="form-title" th:text="${'作者：' + newsVo.userName + '发布于：'+ newsVo.sqsj}">主要内容:</div>-->
+			<!--<div class="form-title" th:text="${newsVo.content}">主办人和拟合同人:</div>-->
+			<div class="lg-block-title1" th:text="${newsVo.tittle}"></div>
+			<div class="news-subTitle" th:text="${'作者：' + newsVo.userName + '发布于：'+ newsVo.sqsj}"></div>
+			<p class="news-content" th:text="${newsVo.content}"></p>
+		</div>
+	</div>
+</body>
+</html>

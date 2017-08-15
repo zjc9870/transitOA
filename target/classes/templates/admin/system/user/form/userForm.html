@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<link th:href="@{/css/admin/base/form.css}" type="text/css"
+		rel="stylesheet" />
+	<link th:href="@{/css/admin/base/table.css}" type="text/css"
+		rel="stylesheet" />
+	<style type="text/css">
+		li {
+			  margin-bottom: 7px;
+			  list-style: none;
+		}
+		.pform-content {
+			border: 1px solid rgb(194,202,216);
+		}
+		
+	</style>
+</head>
+<body>
+	<!-- <form id="user-form">
+		<input type="hidden" name="id" th:value="${user.id}" />
+		<input type="hidden" name="avatarId"/>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="username">用户名</label>
+					<div class="input-group col-md-12">
+						<input id="username" type="text" class="form-control"
+							name="username" placeholder="请输入用户名" th:value="${user.username}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="fullName">姓名</label>
+					<div class="input-group col-md-12">
+						<input id="fullName" type="text" class="form-control"
+							name="fullName" placeholder="请输入姓名" th:value="${user.fullName}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="phone">电话</label>
+					<div class="input-group col-md-12">
+						<input id="phone" type="text" class="form-control" name="phone"
+							placeholder="请输入电话" th:value="${user.phone}" />
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="password">密码</label>
+					<div class="input-group col-md-12">
+						<input id="password" type="password" class="form-control"
+							name="password" placeholder="请输入密码" th:value="${user.password}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email">邮箱</label>
+					<div class="input-group col-md-12">
+						<input id="email" type="text" class="form-control" name="email"
+							placeholder="请输入邮箱" th:value="${user.email}" />
+
+					</div>
+				</div>
+				<div class="form-group form-md-radios">
+					<label>性别</label>
+					<div class="md-radio-inline">
+						<div class="md-radio">
+							<input type="radio" id="sex-male" name="sex" value="男"
+								class="md-radiobtn" th:checked="${user.sex}=='男'" /> <label
+								for="sex-male"> <span class="inc"></span> <span
+								class="check"></span> <span class="box"></span> 男
+							</label>
+						</div>
+						<div class="md-radio has-error">
+							<input type="radio" id="sex-female" name="sex"
+								class="md-radiobtn" value="女" th:checked="${user.sex}=='女'" /> <label
+								for="sex-female"> <span class="inc"></span> <span
+								class="check"></span> <span class="box"></span> 女
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form> -->
+	<form id="user-form">
+		<input type="hidden" name="id" th:value="${userVo.id}" />
+		<input type="hidden" name="avatarId"/>
+		<ul>
+			<li>
+				<div  class="pform-title">用户名:</div> <input name="username"
+				class="pform-content" type="text"
+				th:value="${userVo.username}" />
+			</li>
+			<li>
+				<div class="pform-title">密码:</div> <input id="password1" name = "password"
+				class="pform-content" type="password" th:value = "${userVo.password}"/> <span class="pfrom-tips">密码必须是字母、数字、连接符号。密码设置6~8位</span>
+			</li>
+			<li>
+				<div class="pform-title">姓名:</div> <input name="fullName"
+				class="pform-content" type="text"
+				th:value="${userVo.fullName}" />
+			</li>
+			<li>
+				<div class="pform-title">座机:</div> <input name="phone"
+				class="pform-content" type="text" th:value="${userVo.phone}" />
+			</li>
+			<li>
+				<div class="pform-title">手机1:</div> <input name="phoneNumber1"
+				class="pform-content" type="text" th:value="${userVo.phoneNumber1}" />
+			</li>
+			<li>
+				<div class="pform-title">手机2:</div> <input name="phoneNumber2"
+				class="pform-content" type="text" th:value="${userVo.phoneNumber2}" />
+			</li>
+			<li>
+				<div class="pform-title">邮箱:</div> <input name="email"
+				class="pform-content" type="text" th:value="${userVo.email}" /> <span
+				class="pfrom-tips">选择最常用的信箱地址,最优选择是集团内部邮箱</span>
+			</li>
+			<li th:switch="${userVo.sex}">
+				<div class="pform-title">性别:</div> <th:block th:case="'男'">
+					<div class="pform-radio">
+						<input name="sex" type="radio" value="男" checked="checked" /><span>男</span>
+					</div>
+					<div class="pform-radio" style="margin-left: 35px">
+						<input name="sex" type="radio" value="女" /><span>女</span>
+					</div>
+				</th:block> <th:block th:case="'女'">
+					<div class="pform-radio">
+						<input name="sex" type="radio" value="男" /><span>男</span>
+					</div>
+					<div class="pform-radio" style="margin-left: 35px">
+						<input name="sex" type="radio" value="女" checked="checked" /><span>女</span>
+					</div>
+				</th:block> <th:block th:case="*">
+					<div class="pform-radio">
+						<input name="sex" type="radio" value="男" /><span>男</span>
+					</div>
+					<div class="pform-radio" style="margin-left: 35px">
+						<input name="sex" type="radio" value="女" /><span>女</span>
+					</div>
+				</th:block>
+			</li>
+			<!-- <li>
+				<div class="pform-title">部门:</div> 
+				<input name="departmentName"
+				class="pform-content" type="text"
+				th:value="${userVo.departmentName}" />
+				<select th:each = 'dep : ${departmentVoList}'>
+					<option value = ${dep.id} th:selected = '${dep.id} == ""'>${dep.name}</option>
+				</select>
+			</li> -->
+			<li>
+				<div class="pform-title">所属公司:</div> <input name="ssgsName"
+				class="pform-content pform-disabled" type="text" disabled="disabled"
+				th:value="${userVo.ssgsName}" />
+				<input name = "ssgsId" style = "display:none" th:value = "${userVo.ssgsId}" />
+			</li>
+		</ul>
+		<!-- <input type="hidden" th:value="${userVo.id}" id="userId" /> -->
+	</form>
+	<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+	<script type="text/javascript">
+		var userValidator = $('#user-form').validate({
+			errorElement: 'span', //default input error message container
+			errorClass: 'error-tips', // default input error message class
+			rules: {
+				username: {
+					required: true
+				},
+				password: {
+					required: true
+				},
+				fullName: {
+					required: true
+				},
+				phoneNumber1: {
+					phoneUS: true
+				},
+				phoneNumber2: {
+					phoneUS: true
+				},
+				email: {
+					email: true
+				},
+				sex: {
+					required: true
+				}
+			},
+
+			messages: {
+				username: {
+					required: "请输入用户名"
+				},
+				password: {
+					required: "请输入密码"
+				},
+				fullName: {
+					required: "请输入姓名"
+				},
+				phoneNumber1: {
+					phoneUS: "请输入正确的手机号"
+				},
+				phoneNumber2: {
+					phoneUS: "请输入正确的手机号"
+				},
+				email: {
+					email: "请输入正确的邮箱"
+				},
+				sex: {
+					required: "请选择性别"
+				}
+			}
+		});
+	</script>
+</body>
+</html>

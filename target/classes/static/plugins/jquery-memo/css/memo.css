@@ -1,0 +1,388 @@
+.memo-wrapper {
+	box-shadow: 0 2px 3px 2px rgba(0, 0, 0, .03);
+	border: 1px solid #e7ecf1 !important;
+	min-width: 325px;
+}
+
+.memo {
+	background-color: white;
+	padding: 6px;
+}
+
+.memo .memo-calendar {
+	height: 100%;
+}
+
+.memo .memo-calendar .memo-day-wrapper {
+	width: 30%;
+	text-align: center;
+	height: 72px;
+	border-right: 1px solid #ccc;
+	position: relative;
+	display: inline-block;
+}
+
+.memo .memo-calendar .memo-day-wrapper .memo-day {
+	color: #00783a;
+	font-size: 36px;
+	font-weight: 600;
+}
+
+.memo .memo-calendar .memo-day-wrapper .memo-week {
+	font-size: 12px;
+}
+
+.memo .memo-calendar .memo-year-wrapper {
+	width: 65%;
+	text-align: center;
+	height: 100%;
+	position: relative;
+	display: inline-block;
+	top: -10px;
+}
+
+.memo .memo-calendar .memo-year-wrapper button {
+	border: 10px;
+	box-sizing: border-box;
+	display: inline-block;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	cursor: pointer;
+	text-decoration: none;
+	outline: none;
+	font-size: 0px;
+	font-weight: inherit;
+	transform: translate3d(0px, 0px, 0px);
+	position: relative;
+	overflow: visible;
+	padding: 12px;
+	width: 48px;
+	height: 48px;
+	background: none;
+}
+
+.memo .memo-calendar .memo-year-wrapper .memo-year {
+	margin: 0px 10px;
+	color: #00783a;
+	font-weight: 600;
+	letter-spacing: 1px;
+	bottom: 6px;
+	position: relative;
+}
+
+.memo .memo-calendar .memo-week-all {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 12px 0px;
+	font-size: 12px;
+	margin-top: 5px;
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+}
+
+.memo .memo-calendar .memo-week-all span {
+	width: 14%;
+	float: left;
+	text-align: center;
+	color: #00783a;
+	font-weight: 600;
+}
+
+.memo .memo-calendar .memo-month-wrapper {
+	position: relative;
+	font-size: 12px;
+}
+
+.memo .memo-calendar .memo-month {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	top: 5px;
+	left: 0px;
+}
+
+.memo .memo-calendar .memo-month .day-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height: 34px;
+	margin-bottom: 2px;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col {
+	box-sizing: border-box;
+	font-weight: 400;
+	padding: 4px 0px;
+	position: relative;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	width: 42px;
+	display: inline-block;
+}
+
+.memo .memo-calendar .memo-month .day-row>button {
+	border: 10px;
+	display: inline-block;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	cursor: pointer;
+	text-decoration: none;
+	outline: none;
+	font-size: inherit;
+	background: none;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div {
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	height: 34px;
+	left: 4px;
+	opacity: 0;
+	position: absolute;
+	top: 0px;
+	transform: scale(0);
+	width: 34px;
+	background-color: #00783a;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.current-active {
+	background-color: white;
+	border: 1px solid #00783a;
+	color: #00783a;
+	font-weight: 600;
+	transform: scale(1);
+	opacity: 1;
+	left: 4px;
+	top: -1px;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.current-active+span
+	{
+	color: #00783a;
+	font-weight: 600;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.today-active {
+	background-color: #cce4d8;
+	border: 1px solid #cce4d8;
+	color: white;
+	font-weight: 600;
+	transform: scale(1);
+	opacity: 1;
+	left: 4px;
+	top: -1px;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.current-active+span
+	{
+	color: black;
+	font-weight: 600;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.hover-active {
+	transform: scale(1);
+	opacity: 0.5;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.hover-active+span
+	{
+	color: white;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.active {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>div.active+span {
+	color: white;
+}
+
+.memo .memo-calendar .memo-month .day-row .day-col>span {
+	color: rgba(0, 0, 0, 0.870588);
+	font-weight: 400;
+	position: relative;
+}
+
+.memo-content {
+	margin-top: 20px;
+}
+
+.memo-content .memo-item {
+	border-top: 1px solid #ddd;
+	padding: 1px 0px;
+	margin-bottom: 1px;
+	position: relative;
+}
+
+.memo-content .memo-item:last-child {
+	border-bottom: 1px solid #ddd;
+}
+
+.memo-content .memo-time {
+	width: 90px;
+	display: inline-block;
+	position: relative;
+	background: #ddd;
+	padding: 4px 10px;
+	border-left: 2px solid #007937;
+	text-align: center;
+	font-size: 16px;
+	float: left;
+}
+
+.memo-content .memo-desc {
+	width: 100%;
+	display: inline-block;
+	position: relative;
+	font-size: 14px;
+	line-height: 30px;
+	padding: 0px 10px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+
+.memo-content .memo-actions {
+	display: inline-block;
+	position: absolute;
+	right: 15px;
+	top: 5px;
+	width:90px;
+}
+
+.memo-content .memo-actions .memo-delete {
+	display: inline-block;
+	background: url(../images/icon_delete.png) no-repeat;
+	width: 38px;
+	height: 24px;
+}
+
+.memo-content .memo-actions .memo-delete:hover {
+	background: url(../images/icon_delete_press.png) no-repeat;
+}
+
+.memo-content  .memo-actions .memo-update {
+	display: inline-block;
+	background: url(../images/icon_edit.png) no-repeat;
+	width: 38px;
+	height: 24px;
+}
+
+.memo-content  .memo-actions .memo-update:hover {
+	background: url(../images/icon_edit_press.png) no-repeat;
+}
+
+.memo-content .memo-actions 
+	.memo-update-confirm, .memo-content .memo-actions .memo-update-cancel {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: 400;
+	text-align: center;
+	vertical-align: middle;
+	touch-action: manipulation;
+	cursor: pointer;
+	border: 1px solid transparent;
+	white-space: nowrap;
+	padding: 2px 4px;
+	font-size: 14px;
+	line-height: 1.42857;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	color: white;
+	background-color: #00783a;
+}
+
+.memo-content .memo-actions .memo-delete, .memo-content .memo-actions .memo-update-cancel
+	{
+	margin-left: 10px;
+}
+
+.memo-content .memo-form-wrapper {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.memo-content .memo-form-wrapper .memo-form .input-time {
+	width: 20%;
+	padding: 3px 9px;
+}
+
+.memo-content .memo-form-wrapper .memo-form .input-desc {
+	width: 76%;
+	padding: 3px 9px;
+	margin-left: 8px;
+}
+
+.memo-content .memo-form-wrapper .memo-form .form-button {
+	margin-top: 10px;
+}
+
+.memo-content .memo-form-wrapper .memo-form .form-button span {
+	width: 48%;
+	display: inline-block;
+}
+
+.memo-content .memo-form-wrapper .memo-form .form-button .button-cancel-wrapper
+	{
+	text-align: right;
+}
+
+.memo-content .memo-form-wrapper .memo-form .form-button .button-confirm-wrapper
+	{
+	text-align: left;
+	margin-left: 10px;
+}
+
+.memo-content .memo-form-wrapper .memo-form .form-button .button-cancel,
+	.memo-content .memo-form-wrapper .memo-form .form-button .button-confirm
+	{
+	width: 80px;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	touch-action: manipulation;
+	cursor: pointer;
+	border: 1px solid transparent;
+	white-space: nowrap;
+	line-height: 1.42857;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	outline: 0 !important;
+	margin-bottom: 5px !important;
+	ine-height: 1.44;
+	color: #666;
+	border-color: #00783a;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, .1), 0 1px 2px rgba(0, 0, 0, .18);
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	transition: box-shadow .28s cubic-bezier(.4, 0, .2, 1);
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	-ms-border-radius: 2px;
+	-o-border-radius: 2px;
+	border-radius: 2px;
+	overflow: hidden;
+	position: relative;
+	user-select: none;
+	padding: 8px 14px 7px;
+	background: #00783a;
+	color: white;
+}
+
+.memo-content .memo-form-wrapper .memo-add {
+	text-align: center;
+}
+
+.memo-content .memo-form-wrapper .memo-add span {
+	background: url(../images/icon_memo_add_sm.png);
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+	cursor: pointer;
+}

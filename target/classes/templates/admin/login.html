@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>登录</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<meta content="Expect" name="author" />
+<link th:href="@{/plugins/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/plugins/simple-line-icons/simple-line-icons.min.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/css/admin/base/components-md.css}" rel="stylesheet" id="style_components" type="text/css" />
+<link th:href="@{/css/admin/base/plugins-md.css}" rel="stylesheet" type="text/css" />
+<link th:href="@{/css/admin/login/login-3.css}" rel="stylesheet" type="text/css" />
+</head>
+<body class=" login">
+	<div class="logo">
+		<a href="login.html">
+			<img src="/images/logo.png" style="width: 100%" />
+		</a>
+	</div>
+	<div class="content">
+		<form class="login-form" th:action="@{/admin/login}"  method="post">
+			<div th:if="${param.error}" class="alert alert-danger">
+				<button class="close" data-close="alert"></button>
+				<span th:if="${param.error}">用户名或密码错误</span>
+			</div>
+			<div class="form-group">
+				<label class="control-label-new">用户名</label>
+				<div class="input-icon input-label">
+					<!--<i class="fa fa-user"></i> -->
+					<input class="form-control placeholder-no-fix form-control-new" type="text"
+						autocomplete="off" placeholder="用户名" name="username" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label-new">密&nbsp;码</label>
+				<div class="input-icon input-label">
+					<!--<i class="fa fa-lock"></i> -->
+					<input class="form-control placeholder-no-fix form-control-new" type="password"
+						autocomplete="off" placeholder="密码" name="password" />
+				</div>
+			</div>
+			<div class="form-actions">
+				<label class="rememberme mt-checkbox mt-checkbox-outline small-font smallsize-font"> <input
+					type="checkbox" name="remember-me" /> 记住用户名和密码 <span id="checkbox"></span>
+				</label>
+				<button type="submit" class="btn green" id="buttom">登录</button>
+			</div>
+		</form>
+	</div>
+	<!--[if lt IE 9]>
+	<script th:src="@{/plugins/respond.min.js}"></script>
+	<script th:src="@{/plugins/excanvas.min.js}"></script>
+	<![endif]-->
+	<script th:src="@{/plugins/jquery.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/jquery.cookies.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+	<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+	<script th:src="@{/js/admin/base/app.js}" type="text/javascript"></script>
+	<script th:src="@{/js/admin/login/login.js}" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+.logo-header {
+    height: 75px;
+}
+
+/*.page-header.navbar {*/
+    /*background: url(../../../images/header.png) fixed no-repeat top;*/
+/*}*/
+
+.page-content {
+    padding-top: 0!important;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown .dropdown-toggle > i {
+    color: #ffffff;
+}
+
+/*@media (min-width: 1440px) {*/
+    /*.page-header.navbar {*/
+        /*background: url(../../../images/header.png) fixed no-repeat top;*/
+        /*background-size: 100%;*/
+    /*}*/
+/*}*/

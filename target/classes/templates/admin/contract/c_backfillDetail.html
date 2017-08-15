@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <button id="back" class="button">返回</button>
+    <div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${contractVo.sbd}+合同审办单"></div>
+    <div class="lg-block-content">
+        <ul>
+            <li>
+                <div class="form-title">合同标题:</div>
+                <pre class="pre-form-content" th:text="${contractVo.htbt}"></pre>
+            </li>
+            <li>
+                <div class="form-title">主要内容:</div>
+                <pre class="pre-form-content" th:text="${contractVo.htnr}"></pre>
+            </li>
+            <li>
+                <div class="form-title">主办人和拟合同人:</div>
+                <pre class="pre-form-content" th:text="${contractVo.userName}"></pre>
+            </li>
+            <li>
+                <div class="form-title">合同签订日期:</div>
+                <pre class="pre-form-content" th:text="${contractVo.nqdrq}"></pre>
+            </li>
+            <li>
+                <div class="form-title">期限:</div>
+                <pre class="pre-form-content" th:text="${contractVo.qx}"></pre>
+            </li>
+            <th:block th:if='${contractVo.sequenceNumber}'>
+                <li>
+                    <div class="form-title">电子序号:</div>
+                    <pre class="pre-form-content" th:text="${contractVo.sequenceNumber}"></pre>
+                </li>
+            </th:block>
+            <input id="attachList" type="hidden" th:value="${contractVo.attachmentList}" />
+            <input id="contractId" type="hidden" th:value="${contractVo.id}"/>
+            <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+        </ul>
+    </div>
+</div>
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">审批流程</span>
+        <span class="lg-block-subtitle2">Approval Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(contractVo.lcrzList)}'>
+            <ul th:each="lcrz : ${contractVo.lcrzList}">
+                <th:block>
+                    <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                        <th:block th:if="${lcrz.cljg=='通过'}">
+                            <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
+                                 class="process-content-pass" th:text="'已审核'+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='不通过'}">
+                            <div th:title="${'处理时间:'+ lcrz.clsj+',处理意见:'+(lcrz.message==''?'无':lcrz.message)}"
+                                 class="process-content-nopass" th:text="'终止'+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='新增'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='已审核'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='撤销'}">
+                            <div th:title="${'撤回原因:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                    </li>
+                </th:block>
+            </ul>
+        </th:block>
+    </div>
+    <div class="operation">
+        <form id="c_backfillForm" class="op-form">
+            <div class="yj-input">
+                <div class="form-title">合同编号:</div>
+                <input id="htbh" name="bh" class="form-content" type="text" />
+            </div>
+            <input type="hidden" th:value="${contractVo.id}" id="data" name="id" />
+        </form>
+        <button id="submit" class="button" style="margin-left:20%">提交</button>
+    </div>
+</div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/contract/c_backfillDetail.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
+</body>
+</html>

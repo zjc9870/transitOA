@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+       <title>收文列表</title>
+		<link th:href="@{/css/admin/weixin/weui.min.css}" rel="stylesheet"  type="text/css"/>
+		<link th:href="@{/css/admin/weixin/jquery-weui.css}" rel="stylesheet"  type="text/css"/>
+</head>
+<body>
+<div id="pre_body">
+	<div class="weui-tab">
+	  <div class="weui-navbar">
+	    <div class="weui-navbar__item" id="ysp_tab">
+	    	待批示
+	    </div>
+	    <div class="weui-navbar__item" id="dsp_tab">
+	      	已批示
+	    </div>
+	  </div>
+	 <div class="weui-tab__bd">
+		<div class='weui-cell__hd'><div class='weui-cells__title'>收文列表</div>
+		<a class='weui-cell weui-cells_access' href='/weixin/draftSwDetail'>
+        <div class='weui-cell__bd weui-cell_primary'>
+            <p>收文标题</p>
+        </div>
+        <div class='weui-cell__ft'>
+        </div>
+        </a>
+        <a class='weui-cell weui-cells_access' href='/weixin/draftSwDetail'>
+        <div class='weui-cell__bd weui-cell_primary'>
+            <p>收文标题2</p>
+        </div>
+        <div class='weui-cell__ft'>
+        </div>
+        </a>
+        <a class='weui-cell weui-cells_access' href='/weixin/draftSwDetail'>
+        <div class='weui-cell__bd weui-cell_primary'>
+            <p>收文标题3</p>
+        </div>
+        <div class='weui-cell__ft'>
+        </div>
+        </a>
+        </div>
+      </div>
+      
+	 </div>
+</div>
+</body>
+
+			<script th:src="@{/js/weixin/jquery-2.1.4.js}" type="text/javascript"></script>
+			<script th:src="@{/js/weixin/jquery-weui.min.js}" type="text/javascript"></script>
+</html>

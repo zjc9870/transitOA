@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div class="page-header navbar navbar-fixed-top" th:fragment="header">
+		<div class="page-header-inner ">
+			<div class="page-logo">
+				<a href="javascript:;"> <img th:src="@{/images/logo-header.png}"
+					alt="logo" class="logo-header" />
+				</a>
+				<!--<div class="menu-toggler sidebar-toggler"></div>-->
+			</div>
+
+			<a href="javascript:;" class="menu-toggler responsive-toggler"
+				data-toggle="collapse" data-target=".navbar-collapse"> </a>
+
+			<div class="page-top">
+				<div class="top-menu">
+				<input id = "userRolesName" th:value = '${userVo.roleName}' style = "display:none" />
+					<ul class="nav navbar-nav pull-right">
+						<li class="separator hide"></li>
+						<li class="dropdown dropdown-user dropdown-dark">
+							<a href="javascript:;" class="dropdown-toggle"
+								data-toggle="dropdown" data-hover="dropdown"
+								data-close-others="true"> <span
+								class="username username-hide-on-mobile"
+								sec:authentication="name" th:text = '${"用户：" + userVo.username}'></span> <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
+								<img alt="" class="img-circle user-avatar" th:src="@{/images/avatar.png}" />
+							</a>
+						</li>
+						<li class="dropdown dropdown-extended quick-sidebar-toggler" onclick="logout()">
+							<span class="sr-only">Toggle Quick Sidebar</span> <i
+							class="icon-logout"></i>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

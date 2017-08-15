@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+<meta charset="UTF-8" />
+<title>公交OA系统</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+<meta content="Expect" name="author" />
+<link th:href="@{/css/admin/base/index.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+	<div class="content-left">
+		<img th:src="@{/images/pic.png}" style="width:100%"/>
+		<!--流程中心-->
+		<div class="md-block">
+			<div class="md-block-title">
+				<span class="md-block-subtitle1">流程中心</span>
+				<span class="md-block-subtitle2">Work Flow</span>
+			</div>
+			<div class="md-block-tab">
+				<div class="tab-box tab-box-selected">
+					<div class="small-font smallsize-font word">合同待办</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">合同已办</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">公文待办</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">公文已办</div>
+				</div>
+			</div>
+			<div class="md-block-content">
+				<ul>
+					<li><span>请在即日起三天内提交个人周工作总结</span></li>
+					<li><span>今天下班前请完成下周工作计划</span></li>
+					<li><span>上午十点参加小组项目进度讨论会</span></li>
+					<li><span>下午两点和见客户见面约谈</span></li>
+					<li><span>请在即日起三天内提交个人周工作总结</span></li>
+					<li><span>今天下班前请完成下周工作计划</span></li>
+					<li><span>上午十点参加小组项目进度讨论会</span></li>
+					<li><span>下午两点和见客户见面约谈</span></li>
+				</ul>
+			</div>
+			<div class="md-block-content-right">
+				<ul>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+					<li><span>李灵黛 2016-12-08</span></li>
+				</ul>
+			</div>
+		</div>
+		<!--新闻中心-->
+		<div class="md-block">
+			<div class="md-block-title">
+				<span class="md-block-subtitle1">新闻中心</span>
+				<span class="md-block-subtitle2">News Center</span>
+			</div>
+			<div class="md-block-tab">
+				<div class="tab-box tab-box-selected">
+					<div class="small-font smallsize-font word">公司新闻</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">客户签约</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">项目新闻</div>
+				</div>
+				<div class="tab-box">
+					<div class="small-font smallsize-font word">人事新闻</div>
+				</div>
+			</div>
+			<img th:src="@{/images/news.png}" class="news-img"/>
+			<div class="md-block-content">
+				<ul>
+					<li><span>请在即日起三天内提交个人周工作总结</span></li>
+					<li><span>今天下班前请完成下周工作计划</span></li>
+					<li><span>上午十点参加小组项目进度讨论会</span></li>
+					<li><span>下午两点和见客户见面约谈</span></li>
+					<li><span>请在即日起三天内提交个人周工作总结</span></li>
+					<li><span>今天下班前请完成下周工作计划</span></li>
+					<li><span>上午十点参加小组项目进度讨论会</span></li>
+					<li><span>下午两点和见客户见面约谈</span></li>
+				</ul>
+			</div>
+			<div class="md-block-content-right">
+				<ul>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+					<li><span>2016-12-08</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="content-right">
+		<!--calendar-->
+		<img th:src="@{/images/calendar.png}" style="width:100%"/>
+		<!--最新会议-->
+		<div class="sm-block">
+			<div class="md-block-title">
+				<span class="md-block-subtitle1">最新会议</span>
+				<span class="md-block-subtitle2">Latest Meeting</span>
+			</div>
+			<div class="sm-block-line"></div>
+			<div class="sm-block-content">
+				<ul>
+					<li><span>小组例会</span></li>
+					<li><span>小组例会</span></li>
+					<li><span>小组例会</span></li>
+				</ul>
+			</div>
+			<div class="sm-block-content-right">
+				<ul>
+					<li><span>10:00</span></li>
+					<li><span>11:30</span></li>
+					<li><span>16:00</span></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

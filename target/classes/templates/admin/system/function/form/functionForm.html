@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+	<form id="function-form">
+		<input type="hidden" name="id" th:value="${function.id}" />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="name">功能名称</label>
+					<div class="input-group col-md-12">
+						<input id="name" type="text" class="form-control" name="name"
+							placeholder="请输入功能名称" th:value="${function.name}" />
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="url">URL</label>
+					<div class="input-group col-md-12">
+						<input id="url" type="text" class="form-control" name="url"
+							placeholder="请输入URL" th:value="${function.url}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="function-parent-select">父功能</label> <select
+						class="form-control" name="parentId" id="function-parent-select"
+						th:utext="${function.parentFunctionSov.html}">
+					</select>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="icon">图标</label>
+					<div class="input-group col-md-12">
+						<input id="icon" type="text" class="form-control" name="icon"
+							placeholder="请输入图标" th:value="${function.icon}" />
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="sequenceStr">显示顺序</label>
+					<div class="input-group col-md-12">
+						<input id="sequenceStr" type="number" class="form-control"
+							name="sequenceStr" placeholder="请输入显示顺序"
+							th:value="${function.sequence}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="description">备注</label>
+					<div class="input-group col-md-12">
+						<input id="description" type="text" class="form-control"
+							name="description" placeholder="请输入备注"
+							th:value="${function.description}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</body>
+</html>

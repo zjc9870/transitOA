@@ -1,0 +1,150 @@
+.md-block {
+    background: #ffffff;
+    height: 250px;
+    margin-top: 20px;
+}
+
+.md-block-title {
+    padding: 20px 0 0 20px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.md-block-subtitle1 {
+    color: rgb(0,120,58);
+}
+
+.md-block-subtitle2 {
+    color: rgb(150,150,150);
+}
+
+.md-block-subtitle3 {
+    color: rgb(150,150,150);
+    font-size: 13px;
+}
+
+.md-block-tab {
+    height: 26px;
+    border-top: 1px solid rgb(0,120,58);
+    width: 95%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.tab-box {
+    float: left;
+    height: 25px;
+    width: 60px;
+    background-color: rgb(203,204,205);
+    color: #ffffff;
+    margin-left: 2px;
+    cursor: pointer;
+}
+
+.tab-box-selected {
+    background-color: rgb(0,120,58);
+}
+
+.small-font {
+    font-size: 12px;
+    -webkit-transform: scale(0.90) ;
+}
+
+.smallsize-font {
+    font-size: 10.8px;
+}
+
+.word {
+    line-height: 25px;
+    text-align: center;
+}
+
+.md-block-content {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 20px;
+    float:left;
+}
+
+.md-block-content li,.sm-block-content li {
+    list-style-type: square;
+    color: rgb(0,121,58);
+}
+
+.md-block-content span,.md-block-content-right span,.sm-block-content span,.sm-block-content-right span {
+    color: rgb(102,103,104);
+}
+
+.md-block-content-right {
+    margin-top: 10px;
+    margin-right: 40px;
+    font-size: 12px;
+    line-height: 20px;
+    float:right;
+}
+
+.md-block-content-right li,.sm-block-content-right li {
+    list-style: none;
+}
+
+.news-img {
+    width: 29%;
+    margin-top: 7px;
+    margin-left: 20px;
+    float: left;
+}
+
+.content-left {
+    float:left;
+    width: 65%;
+}
+
+.content-right {
+    margin-left: 20px;
+    float:left;
+    width: 30%;
+}
+
+.sm-block {
+    background: #ffffff;
+    height: 226px;
+    margin-top: 20px;
+}
+
+.sm-block-line {
+    border-top: 1px solid rgb(0,120,58);
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+}
+
+.sm-block-content {
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 20px;
+    float: left;
+}
+
+.sm-block-content-right {
+    margin-top: 15px;
+    margin-right: 40px;
+    font-size: 12px;
+    line-height: 20px;
+    float:right;
+}
+
+.confirm{
+    background-color: #007937 !important;
+    border-color: #007937 !important;
+}
+
+.xwbt,.lcbt {
+    cursor: pointer;
+}
+
+.home-content-block {
+    width: 400px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

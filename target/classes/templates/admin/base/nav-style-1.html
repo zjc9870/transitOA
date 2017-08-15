@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div class="page-sidebar-wrapper" th:fragment="nav">
+		<div class="page-sidebar navbar-collapse collapse">
+			<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu"
+				data-keep-expanded="false" data-auto-scroll="true"
+				data-slide-speed="200">
+				<th:block th:if="${not #lists.isEmpty(functions)}">
+					<th:block th:each="firstFunction : ${functions}">
+						<th:block
+							th:if="${#lists.isEmpty(firstFunction.childFunctionVos)}">
+							<li class="nav-item"><a href="javascript:;"
+								class="nav-link nav-toggle nav-pajx fisrt-nav"
+								th:classappend="${firstFunction.encodeUrl}"
+								th:attr="data-url=${firstFunction.url}"> <i
+									th:class="${firstFunction.icon}"></i> <span class="title"
+									th:text="${firstFunction.name}"></span>
+							</a></li>
+						</th:block>
+						<th:block
+							th:if="${not #lists.isEmpty(firstFunction.childFunctionVos)}">
+							<li class="heading">
+								<h3 class="uppercase" th:text="${firstFunction.name}"></h3>
+							</li>
+							<li class="nav-item"
+								th:each="secondFunction : ${firstFunction.childFunctionVos}"><a
+								href="javascript:;"
+								class="nav-link nav-toggle nav-pajx second-nav "
+								th:classappend="${secondFunction.encodeUrl}"
+								th:attr="data-url=${secondFunction.url}"> <i
+									th:class="${secondFunction.icon}"></i> <span class="title"
+									th:text="${secondFunction.name}"></span> <span class="arrow"></span>
+							</a> <th:block
+									th:if="${not #lists.isEmpty(secondFunction.childFunctionVos)}">
+									<ul class="sub-menu">
+										<li class="nav-item"
+											th:each="thirdFunction : ${secondFunction.childFunctionVos}"><a
+											href="javascript:;" class="nav-link nav-pajx third-nav"
+											th:classappend="${thirdFunction.encodeUrl}"
+											th:attr="data-url=${thirdFunction.url}"> <span
+												class="title" th:text="${thirdFunction.name}"></span>
+										</a></li>
+									</ul>
+								</th:block></li>
+						</th:block>
+					</th:block>
+				</th:block>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

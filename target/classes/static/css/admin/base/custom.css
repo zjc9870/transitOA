@@ -1,0 +1,95 @@
+.sweet-alert {
+	z-index: 11000;
+	border: 1px solid rgb(238, 238, 238);
+}
+
+.table-editor-input-text {
+	width: 100%;
+}
+
+.md-checkbox {
+	margin-top: 10px;
+}
+
+.table thead>tr>th {
+	text-align: center;
+}
+
+.table tbody>tr>td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.fileinput.input-group>* {
+	position: relative;
+	z-index: 2;
+}
+
+.fileinput .form-control {
+	display: inline-block;
+	padding-top: 7px;
+	padding-bottom: 5px;
+	margin-bottom: 0;
+	vertical-align: middle;
+	cursor: text;
+}
+
+.form-control .fileinput-filename {
+	vertical-align: bottom;
+}
+
+.fileinput.input-group>.btn-file {
+	z-index: 1;
+}
+
+.input-group-addon :not(:first-child) {
+	border-left: 0;
+}
+.fileinput .btn {
+	vertical-align: middle;
+}
+
+.btn-file>input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	font-size: 23px;
+	cursor: pointer;
+	filter: alpha(opacity = 0);
+	opacity: 0;
+	direction: ltr;
+}
+
+.files-template .file-size {
+	width: 300px;
+}
+
+.files-template .file-button {
+	width: 120px;
+}
+
+.files-template.table>tbody>tr>td {
+	vertical-align: middle;
+}
+
+.files-template .file-progress .progress {
+	margin: 0px;
+}
+
+.file-select-template .progress {
+	margin-top: 5px;
+}
+
+.tips {
+	margin: 10px 0 0;
+	font-size: 14px;
+	color: #999;
+	width: 50pc;
+	text-align: left;
+}
+.qm-title{
+	margin-left: 162px;
+}
