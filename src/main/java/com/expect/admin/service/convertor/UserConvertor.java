@@ -72,11 +72,11 @@ public class UserConvertor {
 			userVo.setSsgsId(user.getSsgs().getId());
 		}
 		//设置签名附件
-//		List<AttachmentVo> attachmentVos= getUserAttachment(user);
-//		if (attachmentVos !=null && attachmentVos.size() >0){
-//			userVo.setAttachmentVos(attachmentVos);
-//		}
-//
+		List<AttachmentVo> attachmentVos= getUserAttachment(user);
+		if (attachmentVos !=null && attachmentVos.size() >0){
+			userVo.setAttachmentVos(attachmentVos);
+		}
+
 		return userVo;
 
 	}
@@ -84,12 +84,12 @@ public class UserConvertor {
 	public static List<AttachmentVo> getUserAttachment(User user) {
 		Set<Attachment> attachmentList = user.getAttachments();
 		List<AttachmentVo> attachmentVoList = new ArrayList<>();
-		if(attachmentList != null && !attachmentList.isEmpty())
-			for (Attachment attachment : attachmentList) {
-				AttachmentVo attachementVo = new AttachmentVo();
-				BeanUtils.copyProperties(attachment, attachementVo);
-				attachmentVoList.add(attachementVo);
-			}
+		if(attachmentList != null && !attachmentList.isEmpty()) {
+            for (Attachment attachment : attachmentList) {
+                AttachmentVo attachementVo = new AttachmentVo(attachment);
+                attachmentVoList.add(attachementVo);
+            }
+        }
 		return attachmentVoList;
 	}
 

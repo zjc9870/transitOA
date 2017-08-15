@@ -79,7 +79,7 @@ public class User implements UserDetails {
 	@Column(name = "zw", length = 32)
 	private String zw;//职位
 
-	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
 	@JoinTable(name = "c__user_attachment", joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "attachment_id"))
 	private Set<Attachment> attachments;//附件

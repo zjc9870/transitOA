@@ -1,5 +1,6 @@
 package com.expect.admin.service.vo;
 
+import com.expect.admin.data.dataobject.Attachment;
 import com.expect.admin.service.vo.component.BaseVo;
 import com.expect.admin.utils.JacksonJsonUtil;
 
@@ -10,6 +11,14 @@ public class AttachmentVo extends BaseVo {
 	private String path;
 	private String timeStr;
 
+	public AttachmentVo(){
+
+	}
+	public AttachmentVo(Attachment attachment){
+		this.id = attachment.getId();
+		this.name = attachment.getName();
+		this.path = attachment.getPath();
+	}
 	public String getId() {
 		return id;
 	}
@@ -47,5 +56,6 @@ public class AttachmentVo extends BaseVo {
 		String result = JacksonJsonUtil.getInstance().write(this);
 		return result;
 	}
+
 
 }
