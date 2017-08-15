@@ -47,6 +47,17 @@ $(document).on('click','#fwdb,#fwyb',function(){
 	}
 
 });
+$(document).on('click','#ycy,#dcy,#wbl,#ybl',function(){
+	var roleName=$('#userRolesName').val();
+	var fl=$(this).data("fl");
+	var url='draftSw/tabRequest';
+	var bz='sp';
+
+	setTheClickButtonSelect($(this).parent());
+
+	getAndDisplaySwCyByfl(url,fl);
+
+});
 
 $(document).on('click', "#dtgg, #djgz, #gwfc", function() {
 	var fl = $(this).data("fl");
@@ -64,6 +75,13 @@ $(document).on('click', '.xwbt', function() {
 $(document).on('click', '.lcbt', function () {
 	var id = $(this).data('id');
 	var tabId = $(this).data('fl');
+	
+	if(tabId== "dcy"||tabId== "ycy"){
+		seeCy(id,tabId);
+	}if(tabId== "wbl"||tabId== "ybl"){
+		seeBl(id,tabId);
+	}
+	
 	if(userRole.indexOf('集团文员') !== -1) {
 		if(tabId == "wtj") {
 			seeApplyRecordE(id,tabId);
@@ -75,6 +93,39 @@ $(document).on('click', '.lcbt', function () {
 		seeConApprove(id,tabId);
 	}
 })
+//收文传阅
+function seeCy(id,tabId) {
+    AjaxTool.html('draftSw/swCy',{draftSwId: id},function (html) {
+    	$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+        switch (tabId) {
+            case "ycy":
+                $('.operation').attr('style','display:none');
+                break;
+            default:
+                break;
+        }
+        $('#back').data('tabId',tabId);
+    });
+
+}
+//收文办理
+function seeBl(id,tabId){
+	AjaxTool.html('draftSw/swBl',{draftSwId: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+        switch (tabId) {
+            case "ybl":
+                $('.operation').attr('style','display:none');
+                break;
+            default:
+                break;
+        }
+        $('#back').data('tabId',tabId);
+    });
+}
 
 function seeApplyRecordE(id,tabId) {
 	AjaxTool.html('contract/sqjlxqE',{id: id},function (html) {
@@ -165,11 +216,11 @@ function getAndDisplayFwsjByFl(url,fl,bzStr){
 	}, function(data) {
 		if (data.success) {
 			var leftUlStr = "<ul class='home-content-block'>";
-			var rightUlStr = "<ul>"
-			var cons = data.content;
-			for (var i = 0; (i < cons.length && i < 7); i++) {
-				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].bt + "</span></li>";
-				rightUlStr += "<li><span>" + cons[i].userName + "&nbsp;"+ cons[i].date + "</span></li>";
+			var rightUlStr = "<ul>";
+			var fw = data.content;
+			for (var i = 0; (i < fw.length && i < 7); i++) {
+				leftUlStr += "<li class = 'fwbt' data-id = '"+fw[i].id+"' data-fl = '"+fl+"'><span>" + fw[i].bt + "</span></li>";
+				rightUlStr += "<li><span>" + fw[i].userName + "&nbsp;"+ fw[i].date + "</span></li>";
 			}
 			leftUlStr += "</ul>";
 			rightUlStr += "</ul>";
@@ -178,6 +229,35 @@ function getAndDisplayFwsjByFl(url,fl,bzStr){
 		}
 	})
 }
+//显示公文中心的传阅和办理
+function getAndDisplaySwCyByfl(url,fl){
+	var ym="swcy";
+	if(fl=="wbl"||fl=="ybl"){
+		ym="swbl";
+	}
+	AjaxTool.post(url, {
+			tab :fl, ym: ym
+		}, function(data) {
+			if (data.success){
+				var leftUlStr = "<ul class='home-content-block2'>";
+				var rightUlStr = "<ul>"
+				var drafts = data.content;
+				for (var i = 0; (i < drafts.length && i < 7); i++) {
+					leftUlStr += "<li class = 'lcbt' data-id = '"+drafts[i].id+"' data-fl = '"+fl+"'><span>" + drafts[i].wjbt + "</span></li>";
+					rightUlStr += "<li><span>" + drafts[i].swr + "&nbsp;"+ drafts[i].fqsj + "</span></li>";
+	
+	
+				}
+				leftUlStr += "</ul>";
+				rightUlStr += "</ul>";
+				console.log(rightUlStr);
+				$('#swLeft').html(leftUlStr);
+				$('#swRight').html(rightUlStr);
+			}
+	
+		}
+	)
+}
 
 function getAndDisplayTzByfl(url,fl){
 	AjaxTool.get(url, {
@@ -185,10 +265,10 @@ function getAndDisplayTzByfl(url,fl){
 		}, function(data) {
 			if (data.success){
 				var leftUlStr = "<ul class='home-content-block2'>";
-				var rightUlStr = "<ul>"
+				var rightUlStr = "<ul>";
 				var fwtz = data.content;
 				for (var i = 0; (i < fwtz.length && i < 7); i++) {
-					leftUlStr += "<li class = 'lcbt' data-id = '"+fwtz[i].id+"' data-fl = '"+fl+"'><span>" + fwtz[i].bt + "</span></li>";
+					leftUlStr += "<li class = 'fwtzbt' data-id = '"+fwtz[i].id+"' data-fl = '"+fl+"' data-fwtzid = '"+fwtz[i].fwtzid+"'><span>" + fwtz[i].bt + "</span></li>";
 					if (fl == 'wd'){
 						rightUlStr += "<li><span>" + fwtz[i].userName + "&nbsp;"+ fwtz[i].tzsj + "</span></li>";
 					}
@@ -218,7 +298,9 @@ jQuery(document).ready(function() {
 
 	$('#dtgg').trigger('click');
 	$('#htdb').trigger('click');
+
 	$('#fwdb').trigger('click');
+	$('#dcy').trigger('click');
 
 	var userid = $('input[name = "userId"]').val();
 	$(".memo").Memo({

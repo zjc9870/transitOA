@@ -24,17 +24,31 @@ public class PersonChooseService {
 	
 	public List<JsTreeVo> getUserTree() {
 	    List<User> allUserList = userRepository.findAll();
+	    List<Department> allDepartmentList = departmentRepository.findAll();
 	    JsTreeVo firJsTree = new JsTreeVo();
 	    List<JsTreeVo> resultJsTreeVos = new ArrayList<>();
-	    List<JsTreeVo> secJsTreeVos = new ArrayList<>();
+	    List<JsTreeVo> departmentJsTreeVos = new ArrayList<>();
         if (!CollectionUtils.isEmpty(allUserList)) {
-            for (User user : allUserList) {
-                JsTreeVo secUserJsTree = new JsTreeVo();
-                setUserTree(user, secUserJsTree);
-                secJsTreeVos.add(secUserJsTree);
-            }
+        	for(Department department: allDepartmentList){
+        	    List<JsTreeVo> userJsTreeVos = new ArrayList<>();
+        		JsTreeVo departJsTree = new JsTreeVo();
+        		setDepartmentTree(department,departJsTree);
+        		for (User user : allUserList) {
+                    JsTreeVo userJsTree = new JsTreeVo();
+                    setUserTree(user, userJsTree);
+                    for(Department userDepartment:user.getDepartments()){
+                        System.out.println("user's department's id:"+userDepartment.getId()+", departmentid:"+department.getId());
+                    	if(userDepartment.getId().equals(department.getId())){
+                            userJsTreeVos.add(userJsTree);
+                            break;
+                    	}
+                    }
+                }
+        		departJsTree.setChildren(userJsTreeVos);
+        		departmentJsTreeVos.add(departJsTree);
+        	}
         }
-        firJsTree.setChildren(secJsTreeVos);
+        firJsTree.setChildren(departmentJsTreeVos);
         resultJsTreeVos.add(firJsTree);
         
         //一下是增强的从数据库中取数据的代码2c9151b6592fd4c901592fde79690002换成相应最高部门节点的ID

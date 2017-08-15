@@ -279,7 +279,7 @@ public class DocumentController {
             if(StringUtil.equals(lx,"wd")){
                 List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
                 List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
-                List<com.expect.admin.service.vo.DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
+                List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
                         JsonResult.useDefault(true, "获取未读发文通知成功", documentVoListBytzsj).build());
                 return;
@@ -288,7 +288,7 @@ public class DocumentController {
             if(StringUtil.equals(lx,"yd")){
                 List<FwtzVo> ydFwtzVoList = fwtzService.getYdFwtzList(fwtzVoList);
                 List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
-                List<com.expect.admin.service.vo.DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
+                List<DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
                         JsonResult.useDefault(true, "获取已读发文通知成功", documentVoListByydsj).build());
                 return;
