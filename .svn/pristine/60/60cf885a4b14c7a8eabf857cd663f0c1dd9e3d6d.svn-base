@@ -1,0 +1,11 @@
+<WxCpInMemoryConfigStorage>
+  <corpId>wx9b77c621c69ea369</corpId>
+  <corpSecret>SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM</corpSecret>
+  <token>iuqM</token>
+  <aesKey>RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD</aesKey>
+  <agentId>2</agentId>
+  <expiresTime>0</expiresTime>
+  <oauth2redirectUri>16r3r84766.51mypc.cn/weixin/login</oauth2redirectUri>
+  <httpProxyPort>0</httpProxyPort>
+  <jsapiTicketExpiresTime>0</jsapiTicketExpiresTime>
+</WxCpInMemoryConfigStorage>

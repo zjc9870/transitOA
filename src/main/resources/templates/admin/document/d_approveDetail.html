@@ -93,6 +93,82 @@
     </div>
 </div>
 
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">通知详情</span>
+        <span class="lg-block-subtitle2">Notification Details</span>
+    </div>
+    <div class="process2">
+        <th:block th:if="${not #lists.isEmpty(fwtzVo)}">
+
+            <div class="lg-block-title2">主送:</div>
+            <li>
+                <ul>
+                    <li>
+                        <div class="form-title">集团高管:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.zsjtgg}">无</pre>
+                    </li>
+                    <li>
+                        <div class="form-title">集团部门:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.zsjtbm}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">其他公司办公室:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.zsqtgsbgs}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">外部单位:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.zswbdw}"></pre>
+                    </li>
+                </ul>
+            </li>
+            <div class="lg-block-title2">抄报:</div>
+            <li>
+                <ul>
+                    <li>
+                        <div class="form-title">集团高管:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.cbjtgg}">无</pre>
+                    </li>
+                    <li>
+                        <div class="form-title">集团部门:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.cbjtbm}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">其他公司办公室:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.cbqtgsbgs}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">外部单位:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.cbwbdw}"></pre>
+                    </li>
+                </ul>
+            </li>
+            <div class="lg-block-title2">抄送:</div>
+            <li>
+                <ul>
+                    <li>
+                        <div class="form-title">集团高管:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.csjtgg}">无</pre>
+                    </li>
+                    <li>
+                        <div class="form-title">集团部门:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.csjtbm}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">其他公司办公室:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.csqtgsbgs}"></pre>
+                    </li>
+                    <li>
+                        <div class="form-title">外部单位:</div>
+                        <pre class="pre-form-content" th:text="${fwtzVo.cswbdw}"></pre>
+                    </li>
+                </ul>
+            </li>
+
+        </th:block>
+    </div>
+</div>
+
 <script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
 <script th:src="@{/js/admin/document/d_approveDetail.js}" type="text/javascript"></script>

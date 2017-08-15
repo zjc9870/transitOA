@@ -72,8 +72,12 @@ $(document).ready(function () {
                         this.parentNode.appendChild(li);
                         div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
                         div.onclick = function () {
-                            // window.location = "contract/contractAttachmentDownload?attachmentId=" + this.id+"&contractId="+contractId;
-                            window.location = "attachment/download?id=" + this.id;
+                            if($('#userRole').val() == "资产管理部合同审核员"){
+                                window.location = "attachment/download?id=" + this.id;
+                            }
+                            else{
+                                window.location = "contract/contractAttachmentDownload?attachmentId=" + this.id+"&contractId="+contractId;
+                            }
                         }
                     }
                 }
@@ -85,7 +89,9 @@ $(document).ready(function () {
         }
     );
 
-    if($('#userRole').val() == "资产管理部合同审核员"){
-        $('#btg').addClass("hidden");
-    }
+    //其他公司负责人$('#userRole').val()=="其他公司负责人" || $('#userRole').val() == "法务" || $('#userRole').val()=="部门负责人"
+    // || $('#userRole').val()=="分管负责人"
+    // if($('#userRole').val() == "资产管理部合同审核员"){
+    //     $('#btg').addClass("hidden");
+    // }
 })

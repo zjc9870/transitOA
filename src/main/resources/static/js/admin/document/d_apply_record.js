@@ -68,7 +68,7 @@ function seeApplyRecordE(id,tabId) {
     AjaxTool.html('document/sqjlxqE',{id: id},function (html) {
         $('.portlet-body').html(html);
         if(tabId == "yth") {
-            $('#splc').attr('style','display:block');
+            $('#splc').attr('style', 'display:block');
         }
         $('#back').data('tabId',tabId);
     });
@@ -77,6 +77,9 @@ function seeApplyRecordE(id,tabId) {
 function seeApplyRecordNE(id,tabId) {
     AjaxTool.html('document/sqjlxqNE',{id: id},function (html) {
         $('.portlet-body').html(html);
+        if(tabId == "dsp") {
+            $('#tzxq').attr('style','display:none');
+        }
         $('#back').data('tabId',tabId);
     });
 

@@ -8,11 +8,11 @@ $('#tz').click(function (){
     // var zswbdw=$('#zswbdw option:selected').text()
     var id=$('#id').html();
     AjaxTool.post('document/savenotify',$('#d_apply_notify_form').serialize()+"&id="+id, function(data){
-        console.log("jjk"+data.obj+data.message);
-        Toast.show("通知保存提醒","通知对象重复");
+        alert(data.message);
         if (data.obj !="" && data.obj !=" "){
             Toast.show("通知保存提醒","通知对象重复");
         }
+        $('#back').trigger('click');
         })
 
 });

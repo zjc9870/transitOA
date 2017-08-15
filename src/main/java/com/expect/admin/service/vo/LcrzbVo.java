@@ -1,6 +1,7 @@
 package com.expect.admin.service.vo;
 
 import com.expect.admin.data.dataobject.Lcrzb;
+import com.expect.admin.data.dataobject.User;
 import com.expect.admin.utils.DateUtil;
 
 
@@ -11,8 +12,10 @@ public class LcrzbVo {
 	private String message;//处理意见
 	private String cljg;//处理结果
 	private String lcjd;
+	private User user;
 //	private String clnrid;//处理内容的id（所处理的东西的id）
 	private String clnrfl;
+	
 	
 	public LcrzbVo(){
 		
@@ -81,6 +84,14 @@ public class LcrzbVo {
 
 	public void setClnrfl(String clnrfl) {
 		this.clnrfl = clnrfl;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

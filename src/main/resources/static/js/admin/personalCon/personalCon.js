@@ -78,8 +78,9 @@ $().ready(function () {
     });
     $('#saveCon').click(function () {
         var userId = $('#userId').val();
+        // var qmlx = $(uploadFile).val();
         if(validator.form()) {
-            AjaxTool.post('personalCon/updateIndividualMessage', $('#c_person_form').serialize()+"&id="+userId+"&attachmentId="+ids,function (data) {
+            AjaxTool.post('personalCon/updateIndividualMessage', $('#c_person_form').serialize()+"&id="+userId,function (data) {
                 alert(data.message);
             })
         } else {

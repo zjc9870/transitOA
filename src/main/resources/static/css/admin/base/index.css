@@ -138,12 +138,12 @@
     border-color: #007937 !important;
 }
 
-.xwbt,.lcbt {
+.xwbt,.lcbt,.fwbt,.fwtzbt {
     cursor: pointer;
 }
 
 .home-content-block {
-    width: 400px;
+    width: 300px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

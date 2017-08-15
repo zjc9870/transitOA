@@ -6,7 +6,7 @@ spring:
   datasource:
     type: org.apache.tomcat.jdbc.pool.DataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/transitoa
+    url: jdbc:mysql://127.0.0.1/gongjiao
     username: root
     password: 123456
   jpa:
@@ -100,6 +100,18 @@ custom:
  #   attachment-path: D:/transitOA/attachment
  #   attachment-pdf-path: D:/transitOA/attachment/convertToPdf
  #   ueditor-path: D:/transitOA/ueditor
+
+##微信企业号配置
+#WxCpInMemoryConfigStorage:
+#  corpId: wx9b77c621c69ea369
+#  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
+#  token: iuqM
+#  aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
+#  agentId: 2
+#  expiresTime: 0
+#  oauth2redirectUri: 16r3r84766.51mypc.cn/weixin/login
+#  httpProxyPort: 0
+#  jsapiTicketExpiresTime: 0
 
 #微信企业号配置
 WxCpInMemoryConfigStorage:

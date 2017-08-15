@@ -84,12 +84,12 @@ public class UserConvertor {
 	public static List<AttachmentVo> getUserAttachment(User user) {
 		Set<Attachment> attachmentList = user.getAttachments();
 		List<AttachmentVo> attachmentVoList = new ArrayList<>();
-		if(attachmentList != null && !attachmentList.isEmpty())
-			for (Attachment attachment : attachmentList) {
-				AttachmentVo attachementVo = new AttachmentVo();
-				BeanUtils.copyProperties(attachment, attachementVo);
-				attachmentVoList.add(attachementVo);
-			}
+		if(attachmentList != null && !attachmentList.isEmpty()) {
+            for (Attachment attachment : attachmentList) {
+                AttachmentVo attachementVo = new AttachmentVo(attachment);
+                attachmentVoList.add(attachementVo);
+            }
+        }
 		return attachmentVoList;
 	}
 
@@ -120,6 +120,7 @@ public class UserConvertor {
 	 * vo to do
 	 */
 	public static void convert(User user, UserVo userVo) {
+		user.setUsername(userVo.getUsername());
 		user.setPassword(userVo.getPassword());
 		user.setFullName(userVo.getFullName());
 		user.setEmail(userVo.getEmail());
@@ -133,7 +134,7 @@ public class UserConvertor {
 	 * vos To dtrvs
 	 */
 	public static List<DataTableRowVo> convertDtrvs(List<UserVo> userVos) {
-		List<DataTableRowVo> dtrvs = new ArrayList<DataTableRowVo>();
+		List<DataTableRowVo> dtrvs = new ArrayList<>();
 		if (!CollectionUtils.isEmpty(userVos)) {
 			for (UserVo userVo : userVos) {
 				DataTableRowVo dtrv = new DataTableRowVo();

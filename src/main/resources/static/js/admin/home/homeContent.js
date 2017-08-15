@@ -7,7 +7,7 @@ $(document).on('click', '#htdb, #htyb', function() {
 	var bz = 'sp';
 	//如果是合同申请人登录时，主页合同待办显示未提交的合同，合同已办显示已提交的合同（未审批完成）
 	//否则合同待办显示显示待审批合同， 合同已办显示已审批的合同
-	if(roleName.indexOf("文员") != -1){
+	if(roleName.indexOf("文员") != -1 || roleName.indexOf("其他公司发起人") !=-1){
 		bz = 'sq';
 		if(fl == 'dsp')
 			fl = 'wtj';
@@ -47,6 +47,7 @@ $(document).on('click','#fwdb,#fwyb',function(){
 	}
 
 });
+
 $(document).on('click','#ycy,#dcy,#wbl,#ybl',function(){
 	var roleName=$('#userRolesName').val();
 	var fl=$(this).data("fl");
@@ -75,14 +76,12 @@ $(document).on('click', '.xwbt', function() {
 $(document).on('click', '.lcbt', function () {
 	var id = $(this).data('id');
 	var tabId = $(this).data('fl');
-	
 	if(tabId== "dcy"||tabId== "ycy"){
 		seeCy(id,tabId);
 	}if(tabId== "wbl"||tabId== "ybl"){
 		seeBl(id,tabId);
 	}
-	
-	if(userRole.indexOf('集团文员') !== -1) {
+	if(userRole.indexOf('集团文员') !== -1 || userRole.indexOf('其他公司发起人') !== -1 || userRole.indexOf('东交公司文员') !== -1) {
 		if(tabId == "wtj") {
 			seeApplyRecordE(id,tabId);
 		}else {
@@ -92,41 +91,51 @@ $(document).on('click', '.lcbt', function () {
 	else {
 		seeConApprove(id,tabId);
 	}
-})
-//收文传阅
-function seeCy(id,tabId) {
-    AjaxTool.html('draftSw/swCy',{draftSwId: id},function (html) {
-    	$('#portlet-box').addClass('portlet box');
+});
+$(document).on('click', '.fwbt', function(){
+	var id = $(this).data('id');
+	var tabId = $(this).data('fl');
+	if (userRole.indexOf('机要专员') !==-1){
+		if(tabId == "wtj"){
+			AjaxTool.html('document/sqjlxqE',{id: id},function (html) {
+				$('#portlet-box').addClass('portlet box');
+				$('.portlet-body').html(html);
+				$('#back').data('tabId',tabId);
+			});
+		}else{
+			AjaxTool.html('document/sqjlxqNE',{id: id},function (html) {
+				$('#portlet-box').addClass('portlet box');
+				$('.portlet-body').html(html);
+				$('#back').data('tabId',tabId);
+			});
+		}
+	}
+	else{
+		AjaxTool.html('document/gwspckxq',{id: id},function (html) {
+			$('#portlet-box').addClass('portlet box');
+			$('.portlet-body').html(html);
+			switch (tabId) {
+				case "ysp":
+					$('.operation').attr('style','display:none');
+					break;
+				default:
+					break;
+			}
+			$('#back').data('tabId',tabId);
+		});
+	}
+});
+$(document).on('click','.fwtzbt',function () {
+	var id = $(this).data('id');
+	var fwtzid = $(this).data('fwtzid');
+	AjaxTool.html('document/fwtzNE',{id: id, fwtzid:fwtzid},function (html) {
 		$('.portlet-body').html(html);
+		if(tabId == "yd"){
+			$('#yd').attr('style','display:none');
+		}
 		$('#back').data('tabId',tabId);
-        switch (tabId) {
-            case "ycy":
-                $('.operation').attr('style','display:none');
-                break;
-            default:
-                break;
-        }
-        $('#back').data('tabId',tabId);
-    });
-
-}
-//收文办理
-function seeBl(id,tabId){
-	AjaxTool.html('draftSw/swBl',{draftSwId: id},function (html) {
-		$('#portlet-box').addClass('portlet box');
-		$('.portlet-body').html(html);
-		$('#back').data('tabId',tabId);
-        switch (tabId) {
-            case "ybl":
-                $('.operation').attr('style','display:none');
-                break;
-            default:
-                break;
-        }
-        $('#back').data('tabId',tabId);
-    });
-}
-
+	});
+});
 function seeApplyRecordE(id,tabId) {
 	AjaxTool.html('contract/sqjlxqE',{id: id},function (html) {
 		$('#portlet-box').addClass('portlet box');
@@ -195,7 +204,7 @@ function getAndDisplayHtsjByFl(url, fl, bzStr) {
 	}, function(data) {
 		if (data.success) {
 			var leftUlStr = "<ul class='home-content-block'>";
-			var rightUlStr = "<ul>"
+			var rightUlStr = "<ul>";
 			var cons = data.content;
 			for (var i = 0; (i < cons.length && i < 7); i++) {
 				leftUlStr += "<li class = 'lcbt' data-id = '"+cons[i].id+"' data-fl = '"+fl+"'><span>" + cons[i].htbt + "</span></li>";
@@ -224,39 +233,10 @@ function getAndDisplayFwsjByFl(url,fl,bzStr){
 			}
 			leftUlStr += "</ul>";
 			rightUlStr += "</ul>";
-			$('#fwLeft').html(leftUlStr);
-			$('#fwRight').html(rightUlStr);
+			$('#gwLeft').html(leftUlStr);
+			$('#gwRight').html(rightUlStr);
 		}
 	})
-}
-//显示公文中心的传阅和办理
-function getAndDisplaySwCyByfl(url,fl){
-	var ym="swcy";
-	if(fl=="wbl"||fl=="ybl"){
-		ym="swbl";
-	}
-	AjaxTool.post(url, {
-			tab :fl, ym: ym
-		}, function(data) {
-			if (data.success){
-				var leftUlStr = "<ul class='home-content-block2'>";
-				var rightUlStr = "<ul>"
-				var drafts = data.content;
-				for (var i = 0; (i < drafts.length && i < 7); i++) {
-					leftUlStr += "<li class = 'lcbt' data-id = '"+drafts[i].id+"' data-fl = '"+fl+"'><span>" + drafts[i].wjbt + "</span></li>";
-					rightUlStr += "<li><span>" + drafts[i].swr + "&nbsp;"+ drafts[i].fqsj + "</span></li>";
-	
-	
-				}
-				leftUlStr += "</ul>";
-				rightUlStr += "</ul>";
-				console.log(rightUlStr);
-				$('#swLeft').html(leftUlStr);
-				$('#swRight').html(rightUlStr);
-			}
-	
-		}
-	)
 }
 
 function getAndDisplayTzByfl(url,fl){
@@ -281,12 +261,77 @@ function getAndDisplayTzByfl(url,fl){
 				leftUlStr += "</ul>";
 				rightUlStr += "</ul>";
 				console.log(rightUlStr);
-				$('#fwLeft').html(leftUlStr);
-				$('#fwRight').html(rightUlStr);
+				$('#gwLeft').html(leftUlStr);
+				$('#gwRight').html(rightUlStr);
 			}
 
 		}
 	)
+}
+
+//显示公文中心的传阅和办理
+function getAndDisplaySwCyByfl(url,fl){
+	var ym="swcy";
+	if(fl=="wbl"||fl=="ybl"){
+		ym="swbl";
+	}
+	console.log("sw");
+	AjaxTool.post(url, {
+			tab :fl, ym: ym
+		}, function(data) {
+			if (data.success){
+				var leftUlStr = "<ul class='home-content-block2'>";
+				var rightUlStr = "<ul>"
+				var drafts = data.content;
+				for (var i = 0; (i < drafts.length && i < 7); i++) {
+					leftUlStr += "<li class = 'lcbt' data-id = '"+drafts[i].id+"' data-fl = '"+fl+"'><span>" + drafts[i].wjbt + "</span></li>";
+					rightUlStr += "<li><span>" + drafts[i].swr + "&nbsp;"+ drafts[i].fqsj + "</span></li>";
+
+
+				}
+				leftUlStr += "</ul>";
+				rightUlStr += "</ul>";
+				console.log(rightUlStr);
+				$('#gwLeft').html(leftUlStr);
+				$('#gwRight').html(rightUlStr);
+			}
+
+		}
+	)
+}
+
+//收文传阅
+function seeCy(id,tabId) {
+	AjaxTool.html('draftSw/swCy',{draftSwId: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+		switch (tabId) {
+			case "ycy":
+				$('.operation').attr('style','display:none');
+				break;
+			default:
+				break;
+		}
+		$('#back').data('tabId',tabId);
+	});
+
+}
+//收文办理
+function seeBl(id,tabId){
+	AjaxTool.html('draftSw/swBl',{draftSwId: id},function (html) {
+		$('#portlet-box').addClass('portlet box');
+		$('.portlet-body').html(html);
+		$('#back').data('tabId',tabId);
+		switch (tabId) {
+			case "ybl":
+				$('.operation').attr('style','display:none');
+				break;
+			default:
+				break;
+		}
+		$('#back').data('tabId',tabId);
+	});
 }
 // 日历插件 备忘录
 jQuery(document).ready(function() {
@@ -298,8 +343,7 @@ jQuery(document).ready(function() {
 
 	$('#dtgg').trigger('click');
 	$('#htdb').trigger('click');
-
-	$('#fwdb').trigger('click');
+	// $('#fwdb').trigger('click');
 	$('#dcy').trigger('click');
 
 	var userid = $('input[name = "userId"]').val();

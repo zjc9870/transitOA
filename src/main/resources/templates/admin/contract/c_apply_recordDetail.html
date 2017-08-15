@@ -33,7 +33,9 @@
                 </li>
                 <li>
                     <div class="form-title">期限:</div>
-                    <input name="qx" class="form-content date-picker" type="text" th:value="${contractVo.qx}" />
+                    <input name="qx" class="form-content" type="text" th:value="${contractVo.qx}" />
+                    <label>（例：2017-01-01-2017-02-02）</label>
+                    <!--<input name="qx" class="form-content date-picker" type="text" th:value="${contractVo.qx}" />-->
                 </li>
             </ul>
             <input type="hidden" name="id" th:value="${contractVo.id}" />
@@ -71,7 +73,8 @@
             </div>
         </div>
         <ul>
-            <li class="right">
+            <li class="right" id="saveCon" >
+                <button id="bc" class="button hover">保存</button>
                 <button id="tj" class="button">提交</button>
             </li>
         </ul>

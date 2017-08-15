@@ -19,7 +19,7 @@ var notifyObject = {
                 var no = data.content;
 
                 for (var i=0;i<no.length;i++){
-                    str += "<tr>";
+                    str += "<tr class='notify-object-tbody-row'>";
                     str +="<td class="+no[i].id +">"+no[i].tzdx+"</td>";
                     str += "</tr>";
                 }
@@ -49,7 +49,8 @@ var notifyObject = {
                 Toast.show("对象添加失败",'请选择通知对象类型');
                 return;
             }
-            SweetAlert.swalInput("增加对象","请输入对象名","请输入对象名",function(inputValue){
+            SweetAlert.swalInput("增加对象","请输入用户名和姓名","董事长(王伟)",function(inputValue){
+
                 AjaxTool.post("notifyObject/save",{notifyObject:inputValue,tzdxlx:tzdxlx},function(response){
                     if(response.result){
                         Toast.show("对象提醒",'对象添加成功');
@@ -66,11 +67,11 @@ var notifyObject = {
     updateNotifyObject:function(){
         $(".update-button").click(function(){
             if(id==null){
-                Toast.show("对象提醒","请选择对象");
+                Toast.show("对象提醒","请选择修改对象");
                 return;
             }
             var text=tzdx;
-            SweetAlert.swalInput("修改对象","修改的对象名:"+text,"请输入对象名",function(inputValue){
+            SweetAlert.swalInput("修改对象","修改的对象名:"+text,"董事长(王伟)",function(inputValue){
                 AjaxTool.post("notifyObject/update",{id:id,tzdx:inputValue,tzdxlx:tzdxlx},function(response){
                     if(response.result){
                         Toast.show("对象提醒",'对象修改成功');
@@ -88,7 +89,7 @@ var notifyObject = {
     deleteNotifyObject:function(){
         $(".delete-button").click(function(){
             if(id==null){
-                Toast.show("对象提醒","请选择对象");
+                Toast.show("对象提醒","请选择删除对象");
                 return;
             }
             SweetAlert.swal("删除对象提醒","","warning",{

@@ -43,3 +43,5 @@ src/main/resources/application.yml
 *.xml
 
 *.yml
+
+*.svn

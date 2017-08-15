@@ -6,6 +6,10 @@ $('#tz').click(function (){
     var id=$('#id').html();
     AjaxTool.post('document/savenotify',$('#d_gs_notify_form').serialize()+"&id="+id, function(data){
         alert(data.message);
+        if (data.obj !="" && data.obj !=" "){
+            Toast.show("通知保存提醒","通知对象重复");
+        }
+        $('#back').trigger('click');
     })
 
 });

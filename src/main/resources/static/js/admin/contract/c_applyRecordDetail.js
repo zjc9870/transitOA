@@ -66,8 +66,8 @@
                         this.parentNode.appendChild(li);
                         div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
                         div.onclick = function () {
-                            // window.location = "contract/contractAttachmentDownload?attachmentId=" + this.id+"&contractId="+contractId;
-                            window.location = "attachment/download?id=" + this.id;
+                            window.location = "contract/contractAttachmentDownload?attachmentId=" + this.id+"&contractId="+contractId;
+                            // window.location = "attachment/download?id=" + this.id;
                         }
                     }
                 }
@@ -80,6 +80,24 @@
     );
 
 
+
+    // var buttons = document.getElementById('saveCon').getElementsByTagName('button');
+    // for(var i=0; i<buttons.length;i++) {
+    //     buttons[i].onclick= function() {
+    //         var formContents = document.getElementsByClassName('form-content');
+    //         for(var i=1; i<formContents.length; i++ ) {
+    //             if(/^\s*$/.test(formContents[i].value)) {
+    //                 alert('请填写完整信息!');
+    //                 return false;
+    //             }
+    //         }
+    //         AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+    //                 alert(data.message);
+    //                 if(data.success) toSqjl();
+    //             }
+    //         )
+    //     };
+    // };
 
     //提交
     $('#tj').click(function() {
@@ -96,6 +114,27 @@
             }
         )
     });
+
+    //提交
+    $('#bc').click(function() {
+        var formContents = document.getElementsByClassName('form-content');
+        for(var i=0; i<formContents.length; i++ ) {
+            if(/^\s*$/.test(formContents[i].value)) {
+                alert('请填写完整信息!');
+                return false;
+            }
+        }
+        AjaxTool.post('contract/saveContract', $('#c_apply_form').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                alert(data.message);
+                toSqjl();
+            }
+        )
+    });
+
+
+
+
+
 
     function toSqjl() {
         AjaxTool.getHtml('contract/sqjl',function (html) {

@@ -29,7 +29,22 @@ for(var i=0; i<tabs.length; i++) {
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                             default:
-                                str += "<td><div>"+cons[i].htshzt+"</div></td>";
+                                var htshzt = cons[i].htshzt;
+                                // if(htshzt == '通过'){
+                                //     str += "<td><div style='color: green'>"+htshzt+"</div></td>";
+                                // }
+                                // else if(htshzt == '不通过') {
+                                //     str += "<td><div style='color: red'>"+htshzt+"</div></td>";
+                                // }
+                                if(htshzt == '通过'){
+                                    str += "<td><div style='color:green'>"+htshzt+"</div></td>";
+                                }
+                                else if(htshzt == '终止') {
+                                    str += "<td><div style='color: red'>"+htshzt+"</div></td>";
+                                }
+                                else{
+                                    str += "<td><div>"+cons[i].htshzt+"</div></td>";
+                                }
                                 str += "<td><div onclick='seeApprove(\""+cons[i].id +'\",\"'+ tabId+"\")'>查看</div></td>";
                                 break;
                         }
@@ -63,9 +78,9 @@ function seeApprove(id,tabId) {
                 break;
         }
         $('#back').data('tabId',tabId);
-        if(roleName !=='法务') {
-            $('.yj-input').html("<input type='hidden' name='cljg' value='已审核'/>");
-        }
+        // if(roleName !=='法务') {
+        //     $('.yj-input').html("<input type='hidden' name='cljg' value='已审核'/>");
+        // }
     });
 }
 

@@ -34,7 +34,7 @@ for(var i=0; i<tabs.length; i++) {
                             default:
                                 break;
                         }
-                        if(cons[i].loginUserRole == '其他公司办公室' && tabId=='yd'){
+                        if(cons[i].loginUserRole.indexOf('其他公司办公室') !=-1&& tabId=='yd'){
                             str += "<td><div onclick='seeFwNotify(\""+ cons[i].id +'\",\"' + tabId +"\",\"" + cons[i].fwtzid +"\")'>查看</div>" +
                                 "<div onclick='notify(\""+ cons[i].id +'\",\"' + tabId +"\")'>通知</div></td>";
                         }else{

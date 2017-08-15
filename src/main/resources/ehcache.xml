@@ -8,7 +8,7 @@
 	<!-- 合同缓存 -->	
 	<cache name = "CONTRACT_CACHE" maxElementsInMemory="1000" 
 		timeToLiveSeconds="600" overflowToDisk="false" diskPersistent="false"
-		timeToIdleSeconds="0" eternal="false" memoryStoreEvictionPolicy="LRU">
+		timeToIdleSeconds="600" eternal="false" memoryStoreEvictionPolicy="LRU">
 	</cache>
 	
 	<!-- 用户缓存 -->	

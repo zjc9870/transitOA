@@ -113,7 +113,7 @@
 
 .process-content-pass {
     float:left;
-    width: 150px;
+    width: 180px;
     height: 30px;
     line-height: 30px;
     margin-top: 12px;
@@ -126,7 +126,7 @@
 
 .process-content-nopass {
     float:left;
-    width: 150px;
+    width: 180px;
     height: 30px;
     line-height: 30px;
     margin-top: 12px;
@@ -260,4 +260,7 @@
 .process2 li {
     list-style: none;
     overflow: hidden;
+}
+.notify-object-tbody-row{
+    cursor: pointer;
 }
