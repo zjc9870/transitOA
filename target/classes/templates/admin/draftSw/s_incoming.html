@@ -42,9 +42,8 @@
                         <option th:each='ld : ${ldList}' th:value="${ld.id}" th:text="${ld.fullName}"></option>
                     </select>
                 </li> -->
-                <th:block th:if='${not #lists.isEmpty(ldList)}'>
-                	<input type='hidden' name='ldId' th:value="${ldList[0].id}"></input>
-                </th:block>
+                
+                <input type='hidden' name='ldId' th:value="${ld.id}"></input>
             </ul>
         </form>
         <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>

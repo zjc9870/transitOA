@@ -66,12 +66,19 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 	 */
 	@RequestMapping(value = "/addSw", method = RequestMethod.GET)
 	public ModelAndView addSw() {
+		UserVo user = userService.getLoginUser();
 		//从代码表中找到收文中“领导” 角色的id
 		DmbVo dmbVo = dmbService.getDmbVoByLbbhAndDmbh("draftSw", "ldjsId");
 		//获取领导的列表
 		List<UserVo> ldList = roleService.getUserOfRole(dmbVo.getDmms());
 		ModelAndView mv = new ModelAndView(viewName + "s_incoming");
-		mv.addObject("ldList", ldList);
+		UserVo resultLd = null;
+		for(UserVo ld:ldList){
+			if(ld.getSsgsId().equals(user.getSsgsId())){
+				resultLd = ld;
+			}
+		}
+		mv.addObject("ld", resultLd);
 		return mv;
 	}
 	//保存收文
@@ -408,8 +415,14 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		DraftSwVo draftSwVo = draftSwService.getDraftSwVoById(swId);
 		DmbVo dmbVo = dmbService.getDmbVoByLbbhAndDmbh("draftSw", "ldjsId");
 		List<UserVo> ldList = roleService.getUserOfRole(dmbVo.getDmms());
+		UserVo resultLd = null;
+		for(UserVo ld:ldList){
+			if(ld.getSsgsId().equals(userService.getLoginUser().getSsgsId())){
+				resultLd = ld;
+			}
+		}
 		modelAndView.addObject("draftSwVo", draftSwVo);
-		modelAndView.addObject("ldList", ldList);
+		modelAndView.addObject("ld", resultLd);
 		return modelAndView;
 	}
 
