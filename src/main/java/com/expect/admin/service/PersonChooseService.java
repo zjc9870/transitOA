@@ -2,7 +2,6 @@ package com.expect.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,9 @@ import com.expect.admin.data.dao.DepartmentRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Department;
 import com.expect.admin.data.dataobject.User;
+import com.expect.admin.service.vo.UserVo;
 import com.expect.admin.service.vo.component.html.JsTreeVo;
+import com.expect.admin.utils.StringUtil;
 
 @Service
 public class PersonChooseService {
@@ -21,6 +22,9 @@ public class PersonChooseService {
 	private DepartmentRepository departmentRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserService userService;
+	
 	
 	public List<JsTreeVo> getUserTree() {
 	    List<User> allUserList = userRepository.findAll();
@@ -28,26 +32,36 @@ public class PersonChooseService {
 	    JsTreeVo firJsTree = new JsTreeVo();
 	    List<JsTreeVo> resultJsTreeVos = new ArrayList<>();
 	    List<JsTreeVo> departmentJsTreeVos = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(allUserList)) {
-        	for(Department department: allDepartmentList){
-        	    List<JsTreeVo> userJsTreeVos = new ArrayList<>();
-        		JsTreeVo departJsTree = new JsTreeVo();
-        		setDepartmentTree(department,departJsTree);
-        		for (User user : allUserList) {
-                    JsTreeVo userJsTree = new JsTreeVo();
-                    setUserTree(user, userJsTree);
-                    for(Department userDepartment:user.getDepartments()){
-                        System.out.println("user's department's id:"+userDepartment.getId()+", departmentid:"+department.getId());
-                    	if(userDepartment.getId().equals(department.getId())){
-                            userJsTreeVos.add(userJsTree);
-                            break;
-                    	}
-                    }
-                }
-        		departJsTree.setChildren(userJsTreeVos);
-        		departmentJsTreeVos.add(departJsTree);
-        	}
-        }
+	    //关于集团与分公司权限的问题，可能要修改数据库结构
+	    
+	    //将所有的department变为节点
+	    List<JsTreeVo> allDepartmentTreeVoList = new ArrayList<JsTreeVo>();
+	    //第一层为用户所在的公司节点
+	    UserVo currentUser = userService.getLoginUser();
+	    if(currentUser.getSsgsId().equals("super")){
+			for(Department department:allDepartmentList){
+				JsTreeVo gsDepartJsTree = new JsTreeVo();
+				if(department.getParentDepartment()==null&&!StringUtil.isBlank(department.getName())){
+					setDepartmentTree(department,gsDepartJsTree);
+					allDepartmentTreeVoList.add(gsDepartJsTree);
+		    		departmentJsTreeVos.add(gsDepartJsTree);
+				}
+			}
+	    }else{
+	    	for(Department department:allDepartmentList){
+				JsTreeVo gsDepartJsTree = new JsTreeVo();
+				if(department.getId().equals(currentUser.getSsgsId())){
+					setDepartmentTree(department,gsDepartJsTree);
+					allDepartmentTreeVoList.add(gsDepartJsTree);
+		    		departmentJsTreeVos.add(gsDepartJsTree);
+				}
+			}
+	    }
+		//对每个公司部门节点进行递归 将部门节点树结构完成
+		for(JsTreeVo parentTreeVos:departmentJsTreeVos){
+			addDepartmentsToParent(allDepartmentList,allDepartmentTreeVoList,parentTreeVos);
+		}
+
         firJsTree.setChildren(departmentJsTreeVos);
         resultJsTreeVos.add(firJsTree);
         
@@ -93,18 +107,51 @@ public class PersonChooseService {
 //			resultJsTreeVos.add(firJsTree);
 //		}
 		
-		return resultJsTreeVos;
+		return departmentJsTreeVos;
 	}
-	
+
+
+	private void addDepartmentsToParent(List<Department> allDepartmentList, List<JsTreeVo> allDepartmentTreeVoList, JsTreeVo parentTreeVo) {
+		for(Department department:allDepartmentList){
+				//找到父节点 将节点加入总节点集合和父节点下
+			if(department.getParentDepartment()!=null&&!StringUtil.isBlank(department.getName())){
+
+				if((department.getParentDepartment().getId()).equals(parentTreeVo.getId())){
+					JsTreeVo departJsTree = new JsTreeVo();
+					setDepartmentTree(department,departJsTree);
+					parentTreeVo.addChildren(departJsTree);
+					allDepartmentTreeVoList.add(departJsTree);
+					addDepartmentsToParent(allDepartmentList, allDepartmentTreeVoList,departJsTree);
+				}
+			}
+		}
+	}
+
 	private void setDepartmentTree(Department department, JsTreeVo jsTreeVo){
+
 		jsTreeVo.setId(department.getId());
 		jsTreeVo.setText(department.getName());
+		jsTreeVo.setIcon("../images/folder_user.png");
+	    List<User> allUserList = userRepository.findAll();
+	    for(User user : allUserList){
+        	if(department!=null){
+        		for(Department userDepartment:user.getDepartments()){
+        			if(userDepartment.getId().equals(department.getId())){
+
+                        JsTreeVo userJsTree = new JsTreeVo();	
+                        setUserTree(user, userJsTree);
+                        jsTreeVo.addChildren(userJsTree);
+        			}
+        		}
+        	}
+        }
 	}
-	
+
 	private void setUserTree(User user, JsTreeVo jsTreeVo) {
-		jsTreeVo.setId(user.getId());
-		jsTreeVo.setText(user.getFullName());
+		jsTreeVo.setText(user.getUsername()+"("+user.getFullName()+")");
+		jsTreeVo.setId(user.getId()+","+jsTreeVo.getText());
+		jsTreeVo.setIcon("../images/user_suit.png");
 	}
-	
+
 
 }

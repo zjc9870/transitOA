@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <button id="back" class="button">返回</button>
+    	<div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${draftSwVo.sbd}+办文单"></div>
+    <div class="lg-block-content">
+        <th:block>
+            <ul>
+                <li>
+                    <div class="form-title">文件标题:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.wjbt}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">来文单位:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.lwdw}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">文号:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.wh}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">日期:</div>
+                    <pre class="pre-form-content" th:text="${draftSwVo.rq}"></pre>
+                </li>
+                <input id="mjVal" type="hidden" th:value="${draftSwVo.mj}" />
+                <input id="draftSwId" type="hidden" th:value="${draftSwVo.id}"/>
+                <input id="attachList" type="hidden" th:value="${draftSwVo.attachmentList}" />
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input  type="radio" name="mj" value="1"
+                        disabled="disabled" /><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input  type="radio" name="mj" value="2"
+                        disabled="disabled"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input  type="radio" name="mj" value="3"
+                        disabled="disabled"/><span>秘密</span></div>
+                </li>
+                <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+            </ul>
+        </th:block>
+    </div>
+</div>
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">收文流程</span>
+        <span class="lg-block-subtitle2">Receive Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.jyzyRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.jyzyRecordList}">
+                <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                    <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                         class="process-content-pass" th:text="'已处理'+'('+${lcrz.userName}+')'"></div>
+                </li>
+            </ul>
+        </th:block>
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.ldRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.ldRecordList}">
+                
+	            <th:block th:if="${lcrz.cljg=='未处理'}">
+	            	<li><div class="process-title" th:text="领导批示"></div>
+	                <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+	              			 class="process-content-nopass" th:text="'未批示'+'('+${lcrz.userName}+')'"></div>
+	              	</li>
+	            </th:block>
+	            
+	            <th:block th:if="${lcrz.cljg=='已阅'}">
+	            	<li><div class="process-title" th:text="领导批示"></div>
+	                <div th:title="${'领导批示:'+(lcrz.message==''?'无':lcrz.message)+'&#10;批示时间:'+ lcrz.clsj}"
+	              			 class="process-content-pass" th:text="'已审批'+'('+${lcrz.userName}+')'"></div>
+	              	</li>
+	            </th:block>
+            </ul>
+        </th:block>
+        <!--<th:block th:if='${not #lists.isEmpty(draftSwVo.cyrRecordList)}'>-->
+        <!--<ul>-->
+        <!--<li>-->
+        <!--<div class="process-title" th:text="传阅"></div>-->
+        <!--<div id="cyrRecord" class="process-content-pass"></div>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</th:block>-->
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.xgryRecordList)}'>
+            <ul th:each="lcrz : ${draftSwVo.xgryRecordList}">
+            	<th:block th:if="${lcrz.clnrfl=='办理人'}">
+            	
+	            	<th:block th:if="${lcrz.cljg=='未处理'}">
+		            	<li><div class="process-title" th:text="办理"></div>
+		                <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+		              			 class="process-content-nopass" th:text="'未办理'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+            	
+                	<th:block th:if="${lcrz.cljg=='已阅'}">
+		            	<li><div class="process-title" th:text="办理"></div>
+		                <div th:title="${'办理情况:'+(lcrz.message==''?'无':lcrz.message)+'&#10;办理时间:'+ lcrz.clsj}"
+		              			 class="process-content-pass" th:text="'已办理'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                </th:block>
+                <th:block th:if="${lcrz.clnrfl=='传阅人'}">
+                	<th:block th:if="${lcrz.cljg=='未处理'}">
+		            	<li><div class="process-title" th:text="传阅"></div>
+		                <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+		              			 class="process-content-nopass" th:text="'未传阅'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                	<th:block th:if="${lcrz.cljg=='已阅'}">
+		            	<li><div class="process-title" th:text="传阅"></div>
+		                <div th:title="${'加注意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;传阅时间:'+ lcrz.clsj}"
+		              			 class="process-content-pass" th:text="'已传阅'+'('+${lcrz.userName}+')'"></div>
+		              	</li>
+		            </th:block>
+                </th:block>
+            </ul>
+        </th:block>
+    </div>
+    <div class="operation">
+        <form id="s_cyForm" class="op-form">
+            <input type="hidden" name="yy" value="已阅"/>
+            <div class="yj-disagree">
+                <div class="form-title">加注意见:</div>
+                <textarea class="sp-input" name="cyrYj" placeholder="不超过300字"></textarea>
+            </div>
+        </form>
+        <input type="hidden" th:value="${draftSwVo.id}" id="data" />
+        <button id="submit" class="button" style="margin-left:20%">提交</button>
+    </div>
+</div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/draftSw/s_circulateDetail.js}" type="text/javascript"></script>
+</body>
+</html>

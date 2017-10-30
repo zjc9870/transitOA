@@ -6,9 +6,13 @@ spring:
   datasource:
     type: org.apache.tomcat.jdbc.pool.DataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1/gongjiao
+    #    本地连远程
+    url: jdbc:mysql://58.213.110.178/test?characterEncoding=utf-8
     username: root
-    password: 123456
+    password: jnptpassword
+#    url: jdbc:mysql://127.0.0.1/gongjiao
+#    username: root
+#    password: 123456
   jpa:
     show-sql: true
     hibernate:

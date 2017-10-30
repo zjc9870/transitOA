@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+       <title>收文详情</title>
+		<link th:href="@{/css/admin/weixin/weui.min.css}" rel="stylesheet"  type="text/css"/>
+		<link th:href="@{/css/admin/weixin/jquery-weui.css}" rel="stylesheet"  type="text/css"/>
+		<link th:href="@{/css/admin/weixin/weixin.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" id="lx" th:value="${lx}" />
+<div class="page__hd">
+	<div class="page__title">
+		集团办文单
+	</div>
+
+</div>
+<div class="page__bd">
+		<div class="weui-cells__title">
+	            公文基本信息
+	    </div>
+	    <div class="weui-cells">
+	  	<div class="weui-cell">
+	   	 <div class="weui-cell__hd"><label class="weui-label">公司名称</label></div>
+	   	 <div class="weui-cell__bd weui-cell_primary" style="float:right">
+	 	     <input id="sbd" name="sbd" class="weui-input" type="text" value="江宁公交集团" readonly="readonly" style="text-align:right"/>
+	  	  </div>
+	 	 </div>
+	  	<div class="weui-cell">
+	    <div class="weui-cell__hd"><label class="weui-label">收文标题</label></div>
+	    <div class="weui-cell__bd weui-cell_primary">
+	      <input name="htbt" class="weui-input" type="text" value="收文标题" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  
+		<div class="weui-cell">
+		<div class="weui-cell__hd"><label class="weui-label">主要内容</label></div>
+		</div>
+		  <div class="weui-cell">
+		    <div class="weui-cell__bd weui-cell_primary">
+		      <textarea name="htnr" class="weui-textarea" text="主要内容" rows="3" readonly="readonly"></textarea>
+		    </div>
+		  </div>
+	  <div class="weui-cell">
+	    <div class="weui-cell__hd"><label for="" class="weui-label">发起人</label></div>
+	    <div class="weui-cell__bd weui-cell_primary">
+	      <input name="userName" class="weui-input" type="text" value="机要专员" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  <div class="weui-cell">
+	    <div class="weui-cell__hd"><label for="" class="weui-label">发起日期</label></div>
+	    <div class="weui-cell__bd weui-cell_primary">
+	      <input name="nqdrq" class="weui-input" type="text" value="2017/10/27" readonly="readonly" style="text-align:right"/>
+	    </div>
+	  </div>
+	  </div>
+	 </div>
+	 
+	 <div class="weui-cells__title">
+            审批流程
+        </div>
+                <ul>
+                    
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd">发起</div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="新增(机要专员)" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理意见</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="无" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="2017/10/27 18:00:20" />
+	                            </div>
+	                            </div>
+                    	</div>
+                    
+                </ul>
+                
+                <ul>
+                    
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd">审批</div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="通过(董事长)" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理意见</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="无" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="2017/10/27 18:05:06" />
+	                            </div>
+	                            </div>
+                    	</div>
+                    
+                </ul>
+                
+                <ul>
+                    
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd">传阅</div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="未阅(传阅人)" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">传阅意见</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="无" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="2017/10/27 18:07:17" />
+	                            </div>
+	                            </div>
+                    	</div>
+                    
+                </ul>
+                
+                <ul>
+                    
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd">传阅</div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="未阅(机要专员)" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">传阅意见</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="无" />
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" readonly="readonly" style="text-align:right" value="2017/10/27 18:07:17" />
+	                            </div>
+	                            </div>
+                    	</div>
+                    
+                </ul>
+    
+	<div class="weui-cells__title">传阅意见</div>
+	<div class="weui-cell">
+	   	<div class="weui-cell__bd weui-cell_primary">
+	      <textarea name="yj" class="weui-textarea" placeholder="请输入传阅意见" rows="3"></textarea>
+	    </div>
+	</div>
+	<a id="submit" class="weui-btn weui-btn_primary">提交</a>
+			<script th:src="@{/js/weixin/jquery-2.1.4.js}" type="text/javascript"></script>
+			<script th:src="@{/js/weixin/jquery-weui.min.js}" type="text/javascript"></script>
+</body>
+
+
+</html>

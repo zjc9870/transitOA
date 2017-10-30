@@ -15,6 +15,31 @@
 	<div class="portlet-body">
 		<div class="content-left">
 			<img th:src="@{/images/pic.png}" style="width:100%"/>
+			<!--公告中心-->
+			<div class="md-block">
+				<div class="md-block-title">
+					<span class="md-block-subtitle1">公文中心</span>
+					<span class="md-block-subtitle2">Dispatch Center</span>
+					<!-- <span class="md-block-subtitle3" style="margin-left:65%">待开发</span> -->
+				</div>
+				<div class="md-block-tab">
+					<div class="tab-box">
+						<div id="dcl" data-fl = "dcy" class="small-font smallsize-font word" >收文待阅</div>
+					</div>
+					<div class="tab-box">
+						<div id="ycl" data-fl = "ycy" class="small-font smallsize-font word" >收文已阅</div>
+					</div>
+					<div class="tab-box">
+						<div id="fwdb" data-fl = "dsp" class="small-font smallsize-font word" >发文待办</div>
+					</div>
+					<div class="tab-box">
+						<div id="fwyb" data-fl = "ysp" class="small-font smallsize-font word" >发文已办</div>
+					</div>
+
+				</div>
+				<div id = 'gwLeft' class="md-block-content"></div>
+				<div id = 'gwRight' class="md-block-content-right"></div>
+			</div>
 			<!--流程中心-->
 			<div class="md-block">
 				<div class="md-block-title">
@@ -35,37 +60,7 @@
 				<!--日期-->
 				<div id = "rightLc" class="md-block-content-right"></div>
 			</div>
-			<!--公告中心-->
-			<div class="md-block">
-				<div class="md-block-title">
-					<span class="md-block-subtitle1">公文中心</span>
-					<span class="md-block-subtitle2">Dispatch Center</span>
-					<!-- <span class="md-block-subtitle3" style="margin-left:65%">待开发</span> -->
-				</div>
-				<div class="md-block-tab">
-					<div class="tab-box">
-						<div id="dcy" data-fl = "dcy" class="small-font smallsize-font word" >收文待阅</div>
-					</div>
-					<div class="tab-box">
-						<div id="ycy" data-fl = "ycy" class="small-font smallsize-font word" >收文已阅</div>
-					</div>
-					<div class="tab-box">
-						<div id="wbl" data-fl = "wbl" class="small-font smallsize-font word" >收文代办</div>
-					</div>
-					<div class="tab-box">
-						<div id="ybl" data-fl = "ybl" class="small-font smallsize-font word" >收文已办</div>
-					</div>
-					<div class="tab-box">
-						<div id="fwdb" data-fl = "dsp" class="small-font smallsize-font word" >发文待办</div>
-					</div>
-					<div class="tab-box">
-						<div id="fwyb" data-fl = "ysp" class="small-font smallsize-font word" >发文已办</div>
-					</div>
 
-				</div>
-				<div id = 'gwLeft' class="md-block-content"></div>
-				<div id = 'gwRight' class="md-block-content-right"></div>
-			</div>
 		</div>
 
 		<div class="content-right">

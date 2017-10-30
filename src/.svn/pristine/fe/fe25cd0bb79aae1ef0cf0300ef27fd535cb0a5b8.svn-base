@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>公文申请</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="lg-block">
+    <div class="lg-block-content">
+        <form id="d_apply_form" enctype="multipart/form-data">
+            <div class="lg-block-title1">南京江宁公共交通集团有限公司<input id="zgs" name="zgs" class="form-content" type="text" />发文单</div>
+            <ul>
+                <li>
+                    <div class="form-title">公文标题:</div>
+                    <input name="bt" class="form-content" type="text" style="width:380px;" />
+                </li>
+                <li>
+                    <div class="form-title">主题词:</div>
+                    <textarea name="ztc" class="form-content text-content"></textarea>
+                </li>
+                <!--<li>-->
+                    <!--<div class="form-title">主办人和公文人:</div>-->
+                    <!--<input name="userName" class="form-content" type="text" style="width:380px;" />-->
+                <!--</li>-->
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input name="mj" type="radio" value="1" /><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="2"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="3"/><span>秘密</span></div>
+                </li>
+                <li>
+                    <div class="form-title">门户网站发布:</div>
+                    <div class="pform-radio"><input name="sffb" type="radio" value="1" /><span>是</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="sffb" type="radio" value="2" /><span>否</span></div>
+                </li>
+            </ul>
+        </form>
+
+        <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
+        <ul id="fjlb">
+        </ul>
+        <div id="upload-modal" class="modal modal-fixed-footer">
+            <div class="modal-header">
+                <h4 class="modal-title">上传附件</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="form" id="fileUploadForm">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-10 col-md-offset-1">
+                                    <div class="files-template-wrapper"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal"
+                        class="btn btn-outline dark">关闭</button>
+            </div>
+        </div>
+        <ul>
+            <li id="saveCon" class="right">
+                <button id="bc" class="button hover">保存</button>
+                <button id="tj" class="button hover">提交</button>
+            </li>
+        </ul>
+
+
+    </div>
+</div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/document/d_apply.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/ajaxfileupload.js}" type="text/javascript"></script>
+<script th:src="@{/js/base/file.tool.js}" type="text/javascript"></script>
+<script th:src="@{/js/base/jquery.file.upload.js}" type="text/javascript"></script>
+</body>
+</html>

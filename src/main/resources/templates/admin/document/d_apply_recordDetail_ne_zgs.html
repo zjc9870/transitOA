@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="block">
+<div class="lg-block">
+    <button id="back" class="button">返回</button>
+    <div class="lg-block-title1" th:text="南京江宁公共交通集团有限公司+${documentVo.zgs}+发文单"></div>
+    <div class="lg-block-content">
+        <th:block>
+            <ul>
+                <li>
+                    <div class="form-title">公文标题:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.bt}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">主题词:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.ztc}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">主办人和拟公文人:</div>
+                    <pre class="pre-form-content" th:text="${documentVo.userName}"></pre>
+                </li>
+                <li>
+                    <div class="form-title">密级:</div>
+                    <div class="pform-radio"><input name="mj" type="radio" value="1" th:checked="${documentVo.mj=='1'}" th:disabled="true"/><span>绝密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="2" th:checked="${documentVo.mj=='2' }" th:disabled="true"/><span>机密</span></div>
+                    <div class="pform-radio" style="margin-left: 35px"><input name="mj" type="radio" value="3" th:checked="${documentVo.mj=='3' }" th:disabled="true"/><span>秘密</span></div>
+                </li>
+                <!--<li>-->
+                    <!--<div class="form-title">门户网站发布:</div>-->
+                    <!--<div class="pform-radio"><input name="sffb" type="radio" value="1" th:checked="${documentVo.sffb=='1' }" th:disabled="true"/><span>是</span></div>-->
+                    <!--<div class="pform-radio" style="margin-left: 35px"><input name="sffb" type="radio" value="2" th:checked="${documentVo.sffb=='2' }" th:disabled="true"/><span>否</span></div>-->
+                <!--</li>-->
+
+                <input id="attachList" type="hidden" th:value="${documentVo.attachmentList}" />
+                <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+            </ul>
+        </th:block>
+    </div>
+</div>
+<div class="lg-block2">
+    <div class="lg-block-title2">
+        <span class="lg-block-subtitle1">审批流程</span>
+        <span class="lg-block-subtitle2">Approval Process</span>
+    </div>
+    <div class="process">
+        <th:block th:if='${not #lists.isEmpty(documentVo.lcrzbList)}'>
+            <ul th:each="lcrz : ${documentVo.lcrzbList}">
+                <th:block>
+                    <li><div class="process-title" th:text="${lcrz.lcjd}"></div>
+                        <th:block th:if="${lcrz.cljg=='通过'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='不通过'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+                            +'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-nopass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='新增'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)
+                            +'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                        <th:block th:if="${lcrz.cljg=='已审核'}">
+                            <div th:title="${'处理意见:'+(lcrz.message==''?'无':lcrz.message)+'&#10;处理时间:'+ lcrz.clsj}"
+                                 class="process-content-pass" th:text="${lcrz.cljg}+'('+${lcrz.userName}+')'"></div>
+                        </th:block>
+                    </li>
+                </th:block>
+            </ul>
+        </th:block>
+    </div>
+</div>
+    <div class="lg-block2" id="tzxq">
+        <div class="lg-block-title2">
+            <span class="lg-block-subtitle1">通知详情</span>
+            <span class="lg-block-subtitle2">Notification Details</span>
+        </div>
+        <div class="process2">
+            <th:block th:if="${not #lists.isEmpty(fwtzVo)}">
+
+                <div class="lg-block-title2">主送:</div>
+                <li>
+                    <ul>
+                        <li>
+                            <div class="form-title">公司高管:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.zsgsgg}">无</pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司部门:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.zsgsbm}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司办公室:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.zsqtgsbgs}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">外部单位:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.zswbdw}"></pre>
+                        </li>
+                    </ul>
+                </li>
+                <div class="lg-block-title2">抄报:</div>
+                <li>
+                    <ul>
+                        <li>
+                            <div class="form-title">公司高管:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.cbgsgg}">无</pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司部门:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.cbgsbm}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司办公室:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.cbqtgsbgs}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">外部单位:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.cbwbdw}"></pre>
+                        </li>
+                    </ul>
+                </li>
+                <div class="lg-block-title2">抄送:</div>
+                <li>
+                    <ul>
+                        <li>
+                            <div class="form-title">公司高管:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.csgsgg}">无</pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司部门:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.csgsbm}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司办公室:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.csqtgsbgs}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">外部单位:</div>
+                            <pre class="pre-form-content" th:text="${fwtzVo.cswbdw}"></pre>
+                        </li>
+                    </ul>
+                </li>
+
+            </th:block>
+        </div>
+    </div>
+<script th:src="@{/js/admin/document/d_applyRecordDetail.js}" type="text/javascript"></script>
+</div>
+</body>
+</html>
