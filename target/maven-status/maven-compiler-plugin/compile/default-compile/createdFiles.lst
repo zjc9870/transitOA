@@ -42,6 +42,7 @@ com\expect\admin\weixin\cp\api\WxCpMessageHandler.class
 com\expect\admin\service\vo\TzsjCompare.class
 com\expect\admin\plugins\ueditor\define\BaseState.class
 com\expect\admin\service\WxCpService$1.class
+com\expect\admin\web\weixin\WeixinDraftSwController.class
 com\expect\admin\weixin\common\util\res\StringManager$1.class
 com\expect\admin\service\convertor\UserConvertor.class
 com\expect\admin\weixin\cp\util\json\WxCpMessageGsonAdapter.class
@@ -294,6 +295,7 @@ com\expect\admin\data\dataobject\Lcb.class
 com\expect\admin\web\AttachmentController.class
 com\expect\admin\service\WxCpService$2.class
 com\expect\admin\data\dao\LcjdgxbRepository.class
+com\expect\admin\factory\impl\JtswFactory.class
 com\expect\admin\service\vo\LcrzbVo.class
 me\aes\AesException.class
 com\expect\admin\web\NotifyObjectController.class

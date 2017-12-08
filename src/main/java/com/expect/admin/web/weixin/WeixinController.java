@@ -33,6 +33,7 @@ import com.expect.admin.config.WebSecurityConfig;
 import com.expect.admin.data.dataobject.WxUser;
 import com.expect.admin.service.AttachmentService;
 import com.expect.admin.service.ContractService;
+import com.expect.admin.service.FwtzService;
 import com.expect.admin.service.RoleJdgxbGxbService;
 import com.expect.admin.service.RoleService;
 import com.expect.admin.service.UserService;
@@ -40,6 +41,8 @@ import com.expect.admin.service.WxCpService;
 import com.expect.admin.service.WxUserService;
 import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.ContractVo;
+import com.expect.admin.service.vo.DocumentVo;
+import com.expect.admin.service.vo.FwtzVo;
 import com.expect.admin.service.vo.RoleJdgxbGxbVo;
 import com.expect.admin.service.vo.RoleVo;
 import com.expect.admin.service.vo.UserVo;
@@ -83,6 +86,9 @@ public class WeixinController {
 	
 	@Autowired
 	RoleService roleService;
+
+    @Autowired
+    private FwtzService fwtzService;
 	
 	WxCpMessageRouter wxCpMessageRouter = new WxCpMessageRouter(wxService);
 	
@@ -106,6 +112,7 @@ public class WeixinController {
 		return null;
 	}
 	
+	//从数据库中获取用户名密码并登陆
 	private ModelAndView login(String wxId,HttpServletRequest request, HttpServletResponse response) throws IOException{
 		System.out.println(wxId);
 	    if(wxUserService.isUserExisit(wxId)){
@@ -164,6 +171,12 @@ public class WeixinController {
     		return mv;
     	}else if(state.equals("draftSwIncomming")){
     		ModelAndView mv = new ModelAndView("redirect:/weixin/draftSw/draftSw_incomming");
+    		return mv;
+    	}else if(state.equals("documentNotifyRecord")){
+    		ModelAndView mv = new ModelAndView("redirect:/weixin/document/document_notify_record");
+    		return mv;
+    	}else if(state.equals("draftSwInstructions")){
+    		ModelAndView mv = new ModelAndView("redirect:/weixin/draftSw/draftSw_instructions");
     		return mv;
     	}
 		return null;
@@ -240,7 +253,7 @@ public class WeixinController {
 		return mv;
 	}
 
-
+	//无cookies则访问微信服务器拿用户信息
 	@RequestMapping("/authorize")
 	public ModelAndView authorize(HttpServletRequest request, HttpServletResponse response) throws IOException, WxErrorException {
 		Cookie[] cookies = request.getCookies();
@@ -256,8 +269,6 @@ public class WeixinController {
 		mv.addObject("fail", "false");
 		return mv;
 	}
-	
-	//测试专用接口 部署时请删除
 	
 	@RequestMapping("/homepage")
 	public ModelAndView homepage(){
@@ -292,23 +303,7 @@ public class WeixinController {
 		return mv;
 	}
 	
-	@RequestMapping("/draftSw/draftSw_list")
-	public ModelAndView draftSw_list() {
-		ModelAndView mv = new ModelAndView(viewName + "draftSw/draftSw_list");
-		return mv;
-	}
-	
-	@RequestMapping("/draftSw/draftSw_incomming")
-	public ModelAndView draftSw_incomming() {
-		ModelAndView mv = new ModelAndView(viewName + "draftSw/draftSw_incomming");
-		return mv;
-	}
-	
-	@RequestMapping("/draftSw/draftSw_detail")
-	public ModelAndView draftSw_detail() {
-		ModelAndView mv = new ModelAndView(viewName + "draftSw/draftSw_detail");
-		return mv;
-	}
+
 	
 	@RequestMapping("/document/document_apply")
 	public ModelAndView document_apply() {
@@ -327,6 +322,18 @@ public class WeixinController {
 		return mv;
 	}
 	
+	@RequestMapping("/document/document_notify_record")
+	public ModelAndView document_notify_record() {
+        UserVo userVo = userService.getLoginUser();
+        String role=userVo.getRoleName();
+        ModelAndView modelAndView=new ModelAndView(viewName+"document/document_notify_record");
+        List<FwtzVo> fwtzVoList=fwtzService.getAllFwtz();
+        List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
+        List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+        List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
+        modelAndView.addObject("documentVoListBytzsj",documentVoListBytzsj);
+        return modelAndView;
+	}
 	
 	/**
 	 * 附件下载

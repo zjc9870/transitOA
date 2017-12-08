@@ -1,12 +1,6 @@
 package com.expect.admin.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,7 +23,6 @@ import com.expect.admin.data.dao.LcrzbRepository;
 import com.expect.admin.data.dao.RoleRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.Attachment;
-import com.expect.admin.data.dataobject.Contract;
 import com.expect.admin.data.dataobject.DraftSw;
 import com.expect.admin.data.dataobject.DraftSwUserLcrzbGxb;
 import com.expect.admin.data.dataobject.Lcjdb;
@@ -177,7 +170,16 @@ public class DraftSwService {
             return;
         draftSwRepository.save(new DraftSw(draftSwVo));
     }
-    
+
+    @Transactional
+    public void updateDyrqAndBh(DraftSwVo draftSwVo){
+        DraftSw draftSw = draftSwRepository.findOne(draftSwVo.getId());
+        draftSw.setDyrq(draftSwVo.getDyrq());
+        draftSw.setBh(draftSwVo.getBh());
+        draftSwRepository.save(draftSw);
+
+    }
+
     public void terminate(String draftSwId) {
         if(StringUtil.isBlank(draftSwId)) throw new BaseAppException("要结束的收文ID为空");
         DraftSw swToTernimate = draftSwRepository.findOne(draftSwId);
@@ -338,6 +340,7 @@ public class DraftSwService {
                 if (StringUtil.equals(tab, "ycy"))
                     sfcl = true;
             }
+            
             return getSwblOrSwcyOrLdps(userId, ryfl, sfcl);
         }
         return getDraftSwVoListFromDraftSwList(null);
@@ -704,5 +707,90 @@ public class DraftSwService {
         if (StringUtil.equals(ryfl, DraftSwUserLcrzbGxb.RYFL_LD))
             return "ldjsId";
         throw new BaseAppException("没有相关角色");
+    }
+
+	public List<DraftSwVo> getHomePageContent(String ym, String id) {
+		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
+		String sfcl = "dcl";
+		if(StringUtil.contains(ym, "ycl")){
+			sfcl = "ycl";
+		}
+		List<String> tabList = new ArrayList<String>();
+		if(StringUtil.contains(ym, "dsz")){
+			if(StringUtil.equals("ycl", sfcl)){
+				tabList.add("yps");
+			}else{
+				tabList.add("dps");
+			}
+		}
+		
+		if(StringUtil.contains(ym, "jyzy")){
+			if(StringUtil.equals("ycl", sfcl)){
+				tabList.add("ycl");
+			}else{
+				tabList.add("dcl");
+			}
+		}
+		if(StringUtil.equals("ycl", sfcl)){
+			tabList.add("ycy");
+			tabList.add("ybl");
+		}else{
+			tabList.add("dcy");
+			tabList.add("dbl");
+		}
+		for(String tab : tabList){
+			String returnym = "";
+			switch(tab){
+			case "ycy":
+			case "dcy":
+				returnym = "swcy";
+				break;
+			case "ybl":
+			case "dbl":
+				returnym = "swbl";
+				break;
+			case "yps":
+			case "dps":
+				returnym = "swps";
+				break;
+			case "ycl":
+			case "dcl":
+				returnym = "swjl";
+				break;
+			}
+			List<DraftSwVo> subDraftSwVoList = getDraftSwVoList(returnym,tab,id);
+			if(StringUtil.equals(tab, "ycl")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "ybl")){
+				for(DraftSwVo vo : subDraftSwVoList){
+					boolean cf = false;
+					vo.setTab(tab);
+					for(DraftSwVo draftSwVo: draftSwVoList){
+						if(StringUtil.equals(draftSwVo.getId(), vo.getId())){
+							cf = true;
+							break;
+						}
+					}if(!cf){
+						draftSwVoList.add(vo);						
+					}
+				}
+			}
+		}
+		//进行时间排序显示最近的
+		return draftSwVoList;
+		
+	}
+
+	// 获取发文是否是穿越还是办理人的信息
+    public String getCyAndBl(DraftSwVo draftSwVo) {
+        String CYandBL = "";
+        List<LcrzbVo> xgryRecordList = draftSwVo.getXgryRecordList();
+        Iterator iterator = xgryRecordList.iterator();
+        while (iterator.hasNext()) {
+            LcrzbVo lcrzbVo = (LcrzbVo) iterator.next();
+            CYandBL = CYandBL + lcrzbVo.getClnrfl() + "："
+                    + lcrzbVo.getUserName() + " 处理时间：" + (lcrzbVo.getClsj().split(" "))[0] + "<br/>处理意见："
+                    + lcrzbVo.getMessage() + "<br/>"
+            ;
+        }
+        return CYandBL;
     }
 }

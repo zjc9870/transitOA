@@ -1,18 +1,25 @@
 #本机配置
 server:
-  port: 8080
+  port: 8888
   context-path: /
 spring:
   datasource:
     type: org.apache.tomcat.jdbc.pool.DataSource
     driver-class-name: com.mysql.jdbc.Driver
-    #    本地连远程
-    url: jdbc:mysql://58.213.110.178/test?characterEncoding=utf-8
+#    本地连远程
+#    url: jdbc:mysql://58.213.110.178/test?characterEncoding=utf-8
+#    username: root
+#    password: jnptpassword
+
+#    本地
+#    url: jdbc:mysql://127.0.0.1/test2?characterEncoding=utf-8
+#    username: root
+#    password: root
+
+#    部署测试库
+    url: jdbc:mysql://127.0.0.1/test?characterEncoding=utf-8
     username: root
     password: jnptpassword
-#    url: jdbc:mysql://127.0.0.1/gongjiao
-#    username: root
-#    password: 123456
   jpa:
     show-sql: true
     hibernate:
@@ -119,12 +126,12 @@ custom:
 
 #微信企业号配置
 WxCpInMemoryConfigStorage:
-  corpId: wx9b77c621c69ea369
-  corpSecret: SB6Rteo4n7hsPpkMo7c9Trx2S_WiqIkYGomRMgTwHtahQ-qL1AgBT8aUtwcR9RsM
-  token: iuqM
+  corpId: wx6cf85a5aafc0e3e7
+  corpSecret: 6jYIJeMF37cUQsSiS_OHat7s9VSvEtkwm05B86GXxQprEhnn7lya6Tq9DmVqWcFO
+  token: 36L
   aesKey: RJM824jyFEgkmMnqXG1PbXm8649aXIyuy9II5cQgnhD
   agentId: 2
   expiresTime: 0
-  oauth2redirectUri: http://syuumakoto.nat123.net/weixin/login
+  oauth2redirectUri: http://www.jnptgroup.com:8888/weixin/login
   httpProxyPort: 0
   jsapiTicketExpiresTime: 0

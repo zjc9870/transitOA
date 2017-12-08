@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+       <title>公文详情</title>
+		<link th:href="@{/css/admin/weixin/weui.min.css}" rel="stylesheet"  type="text/css"/>
+		<link th:href="@{/css/admin/weixin/jquery-weui.css}" rel="stylesheet"  type="text/css"/>
+		<link th:href="@{/css/admin/weixin/weixin.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<input type="hidden" id="lx" th:value="${lx}" />
+<div class="page__hd">
+	<div class="page__title">
+		集团发文单
+	</div>
+
+</div>
+<div class="page__bd page__bd_spacing">
+		<div class="weui-cells__title">
+	            公文基本信息
+	    </div>
+		<div class="weui-cells">
+			<div class="weui_cells_title">公文标题</div>
+			<div class="weui_cell">
+				<div class="weui_cell_bd weui_cell_primary">
+					<textarea name="bt" class="weui_textarea" placeholder="请输入文件标题"
+						rows="3"></textarea>
+					<div class="weui_textarea_counter">
+						<span>0</span>/300
+					</div>
+				</div>
+			</div>
+
+			<div class="weui-cell">
+				<div class="weui-cell__hd">
+					<label class="weui-label">来文单位</label>
+				</div>
+				<div class="weui-cell__bd weui-cell_primary">
+					<input name="bt" class="weui-input" type="text"
+						th:value="${draftSwVo.lwdw}" readonly="readonly"
+						style="text-align: right" />
+				</div>
+			</div>
+			<div class="weui-cell">
+				<div class="weui-cell__hd">
+					<label class="weui-label">文号</label>
+				</div>
+				<div class="weui-cell__bd weui-cell_primary">
+					<input name="bt" class="weui-input" type="text"
+						th:value="${draftSwVo.wh}" readonly="readonly"
+						style="text-align: right" />
+				</div>
+			</div>
+			<div class="weui-cell">
+				<div class="weui-cell__hd">
+					<label class="weui-label">日期</label>
+				</div>
+				<div class="weui-cell__bd weui-cell_primary">
+					<input name="bt" class="weui-input" type="text"
+						th:value="${draftSwVo.rq}" readonly="readonly"
+						style="text-align: right" />
+				</div>
+			</div>
+			<div class="weui-cell">
+				<div class="weui-cell__hd">
+					<label class="weui-label">密级</label>
+				</div>
+				<div class="weui-cell__bd weui-cell_primary">
+					<input name="bt" class="weui-input" type="text"
+						th:value="${draftSwVo.wjbt}" readonly="readonly"
+						style="text-align: right" />
+				</div>
+			</div>
+
+		</div>
+
+		
+            
+	  <div class="weui-cells__title">
+            审批流程
+        </div>
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.jyzyRecordList)}'>
+                <ul th:each="lcrz : ${draftSwVo.jyzyRecordList}">
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${lcrz.cljg}+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理意见</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${(lcrz.message==''?'无':lcrz.message)}" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">处理时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${lcrz.clsj}" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                            </div>
+                    	</div>
+                </ul>
+         </th:block>
+         
+         <th:block th:if='${not #lists.isEmpty(draftSwVo.ldRecordList)}'>
+                <ul th:each="lcrz : ${draftSwVo.ldRecordList}">
+                    <div class="weui-cells">
+                         <div class="weui-cell">
+                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${lcrz.cljg}+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                     </div>
+	                     <th:block th:if="${lcrz.cljg=='已阅'}">
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">领导批示</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${(lcrz.message==''?'无':lcrz.message)}" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                     </div>
+	                     <div class="weui-cell">
+	                            <div class="weui-cell__hd"><label for="" class="weui-label">批示时间</label></div>
+	                            <div class="weui-cell__bd weui-cell_primary">
+	                            	<input class="weui-input" type="text" th:value="${lcrz.clsj}" readonly="readonly" style="text-align:right"/>
+	                            </div>
+	                    </div>
+	                    </th:block>
+                   	</div>
+                </ul>
+         </th:block>
+         
+        <th:block th:if='${not #lists.isEmpty(draftSwVo.xgryRecordList)}'>
+                <ul th:each="lcrz : ${draftSwVo.xgryRecordList}">
+                	<th:block th:if="${lcrz.clnrfl=='办理人'}">
+	                	<th:block th:if="${lcrz.cljg=='未处理'}">
+		                    <div class="weui-cells">
+		                         <div class="weui-cell">
+		                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="'未办理'+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+		                   	</div>
+	                   	</th:block>
+	                   	<th:block th:if="${lcrz.cljg=='已阅'}">
+		                    <div class="weui-cells">
+		                         <div class="weui-cell">
+		                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="'已办理'+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+			                     <div class="weui-cell">
+			                            <div class="weui-cell__hd"><label for="" class="weui-label">办理情况</label></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="${(lcrz.message==''?'无':lcrz.message)}" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+			                     <div class="weui-cell">
+			                            <div class="weui-cell__hd"><label for="" class="weui-label">办理时间</label></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="${lcrz.clsj}" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                    </div>
+		                   	</div>
+	                   	</th:block>
+                   	</th:block>
+                   	<th:block th:if="${lcrz.clnrfl=='传阅人'}">
+	                	<th:block th:if="${lcrz.cljg=='未处理'}">
+		                    <div class="weui-cells">
+		                         <div class="weui-cell">
+		                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="'未传阅'+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+		                   	</div>
+	                   	</th:block>
+	                   	<th:block th:if="${lcrz.cljg=='已阅'}">
+		                    <div class="weui-cells">
+		                         <div class="weui-cell">
+		                         		<div class="weui-cell__hd" th:text="${lcrz.lcjd}"></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="'已传阅'+'('+${lcrz.userName}+')'" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+			                     <div class="weui-cell">
+			                            <div class="weui-cell__hd"><label for="" class="weui-label">加注意见</label></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="${(lcrz.message==''?'无':lcrz.message)}" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                     </div>
+			                     <div class="weui-cell">
+			                            <div class="weui-cell__hd"><label for="" class="weui-label">传阅时间</label></div>
+			                            <div class="weui-cell__bd weui-cell_primary">
+			                            	<input class="weui-input" type="text" th:value="${lcrz.clsj}" readonly="readonly" style="text-align:right"/>
+			                            </div>
+			                    </div>
+		                   	</div>
+	                   	</th:block>
+                   	</th:block>
+                </ul>
+         </th:block>
+     
+     <div class="weui-cells__title">
+            审批操作
+        </div>
+     <div class="weui-cells">
+     <div class="weui-cell">
+	      <input id="attachList" type="hidden" th:value="${draftSwVo.attachmentList}" />
+	      <a class='weui-cell weui-cells_access' id="fjck" href='javascript:;'>附件查看</a>
+	  </div>   
+        
+	 <form id="d_approve_form" enctype="multipart/form-data">
+	  
+	   <div id='yj_input' class="weui-cells weui-cells_radio">
+		  <label class="weui-cell weui-check_label" for="x11">
+		      <p>通过</p>
+		      <input type="radio" class="weui-check" name="cljg" id="x11" checked="checked" value="通过"/>
+		      <span class="weui-icon-checked"></span>
+		  </label>
+		  <label class="weui-cell weui-check_label" for="x12">
+		      <p>不通过</p>
+		      <input type="radio" name="cljg" class="weui-check" id="x12" value="不通过"/>
+		      <span class="weui-icon-checked"></span>
+		  </label>
+	  </div>
+	  <div class="weui-cells__title">批示意见</div>
+	  <div class="weui-cell">
+	    <div class="weui-cell__bd weui-cell_primary">
+	      <textarea name="ldps" class="weui-textarea" placeholder="请输入批示意见" rows="3"></textarea>
+	    </div>
+	   </div>
+	  </form>
+	  <input type="hidden" th:value="${draftSwVo.id}" id="data" />
+	</div>
+	</div>
+	<a id="submit" class="weui-btn weui-btn_primary">提交</a>
+			<script th:src="@{/js/weixin/jquery-2.1.4.js}" type="text/javascript"></script>
+			<script th:src="@{/js/weixin/jquery-weui.min.js}" type="text/javascript"></script>
+			<script th:src="@{/js/weixin/draftSw/draftSw_instructions_detail.js}" type="text/javascript"></script>
+			<script th:src="@{/plugins/ajaxfileupload.js}" type="text/javascript"></script>
+			<script th:src="@{/js/base/ajax.tool.js}" type="text/javascript"></script>
+			<script th:src="@{/js/base/jquery.file.upload.js}" type="text/javascript"></script>
+			<script th:src="@{/js/base/file.tool.js}" type="text/javascript"></script>
+			<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+			<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+</body>
+
+
+</html>

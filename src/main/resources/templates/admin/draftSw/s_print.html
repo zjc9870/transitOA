@@ -1,0 +1,101 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/s-print-form.css}" type="text/css"  rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<button id="back" class="button">返回</button>
+<div class="lg-block-title1"  th:text="江宁公共交通集团有限公司+${draftSwVo.sbd}+办公室办文单"></div>
+<form id="d_apply_print_form" enctype="multipart/form-data">
+    <div id="id" th:text="${draftSwVo.id}"  style="display:none;"></div>
+    <div class="file-information">
+    <span class="bwh">江宁公交办文<input name="gwbh" class="form-content" type="text" id="gwbh"/>号</span>
+    <span class="print-content-yfrq-title">印发日期:</span><input name="yfrq" class="form-content date-picker" type="text" id="yfrq" />
+    </div>
+    <div class="print-body">
+        <div class="print-content lwdw">
+            <div class="print-content-left lwdw-left">来文单位</div>
+            <div class="print-content-right lwdw-right" th:text="${draftSwVo.lwdw}"></div>
+        </div>
+        <div class="print-content wh">
+            <div class="print-content-left wh-left">文号</div>
+            <div class="print-content-right wh-right" th:text="${draftSwVo.wh}"></div>
+        </div>
+        <div class="print-content wjbt">
+            <div class="print-content-left wjbt-left">文件标题</div>
+            <div class="print-content-right wjbt-right" th:text="${draftSwVo.wjbt}"></div>
+        </div>
+        <div class="print-content ld">
+            <div class="print-content-left ldps-left">领导批示</div>
+            <div class="print-content-right">
+                <div class="print-content ldps-content gwshr">
+                    <span>公文审核人：</span><span th:text="${ldname}"></span>
+                </div>
+                <div class="print-content ldps-content spyj">
+                    <span>审批意见：</span><span th:text="${Ldps}"></span>
+                </div>
+
+            </div>
+        </div>
+        <div class="print-content cybl">
+            <div class="print-content-left cybl-left">传阅与办理</div>
+            <div class="print-content-right cybl-right" th:utext="${CyAndBl}"></div>
+        </div>
+    </div>
+</form>
+<!--<form id="d_apply_print_form" enctype="multipart/form-data">-->
+    <!--<div id="id" th:text="${draftSwVo.id}"  style="display:none;"></div>-->
+    <!--<div class="print-body">-->
+        <!--<div class="print-content-zbr">-->
+            <!--<div class="print-content-title">收文发起人:</div>-->
+            <!--<div class="print-content-zbr-xx" th:text="${draftSwVo.swr}"></div>-->
+        <!--</div>-->
+        <!--<div class="print-content-bh">-->
+            <!--<div class="print-content-title">编号:</div>-->
+            <!--&lt;!&ndash;<div class="print-content-bh-xx" th:text="${draftSwVo.bh}"></div>&ndash;&gt;-->
+            <!--<div class="print-content-bh-title">江宁公交</div>-->
+            <!--<input name="gwbh" class="form-content" type="text" id="gwbh"/>-->
+            <!--<div class="print-content-bh-title2">号</div>-->
+        <!--</div>-->
+        <!--<div class="print-content-bt">-->
+            <!--<div class="print-content-title">标题:</div>-->
+            <!--<div class="print-content-bt-xx" th:text="${draftSwVo.wjbt}"></div>-->
+        <!--</div>-->
+        <!--<div class="print-content-ztc">-->
+            <!--<div class="print-content-title">来文单位:</div>-->
+            <!--<div class="print-content-ztc-xx" th:text="${draftSwVo.lwdw}"></div>-->
+        <!--</div>-->
+        <!--<div class="print-content-sh">-->
+            <!--<div class="print-content-dszsh">-->
+                <!--<div class="print-content-dszsh-tilte">审批人姓名:</div>-->
+                <!--<div class="print-content-sh-xx" th:text="${ldName}"></div>-->
+            <!--</div>-->
+            <!--<div class="print-content-dszyj">-->
+                <!--<div class="print-content-dszyj-title">意见:</div>-->
+                <!--<div class="print-content-spyj-xx" th:text="${Ldps}"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="notify">-->
+            <!--<div class="print-content-zs">-->
+                <!--<div class="print-content-zs-tilte">传阅与办理：</div>-->
+                <!--<div class="print-content-zs-xx" th:utext="${CyAndBl}"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="print-content-yfrq">-->
+            <!--<span class="print-content-yfrq-title">印发日期:</span>-->
+            <!--<input name="yfrq" class="form-content date-picker" type="text" id="yfrq" />-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</form>-->
+<div class="box-print">
+    <button id="print" class="print-form button"  >打印</button>
+</div>
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/draftSw/s_print.js}" type="text/javascript"></script>
+</body>
+</html>

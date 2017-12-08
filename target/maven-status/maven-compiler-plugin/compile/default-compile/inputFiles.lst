@@ -56,6 +56,7 @@ C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\exce
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\data\dao\LcrzbRepository.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\cp\util\json\WxCpMessageGsonAdapter.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\me\aes\ByteGroup.java
+C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\factory\impl\JtswFactory.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\common\util\RandomUtils.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\interceptor\LogDbInterceptor.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\vo\NotifyObjectVo.java
@@ -92,8 +93,8 @@ C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\data
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\web\ContractController.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\vo\component\BaseVo.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\web\ContractPageController.java
-C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\vo\LcrzbVo.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\common\api\WxMessageInMemoryDuplicateChecker.java
+C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\vo\LcrzbVo.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\data\dataobject\News.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\data\dataobject\LogDbParam.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\cp\bean\WxCpMessage.java
@@ -172,6 +173,7 @@ C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\web\
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\common\util\ToStringUtils.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\plugins\ueditor\Encoder.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\weixin\common\session\Constants.java
+C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\web\weixin\WeixinDraftSwController.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\FunctionService.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\data\dao\LcbRepository.java
 C:\Users\Administrator\Desktop\git\transitOA\src\main\java\com\expect\admin\service\vo\DepartmentVo.java
