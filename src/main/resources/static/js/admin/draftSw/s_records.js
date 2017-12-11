@@ -15,13 +15,16 @@ for(var i=0; i<tabs.length; i++) {
                         str += "<td>"+drafts[i].fqsj+"</td>";
                         str += "<td>"+drafts[i].zt+"</td>";
                         switch(tabId){
-                            case "dcl":
+                            case "wtj":
                                 str += "<td><div onclick='seeSwRecordWtj(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>" +
                                     "<div onclick='submitWtjForm(\""+ drafts[i].id +"\")'>提交</div>" +
                                     "<div onclick='deleteWtjDraft(\""+ drafts[i].id +"\")'>删除</div></td>";
                                 break;
-                            case "ycl":
+                            case "dcl":
                                 str += "<td><div onclick='seeSwRecordE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                break;
+                            case "ycl":
+                                str += "<td><div onclick='seeSwRecordNE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             case "ywc":
                                 str += "<td><div onclick='seeSwRecordNE(\""+ drafts[i].id +'\",\"' + tabId +"\")'>查看</div>"+

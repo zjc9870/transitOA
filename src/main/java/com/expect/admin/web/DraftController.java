@@ -1,11 +1,12 @@
 package com.expect.admin.web;
 
-import java.io.IOException;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.expect.admin.data.dataobject.Role;
+import com.expect.admin.data.dataobject.User;
+import com.expect.admin.service.DraftService;
+import com.expect.admin.service.vo.DraftVO;
+import com.expect.admin.utils.JsonResult;
+import com.expect.admin.utils.ResponseBuilder;
+import com.expect.admin.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.expect.admin.data.dataobject.Role;
-import com.expect.admin.data.dataobject.User;
-import com.expect.admin.service.DraftService;
-import com.expect.admin.service.vo.DraftVO;
-import com.expect.admin.utils.JsonResult;
-import com.expect.admin.utils.ResponseBuilder;
-import com.expect.admin.utils.StringUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/draft")
