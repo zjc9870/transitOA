@@ -63,7 +63,7 @@
 }
 .cybl-right{
     width:350px;
-    overflow: scroll;
+    overflow: auto;
     height: 240px;
 }
 .print-content-right{

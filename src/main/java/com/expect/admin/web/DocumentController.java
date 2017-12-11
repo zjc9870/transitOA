@@ -419,9 +419,9 @@ public class DocumentController {
         documentVo.setFwtzid(fwtzid);
         FwtzVo fwtzVo= fwtzService.getFwtzVo(fwtzid);
 
-        boolean isJyzy = fwtzService.isJyzy(fwtzVo);
+        boolean isJtJyzy = fwtzService.isJtJyzy(fwtzVo);
 
-        if (isJyzy == false){
+        if (isJtJyzy == false){
             modelAndView = new ModelAndView(viewName + "d_gsfw_notify_xq");
         }
 

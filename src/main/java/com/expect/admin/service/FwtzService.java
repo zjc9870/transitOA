@@ -5,6 +5,7 @@ import com.expect.admin.data.dao.FwtzRepository;
 import com.expect.admin.data.dao.UserRepository;
 import com.expect.admin.data.dataobject.*;
 import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.convertor.UserConvertor;
 import com.expect.admin.service.vo.*;
 import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
@@ -642,6 +643,12 @@ public class FwtzService {
             return true;
         }
 
+    }
+
+    public boolean isJtJyzy(FwtzVo fwtzVo){
+        User user = fwtzVo.getTzfqrId();
+        UserVo userVo = UserConvertor.convert(user);
+        return userVo.getDepartmentName().contains("集团部门");
     }
 
     public String getZsNameByFwtzVo(FwtzVo fwtzVo){

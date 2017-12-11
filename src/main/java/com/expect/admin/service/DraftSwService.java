@@ -256,6 +256,17 @@ public class DraftSwService {
     }
 
     /**
+     * 根据流程日志id获取该日志是传阅人还是办理人
+     *
+     * @param id
+     * @return
+     */
+    public String getCyOrBlByLcrzId(String id) {
+        DraftSwUserLcrzbGxb draftSwRecordList = draftSwUserLcrzbGxbRepository.findByLcrz(lcrzbRepository.findOne(id));
+        return draftSwRecordList.getRyfl().equals("cyr") ? "传阅人" : "办理人";
+    }
+
+    /**
      * 获取某类人员的流程日志列表
      * 
      * @param draftSwRecordList
