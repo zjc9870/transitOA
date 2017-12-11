@@ -451,7 +451,7 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		String Ldps = ld.getMessage();
 		modelAndView.addObject("draftSwVo",draftSwVo);
 		modelAndView.addObject("CyAndBl",CyAngBl);
-		modelAndView.addObject("ldName",LdName);
+		modelAndView.addObject("ldname",LdName);
 		modelAndView.addObject("Ldps",Ldps);
 		return modelAndView;
 	}

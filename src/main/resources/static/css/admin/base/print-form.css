@@ -1,7 +1,8 @@
 .print-body{
     width: 60%;
-    height: 600px;
+    height: 634px;
     border: 1px solid green;
+    border-bottom: 0px;
     margin-left: 20%;
     margin-right: 20%;
     margin-top: 20px;
@@ -155,6 +156,8 @@
 .print-content-zs-xx{
     margin-left:50px;
     margin-top: 10px;
+    height:50px;
+    overflow: auto;
 }
 .print-content-cs-tilte{
     margin-top: 5px;
@@ -163,6 +166,8 @@
 .print-content-cs-xx{
     margin-left:50px;
     margin-top: 10px;
+    height:50px;
+    overflow: auto;
 }
 .print-content-cb-tilte{
     margin-top: 5px;
@@ -171,6 +176,8 @@
 .print-content-cb-xx{
     margin-left:50px;
     margin-top: 10px;
+    height:50px;
+    overflow: auto;
 }
 .notify{
     border-bottom: 1px solid green;
