@@ -61,6 +61,8 @@ for(var i=0; i<tabs.length; i++) {
 }
 
 function seeFwNotify(id,tabId,fwtzid) {
+    // 由于后续的需求改动，这里更新的发文通知其实是这个人这条公文所有的发文
+    console.log(fwtzid)
     AjaxTool.html('document/fwtzNE',{id: id, fwtzid:fwtzid},function (html) {
         $('.portlet-body').html(html);
         if(tabId == "yd"){
