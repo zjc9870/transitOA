@@ -11,6 +11,8 @@ import com.expect.admin.utils.DateUtil;
 import com.expect.admin.utils.StringUtil;
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class FwtzService {
     private FwtzRepository fwtzRepository;
     @Autowired
     private DocumentRepository documentRepository;
+
+    private static final Logger _log = LoggerFactory.getLogger(FwtzService.class);
     /**
      * 保存发文通知
      *
@@ -211,6 +215,33 @@ public class FwtzService {
         return documentVos;
     }
 
+    /**
+     * 合并一个人的发文通知，合并的同时其实也将一些需要区分的信息省略了，
+     * fwtz对三种通知类型其实有三个id，现在只有一个id保存了在documentVo.getFwtzid里，如果使用了这个方法，务必注意
+     * gyw
+     * @param documentVos 该发文对象只是某一个人的发文通知
+     * @return
+     */
+    public List<DocumentVo> getFwDocumentVoMerge(List<DocumentVo> documentVos){
+        List<DocumentVo> documentVosR = new ArrayList<>();
+        List<DocumentVo> documentVosBk = new ArrayList<>(documentVos);
+        List<String> ids = new ArrayList<>();
+        for (DocumentVo documentVo:documentVos){
+            if (!ids.contains(documentVo.getId())){
+                ids.add(documentVo.getId());
+                String tzlxM = documentVo.getTzlx();
+                for (DocumentVo documentVoBk:documentVosBk){
+                    if (documentVo.getId() == documentVoBk.getId()&&documentVo.getTzlx()!=documentVoBk.getTzlx()){
+                        tzlxM = tzlxM +','+ documentVoBk.getTzlx();
+                    }
+                }
+                documentVo.setTzlx(tzlxM);
+                documentVosR.add(documentVo);
+            }
+        }
+        return documentVosR;
+    }
+
 
     public DocumentVo getDocumentById(String id){
         Document document = documentRepository.findOne(id);
@@ -233,6 +264,23 @@ public class FwtzService {
         FwtzVo fwtzVo = new FwtzVo(fwtz);
         return fwtzVo;
     }
+
+    /**
+     * 通过发文id和通知对象找到该发文对该对象的所有通知列表
+     * @param fwid
+     * @param tzdx
+     * @return
+     */
+    public List<FwtzVo> getFwtzsByFwidAndTzdx(String fwid, String tzdx) {
+        List<Fwtz> fwtzs = fwtzRepository.findByFwidAndTzdx(fwid,tzdx);
+        List<FwtzVo> fwtzVos = new ArrayList<>();
+        for (Fwtz fwtz : fwtzs){
+            fwtzVos.add(new FwtzVo(fwtz));
+            _log.info("更新的发文已读信息========>>>"+fwtz.getTzdx()+fwtz.getTzlx());
+        }
+        return fwtzVos;
+    }
+
     /**
      * 获取一个公文相关的附件信息
      * @param document

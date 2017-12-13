@@ -1,6 +1,7 @@
 package com.expect.admin.web;
 
 import com.expect.admin.config.Settings;
+import com.expect.admin.data.dataobject.Fwtz;
 import com.expect.admin.data.dataobject.User;
 import com.expect.admin.service.*;
 import com.expect.admin.service.vo.DocumentVo;
@@ -282,14 +283,15 @@ public class DocumentController {
         if (StringUtil.isBlank(lx)) lx = "wd";
         try{
             UserVo userVo = userService.getLoginUser();
-            String fullName = userVo.getFullName();
             String userName= userVo.getUsername();
             String role=userVo.getRoleName();
             List<FwtzVo> fwtzVoList=fwtzService.getFwtzByUserName(userName);
 
             if(StringUtil.equals(lx,"wd")){
                 List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
-                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+                List<DocumentVo> documentVoList1=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+                // 合并了对同一个人的通知类型
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVoMerge(documentVoList1);
                 List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
                         JsonResult.useDefault(true, "获取未读发文通知成功", documentVoListBytzsj).build());
@@ -298,7 +300,8 @@ public class DocumentController {
 
             if(StringUtil.equals(lx,"yd")){
                 List<FwtzVo> ydFwtzVoList = fwtzService.getYdFwtzList(fwtzVoList);
-                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
+                List<DocumentVo> documentVoList1=fwtzService.getFwDocumentVo(ydFwtzVoList,role);
+                List<DocumentVo> documentVoList=fwtzService.getFwDocumentVoMerge(documentVoList1);
                 List<DocumentVo> documentVoListByydsj = fwtzService.sortDocumentListByYdsj(documentVoList);
                 MyResponseBuilder.writeJsonResponse(response,
                         JsonResult.useDefault(true, "获取已读发文通知成功", documentVoListByydsj).build());
@@ -574,7 +577,8 @@ public class DocumentController {
         String role = userVo.getRoleName();
         List<FwtzVo> fwtzVoList=fwtzService.getFwtzByUserName(userName);
         List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
-        List<DocumentVo> documentVoList=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+        List<DocumentVo> documentVoList1=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+        List<DocumentVo> documentVoList=fwtzService.getFwDocumentVoMerge(documentVoList1);
         List<DocumentVo> documentVoListBytzsj = fwtzService.sortDocumentListByTzsj(documentVoList);
         modelAndView.addObject("documentVoListBytzsj",documentVoListBytzsj);
         return modelAndView;
@@ -590,11 +594,14 @@ public class DocumentController {
     public void updateFwtz(@RequestParam(name="fwtzid", required=true) String fwtzid,
                            HttpServletResponse response) throws IOException{
         FwtzVo fwtzVo = fwtzService.getFwtzVoById(fwtzid);
+        List<FwtzVo> fwtzVos = fwtzService.getFwtzsByFwidAndTzdx(fwtzVo.getFwid(),fwtzVo.getTzdx());
         if(fwtzVo == null){
             MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "未找到该发文通知").build());
             return;
         }
-        fwtzService.updateFwtz(fwtzVo);
+        for (FwtzVo fwtzVo1: fwtzVos) {
+            fwtzService.updateFwtz(fwtzVo1);
+        }
         MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "发文已读成功").build());
 
 

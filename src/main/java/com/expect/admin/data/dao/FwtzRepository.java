@@ -23,5 +23,7 @@ public interface FwtzRepository extends JpaRepository<Fwtz, String> {
 
     public List<Fwtz> findByFwid(String paramString);
 
+    public List<Fwtz> findByFwidAndTzdx(String fwid, String tzdx);
+
     public List<Fwtz> findByFwidAndTzdxAndTzlxAndTzdxfl(String paramString1, String paramString2, String paramString3, String paramString4);
 }
