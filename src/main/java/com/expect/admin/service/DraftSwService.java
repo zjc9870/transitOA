@@ -770,7 +770,7 @@ public class DraftSwService {
 				break;
 			}
 			List<DraftSwVo> subDraftSwVoList = getDraftSwVoList(returnym,tab,id);
-			if(StringUtil.equals(tab, "ycl")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "ybl")){
+			if(StringUtil.equals(tab, "ycl")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "yps")||StringUtil.equals(tab, "ybl")){
 				for(DraftSwVo vo : subDraftSwVoList){
 					boolean cf = false;
 					vo.setTab(tab);
@@ -783,7 +783,12 @@ public class DraftSwService {
 						draftSwVoList.add(vo);						
 					}
 				}
-			}
+			}else{
+                for(DraftSwVo vo : subDraftSwVoList){
+                    vo.setTab(tab);
+                    draftSwVoList.add(vo);
+                }
+            }
 		}
 		//进行时间排序显示最近的
 		return draftSwVoList;

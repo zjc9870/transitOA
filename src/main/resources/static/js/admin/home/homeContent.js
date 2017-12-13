@@ -291,7 +291,7 @@ function getAndDisplaySwCyByfl(url,fl){
 	if(roleName.indexOf("收文负责人") !=-1){
 		ym+="dsz";
 	}
-	if(roleName.indexOf("机要专员") !=-1){
+	if(roleName.indexOf("收文机要专员") !=-1){
 		ym+="jyzy";
 	}
 	AjaxTool.post(url, {
