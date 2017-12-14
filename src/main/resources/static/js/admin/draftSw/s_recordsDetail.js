@@ -28,12 +28,18 @@
                 });
                 var ids = tree.get_bottom_checked();
                 var names = [];
+                var comfirmMsg = "未添加任何人员";
                 for(var i=0;i<ids.length;i++){
-                	names.push(ids[i].split(",")[1]);
+                    var name = ids[i].split(",")[1];
+                    if(typeof(name)!="undefined"){
+                        names.push(name);
+                    }
                 }
-                var comfirmMsg = "将添加以下人员:";
-                for(var j=0;j<names.length;j++){
-                	comfirmMsg=comfirmMsg+"\n"+names[j];
+                if(names.length>0) {
+                    comfirmMsg = "将添加以下人员:";
+                    for (var j = 0; j < names.length; j++) {
+                        comfirmMsg = comfirmMsg + "\n" + names[j];
+                    }
                 }
                 var Comfirm = window.confirm(comfirmMsg);
                 if(Comfirm){
