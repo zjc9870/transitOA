@@ -75,8 +75,12 @@ $(document).ready(function () {
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
+            zgs: {
+                maxlength: 10,
+                required : true
+            },
             bt: {
-                maxlength: 50
+                maxlength: 20
             },
             ztc: {
                 maxlength: 300
@@ -92,8 +96,12 @@ $(document).ready(function () {
             }
         },
         messages: {
+            zgs: {
+                maxlength: "不超过10个字",
+                required: "不能为空"
+            },
             bt: {
-                maxlength: "标题超过50个字"
+                maxlength: "标题超过20个字"
             },
             ztc: {
                 maxlength: "内容超过300个字"
