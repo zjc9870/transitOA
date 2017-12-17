@@ -1,4 +1,6 @@
-target/
+/target/
+
+src/.svn/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -45,3 +47,10 @@ src/main/resources/application.yml
 *.yml
 
 *.svn
+*.mine
+*.class
+*.class
+*.class
+*.properties
+*.lst
+*.original

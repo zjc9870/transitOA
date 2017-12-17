@@ -297,10 +297,8 @@ public class DraftSwService {
 
     /**
      * 处理没有完成操作的流程显示
-     * 
-     * @param today
-     * @param draftSwUserLcrzbGxb
-     * @param lcrz
+     *
+     * @param user
      * @return
      */
     private Lcrzb processUnfinishedLcrz(User user) {
@@ -584,7 +582,7 @@ public class DraftSwService {
      * 只有所有的传阅人或办理人都处理完了才改变收文的装态到机要专员处理 否则就不该变收文的状态
      * 
      * @param swId
-     * @param cyyj
+     * @param clyj
      * @param userId
      * @param ryfl
      */
@@ -645,7 +643,7 @@ public class DraftSwService {
      * 
      * @param userIdList
      *            传阅人的idList(不会为空)
-     * @param swVo
+     * @param draftSwId
      *            相应收文id（不会为空）
      */
     @Transactional
@@ -720,6 +718,13 @@ public class DraftSwService {
         throw new BaseAppException("没有相关角色");
     }
 
+
+    /**
+     * 根据人员分类获取相关角色的首页快捷栏内容
+     *
+     * @param ym,id
+     * @return
+     */
 	public List<DraftSwVo> getHomePageContent(String ym, String id) {
 		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
 		String sfcl = "dcl";
@@ -790,7 +795,7 @@ public class DraftSwService {
                 }
             }
 		}
-		//进行时间排序显示最近的
+		//进行时间排序显示最近
 		return draftSwVoList;
 		
 	}
