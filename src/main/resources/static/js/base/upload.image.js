@@ -38,7 +38,8 @@
             limitMultiFileUploads:undefined
         };
         var options = $.extend({}, defaults, options);
-        var imageFormat='.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$';
+        // var imageFormat='.+(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png)$';
+        var imageFormat='.+(.JPEG|.jpeg|.JPG|.jpg|.PNG|.png)$';
         var videoFormat='.+(.swf|.flv|.mp4)$';
         var textFormat='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
         var wordFormat='.+(.doc|.docx|.DOC|.DOCX)$';
