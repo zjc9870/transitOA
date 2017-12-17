@@ -85,7 +85,7 @@ $(document).ready(function () {
                 maxlength: 10
             },
             mj:  {
-                required : true
+                required : true,
             // },
             // sffb: {
             //     required : true
@@ -106,6 +106,14 @@ $(document).ready(function () {
             // },
             // sffb: {
             //     required: "请选择是否发布网站"
+            }
+        },
+        errorPlacement: function(error, element) { //错误信息位置设置方法
+            if (element.is(':radio') || element.is(':checkbox')) { //如果是radio或checkbox
+                var eid = element.attr('name'); //获取元素的name属性
+                error.appendTo(element.parent().parent()); //将错误信息添加当前元素的父结点后面
+            } else {
+                error.insertAfter(element);
             }
         }
     });
