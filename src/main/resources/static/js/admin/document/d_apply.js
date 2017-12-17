@@ -120,6 +120,8 @@ $(document).ready(function () {
             if (element.is(':radio') || element.is(':checkbox')) { //如果是radio或checkbox
                 var eid = element.attr('name'); //获取元素的name属性
                 error.appendTo(element.parent().parent()); //将错误信息添加当前元素的父结点后面
+            } else if(element.attr('name')=='zgs'){
+                error.appendTo(element.parent())
             } else {
                 error.insertAfter(element);
             }
