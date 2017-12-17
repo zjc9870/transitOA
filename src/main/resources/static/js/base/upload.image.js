@@ -282,9 +282,13 @@
         }
 
         this.destory=function(){
-            $(options.templateSelector+" .files-exist-template tbody").html("");
-            $(options.templateSelector+" .progress-bar").css("width","0%");
+            // $(options.templateSelector+" .files-exist-template tbody").html("");
+            // $(options.templateSelector+" .progress-bar").css("width","0%");
+            // $(options.templateSelector+" .file-name-all").text("");
+            console.log("清除了内容")
             $(options.templateSelector+" .file-name-all").text("");
+            $(options.templateSelector+" .files-exist-template tbody").html("");
+            $(options.templateSelector+" .file-select-template .progress-bar").css('width', '0%');
             ids=new Array(0);
         }
 
@@ -294,9 +298,12 @@
     $.fn.FileUpload = function (options) {
         var selector=$(this).selector;
         var fileUpload=instances[selector];
+        console.log("打印了fileUpload："+fileUpload)
         if(fileUpload){
             return fileUpload;
         }
+        console.log("开始新建实例")
+        console.log(this)
         fileUpload  = new FileUpload(this, options);
         instances[selector]=fileUpload;
         fileUpload.init();

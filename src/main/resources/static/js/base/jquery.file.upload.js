@@ -125,7 +125,7 @@
     				$element.find(".files-exist-template tbody tr:last").find(".fileinput-abort").click(function(){
     					jqXHR.abort();
     				});
-    				
+
     				setAllFileName();
     			});
     		}).on("fileuploadsubmit", function(e, data) {//文件提交
@@ -282,9 +282,12 @@
         }
         
         this.destory=function(){
-        	$(options.templateSelector+" .files-exist-template tbody").html("");
-        	$(options.templateSelector+" .progress-bar").css("width","0%");
-        	$(options.templateSelector+" .file-name-all").text("");
+        	// $(options.templateSelector+" .files-exist-template tbody").html("");
+        	// $(options.templateSelector+" .progress-bar").css("width","0%");
+        	// $(options.templateSelector+" .file-name-all").text("");
+            $(options.templateSelector+" .file-name-all").text("");
+            $(options.templateSelector+" .files-exist-template tbody").html("");
+            $(options.templateSelector+" .file-select-template .progress-bar").css('width', '0%');
         	ids=new Array(0);
         }
         
@@ -294,9 +297,12 @@
     $.fn.FileUpload = function (options) {
     	var selector=$(this).selector;
     	var fileUpload=instances[selector];
+    	console.log("打印了fileUpload："+fileUpload)
     	if(fileUpload){
     		return fileUpload;
     	}
+    	console.log("开始新建实例")
+		console.log(this)
     	fileUpload  = new FileUpload(this, options);
     	instances[selector]=fileUpload;
     	fileUpload.init();
@@ -304,7 +310,10 @@
     };
     
     $.fn.FileUploadDestory = function(){
+    	console.log("将要执行了Destory，清除了实例")
     	var selector=$(this).selector;
+        console.log("打印selector:"+selector)
+        console.log("打印instances[selector]:"+instances[selector])
     	delete instances[selector];
     }
 

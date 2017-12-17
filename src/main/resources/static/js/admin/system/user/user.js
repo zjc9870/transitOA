@@ -194,8 +194,8 @@ var User = {
 	fjsc:function () {
 		$("body").on("click","#uploadFile",function () {
 			console.info("test");
-			DatatableTool.modalShow("#upload-modal", "#fileUploadForm1");
-			var uploader = $("#fileUploadForm1").FileUpload({
+			DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
+			var uploader = $("#fileUploadForm").FileUpload({
 				url: "user/uploadIndividualAttachment",
 				isMultiFile: true,
 			});
