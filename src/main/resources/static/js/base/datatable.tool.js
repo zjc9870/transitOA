@@ -296,7 +296,9 @@ var DatatableTool = function() {
 		
 		//如果是file上传，需要清空已经上传信息
 		$(formId).FileUpload().destory();
-        $(formId).FileUploadDestory();
+		if(formId == '#fileUploadForm1') {
+            $(formId).FileUploadDestory();
+        }
 	}
 
 	function resetRadio(formId) {
