@@ -28,7 +28,7 @@
             	}
 				return array;
 			},
-            fileType : "word",
+            fileType : "wordAndImg",
             maxFileSizes:21*1024*1024,
             templateSelector:".files-template-wrapper",
             isMultiFile : false,
@@ -39,6 +39,7 @@
         var videoFormat='.+(.swf|.flv|.mp4)$';
         var textFormat='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
         var wordFormat='.+(.doc|.docx|.DOC|.DOCX)$';
+        var wordAndImgFormat='.+(.doc|.docx|.DOC|.DOCX|.JPEG|.jpeg|.JPG|.jpg|.PNG|.png)$';
         
         var trHtml='<tr id="${fileId}"><td class="file-name">${fileName}</td>'
         			+'<td class="file-progress"><span class="size">${fileSize}KB</span><div class="progress"><div class="progress-bar progress-bar-success"></div></div><span class="upload-result"></span></td>'
@@ -198,20 +199,22 @@
     		if(!fileType){
     			return true;
     		}
-//    		var regExp;
-//    		if(fileType=='image'){
-//    			regExp=imageFormat;
-//    		}else if(fileType=='video'){
-//    			regExp=videoFormat;
-//    		}else if(fileType=='text'){
-//    			regExp=textFormat;
-//    		}else if(fileType=='word'){
-//    			regExp=wordFormat;
-//    		}
-//    		var reg = new RegExp(regExp);
-//    		if (!reg.test(fileName)) {
-//    			return false;
-//    		}
+   		var regExp;
+   		if(fileType=='image'){
+   			regExp=imageFormat;
+   		}else if(fileType=='video'){
+   			regExp=videoFormat;
+   		}else if(fileType=='text'){
+   			regExp=textFormat;
+   		}else if(fileType=='word'){
+   			regExp=wordFormat;
+   		}else if(fileType=='wordAndImg'){
+   			regExp=wordAndImgFormat;
+   		}
+   		var reg = new RegExp(regExp);
+   		if (!reg.test(fileName)) {
+   			return false;
+   		}
     		return true;
     	}
   	
