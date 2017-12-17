@@ -73,6 +73,9 @@ $(document).ready(function () {
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
+            sbd:{
+                maxlength: 10
+            },
             htbt: {
                 maxlength: 50
             },
@@ -87,6 +90,9 @@ $(document).ready(function () {
             // }
         },
         messages: {
+            sbd: {
+                maxlength: "不超过10个字"
+            },
             htbt: {
                 maxlength: "标题超过50个字"
             },
@@ -99,6 +105,13 @@ $(document).ready(function () {
             // qx: {
             //     dateISO: "日期格式不正确"
             // }
+        },
+        errorPlacement: function(error, element) { //错误信息位置设置方法
+            if(element.attr('name')=='sbd'){
+                error.appendTo(element.parent())
+            } else {
+                error.insertAfter(element);
+            }
         }
     });
 });
