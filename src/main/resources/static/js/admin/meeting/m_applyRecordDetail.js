@@ -1,4 +1,3 @@
-
 $('#btnSave').click(function(){
     //获取模态框数据
     var hydd = $("#hydd option:selected").text();
@@ -10,7 +9,7 @@ $('#btnSave').click(function(){
         alert("请填写完整信息！");
         return false;
     }else{
-        $.ajax({type:'post',url:'meeting/checkTime',data:"hydd="+hydd+"&hys="+hys+"&hyrq="+hyrq+"&kssj="+kssj+"&jssj="+jssj+"&meetingId=null",dataType:'json',
+        $.ajax({type:'post',url:'meeting/checkTime',data:"hydd="+hydd+"&hys="+hys+"&hyrq="+hyrq+"&kssj="+kssj+"&jssj="+jssj+"&meetingId="+$("#id").val(),dataType:'json',
             success:function(data){
                 isRight = data;
                 if(isRight == true){
@@ -50,15 +49,40 @@ function keypress() //textarea输入长度处理
 function loadMeetingRoom(){
     $.ajax({type:'get', url:'meeting/selectHydd', dataType:'json',
         success:function(data){
-            if($("#hydd").val() == null) {
-                hydds = data.content;
-                $("#hydd").empty();
-                op = "<option value=\"\" selected=\"true\" disabled=\"true\">请选择</option>";
-                $("#hydd").append(op);
-                for (i = 0; i < hydds.length; i++) {
-                    option = "<option value='" + hydds[i] + "'>" + hydds[i] + "</option>";
-                    $("#hydd").append(option);
+            hydds=data.content;
+            // op = "<option value=\"\" disabled=\"true\">请选择</option>";
+            // $("#hydd").append(op);
+            var CompareHydd = $("#hydd").val()
+            $("#hydd").empty();
+            for (i = 0; i < hydds.length;i++){
+                if(hydds[i] == CompareHydd){
+                    option="<option value='"+hydds[i]+"' selected=\"true\">"+hydds[i]+"</option>";
+                }else{
+                    option="<option value='"+hydds[i]+"'>"+hydds[i]+"</option>";
                 }
+                $("#hydd").append(option);
+            }
+        },
+        error:function(){
+            alert("failed.");
+        }
+    });
+    var hydd = $("#hydd").val();
+    $.ajax({type:'get', url:'meeting/selectHys',data:"hydd=" + hydd, dataType:'json',
+        success:function(data){
+
+            hys=data.content;
+            var CompareHys = $("#hys").val();
+            $("#hys").empty();
+            // op = "<option value=\"\" selected=\"true\" disabled=\"true\">请选择</option>";
+            // $("#hys").append(op);
+            for (i = 0; i < hys.length;i++){
+                if(hys[i] == CompareHys){
+                    option="<option value='"+hys[i]+"' selected=\"true\">"+hys[i]+"</option>";
+                }else{
+                    option="<option value='"+hys[i]+"'>"+hys[i]+"</option>";
+                }
+                $("#hys").append(option);
             }
         },
         error:function(){
@@ -80,13 +104,13 @@ $("#hydd").change(
                 for (i = 0; i < hys.length;i++){
                     option="<option value='"+hys[i]+"'>"+hys[i]+"</option>";
                     $("#hys").append(option);
+
                 }
             },
             error:function(){
                 alert("failed.");
             }
         });
-
     }
 )
 
@@ -250,10 +274,36 @@ function searchSyqk(){
     }
 }
 
+(function () {
+    function createDelete() {
+        var span = document.createElement('span');
+        span.innerHTML = 'x';
+        span.setAttribute('style','margin-left:10px;color:red;font-weight:bold;cursor:pointer');
+        span.setAttribute('class','delete');
+        return span;
+    }
+    function deletefj() {
+        var deletes = document.getElementsByClassName('delete');
+        for(var i=0;i<deletes.length;i++) {
+            deletes[i].onclick = function () {
+                ids.splice(ids.indexOf(this.id),1);
+                this.parentNode.setAttribute('style','display:none;');
+            }
+        }
+    }
 
 
-$(document).ready(function () {
+
     var ids = [];
+    var s1 = createDelete();
+    var fjlbLi = $('#fjlb li');
+    fjlbLi.append(s1);
+    for (var i=0;i<fjlbLi.length;i++) {
+        ids.push(fjlbLi[i].id);
+    }
+    deletefj();
+
+
     $('#uploadFile').click(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
         var uploader = $("#fileUploadForm").FileUpload({
@@ -263,57 +313,97 @@ $(document).ready(function () {
         uploader.done(function(data) {
             ids.push(data.result.id);
             var li = document.createElement('li');
-            var span = document.createElement('span');
-            span.innerHTML = 'x';
-            span.setAttribute('style','margin-left:10px;color:red;font-weight:bold;cursor:pointer');
-            span.setAttribute('class','delete');
-            span.setAttribute('id',data.result.id);
+            var s2 = createDelete();
+            s2.setAttribute('id',data.result.id);
             li.innerHTML = data.result.name;
-            li.appendChild(span);
+            li.appendChild(s2);
             $('#fjlb').append(li);
-
-            var deletes = document.getElementsByClassName('delete');
-            for(var i=0;i<deletes.length;i++) {
-                deletes[i].onclick = function () {
-                    ids.splice(ids.indexOf(this.id),1);
-                    this.parentNode.setAttribute('style','display:none;');
-                }
-            }
+            deletefj();
         });
     });
 
 
-
-    var buttons = document.getElementById('saveCon').getElementsByTagName('button');
-    for(var i=0; i<buttons.length;i++) {
-        buttons[i].onclick= function() {
-            var formContents = document.getElementsByClassName('form-content');
-            for(var i=1; i<formContents.length; i++ ) {
-                if(/^\s*$/.test(formContents[i].value)) {
-                    alert('请填写完整信息!');
-                    return false;
-                }
-            }
-            if(validator.form()) {
-                AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
-                        alert(data.message);
-                        if(data.success) toSqjl();
-
+    //附件查看
+    var n = 1;
+    $('#fjck').click(
+        function () {
+            var attachList = JSON.parse($('#attachList').val());
+            var meetingId = $('#meetingId').val();
+            if(attachList.length == 0) {
+                alert('无附件');
+            } else {
+                if(n%2==1) {
+                    for (var i = 0; i < attachList.length; i++) {
+                        var li = document.createElement('li');
+                        var div = document.createElement('div');
+                        div.innerHTML = attachList[i].name;
+                        div.setAttribute('style', 'cursor:pointer;');
+                        div.setAttribute('class', 'attachment');
+                        li.appendChild(div);
+                        li.setAttribute('class', 'attList')
+                        this.parentNode.appendChild(li);
+                        div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
+                        div.onclick = function () {
+                            window.location = "meeting/meetingAttachmentDownload?attachmentId=" + this.id+"&meetingId="+meetingId;
+                            // window.location = "attachment/download?id=" + this.id;
+                        }
                     }
-                )
+                }
+                else {
+                    $('.attList').hide();
+                }
+                n += 1;
             }
-        };
+        }
+    );
+
+
+
+
+    //判断两个引用该js的文件，如果是可编辑页面调用该方法
+    if(document.getElementById("hynr")){
+        keypress();
     }
 
-    function toSqjl() {
-        AjaxTool.getHtml('meeting/sqjl',function (html) {
-            $('.page-content').html(html);
-        });
-    }
+
+
+    //提交
+    $('#tj').click(function() {
+        var formContents = document.getElementsByClassName('form-content');
+        for(var i=0; i<formContents.length; i++ ) {
+            if(/^\s*$/.test(formContents[i].value)) {
+                alert('请填写完整信息!');
+                return false;
+            }
+        }
+        console.log( $('#m_apply_form').serialize());
+        AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                alert(data.message);
+                if(data.success) toSqjl();
+            }
+        )
+    });
+
+    //保存
+    $('#bc').click(function() {
+        var formContents = document.getElementsByClassName('form-content');
+        for(var i=0; i<formContents.length; i++ ) {
+            if(/^\s*$/.test(formContents[i].value)) {
+                alert('请填写完整信息!');
+                return false;
+            }
+        }
+        console.log( $('#m_apply_form').serialize());
+        AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                alert(data.message);
+                if(data.success) toSqjl();
+            }
+        )
+    });
 
     var date = new Date();
     $('#hyrq').datetimepicker({
-        //   startDate: date,
+        //    startDate: date,
         format:'yyyy/mm/dd',
         language: 'zh-CN',
         weekStart: 1,
@@ -370,56 +460,20 @@ $(document).ready(function () {
         }
     });
 
+    function toSqjl() {
+        AjaxTool.getHtml('meeting/sqjl',function (html) {
+            $('.page-content').html(html);
+        });
+    }
 
-    var validator = $('#m_apply_form').validate({
-        errorElement: 'span', //default input error message container
-        errorClass: 'error-tips', // default input error message class
-        rules: {
-            bt: {
-                maxlength: 50
-            },
-            nr: {
-                maxlength: 300
-            },
-            sqbgs: {
-                maxlength: 50
-            },
-            sj:  {
-                date: true
-            },
-            rs: {
-                digits:true
-            },
-            rymd: {
-                required:true
-            }
-        },
-        messages: {
-            hyzt: {
-                maxlength: "主题不超过50个字"
-            },
-            hynr: {
-                maxlength: "内容不超过300个字"
-            },
-            hydd: {
-                maxlength: "申请地点不超过30个字"
-            },
-            hysj:  {
-                dateISO: "请输入有效的日期"
-            },
-            chry: {
-                required: "请输入人员名单"
-            },
-            djrxm: {
-                maxlength:"姓名不超过10个字"
-            },
-            lxfs: {
-                required: "请输入有效联系方式"
-            },
-            hygg: {
-                maxlength:"其他规格不超过300字"
-            }
-        }
+    $('#back').click(function () {
+        var tabId = ($('#back').data('tabId'));
+        AjaxTool.getHtml('meeting/sqjl',function (html) {
+            $('.page-content').html(html);
+            $('#'+tabId).trigger('click');
+        });
     });
-});
+
+})();
+
 

@@ -12,14 +12,14 @@ spring:
 #    password: jnptpassword
 
 #    本地
-#    url: jdbc:mysql://127.0.0.1/test2?characterEncoding=utf-8
-#    username: root
-#    password: root
+    url: jdbc:mysql://127.0.0.1/test2?characterEncoding=utf-8
+    username: root
+    password: 123456
 
 #    部署测试库
-    url: jdbc:mysql://127.0.0.1/test?characterEncoding=utf-8
-    username: root
-    password: jnptpassword
+#    url: jdbc:mysql://127.0.0.1/test?characterEncoding=utf-8
+#    username: root
+#    password: jnptpassword
   jpa:
     show-sql: true
     hibernate:

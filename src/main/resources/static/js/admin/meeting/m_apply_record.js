@@ -8,37 +8,36 @@ for(var i=0; i<tabs.length; i++) {
                 lx: this.id, bz: 'sq'},function (data) {
                 if(data.success) {
                     var str = "";
-                    var m = data.content;
-                    for(var i=0;i<m.length;i++) {
-                        str += "<tr>";
-                        str += "<td>"+m[i].bt+"</td>";
-                        str += "<td>"+m[i].sj+"</td>";
+                    var mees = data.content;
+                    for(var i=0;i<mees.length;i++) {
+                        str += "<tr id='"+mees[i].id+"'>";
+                        str += "<td>"+mees[i].hyzt+"</td>";
+                        str += "<td>"+mees[i].sqsj+"</td>";
                         switch(tabId){
                             case "wtj":
                                 str += "<td>未提交</td>";
-                                str += "<td><div onclick='seeApplyRecordE(\""+ m[i].id +'\",\"' + tabId +"\")'>查看</div>" +
-                                    "<div onclick='submitWtjForm(\""+ m[i].id +"\")'>提交</div>" +
-                                    "<div onclick='deleteWtjCon(\""+ m[i].id +"\")'>删除</div></td>";
+                                str += "<td><div onclick='seeApplyRecordE(\""+ mees[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                    "<div onclick='submitWtjForm(\""+ mees[i].id +"\")'>提交</div>" +
+                                    "<div onclick='deleteWtjCon(\""+ mees[i].id +"\")'>删除</div></td>";
                                 break;
                             case "dsp":
                                 str += "<td>待审批</td>";
-                                str += "<td><div onclick='seeApplyRecordNE(\""+ m[i].id +'\",\"' + tabId +"\")' >查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ mees[i].id +'\",\"' + tabId +"\")'>查看</div>" +
+                                    "<div onclick='revoke(\""+ mees[i].id +"\")'>撤回</div></td>";
                                 break;
                             case "ysp":
-                                str += "<td><div>"+m[i].hyshzt+"</div></td>";
-                                if(m[i].hyshzt=="通过"){
-                                    str += "<td><div onclick='seeApplyRecordNE(\""+ m[i].id +'\",\"' + tabId +"\")' >查看</div></td>";
-                                    break;
+                                var hyshzt = mees[i].hyshzt;
+                                if(hyshzt == '通过'){
+                                    str += "<td><div style='color:green'>"+hyshzt+"</div></td>";
                                 }
-                                if(m[i].hyshzt=="打回"){
-                                    str += "<td><div onclick='seeApplyRecordE(\""+ m[i].id +'\",\"' + tabId +"\")'>查看</div>" +
-                                        "<div onclick='submitWtjForm(\""+ m[i].id +"\")'>提交</div></td>";
-                                    break;
+                                else if(hyshzt == '终止') {
+                                    str += "<td><div style='color: red'>"+hyshzt+"</div></td>";
                                 }
-
-                            case "yth":
-                                str += "<td>已退回</td>";
-                                str += "<td><div onclick='seeApplyRecordE(\""+ m[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ mees[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
+                                break;
+                            case "ych":
+                                str += "<td>已撤回</td>";
+                                str += "<td><div onclick='seeApplyRecordNE(\""+ mees[i].id +'\",\"' + tabId +"\")'>查看</div></td>";
                                 break;
                             default:
                                 break;
@@ -65,7 +64,7 @@ for(var i=0; i<tabs.length; i++) {
 function seeApplyRecordE(id,tabId) {
     AjaxTool.html('meeting/sqjlxqE',{id: id},function (html) {
         $('.portlet-body').html(html);
-        if(tabId == "yth") {
+        if(tabId == "ych") {
             $('#splc').attr('style','display:block');
         }
         $('#back').data('tabId',tabId);
@@ -94,6 +93,26 @@ function deleteWtjCon(id) {
         id:id},function (data) {
         alert(data.message);
         window.location.reload();
+    })
+}
+
+function revoke(id) {
+    var s = "<form id='revoke-form'><select id='select' class='form-control'>" +
+        "<option value='申请人发现有误'>提交人发现有误</option>" +
+        "<option value='其他'>其他</option></select>" +
+        "<input type='text' name='reason' placeholder='选择其他时理由自填' class='form-control' style='margin:20px 0'/></form>";
+    SweetAlert.swalContent("确认撤回",s,function () {
+        var reason = $('#select').val();
+        if(reason === '其他') {
+            reason = $('#revoke-form input[name="reason"]').val();
+        }
+        AjaxTool.post('meeting/revocationMeeting',{
+            id:id,revocationReason:reason},function (data) {
+            var table = $('#m-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
+        })
     })
 }
 
