@@ -76,8 +76,7 @@ $(document).ready(function () {
         errorClass: 'error-tips', // default input error message class
         rules: {
             zgs: {
-                maxlength: 10,
-                required : true
+                maxlength: 10
             },
             bt: {
                 maxlength: 20
@@ -97,8 +96,7 @@ $(document).ready(function () {
         },
         messages: {
             zgs: {
-                maxlength: "不超过10个字",
-                required: "不能为空"
+                maxlength: "不超过10个字"
             },
             bt: {
                 maxlength: "标题超过20个字"
