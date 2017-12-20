@@ -1,66 +1,72 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8"/>
-    <title>会议申请</title>
-    <meta http-equiv="x-ua-compatible" content="IE=edge" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
     <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
-
 </head>
 <body>
-<div class="lg-block" >
+<div class="lg-block">
+    <button id="back" class="button">返回</button>
+    <div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${meetingVo.sqd}+会议申请单"></div>
     <div class="lg-block-content">
         <form id="m_apply_form" enctype="multipart/form-data">
-            <div class="lg-block-title1">江宁公共交通集团有限公司<input name="sqd" class="form-content" type="text" />会议申请表</div>
+            <input name = "sqd" th:value = "${meetingVo.sqd}" style = "display:none" />
             <ul>
                 <li>
                     <div class="form-title">会议主题：</div>
-                    <input name="hyzt" class="form-content" type="text" style="width:375px" />
+                    <input name="hyzt" class="form-content" type="text" style="width:375px" th:value="${meetingVo.hyzt}"/>
                 </li>
                 <li>
                     <div class="form-title">会议内容：</div>
-                    <textarea id="hynr" name="hynr" class="form-content text-content" style="overflow-x:hidden;overflow-y:hidden" onKeyUp="keypress()" onblur="keypress()"> </textarea>
+                    <textarea id="hynr" name="hynr" class="form-content text-content" style="overflow-x:hidden;overflow-y:hidden" th:text="${meetingVo.hynr}" onKeyUp="keypress()" onblur="keypress()"> </textarea>
                     <font color="gray"> <label id="pinglun" style="padding-left: 350px">(你还可以输入300个字)</label> </font>
                 </li>
                 <li>
                     <div class="form-title">
                         会议时间、地点：
                     </div>
-                    <input id="ddsj" name="ddsj" type="text" style="width:300px" value="" readonly="readonly"/>
+                    <input id="ddsj" name="ddsj" class="form-content" type="text" style="width:300px" th:value="${meetingVo.hydd}+${meetingVo.hys}+' '+${meetingVo.hyrq}+' '+${meetingVo.kssj}+'-'+${meetingVo.jssj}"/>
                     <button id="xzsjdd" class="button" data-toggle="modal" data-target="#myModal" onclick="loadMeetingRoom()">选择</button>
-
                 </li>
                 <li>
                     <div class="form-title">参会人员：</div>
-                    <textarea name="chry" class="form-content text-content"></textarea>
+                    <textarea name="chry" class="form-content text-content" th:text="${meetingVo.chry}" />
                 </li>
                 <li>
                     <div class="form-title">会议对接人姓名：</div>
-                    <input name="djrxm" class="form-content" />
+                    <input name="djrxm" class="form-content" th:value="${meetingVo.djrxm}"/>
                 </li>
                 <li>
                     <div class="form-title">联系方式：</div>
-                    <input name="lxfs" class="form-content" />
+                    <input name="lxfs" class="form-content" th:value="${meetingVo.lxfs}"/>
                 </li>
                 <li>
-                    <div class="form-title">会议规格：</div>
-                    <lable><input name="hygg" type="checkbox" value="1"/>瓷杯茶水</lable>
-                    <lable><input name="hygg" type="checkbox" value="2"/>纸杯茶水</lable>
-                    <lable><input name="hygg" type="checkbox" value="3"/>水果</lable>
-                    <lable><input name="hygg" type="checkbox" value="4"/>席卡</lable>
+                    <div id="hygg" style="padding-top:10px" class="form-title">会议规格：</div>
+                    <lable><input name="hygg" type="checkbox" value="1" th:checked="${meetingVo.hygg=='1'}"/>瓷杯茶水</lable>
+                    <lable><input name="hygg" type="checkbox" value="2" th:checked="${meetingVo.hygg=='2'}"/>纸杯茶水</lable>
+                    <lable><input name="hygg" type="checkbox" value="3" th:checked="${meetingVo.hygg=='3'}"/>水果</lable>
+                    <lable><input name="hygg" type="checkbox" value="4" th:checked="${meetingVo.hygg=='4'}"/>席卡</lable>
                 </li>
                 <li>
                     <div class="form-title">其他：</div>
-                    <textarea name="qt" class="form-content text-content" />
+                    <textarea name="qt" class="form-content text-content" style="width:315px;height:60px" th:text="${meetingVo.qt}"></textarea>
                 </li>
             </ul>
-        </form>
+            <input type="hidden" id="id" name="id" th:value="${meetingVo.id}" />
 
+        </form>
         <button id="uploadFile" style="margin-left:23%" class="button-active">上传附件</button>
-        <ul id="fjlb"></ul>
+        <th:block th:if='${not #lists.isEmpty(meetingVo.attachmentList)}'>
+            <ul id="fjlb"  th:each="attach : ${meetingVo.attachmentList}">
+                <th:block>
+                    <li th:id="${attach.id}" th:text="${attach.name}"></li>
+                </th:block>
+            </ul>
+        </th:block>
+
         <div id="upload-modal" class="modal modal-fixed-footer">
             <div class="modal-header">
                 <h4 class="modal-title">上传附件</h4>
@@ -84,9 +90,9 @@
             </div>
         </div>
         <ul>
-            <li id="saveCon" class="right">
+            <li class="right" id="saveCon" >
                 <button id="bc" class="button hover">保存</button>
-                <button id="tj" class="button hover">提交</button>
+                <button id="tj" class="button">提交</button>
             </li>
         </ul>
     </div>
@@ -103,17 +109,23 @@
             <form id="form_data">
                 <div class="modal-body">
                     <div style="display:inline;margin-right:30px">地点：
-                        <select id="hydd" name="hydd" style="width:20%" class="form-content drop-down changeStyle">
+                        <select id="hydd" name="hydd" style="width:20%" class="form-content drop-down changeStyle" >
+                            <!--<option th:value="${meetingVo.hydd}" selected="selected">-->
+                            <!--<input id="hydd1" th:value="${meetingVo.hydd}" type="hidden"/>-->
+                            <!--</option>-->
+                            <option th:text="${meetingVo.hydd}" th:value="${meetingVo.hydd}" selected="selected"></option>
                         </select>
+
                     </div>
                     <div style="display:inline;margin-left:30px">会议室：
                         <select id="hys" name="hys" style="width:30%" class="form-content drop-down changeStyle">
-                            <option value="" selected="true" disabled="true">请选择</option>
+                            <option th:text="${meetingVo.hys}" th:value="${meetingVo.hys}" selected="selected"></option>
                         </select>
+                        <!--<input id="hys1" th:value="${meetingVo.hys}" type="hidden"/>-->
                     </div>
                     <div style="margin-top:5px">
                         <div style="display:inline">选择日期：
-                            <input id='hyrq' name="hyrq" type="text"  class="form-content date-picker changeStyle" readonly="readonly"/>
+                            <input id='hyrq' name="hyrq" type="text"  class="form-content date-picker changeStyle" th:value="${meetingVo.hyrq}" readonly="readonly"/>
                         </div>
 
                         <div class="ck" style="display:inline">
@@ -126,8 +138,8 @@
 
                     <div>
                         会议时间：
-                        <input id="kssj" name="kssj" class="form-content time changeStyle" type="text" value="" style="margin-top: 10px; width: 100px" readonly="readonly"/> -
-                        <input id="jssj" name="jssj" class="form-content time changeStyle" type="text" value="" style="margin-top: 10px; width: 100px" readonly="readonly"/>
+                        <input id="kssj" name="kssj" class="form-content time" type="text" th:value="${meetingVo.kssj}" style="margin-top: 10px; width: 100px" readonly="readonly"/> -
+                        <input id="jssj" name="jssj" class="form-content time" type="text" th:value="${meetingVo.jssj}" style="margin-top: 10px; width: 100px" readonly="readonly"/>
                         <span id="error" style="color: red;display: none">（时间段不对）</span>
                     </div>
 
@@ -136,7 +148,7 @@
                     <button type="button"  class="btn btn-primary"  data-dismiss="modal" id="btnClose">
                         关闭
                     </button>
-                    <button type="button" class="btn btn-primary"  id="btnSave">
+                    <button type="button" class="btn btn-primary" id="btnSave">
                         保存
                     </button>
                 </div>
@@ -145,21 +157,14 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
-<!--<script th:src="@{/plugins/jquery.min.js}" type="text/javascript"></script>-->
-<script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
-<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/components/components-date-time-pickers.min.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/meeting/m_applyRecordDetail.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
 <script src="http://code.highcharts.com/highcharts.js" type = "text/javascript"></script>
 <script type = "text/javascript">
     if (!$.fn.highcharts) {
         src="http://code.highcharts.com/highcharts.js";
     }
 </script>
-<script th:src="@{/js/admin/meeting/m_apply.js}" type="text/javascript"></script>
-<script th:src="@{/plugins/ajaxfileupload.js}" type="text/javascript"></script>
-<script th:src="@{/js/base/file.tool.js}" type="text/javascript"></script>
-<script th:src="@{/js/base/jquery.file.upload.js}" type="text/javascript"></script>
-
-
 </body>
 </html>

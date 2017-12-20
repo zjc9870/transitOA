@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <link th:href="@{/css/admin/base/form.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/css/admin/base/table.css}" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div class="block">
+    <div class="lg-block">
+        <button id="back" class="button">返回</button>
+        <div class="lg-block-title1" th:text="江宁公共交通集团有限公司+${meetingVo.sqd}+会议申请单"></div>
+        <div class="lg-block-content">
+            <th:block>
+                <ul>
+                    <li>
+                        <div class="form-title">会议主题：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.hyzt}"/>
+                    </li>
+                    <li>
+                        <div class="form-title">会议内容：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.hynr}" />
+                    </li>
+                    <li>
+                        <div class="form-title">会议时间、地点：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.hydd}+${meetingVo.hys}+' '+${meetingVo.hyrq}+' '+${meetingVo.kssj}+'-'+${meetingVo.jssj}"/>
+                    </li>
+                    <li>
+                        <div class="form-title">参会人员：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.chry}" />
+                    </li>
+                    <li>
+                        <div class="form-title">会议对接人姓名：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.djrxm}"/>
+                    </li>
+                    <li>
+                        <div class="form-title">联系方式：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.lxfs}"/>
+                    </li>
+                    <li>
+                        <div id="hygg" style="padding-top:10px" class="form-title">会议规格：</div>
+                        <lable><input name="hygg" type="checkbox" value="1" th:checked="${meetingVo.hygg=='1'}" disabled="disabled"/>瓷杯茶水</lable>
+                        <lable><input name="hygg" type="checkbox" value="2" th:checked="${meetingVo.hygg=='2'}" disabled="disabled"/>纸杯茶水</lable>
+                        <lable><input name="hygg" type="checkbox" value="3" th:checked="${meetingVo.hygg=='3'}" disabled="disabled"/>水果</lable>
+                        <lable><input name="hygg" type="checkbox" value="4" th:checked="${meetingVo.hygg=='4'}" disabled="disabled"/>席卡</lable>
+                    </li>
+                    <li>
+                        <div class="form-title">其他：</div>
+                        <pre class="pre-form-content" th:text="${meetingVo.qt}" />
+                    </li>
+                    <input id="attachList" type="hidden" th:value="${meetingVo.attachmentList}" />
+                    <input id="meetingId" type="hidden" th:value="${meetingVo.id}"/>
+                    <li><button id="fjck" class="button-active" style="margin-left: 0px">附件查看</button></li>
+                </ul>
+            </th:block>
+        </div>
+    </div>
+
+    <div class="lg-block2" id="tzxq">
+        <div class="lg-block-title2">
+            <span class="lg-block-subtitle1">会议通知详情</span>
+            <span class="lg-block-subtitle2">Notification Details</span>
+        </div>
+        <div class="process">
+            <th:block th:if="${not #lists.isEmpty(hytzVo)}">
+                <li>
+                    <ul>
+                        <li>
+                            <div class="form-title">集团高管:</div>
+                            <pre class="pre-form-content" th:text="${hytzVo.jtgg}">无</pre>
+                        </li>
+                        <li>
+                            <div class="form-title">集团部门:</div>
+                            <pre class="pre-form-content" th:text="${hytzVo.jtbm}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">公司办公室:</div>
+                            <pre class="pre-form-content" th:text="${hytzVo.gsbgs}"></pre>
+                        </li>
+                        <li>
+                            <div class="form-title">外部单位:</div>
+                            <pre class="pre-form-content" th:text="${hytzVo.wbdw}"></pre>
+                        </li>
+                    </ul>
+                </li>
+            </th:block>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/admin/meeting/m_approveDetail.js}" type="text/javascript"></script>
+<script th:src="@{/js/admin/base/process_issues.js}" type="text/javascript"></script>
+</body>
+</html>

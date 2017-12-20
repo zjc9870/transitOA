@@ -86,4 +86,9 @@
     margin-left:10px;
     display: inline;
 }
-
+#m-hy-notify-tbody tr td:last-child div{
+    color:blue;
+    cursor: pointer;
+    margin-left:10px;
+    display: inline;
+}
