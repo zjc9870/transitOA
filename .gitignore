@@ -29,6 +29,7 @@ nbdist/
 
 .mvn/wrapper/maven-wrapper.properties
 
+target/
 
 src/main/resources/application.yml
 
