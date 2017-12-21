@@ -28,7 +28,7 @@
             	}
 				return array;
 			},
-            fileType : "word",
+            fileType : "wordAndImg",
             maxFileSizes:21*1024*1024,
             templateSelector:".files-template-wrapper",
             isMultiFile : false,
@@ -39,6 +39,7 @@
         var videoFormat='.+(.swf|.flv|.mp4)$';
         var textFormat='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
         var wordFormat='.+(.doc|.docx|.DOC|.DOCX)$';
+        var wordAndImgFormat='.+(.doc|.docx|.DOC|.DOCX|.JPEG|.jpeg|.JPG|.jpg|.PNG|.png)$';
         
         var trHtml='<tr id="${fileId}"><td class="file-name">${fileName}</td>'
         			+'<td class="file-progress"><span class="size">${fileSize}KB</span><div class="progress"><div class="progress-bar progress-bar-success"></div></div><span class="upload-result"></span></td>'
@@ -124,7 +125,7 @@
     				$element.find(".files-exist-template tbody tr:last").find(".fileinput-abort").click(function(){
     					jqXHR.abort();
     				});
-    				
+
     				setAllFileName();
     			});
     		}).on("fileuploadsubmit", function(e, data) {//文件提交
@@ -198,20 +199,22 @@
     		if(!fileType){
     			return true;
     		}
-//    		var regExp;
-//    		if(fileType=='image'){
-//    			regExp=imageFormat;
-//    		}else if(fileType=='video'){
-//    			regExp=videoFormat;
-//    		}else if(fileType=='text'){
-//    			regExp=textFormat;
-//    		}else if(fileType=='word'){
-//    			regExp=wordFormat;
-//    		}
-//    		var reg = new RegExp(regExp);
-//    		if (!reg.test(fileName)) {
-//    			return false;
-//    		}
+   		var regExp;
+   		if(fileType=='image'){
+   			regExp=imageFormat;
+   		}else if(fileType=='video'){
+   			regExp=videoFormat;
+   		}else if(fileType=='text'){
+   			regExp=textFormat;
+   		}else if(fileType=='word'){
+   			regExp=wordFormat;
+   		}else if(fileType=='wordAndImg'){
+   			regExp=wordAndImgFormat;
+   		}
+   		var reg = new RegExp(regExp);
+   		if (!reg.test(fileName)) {
+   			return false;
+   		}
     		return true;
     	}
   	
@@ -279,9 +282,12 @@
         }
         
         this.destory=function(){
-        	$(options.templateSelector+" .files-exist-template tbody").html("");
-        	$(options.templateSelector+" .progress-bar").css("width","0%");
-        	$(options.templateSelector+" .file-name-all").text("");
+        	// $(options.templateSelector+" .files-exist-template tbody").html("");
+        	// $(options.templateSelector+" .progress-bar").css("width","0%");
+        	// $(options.templateSelector+" .file-name-all").text("");
+            $(options.templateSelector+" .file-name-all").text("");
+            $(options.templateSelector+" .files-exist-template tbody").html("");
+            $(options.templateSelector+" .file-select-template .progress-bar").css('width', '0%');
         	ids=new Array(0);
         }
         
@@ -291,9 +297,12 @@
     $.fn.FileUpload = function (options) {
     	var selector=$(this).selector;
     	var fileUpload=instances[selector];
+    	console.log("打印了fileUpload："+fileUpload)
     	if(fileUpload){
     		return fileUpload;
     	}
+    	console.log("开始新建实例")
+		console.log(this)
     	fileUpload  = new FileUpload(this, options);
     	instances[selector]=fileUpload;
     	fileUpload.init();
@@ -301,7 +310,10 @@
     };
     
     $.fn.FileUploadDestory = function(){
+    	console.log("将要执行了Destory，清除了实例")
     	var selector=$(this).selector;
+        console.log("打印selector:"+selector)
+        console.log("打印instances[selector]:"+instances[selector])
     	delete instances[selector];
     }
 

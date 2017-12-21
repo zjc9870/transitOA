@@ -16,6 +16,13 @@ $(document).on('click', '#htdb, #htyb', function() {
 	setTheClickButtonSelect($(this).parent());
 	getAndDisplayHtsjByFl(url, fl, bz);
 });
+$(document).on('click', '#wdtz, #ydtz', function(){
+    var fl = $(this).data("fl");
+    var url = 'meeting/hytzTab';
+    setTheClickButtonSelect($(this).parent());
+    getAndDisplayHytzByFl(url, fl);
+});
+
 $(document).on('click','#fwdb,#fwyb',function(){
 	var roleName=$('#userRolesName').val();
 	var fl=$(this).data("fl");
@@ -144,6 +151,13 @@ $(document).on('click','.fwtzbt',function () {
 	});
 });
 
+$(document).on('click','.hytz', function(){
+    var id = $(this).data('id');
+    var hytzId = $(this).data('hytzid');
+    var tabId = $(this).data('fl');
+    seeHyNotify(id, hytzId, tabId);
+});
+
 $(function() {
     $("#dcl").trigger("click");//触发button的click事件
 });
@@ -177,6 +191,17 @@ function seeConApprove(id,tabId) {
 				break;
 		}
 	});
+}
+
+function seeHyNotify(id,hytzId,tabId) {
+    AjaxTool.html('meeting/hytzNE',{id: id, hytzid:hytzId},function (html) {
+        $('#portlet-box').addClass('portlet box');
+        $('.portlet-body').html(html);
+        if(tabId == "yd"){
+            $('#yd').attr('style','display:none');
+        }
+        $('#back').data('tabId',tabId);
+    });
 }
 
 // 点击之后把点击的按钮变绿色
@@ -228,6 +253,22 @@ function getAndDisplayHtsjByFl(url, fl, bzStr) {
 			$('#rightLc').html(rightUlStr);
 		}
 	})
+}
+
+function getAndDisplayHytzByFl(url, fl) {
+    AjaxTool.get(url, {
+        lx : fl
+    },function (data) {
+        if (data.success){
+            var leftUlStr = "<ul class='home-content-block'>";
+            var cons = data.content;
+            for (var i = 0; (i < cons.length && i < 7); i++){
+                leftUlStr += "<li class = 'hytz' data-id='"+cons[i].id+"' data-hytzid = '"+cons[i].hytzid+"' data-fl = '"+fl+"'><span>" + cons[i].hyzt +"</span><br /><span>" + cons[i].hyrq +" "+ cons[i].kssj +"</span></li>";
+            }
+            leftUlStr += "</ul>";
+            $('#hyTab').html(leftUlStr);
+        }
+    })
 }
 
 function getAndDisplayFwsjByFl(url,fl,bzStr){
@@ -394,6 +435,7 @@ jQuery(document).ready(function() {
 	$('#htdb').trigger('click');
 	// $('#fwdb').trigger('click');
 	$('#dcy').trigger('click');
+    $('#wdtz').trigger('click');
 
 	var userid = $('input[name = "userId"]').val();
 	$(".memo").Memo({

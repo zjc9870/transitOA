@@ -117,6 +117,3 @@ function init() {//dataTable初始化
 jQuery(document).ready(function() {
     init();
 });
-
-// $('#wtj').click();
-$('#dcl').click();

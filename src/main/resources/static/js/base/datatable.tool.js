@@ -253,12 +253,13 @@ var DatatableTool = function() {
 
 	var modalShow = function(modalId, formId) {
 		$(modalId).modal('show');
+        formStatus(formId, true);
 		modalClose(modalId, formId);
 	}
 
 	var modalClose = function(modalId, formId) {
 		$(modalId).on('hide.bs.modal', function(e) {
-			resetForm(formId);
+			resetForm(modalId,formId);
 			formStatus(formId, false);
 		});
 	}
@@ -282,7 +283,7 @@ var DatatableTool = function() {
 		}
 	}
 
-	var resetForm = function(formId) {
+	var resetForm = function(modalId,formId) {
 		if (formId == null) {
 			return;
 		}
@@ -295,8 +296,13 @@ var DatatableTool = function() {
 		resetCheckbox(formId);
 		
 		//如果是file上传，需要清空已经上传信息
-		$(formId).FileUpload().destory();
-        $(formId).FileUploadDestory();
+        $(formId).FileUpload().destory();
+        // 在用户管理界面修改时
+		// userform这层外层modal关闭时，需要销毁内层上传modal，否则再修改人员信息会出现问题
+		// 如果不做区分每次都销毁上传modal，在别的上传界面会出现新建的上传modal无法再次上传，真是见鬼了，还好我不是学前端的
+		if(modalId=='#user-modal'){
+            $('#fileUploadForm').FileUploadDestory();
+        }
 	}
 
 	function resetRadio(formId) {

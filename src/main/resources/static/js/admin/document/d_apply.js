@@ -75,8 +75,11 @@ $(document).ready(function () {
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
+            zgs: {
+                maxlength: 10
+            },
             bt: {
-                maxlength: 50
+                maxlength: 20
             },
             ztc: {
                 maxlength: 300
@@ -85,15 +88,18 @@ $(document).ready(function () {
                 maxlength: 10
             },
             mj:  {
-                required : true
+                required : true,
             // },
             // sffb: {
             //     required : true
             }
         },
         messages: {
+            zgs: {
+                maxlength: "不超过10个字"
+            },
             bt: {
-                maxlength: "标题超过50个字"
+                maxlength: "标题超过20个字"
             },
             ztc: {
                 maxlength: "内容超过300个字"
@@ -106,6 +112,16 @@ $(document).ready(function () {
             // },
             // sffb: {
             //     required: "请选择是否发布网站"
+            }
+        },
+        errorPlacement: function(error, element) { //错误信息位置设置方法
+            if (element.is(':radio') || element.is(':checkbox')) { //如果是radio或checkbox
+                var eid = element.attr('name'); //获取元素的name属性
+                error.appendTo(element.parent().parent()); //将错误信息添加当前元素的父结点后面
+            } else if(element.attr('name')=='zgs'){
+                error.appendTo(element.parent())
+            } else {
+                error.insertAfter(element);
             }
         }
     });

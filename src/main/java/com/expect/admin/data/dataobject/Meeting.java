@@ -1,6 +1,8 @@
 package com.expect.admin.data.dataobject;
 
 import com.expect.admin.service.vo.MeetingVo;
+import com.expect.admin.utils.DateUtil;
+import com.expect.admin.utils.StringUtil;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -8,34 +10,57 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by qifeng on 17/5/17.
- */
+
 @Entity
-@Table(name = "m_meeting_info")
+@Table(name="m_meeting_info")
 public class Meeting {
     private String id;
-    private String bt;
-    private String nr;
-    private String sqbgs;
-    private Date hysj;
-    private String rs;
-    private String rymd;
-    private String gg;
+    private String hyzt; //会议主题
+    private String hynr; //会议内容
+    private String hydd; //会议地点（集团 东山公交）
+    private String hys; //会议室
+    private String hyrq; //会议日期
+    private String kssj; //会议开始时间
+    private String jssj; //会议结束时间
+    private String chry; //参会人员
+    private String djrxm; //对接人姓名
+    private String lxfs; //联系方式
+    private String hygg; //会议规格
+    private String qt; //其他
     private Set<Attachment> attachments;//附件
-    private User nhyr;
-    private String hyshzt;
+    private Date sqsj; //申请时间
+    private String hyshzt; //会议审核状态
     private Set<Lcrzb> lcrzSet = new HashSet<>();//流程日志
+    private User nhyr; //拟会议人
+    private String hyfl; //会议分类（集团会议 东山公交会议 其他公司会议）
+    private String sqd; //申请单名称
 
-    public Meeting(){}
 
-    public Meeting(MeetingVo meetingVo){
-        this.bt=meetingVo.getBt();
-        this.nr=meetingVo.getNr();
-        this.sqbgs=meetingVo.getSqbgs();
-        this.rs=meetingVo.getRs();
-        this.rymd=meetingVo.getRymd();
-        this.gg=meetingVo.getGg();
+    public Meeting() {}
+
+    public Meeting(MeetingVo meetingVo)
+    {
+        this.id=meetingVo.getId();
+        this.hyzt=meetingVo.getHyzt();
+        this.hynr=meetingVo.getHynr();
+        this.hydd=meetingVo.getHydd();
+        this.hys=meetingVo.getHys();
+        this.hyrq=meetingVo.getHyrq();
+        this.kssj=meetingVo.getKssj();
+        this.jssj=meetingVo.getJssj();
+        this.chry=meetingVo.getChry();
+        this.djrxm=meetingVo.getDjrxm();
+        this.lxfs=meetingVo.getLxfs();
+        this.hygg=meetingVo.getHygg();
+        this.qt=meetingVo.getQt();
+        if(StringUtil.isBlank(meetingVo.getSqsj())){
+            this.sqsj = new Date();
+        } else {
+            this.sqsj = DateUtil.parse(meetingVo.getSqsj(), DateUtil.fullFormat);
+        }
+        this.hyshzt=meetingVo.getHyshzt();
+        this.hyfl=meetingVo.getHyfl();
+        this.sqd = meetingVo.getSqd();
     }
 
     @Id
@@ -50,67 +75,113 @@ public class Meeting {
         this.id = id;
     }
 
-    @Column(name = "bt", length = 50)
-    public String getBt() {
-        return bt;
+    @Column(name = "hyzt", length = 50)
+    public String getHyzt() {
+        return hyzt;
     }
 
-    public void setBt(String bt) {
-        this.bt = bt;
+    public void setHyzt(String hyzt) {
+        this.hyzt = hyzt;
     }
 
-    @Column(name = "nr", length = 300)
-    public String getNr() {
-        return nr;
+    @Column(name = "hynr",length = 300)
+    public String getHynr() {
+        return hynr;
     }
 
-    public void setNr(String nr) {
-        this.nr = nr;
+    public void setHynr(String hynr) {
+        this.hynr = hynr;
     }
 
-    @Column(name = "sqbgs", length = 20)
-    public String getSqbgs() {
-        return sqbgs;
+    @Column(name = "hydd", length = 50)
+    public String getHydd() {
+        return hydd;
     }
 
-    public void setSqbgs(String sqbgs) {
-        this.sqbgs = sqbgs;
+    public void setHydd(String hydd) {
+        this.hydd = hydd;
     }
 
-    @Column(name = "hysj")
-    public Date getHysj() {
-        return hysj;
+    @Column(name = "hys", length = 50)
+    public String getHys() {
+        return hys;
     }
 
-    public void setHysj(Date hysj) {
-        this.hysj = hysj;
+    public void setHys(String hys) {
+        this.hys = hys;
     }
 
-    @Column(name = "rs", length = 10)
-    public String getRs() {
-        return rs;
+    @Column(name = "hyrq")
+    public String getHyrq() {
+        return hyrq;
     }
 
-    public void setRs(String rs) {
-        this.rs = rs;
+    public void setHyrq(String hyrq) {
+        this.hyrq = hyrq;
     }
 
-    @Column(name = "rymd", length = 100)
-    public String getRymd() {
-        return rymd;
+    @Column(name = "kssj")
+    public String getKssj() {
+        return kssj;
     }
 
-    public void setRymd(String rymd) {
-        this.rymd = rymd;
+    public void setKssj(String kssj) {
+        this.kssj = kssj;
     }
 
-    @Column(name = "gg", length = 10)
-    public String getGg() {
-        return gg;
+    @Column(name = "jssj")
+    public String getJssj() {
+        return jssj;
     }
 
-    public void setGg(String gg) {
-        this.gg = gg;
+    public void setJssj(String jssj) {
+        this.jssj = jssj;
+    }
+
+    @Column(name = "chry",length=200)
+    public String getChry() {
+        return chry;
+    }
+
+    public void setChry(String chry) {
+        this.chry = chry;
+    }
+
+    @Column(name ="djrxm",length=10)
+    public String getDjrxm() {
+        return djrxm;
+    }
+
+    public void setDjrxm(String djrxm) {
+        this.djrxm = djrxm;
+    }
+
+    @Column(name = "lxfs",length=20)
+    public String getLxfs() {
+        return lxfs;
+    }
+
+    public void setLxfs(String lxfs) {
+        this.lxfs = lxfs;
+    }
+
+
+    @Column(name = "hygg",length=50)
+    public String getHygg() {
+        return hygg;
+    }
+
+    public void setHygg(String hygg) {
+        this.hygg = hygg;
+    }
+
+    @Column(name = "qt",length = 200)
+    public String getQt() {
+        return qt;
+    }
+
+    public void setQt(String qt) {
+        this.qt = qt;
     }
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -124,16 +195,6 @@ public class Meeting {
         this.attachments = attachments;
     }
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "nhyr_id")
-    public User getNhyr() {
-        return nhyr;
-    }
-
-    public void setNhyr(User nhyr) {
-        this.nhyr = nhyr;
-    }
-
     @Column(name = "hyshzt", length=5)
     public String getHyshzt() {
         return hyshzt;
@@ -142,7 +203,6 @@ public class Meeting {
     public void setHyshzt(String hyshzt) {
         this.hyshzt = hyshzt;
     }
-
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "m_meeting_lcrzb", joinColumns = @JoinColumn(name = "meeting_id"),
@@ -154,4 +214,42 @@ public class Meeting {
     public void setLcrzSet(Set<Lcrzb> lcrzSet) {
         this.lcrzSet = lcrzSet;
     }
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "nhyr_id")
+    public User getNhyr() {
+        return nhyr;
+    }
+
+    public void setNhyr(User nhyr) {
+        this.nhyr = nhyr;
+    }
+
+    @Column(name = "hyfl",length = 20)
+    public String getHyfl() {
+        return hyfl;
+    }
+
+    public void setHyfl(String hyfl) {
+        this.hyfl = hyfl;
+    }
+
+    @Column(name = "sqd",length = 50)
+    public String getSqd() {
+        return sqd;
+    }
+
+    public void setSqd(String sqd) {
+        this.sqd = sqd;
+    }
+
+    @Column(name = "sqsj")
+    public Date getSqsj() {
+        return sqsj;
+    }
+
+    public void setSqsj(Date sqsj) {
+        this.sqsj = sqsj;
+    }
+
 }

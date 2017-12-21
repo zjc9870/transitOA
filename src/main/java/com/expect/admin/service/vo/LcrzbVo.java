@@ -20,6 +20,11 @@ public class LcrzbVo {
 	public LcrzbVo(){
 		
 	}
+
+
+	public LcrzbVo(String cljg){
+		this.cljg = cljg;
+	}
 	
 	public LcrzbVo(String cljg, String message){
 		this.message = message;
