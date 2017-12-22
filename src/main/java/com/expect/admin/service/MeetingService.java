@@ -177,7 +177,7 @@ public class MeetingService {
         List<Meeting> meetingList = null;
         if(StringUtil.isBlank(condition)) return new ArrayList<>();
         if(userVo.getRoleName().indexOf("会议室管理员") != -1){
-            if(StringUtil.equals(userVo.getDepartmentName(),"集团部门")){
+            if(userVo.getDepartmentName().indexOf("集团") != -1){
                 meetingList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc(condition,"1");
             }else if(userVo.getDepartmentName().indexOf("东山公交") != -1){
                 meetingList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc(condition,"2");
@@ -311,7 +311,7 @@ public class MeetingService {
         List<Meeting> ytzList = null;
         String userId = userVo.getId();
         if(userVo.getRoleName().indexOf("会议室管理员") != -1){
-            if(StringUtil.equals(userVo.getDepartmentName(),"集团部门")){
+            if(userVo.getDepartmentName().indexOf("集团") != -1){
                 wtgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("N", "1");
                 ytgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("3", "1");
                 ytzList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("T", "1");
