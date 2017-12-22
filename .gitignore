@@ -1,6 +1,4 @@
-/target/
-
-src/.svn/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -29,6 +27,7 @@ nbdist/
 
 .mvn/wrapper/maven-wrapper.properties
 
+target/
 
 src/main/resources/application.yml
 
@@ -47,10 +46,3 @@ src/main/resources/application.yml
 *.yml
 
 *.svn
-*.mine
-*.class
-*.class
-*.class
-*.properties
-*.lst
-*.original

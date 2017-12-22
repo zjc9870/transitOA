@@ -5,7 +5,8 @@
     <link th:href="@{/css/admin/base/table.css}" rel="stylesheet"  type="text/css"/>
 </head>
 <body>
-
+<!--/*@thymesVar id="defaultTabId" type="String"*/-->
+<input type="hidden" th:value="${defaultTabId}"/>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet box">
@@ -27,19 +28,17 @@
                     </tr>
                     </thead>
                     <tbody id="c-approve-tbody" class="mt-td-checkbox">
-                    <!--<th:block th:if='${not #lists.isEmpty(contractVoList)}'>-->
-                        <!--<tr th:each='con : ${contractVoList}'>-->
-                            <!--<th:block >-->
-                                <!--<input type="hidden" th:value="${con.id}" />-->
-                                <!--<td th:text='${con.htbt}'></td>-->
-                                <!--<td><div th:text='${con.date}'></div><div th:text='${con.time}'></div></td>-->
-                                <!--<td>待提交</td>-->
-                                <!--<td><div onclick="seeApplyRecordE($(this.parentNode.parentNode.childNodes[1]).val())">查看</div>-->
-                                    <!--<div onclick="submitWtjForm($(this.parentNode.parentNode.childNodes[1]).val())">提交</div>-->
-                                    <!--<div onclick="deleteWtjCon($(this.parentNode.parentNode.childNodes[1]).val())">删除</div></td>-->
-                            <!--</th:block>-->
-                        <!--</tr>-->
-                    <!--</th:block>-->
+                    <th:block th:if='${not #lists.isEmpty(draftSwVoList)}'>
+                        <tr th:each='con : ${draftSwVoList}'>
+                            <th:block >
+                                <input type="hidden" th:value="${con.id}" />
+                                <td th:text='${con.wjbt}'></td>
+                                <td><div th:text='${con.fqsj}'></div></td>
+                                <td>待处理</td>
+                                <td><div onclick="seeSwRecordE($(this.parentNode.parentNode.childNodes[1]).val())">查看</div></td>
+                            </th:block>
+                        </tr>
+                    </th:block>
                     </tbody>
                 </table>
             </div>

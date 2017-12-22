@@ -135,12 +135,15 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
     }
 	
 	/**
-	 * 收文记录 直接返回页面 不做数据请求（暂定）
+	 * 收文记录 直接返回页面
 	 * @return
 	 */
 	@RequestMapping(value = "/swRecord", method = RequestMethod.GET)
 	public ModelAndView swRecord() {
 		ModelAndView mv = new ModelAndView(viewName + "s_records");
+		UserVo userVo = userService.getLoginUser();
+		List<DraftSwVo> draftSwList = draftSwService.getDraftSwVoList("swjl","dcl", userVo.getId());
+		mv.addObject("draftSwVoList",draftSwList);
 		return mv;
 	}
 	/**
