@@ -42,6 +42,28 @@ public class NotifyObjectService {
         return notifyObjectVos;
     }
 
+    public List<NotifyObjectVo> getRelatedNotifyObject(){
+        List<NotifyObjectVo> notifyObjectVos = new ArrayList<>();
+        UserVo userVo = userService.getLoginUser();
+        List<NotifyObject> notifyObjectList = new ArrayList<>();
+        if(userVo.getDepartmentName().contains("集团部门")){
+            notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("集团高管"));
+            notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("集团部门"));
+        }else if(userVo.getDepartmentName().contains("东山公交")){
+            notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("东山公交高管"));
+            notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("东山公交部门"));
+        }
+        notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("公司办公室"));
+        if (notifyObjectList !=null){
+            for (NotifyObject notifyObject:notifyObjectList){
+                NotifyObjectVo notifyObjectVo=new NotifyObjectVo(notifyObject);
+                notifyObjectVo.setUserName(notifyObject.getUser().getUsername());
+                notifyObjectVos.add(notifyObjectVo);
+            }
+        }
+        return notifyObjectVos;
+    }
+
     public List<NotifyObjectVo> getAllNotifyObject(){
         List<NotifyObjectVo> notifyObjectVos=new ArrayList<>();
         UserVo userVo = userService.getLoginUser();

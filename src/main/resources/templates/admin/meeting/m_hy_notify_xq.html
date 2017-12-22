@@ -40,38 +40,44 @@
                 <pre class="pre-form-content" th:text="${meetingVo.lxfs}"/>
             </li>
             <li>
-                <div id="hygg" style="padding-top:10px" class="form-title">会议规格：</div>
-                <lable><input name="hygg" type="checkbox" value="1" th:checked="${meetingVo.hygg=='1'}" disabled="disabled"/>瓷杯茶水</lable>
-                <lable><input name="hygg" type="checkbox" value="2" th:checked="${meetingVo.hygg=='2'}" disabled="disabled"/>纸杯茶水</lable>
-                <lable><input name="hygg" type="checkbox" value="3" th:checked="${meetingVo.hygg=='3'}" disabled="disabled"/>水果</lable>
-                <lable><input name="hygg" type="checkbox" value="4" th:checked="${meetingVo.hygg=='4'}" disabled="disabled"/>席卡</lable>
+                <div class="form-title" >会议规格：</div>
+                <input id="hygg" type="hidden" th:value="${meetingVo.hygg}"/>
+                <lable><input name="hygg" type="checkbox" value="1" disabled="disabled"/>瓷杯茶水</lable>
+                <lable><input name="hygg" type="checkbox" value="2" disabled="disabled"/>纸杯茶水</lable>
+                <lable><input name="hygg" type="checkbox" value="3" disabled="disabled"/>水果</lable>
+                <lable><input name="hygg" type="checkbox" value="4" disabled="disabled"/>席卡</lable>
             </li>
             <li>
                 <div class="form-title">其他：</div>
                 <pre class="pre-form-content" th:text="${meetingVo.qt}" />
             </li>
             <input id="attachList" type="hidden" th:value="${hytzVo.attachmentList}" />
+            <input id="meetingId" type="hidden" th:value="${meetingVo.id}" />
             <li><button id="tzfjck" class="button-active" style="margin-left: 0px">通知附件查看</button></li>
             <div class="lg-block-title2">会议通知详情</div>
+            <li class="jt">
+                <div class="form-title">集团高管:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.jtgg}">无</pre>
+            </li>
+            <li class="jt">
+                <div class="form-title">集团部门:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.jtbm}"></pre>
+            </li>
+            <li class="dsgj">
+                <div class="form-title">东山公交高管:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.dsgjgg}">无</pre>
+            </li>
+            <li class="dsgj">
+                <div class="form-title">东山公交部门:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.dsgjbm}"></pre>
+            </li>
             <li>
-                <ul>
-                    <li>
-                        <div class="form-title">集团高管:</div>
-                        <pre class="pre-form-content" th:text="${hytzVo.jtgg}">无</pre>
-                    </li>
-                    <li>
-                        <div class="form-title">集团部门:</div>
-                        <pre class="pre-form-content" th:text="${hytzVo.jtbm}"></pre>
-                    </li>
-                    <li>
-                        <div class="form-title">公司办公室:</div>
-                        <pre class="pre-form-content" th:text="${hytzVo.gsbgs}"></pre>
-                    </li>
-                    <li>
-                        <div class="form-title">外部单位:</div>
-                        <pre class="pre-form-content" th:text="${hytzVo.wbdw}"></pre>
-                    </li>
-                </ul>
+                <div class="form-title">公司办公室:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.gsbgs}"></pre>
+            </li>
+            <li>
+                <div class="form-title">外部单位:</div>
+                <pre class="pre-form-content" th:text="${hytzVo.wbdw}"></pre>
             </li>
             <li class="right">
                 <button id="yd" class="button hover">已读</button>

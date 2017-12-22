@@ -116,6 +116,7 @@ public class MeetingController {
 //        meetingVoList = meetingService.getMeetingByUserIdAndCondition(userVo.getId(),"2",lx);
         meetingVoList = meetingService.getHyspByUserAndCondition(userVo,"2");
         modelAndView.addObject("meetingVoList", meetingVoList);
+        modelAndView.addObject("userVo", userVo);
         return modelAndView;
     }
 
@@ -142,7 +143,7 @@ public class MeetingController {
     public ModelAndView notify(@RequestParam(name = "id", required = true) String meetingId){
         ModelAndView modelAndView = new ModelAndView(viewName + "m_notify");
         MeetingVo meetingVo = meetingService.getMeetingById(meetingId);
-        List<NotifyObjectVo> notifyObjectVoList = notifyObjectService.getAllNotifyObject();
+        List<NotifyObjectVo> notifyObjectVoList = notifyObjectService.getRelatedNotifyObject();
         modelAndView.addObject("notifyObjectVoList",notifyObjectVoList);
         modelAndView.addObject("meetingVo", meetingVo);
         return modelAndView;
@@ -540,8 +541,8 @@ public class MeetingController {
             @RequestParam(name = "attachmentId", required = true)String attachmentId,
             @RequestParam(name = "meetingId", required = true)String meetingId,
             HttpServletResponse reponse) {
-        UserVo userVo = userService.getLoginUser();
-        if(meetingService.attachmentDownloadAuthorityJudgement(meetingId, userVo.getId())){
+        MeetingVo meetingVo = meetingService.getMeetingById(meetingId);
+        if(meetingVo != null){
             return "forward:/admin/attachment/download?id=" + attachmentId;
         }
         return "forward:/admin/attachment/downloadAttachmentAsPdf?id=" + attachmentId;

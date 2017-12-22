@@ -1,5 +1,5 @@
 var tabs = document.getElementById('tab').getElementsByTagName('button');
-var roleName = $('#roleName').val();
+var departmentName = $('#departmentName').val();
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         var tabId = this.id;
@@ -25,15 +25,14 @@ for(var i=0; i<tabs.length; i++) {
                                 var hyshzt = cons[i].hyshzt;
                                 if(hyshzt == '未通知'){
                                     str += "<td><div style='color:green'>"+hyshzt+"</div></td>";
-                                    str += "<td><div onclick='seeApproveRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\",\""+hyshzt+"\")'>查看</div>" +
-                                        "<div onclick='notify(\""+ cons[i].id +'\",\"' + tabId +"\")'>通知</div></td>";
+                                    str += "<td><div onclick='notify(\""+ cons[i].id +'\",\"' + tabId +"\",\""+departmentName+"\")'>通知</div></td>";
                                     break;
                                 }else if(hyshzt == "已通知"){
                                     str += "<td><div style='color:green'>"+hyshzt+"</div></td>";
-                                    str += "<td><div onclick='seeApproveRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\",\""+hyshzt+"\")'>查看</div>"
+                                    str += "<td><div onclick='seeApproveRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\",\""+hyshzt+"\",\""+departmentName+"\")'>查看</div>"
                                 }else if(hyshzt == '终止') {
                                     str += "<td><div style='color: red'>"+hyshzt+"</div></td>";
-                                    str += "<td><div onclick='seeApproveRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\",\""+hyshzt+"\")'>查看</div></td>";
+                                    str += "<td><div onclick='seeApproveRecordNE(\""+ cons[i].id +'\",\"' + tabId +"\",\""+hyshzt+"\",\""+departmentName+"\")'>查看</div></td>";
                                     break;
                                 }
                             default:
@@ -83,19 +82,31 @@ function pass(id) {
     });
 }
 
-function seeApproveRecordNE(id, tabId, hyshzt){
+
+
+function seeApproveRecordNE(id, tabId, hyshzt, departmentName){
     AjaxTool.html('meeting/approveXq', {id:id}, function(html){
         $('.portlet-body').html(html);
         if (hyshzt == "终止"){
             $("#tzxq").attr('style','display:none');
         }
+        if(departmentName.indexOf("集团") != -1){
+            $(".dsgj").attr('style','display:none');
+        }else if(departmentName.indexOf("东山公交") != -1){
+            $(".jt").attr('style','display:none');
+        }
         $('#back').data('tabId',tabId);
     })
 }
 
-function notify(id,tabId){
+function notify(id,tabId,departmentName){
     AjaxTool.html('meeting/notify',{id: id},function (html) {
         $('.portlet-body').html(html);
+        if(departmentName.indexOf("集团") != -1){
+            $(".dsgj").attr('style','display:none');
+        }else if(departmentName.indexOf("东山公交") != -1){
+            $(".jt").attr('style','display:none');
+        }
         $('#back').data('tabId',tabId);
     })
 }

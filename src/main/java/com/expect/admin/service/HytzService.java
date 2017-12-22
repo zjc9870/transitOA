@@ -67,7 +67,8 @@ public class HytzService {
             isExistNotifyObject = isExistNotifyObject + " " + save(gsbgs, meetingId, "公司办公室", attachmentId);
         }
         if (hytzVo.getWbdw() != ""){
-            String[] wbdw = hytzVo.getWbdw().split(",");
+            String[] wbdw = new String[1];
+            wbdw[0] = hytzVo.getWbdw();
             isExistNotifyObject = isExistNotifyObject + " " + save(wbdw, meetingId, "外部单位", attachmentId);
         }
         return isExistNotifyObject;
@@ -190,7 +191,8 @@ public class HytzService {
                         gsbgs = mergeNotifyObject(hytz.getIsread(), gsbgs, hytz.getTzdx());
                     }
                     if (hytz.getTzdxfl().equals("外部单位")){
-                        wbdw = mergeNotifyObject(hytz.getIsread(), wbdw, hytz.getTzdx());
+//                        wbdw = mergeNotifyObject(hytz.getIsread(), wbdw, hytz.getTzdx());
+                        wbdw = hytz.getTzdx();
                     }
                 }
             }

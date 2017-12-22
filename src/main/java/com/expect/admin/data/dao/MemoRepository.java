@@ -22,6 +22,6 @@ public interface MemoRepository extends JpaRepository<Memo, String> {
 	 *            用户id
 	 * @return 备忘录list
 	 */
-	public List<Memo> findByYearAndMonthAndUserId(String year, String month, String userId);
+	public List<Memo> findByYearAndMonthAndUserIdOrderByTime(String year, String month, String userId);
 
 }

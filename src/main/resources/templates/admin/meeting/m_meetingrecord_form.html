@@ -6,11 +6,8 @@
 <body>
 <form id="meetingrecord-form">
     <div style="margin-top:5px">
-        <!--<div style="display:inline">选择日期:-->
-            <!--<input id="chose_date" type="text"/>-->
-        <!--</div>-->
-        <div style="display:inline">选择日期：
-            <input id='chose_date' type="text" readonly="readonly"/>
+        <div style="display:inline">选择日期:
+            <input id="chose_date" type="text"/>
         </div>
 
         <div class="ck" style="display:inline">
@@ -36,22 +33,11 @@
 <script type="text/javascript">
     //日期选择器，设置结束日期不得早于开始日期
 
-//    $(function() {
-//        laydate.render({
-//            elem: '#chose_date' //指定元素
-//            ,format: 'yyyy/MM/dd'
-//        });
-//    });
-    $('#chose_date').datetimepicker({
-        //   startDate: date,
-        format:'yyyy/mm/dd',
-        language: 'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: true,
-        startView: 2,
-        minView: 2,
+    $(function() {
+        laydate.render({
+            elem: '#chose_date' //指定元素
+            ,format: 'yyyy/MM/dd'
+        });
     });
 </script>
 </body>

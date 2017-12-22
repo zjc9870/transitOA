@@ -83,7 +83,7 @@ public class MeetingService {
 
         if (StringUtil.equals(bczl,"tj")){
             addXzLcrz(id,condition); //如果是新增就增加一条日志记录
-            bindMeetingWithRoom(meeting);
+//            bindMeetingWithRoom(meeting);
         }
     }
 
@@ -101,7 +101,7 @@ public class MeetingService {
      * @return
      */
     public String getHyfl(MeetingVo meetingVo){
-        if(meetingVo.getHydd().indexOf("集团部门") != -1)
+        if(meetingVo.getHydd().indexOf("集团") != -1)
             return "1"; //集团会议
 //        else
 //            return "2";
@@ -179,7 +179,7 @@ public class MeetingService {
         if(userVo.getRoleName().indexOf("会议室管理员") != -1){
             if(StringUtil.equals(userVo.getDepartmentName(),"集团部门")){
                 meetingList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc(condition,"1");
-            }else if(userVo.getDepartmentName().indexOf("东交") != -1){
+            }else if(userVo.getDepartmentName().indexOf("东山公交") != -1){
                 meetingList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc(condition,"2");
             }
         }
@@ -214,7 +214,6 @@ public class MeetingService {
      * 1.根据id找到相关会议，并将数据写入到对应的vo中
      * 2.获取相关的流程日志
      * 3.设置个流程日志相关联的会议状态的名称
-     * 4.如果会议的状态不是已撤销（REVOCATION_CONDITION)就加载会议的附件信息，否则就不加载
      * @param meetingId
      * @return
      */
@@ -233,10 +232,10 @@ public class MeetingService {
         }
         meetingVo.setLcrzList(lcrzbVoList);
         //如果会议的状态不是已撤销就显示会议的附件信息，否则就不显示附件信息
-        if(!StringUtil.equals(meeting.getHyshzt(), REVOCATION_CONDITION)){
+//        if(!StringUtil.equals(meeting.getHyshzt(), REVOCATION_CONDITION)){
             List<AttachmentVo> attachmentVoList = getMeetingAttachment(meeting);
             meetingVo.setAttachmentList(attachmentVoList);
-        }
+//        }
         return meetingVo;
     }
 
@@ -299,19 +298,6 @@ public class MeetingService {
         return false;
     }
 
-//    public List<MeetingVo> getHyspDspList(String userId) {
-//        List<MeetingVo> meetingVoList=new ArrayList<MeetingVo>();
-//        List<Meeting> tjList = meetingRepository.findByHyshztOrderBySqsjDesc("2");
-//        if(tjList != null && tjList.size() > 0) {
-//            for (Meeting meeting : tjList) {
-//                Set<Lcrzb> lcrzbList = meeting.getLcrzSet();
-//                MeetingVo meetingVo = new MeetingVo(meeting);
-//                setSpjg(userId, lcrzbList, meetingVo);
-//                meetingVoList.add(meetingVo);
-//            }
-//        }
-//        return meetingVoList;
-//    }
 
     /**
      *  会议审批已审批列表
@@ -329,7 +315,7 @@ public class MeetingService {
                 wtgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("N", "1");
                 ytgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("3", "1");
                 ytzList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("T", "1");
-            }else if(userVo.getDepartmentName().indexOf("东交") != -1){
+            }else if(userVo.getDepartmentName().indexOf("东山公交") != -1){
                 wtgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("N", "2");
                 ytgList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("3", "2");
                 ytzList = meetingRepository.findByHyshztAndHyflOrderBySqsjDesc("T", "2");
@@ -365,36 +351,6 @@ public class MeetingService {
         return meetingVoList;
     }
 
-//    /**
-//     * 设置某人已审批会议的审批意见（某人对会议的最后一次的审批结果）
-//     * @param userId
-//     * @param lcrzbList
-////     * @param lcrzbListOfUser
-//     * @param meetingVo
-//     */
-//    private void setSpjg(String userId, Set<Lcrzb> lcrzbList, MeetingVo meetingVo){
-//        List<Lcrzb> lcrzbListOfUser = new ArrayList<>();
-//        if(lcrzbList != null && !lcrzbList.isEmpty()){
-//            for(Lcrzb lcrzb : lcrzbList){
-//                if(StringUtil.equals(lcrzb.getUser().getId(), userId))
-//                    lcrzbListOfUser.add(lcrzb);
-//            }
-//        }
-//        if(!lcrzbListOfUser.isEmpty()){
-//            Collections.sort(lcrzbListOfUser, new Comparator<Lcrzb>() {
-//                @Override
-//                public int compare(Lcrzb c1, Lcrzb c2) {
-//                    if(c1.getClsj() == null) return -1;
-//                    if(c2.getClsj() == null) return 1;
-//                    long dif = DateUtil.getDiffSeconds(c1.getClsj(), c2.getClsj());
-//                    return (dif > 0) ? -1 : ((dif < 0) ? 1 : 0);
-//                }
-//            });
-//            Lcrzb lastLcrz = lcrzbListOfUser.get(0);
-//            meetingVo.setSpyj(lastLcrz.getCljg());
-//        }else meetingVo.setSpyj("");
-//    }
-//
     /**
      * 会议审核状态由代码转换为对应汉字
      * @param lcjdbMap
@@ -447,7 +403,7 @@ public class MeetingService {
             }
         }
         if (ytzList != null && ytzList.size() > 0){
-            for (Meeting meeting : ytgList) {
+            for (Meeting meeting : ytzList) {
                 MeetingVo meetingVo = new MeetingVo(meeting);
                 meetingVo.setHyshzt("通过");
                 meetingVoList.add(meetingVo);
@@ -470,7 +426,7 @@ public class MeetingService {
         List<Meeting> wspList = meetingRepository.findByNhyr_idAndHyshzt(userId, condition);
         if(wspList != null && wspList.size() > 0)
             for(Meeting meeting : wspList){
-                if(StringUtil.equals(REVOCATION_CONDITION, meeting.getHyshzt())) continue;//过滤掉已撤销的会议
+//                if(StringUtil.equals(REVOCATION_CONDITION, meeting.getHyshzt())) continue;//过滤掉已撤销的会议
                 MeetingVo meetingVo = new MeetingVo(meeting);
                 meetingVo.setHyshzt("待审批");
                 meetingVoList.add(meetingVo);
@@ -697,61 +653,13 @@ public class MeetingService {
         if(meeting == null) throw new BaseAppException("没有找到要撤销的会议！");
 
         //插入撤销会议的记录
-        String lcrzId = lcrzbService.save(new LcrzbVo("撤销",reason), meetingId, "", REVOCATION_CONDITION);
+        String lcrzId = lcrzbService.save(new LcrzbVo("撤销",reason), meetingId, "hy", REVOCATION_CONDITION);
         bindMeetingWithLcrz(meetingId,lcrzId);
         //记录与会议绑定
         meeting.setHyshzt(REVOCATION_CONDITION);
         //保存会议
         meetingRepository.save(meeting);
     }
-
-//    /**
-//     * 同步方法的访问保证生成的序号唯一
-//     * 生成合同的电子序号：序号格式是 日期+四位的序号 如201708040001
-//     * 1.取得当前日期并用适当的格式转化为字符串(dateSequence)
-//     * 2.从数据库中取出最大的序号（电子序号后四位）并加一(numSequence)
-//     * 3.二者合并生成当前审批合同的电子序号，保存到数据库中
-//     * @return 可以使用的电子序号
-//     */
-//    private synchronized String generateContractSequenceNumber(){
-//        Date today = DateUtil.today();
-//        String dateSequence = DateUtil.format(today, DateUtil.shortFormat);
-//        String matchString = dateSequence.substring(0, 4) + "%";
-//        int countOfYear = meetingRepository.countBySequenceNumberLike(matchString);
-//        String numSequence = String.format("%04d", countOfYear + 1);//四位的序号，不足四位的在前面补零
-//        return dateSequence + numSequence;
-//    }
-
-    /**
-     * 判断用户是不是可以下载某个合同附件的word版本
-     * @param meetingId
-     * @return
-     */
-    public boolean attachmentDownloadAuthorityJudgement(String meetingId, String loginUserId) {
-        final Meeting meeting = meetingRepository.findById(meetingId);
-        if(meeting == null) return false;
-        boolean isAuditFinaish = (StringUtil.equals(meeting.getHyshzt(), "Y")
-                || StringUtil.equals(meeting.getHyshzt(), "T"));//会议审核是否完成
-        User user = userRepository.getOne(loginUserId);
-        Set<Role> roleSet = user.getRoles();
-        boolean isZichanguanlibu = false;
-        for (Role role : roleSet) {
-            if(StringUtil.equals(role.getName(), "资产管理部合同审核员")) {
-                isZichanguanlibu = true;
-                break;
-            }
-        }
-        return (isAuditFinaish && isZichanguanlibu);
-    }
-
-
-//    public List<MeetingVo> searchSyqk(String hydd, String hys, String hyrq){
-////        String mid = meetingroomRepository.findIdByHysddAndHysname(hydd, hys);
-//        String mid = "402850815f959a89015f959afb240003";
-//        List<MeetingVo> syqk = meetingroomService.getMeetingInfo2(mid, hyrq);
-//        return syqk;
-//    }
-
 
     public List<String[]> meetingRoomSyqk(String hydd, String hys, String hyrq){
         List<Object> syqk = meetingRepository.findHysSyqk(hydd, hys, hyrq);
@@ -836,6 +744,10 @@ public class MeetingService {
         }
     }
 
+    /**
+     * 对于已读的会议事件记录到备忘录中
+     * @param meetingVo
+     */
     public void addMemoItem(MeetingVo meetingVo){
         UserVo userVo = userService.getLoginUser();
         String userId = userVo.getId();
@@ -844,7 +756,7 @@ public class MeetingService {
         String year = str[0];
         String month = str[1];
         String day = str[2];
-        String time = meetingVo.getKssj();
+        String time = hyrq + " " + meetingVo.getKssj();
         String descript = meetingVo.getHyzt();
         memoService.save(userId, year, month, day, time, descript);
     }

@@ -62,6 +62,39 @@ $('#fjck').click(
     }
 );
 
+//通知附件查看
+var m = 1;
+$('#tzfjck').click(
+    function () {
+        var attachList1 = JSON.parse($('#attachList1').val());
+        var meetingId = $('#meetingId').val();
+        if(attachList1.length == 0) {
+            alert('无附件');
+        } else {
+            if(m%2==1) {
+                for (var i = 0; i < attachList1.length; i++) {
+                    var li = document.createElement('li');
+                    var div = document.createElement('div');
+                    div.innerHTML = attachList1[i].name;
+                    div.setAttribute('style', 'cursor:pointer;');
+                    div.setAttribute('class', 'attachment');
+                    li.appendChild(div);
+                    li.setAttribute('class', 'attList1')
+                    this.parentNode.appendChild(li);
+                    div.id = attachList1[i].id;              //将变量保存给对象,避免循环闭包
+                    div.onclick = function () {
+                        window.location = "meeting/meetingAttachmentDownload?attachmentId=" + this.id+"&meetingId="+meetingId;
+                    }
+                }
+            }
+            else {
+                $('.attList1').hide();
+            }
+            m += 1;
+        }
+    }
+);
+
 function keypress() //textarea输入长度处理
 {
     var text1=document.getElementById("hynr").value;
@@ -271,50 +304,26 @@ $(document).ready(function () {
         keypress();
     }
 
-    // function createDelete() {
-    //     var span = document.createElement('span');
-    //     span.innerHTML = 'x';
-    //     span.setAttribute('style','margin-left:10px;color:red;font-weight:bold;cursor:pointer');
-    //     span.setAttribute('class','delete');
-    //     return span;
-    // }
-    // function deletefj() {
-    //     var deletes = document.getElementsByClassName('delete');
-    //     for(var i=0;i<deletes.length;i++) {
-    //         deletes[i].onclick = function () {
-    //             ids.splice(ids.indexOf(this.id),1);
-    //             this.parentNode.setAttribute('style','display:none;');
-    //         }
-    //     }
-    // }
-    //
+    var checkbox = document.getElementsByName("hygg");
+    var hygg = $("#hygg").val();
+    var hyggStr = new Array();
+    hyggStr = hygg.split(",");
+    if(hyggStr.length != 0){
+        for(i = 0; i < hyggStr.length; i++){
+            for(j = 0;j < checkbox.length; j++){
+                if(hyggStr[i] == checkbox[j].value){
+                    checkbox[j].checked = true;
+                }
+            }
+        }
+    }
+
     var ids = [];
-//    var s1 = createDelete();
     var fjlbLi = $('#fjlb li');
-//    fjlbLi.append(s1);
     for (var i=0;i<fjlbLi.length;i++) {
         ids.push(fjlbLi[i].id);
     }
-//    deletefj();
-    //
-    //
-    // $('#uploadFile').click(function () {
-    //     DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
-    //     var uploader = $("#fileUploadForm").FileUpload({
-    //         url: "meeting/uploadMeetingAttachment",
-    //         isMultiFile: true,
-    //     });
-    //     uploader.done(function(data) {
-    //         ids.push(data.result.id);
-    //         var li = document.createElement('li');
-    //         var s2 = createDelete();
-    //         s2.setAttribute('id',data.result.id);
-    //         li.innerHTML = data.result.name;
-    //         li.appendChild(s2);
-    //         $('#fjlb').append(li);
-    //         deletefj();
-    //     });
-    // });
+
 
     //终止
     $('#zz').click(function() {
@@ -328,17 +337,19 @@ $(document).ready(function () {
     //通过
     $('#tg').click(function() {
         var formContents = document.getElementsByClassName('form-content');
-        for(var i=0; i<formContents.length; i++ ) {
+        for(var i=1; i<formContents.length; i++ ) {
             if(/^\s*$/.test(formContents[i].value)) {
                 alert('请核实完整信息!');
                 return false;
             }
         }
-        AjaxTool.post('meeting/addLcrz', $('#m_approve_form').serialize()+ '&' +$('#form_data').serialize()+"&cljg="+this.id+"&fileId="+ids, function (data) {
-                alert(data.message);
-                toHysp();
-            }
-        )
+        if(validator.form()){
+            AjaxTool.post('meeting/addLcrz', $('#m_approve_form').serialize()+ '&' +$('#form_data').serialize()+"&cljg="+this.id+"&fileId="+ids, function (data) {
+                    alert(data.message);
+                    toHysp();
+                }
+            )
+        }
     });
 
     function toHysp() {
@@ -400,4 +411,47 @@ $(document).ready(function () {
         $('#kssj').datetimepicker('setEndDate',date);
     });
 
+
+    var validator = $('#m_approve_form').validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'error-tips', // default input error message class
+        rules: {
+            hyzt: {
+                maxlength: 50
+            },
+            hynr: {
+                maxlength: 300
+            },
+            chry: {
+                maxlength: 200
+            },
+            djrxm:  {
+                maxlength: 10
+            },
+            qt: {
+                maxlength: 200
+            },
+            lxfs: {
+                isPhone: true
+            }
+
+        },
+        messages: {
+            hyzt: {
+                maxlength: "(不超过50个字)"
+            },
+            hynr: {
+                maxlength: "(不超过300个字)"
+            },
+            chry: {
+                maxlength: "(不超过200个字)"
+            },
+            djrxm: {
+                maxlength:"(不超过10个字)"
+            },
+            qt: {
+                maxlength:"(不超过200字)"
+            }
+        }
+    });
 });

@@ -155,7 +155,8 @@ $(document).on('click','.hytz', function(){
     var id = $(this).data('id');
     var hytzId = $(this).data('hytzid');
     var tabId = $(this).data('fl');
-    seeHyNotify(id, hytzId, tabId);
+    var fl = $(this).data('lb');
+    seeHyNotify(id, hytzId, tabId, fl);
 });
 
 $(function() {
@@ -193,12 +194,17 @@ function seeConApprove(id,tabId) {
 	});
 }
 
-function seeHyNotify(id,hytzId,tabId) {
+function seeHyNotify(id,hytzId,tabId,fl) {
     AjaxTool.html('meeting/hytzNE',{id: id, hytzid:hytzId},function (html) {
         $('#portlet-box').addClass('portlet box');
         $('.portlet-body').html(html);
         if(tabId == "yd"){
             $('#yd').attr('style','display:none');
+        }
+        if(fl.indexOf("集团") != -1){
+            $(".dsgj").attr('style','display:none');
+        }else if(fl.indexOf("东山公交") != -1){
+            $(".jt").attr('style','display:none');
         }
         $('#back').data('tabId',tabId);
     });
@@ -263,7 +269,7 @@ function getAndDisplayHytzByFl(url, fl) {
             var leftUlStr = "<ul class='home-content-block'>";
             var cons = data.content;
             for (var i = 0; (i < cons.length && i < 7); i++){
-                leftUlStr += "<li class = 'hytz' data-id='"+cons[i].id+"' data-hytzid = '"+cons[i].hytzid+"' data-fl = '"+fl+"'><span>" + cons[i].hyzt +"</span><br /><span>" + cons[i].hyrq +" "+ cons[i].kssj +"</span></li>";
+                leftUlStr += "<li><span class = 'hytz'  data-id='"+cons[i].id+"' data-hytzid = '"+cons[i].hytzid+"' data-fl = '"+fl+"' data-lb = '"+cons[i].hydd+"'>" + cons[i].hyzt +"</span><span style='float: right'>" + cons[i].hyrq +" "+ cons[i].kssj +"</span></li>";
             }
             leftUlStr += "</ul>";
             $('#hyTab').html(leftUlStr);
@@ -325,7 +331,6 @@ function getAndDisplayTzByfl(url,fl){
 //显示公文中心的传阅和办理
 function getAndDisplaySwCyByfl(url,fl){
 	var ym=fl;
-	console.log("sw");
 	var roleName = $('#userRolesName').val();
 	//如果是领导，显示未传阅、未办理和未审批
 	//如果是机要专员.显示未传阅、未办理和待处理
@@ -350,7 +355,6 @@ function getAndDisplaySwCyByfl(url,fl){
 				}
 				leftUlStr += "</ul>";
 				rightUlStr += "</ul>";
-				console.log(rightUlStr);
 				$('#gwLeft').html(leftUlStr);
 				$('#gwRight').html(rightUlStr);
 			}

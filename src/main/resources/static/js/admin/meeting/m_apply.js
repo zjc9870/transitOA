@@ -253,6 +253,7 @@ function searchSyqk(){
 
 
 $(document).ready(function () {
+
     var ids = [];
     $('#uploadFile').click(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
@@ -313,7 +314,7 @@ $(document).ready(function () {
 
     var date = new Date();
     $('#hyrq').datetimepicker({
-        //   startDate: date,
+          startDate: date,
         format:'yyyy/mm/dd',
         language: 'zh-CN',
         weekStart: 1,
@@ -370,54 +371,45 @@ $(document).ready(function () {
         }
     });
 
-
     var validator = $('#m_apply_form').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
-            bt: {
+            hyzt: {
                 maxlength: 50
             },
-            nr: {
+            hynr: {
                 maxlength: 300
             },
-            sqbgs: {
-                maxlength: 50
+            chry: {
+                maxlength: 200
             },
-            sj:  {
-                date: true
+            djrxm:  {
+                maxlength: 10
             },
-            rs: {
-                digits:true
+            qt: {
+                maxlength: 200
             },
-            rymd: {
-                required:true
+            lxfs: {
+                isPhone: true
             }
+
         },
         messages: {
             hyzt: {
-                maxlength: "主题不超过50个字"
+                maxlength: "(不超过50个字)"
             },
             hynr: {
-                maxlength: "内容不超过300个字"
-            },
-            hydd: {
-                maxlength: "申请地点不超过30个字"
-            },
-            hysj:  {
-                dateISO: "请输入有效的日期"
+                maxlength: "(不超过300个字)"
             },
             chry: {
-                required: "请输入人员名单"
+                maxlength: "(不超过200个字)"
             },
             djrxm: {
-                maxlength:"姓名不超过10个字"
+                maxlength:"(不超过10个字)"
             },
-            lxfs: {
-                required: "请输入有效联系方式"
-            },
-            hygg: {
-                maxlength:"其他规格不超过300字"
+            qt: {
+                maxlength:"(不超过200字)"
             }
         }
     });

@@ -22,8 +22,8 @@
                 </li>
                 <li>
                     <div class="form-title">会议内容：</div>
-                    <textarea id="hynr" name="hynr" class="form-content text-content" style="overflow-x:hidden;overflow-y:hidden" onKeyUp="keypress()" onblur="keypress()"> </textarea>
-                    <font color="gray"> <label id="pinglun" style="padding-left: 350px">(你还可以输入300个字)</label> </font>
+                    <textarea id="hynr" name="hynr" class="form-content text-content" onKeyUp="keypress()" onblur="keypress()"> </textarea>
+                    <span > <label id="pinglun" color="gray" style="padding-left: 350px">(你还可以输入300个字)</label> </span>
                 </li>
                 <li>
                     <div class="form-title">
@@ -93,15 +93,16 @@
 </div>
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
-    <div class="modal-dialog" style="width:100%;height:100%">
+    <!--<div class="modal-dialog" style="width:100%;height:100%">-->
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
                     选择会议时间地点
                 </h4>
             </div>
-            <form id="form_data">
-                <div class="modal-body">
+
+            <div class="modal-body">
+                <form id="form_data">
                     <div style="display:inline;margin-right:30px">地点：
                         <select id="hydd" name="hydd" style="width:20%" class="form-content drop-down changeStyle">
                         </select>
@@ -128,33 +129,35 @@
                         会议时间：
                         <input id="kssj" name="kssj" class="form-content time changeStyle" type="text" value="" style="margin-top: 10px; width: 100px" readonly="readonly"/> -
                         <input id="jssj" name="jssj" class="form-content time changeStyle" type="text" value="" style="margin-top: 10px; width: 100px" readonly="readonly"/>
-                        <span id="error" style="color: red;display: none">（时间段不对）</span>
+                        <span id="error" style="color: red;display: none">（时间段信息冲突）</span>
                     </div>
+                </form>
+            </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button"  class="btn btn-primary"  data-dismiss="modal" id="btnClose">
-                        关闭
-                    </button>
-                    <button type="button" class="btn btn-primary"  id="btnSave">
-                        保存
-                    </button>
-                </div>
-            </form>
+            <div class="modal-footer">
+                <button type="button"  class="btn btn-primary"  data-dismiss="modal" id="btnClose">
+                    关闭
+                </button>
+                <button type="button" class="btn btn-primary"  id="btnSave">
+                    保存
+                </button>
+            </div>
+
         </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+    <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
 </div><!-- /.modal -->
 
 
 <!--<script th:src="@{/plugins/jquery.min.js}" type="text/javascript"></script>-->
 <script th:src="@{/plugins/jquery-validation/js/jquery.validate.min.js}" type="text/javascript"></script>
-<script th:src="@{/plugins/jquery-validation/js/additional-methods.min.js}" type="text/javascript"></script>
-<script src="http://code.highcharts.com/highcharts.js" type = "text/javascript"></script>
-<script type = "text/javascript">
-    if (!$.fn.highcharts) {
-        src="http://code.highcharts.com/highcharts.js";
-    }
-</script>
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.js}" type="text/javascript"></script>
+<!--<script th:src="@{/plugins/highcharts.js}" type="text/javascript"></script>-->
+<!--<script src="http://code.highcharts.com/highcharts.js" type = "text/javascript"></script>-->
+<!--<script type = "text/javascript">-->
+    <!--if (!$.fn.highcharts) {-->
+        <!--src="http://code.highcharts.com/highcharts.js";-->
+    <!--}-->
+<!--</script>-->
 <script th:src="@{/js/admin/meeting/m_apply.js}" type="text/javascript"></script>
 <script th:src="@{/plugins/ajaxfileupload.js}" type="text/javascript"></script>
 <script th:src="@{/js/base/file.tool.js}" type="text/javascript"></script>

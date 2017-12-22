@@ -109,7 +109,8 @@ $.validator.addMethod("bankorgiroaccountNL", function(value, element) {
 			($.validator.methods.giroaccountNL.call(this, value, element));
 }, "Please specify a valid bank or giro account number");
 
-/**
+
+    /**
  * BIC is the business identifier code (ISO 9362). This BIC check is not a guarantee for authenticity.
  *
  * BIC pattern: BBBBCCLLbbb (8 or 11 characters long; bbb is optional)
@@ -679,6 +680,7 @@ $.validator.addMethod("phoneNL", function(value, element) {
 	return this.optional(element) || /^((\+|00(\s|\s?\-\s?)?)31(\s|\s?\-\s?)?(\(0\)[\-\s]?)?|0)[1-9]((\s|\s?\-\s?)?[0-9]){8}$/.test(value);
 }, "Please specify a valid phone number.");
 
+
 /* For UK phone functions, do the following server side processing:
  * Compare original input with this RegEx pattern:
  * ^\(?(?:(?:00\)?[\s\-]?\(?|\+)(44)\)?[\s\-]?\(?(?:0\)?[\s\-]?\(?)?|0)([1-9]\d{1,4}\)?[\s\d\-]+)$
@@ -996,4 +998,12 @@ $.validator.addMethod("ziprange", function(value, element) {
 	return this.optional(element) || /^90[2-5]\d\{2\}-\d{4}$/.test(value);
 }, "Your ZIP-code must be in the range 902xx-xxxx to 905xx-xxxx");
 
+$.validator.addMethod("isPhone", function(value,element) {
+	var length = value.length;
+	var mobile = /^(((13[0-9]{1})|(14[0-9]{1})|(17[0]{1})|(15[0-3]{1})|(15[5-9]{1})|(18[0-9]{1}))+\d{8})$/;
+	var tel = /^\d{3,4}-?\d{7,9}$/;
+	return this.optional(element) || (tel.test(value) || mobile.test(value));
+}, "请正确填写您的联系电话");
+
 }));
+

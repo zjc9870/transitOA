@@ -75,7 +75,7 @@ public class Hytz {
         this.tzdxfl = tzdxfl;
     }
 
-    @Column(name = "tzdx",length = 30)
+    @Column(name = "tzdx",length = 150)
     public String getTzdx() {
         return tzdx;
     }

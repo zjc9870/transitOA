@@ -84,7 +84,7 @@ public class Meeting {
         this.hyzt = hyzt;
     }
 
-    @Column(name = "hynr",length = 300)
+    @Column(name = "hynr",length = 350)
     public String getHynr() {
         return hynr;
     }
@@ -138,7 +138,7 @@ public class Meeting {
         this.jssj = jssj;
     }
 
-    @Column(name = "chry",length=200)
+    @Column(name = "chry",length=250)
     public String getChry() {
         return chry;
     }
@@ -175,7 +175,7 @@ public class Meeting {
         this.hygg = hygg;
     }
 
-    @Column(name = "qt",length = 200)
+    @Column(name = "qt",length = 250)
     public String getQt() {
         return qt;
     }
@@ -195,7 +195,7 @@ public class Meeting {
         this.attachments = attachments;
     }
 
-    @Column(name = "hyshzt", length=5)
+    @Column(name = "hyshzt", length=20)
     public String getHyshzt() {
         return hyshzt;
     }

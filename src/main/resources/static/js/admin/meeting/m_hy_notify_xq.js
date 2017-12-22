@@ -29,6 +29,38 @@ function toNotifyAll() {
 
 $(document).ready(function () {
     //附件查看
+    // var n = 1;
+    // $('#tzfjck').click(
+    //     function () {
+    //         var attachList = JSON.parse($('#attachList').val());
+    //         var meetingId = $('#meetingId').val();
+    //         if(attachList.length == 0) {
+    //             alert('无附件');
+    //         } else {
+    //             if(n%2==1) {
+    //                 for (var i = 0; i < attachList.length; i++) {
+    //                     var li = document.createElement('li');
+    //                     var div = document.createElement('div');
+    //                     div.innerHTML = attachList[i].name;
+    //                     div.setAttribute('style', 'cursor:pointer;');
+    //                     div.setAttribute('class', 'attachment');
+    //                     li.appendChild(div);
+    //                     li.setAttribute('class', 'attList')
+    //                     this.parentNode.appendChild(li);
+    //                     div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
+    //                     div.onclick = function () {
+    //                         window.location = "meeting/meetingAttachmentDownload?attachmentId=" + this.id+"&meetingId="+meetingId;
+    //                     }
+    //                 }
+    //             }
+    //             else {
+    //                 $('.attList').hide();
+    //             }
+    //             n += 1;
+    //         }
+    //     }
+    // );
+    //附件查看
     var n = 1;
     $('#tzfjck').click(
         function () {
@@ -49,7 +81,8 @@ $(document).ready(function () {
                         this.parentNode.appendChild(li);
                         div.id = attachList[i].id;              //将变量保存给对象,避免循环闭包
                         div.onclick = function () {
-                            window.location = "meeting/download?id=" + this.id;
+                            window.location = "meeting/meetingAttachmentDownload?attachmentId=" + this.id+"&meetingId="+meetingId;
+                            // window.location = "attachment/download?id=" + this.id;
                         }
                     }
                 }
@@ -61,4 +94,17 @@ $(document).ready(function () {
         }
     );
 
+    var checkbox = document.getElementsByName("hygg");
+    var hygg = $("#hygg").val();
+    var hyggStr = new Array();
+    hyggStr = hygg.split(",");
+    if(hyggStr.length != 0){
+        for(i = 0; i < hyggStr.length; i++){
+            for(j = 0;j < checkbox.length; j++){
+                if(hyggStr[i] == checkbox[j].value){
+                    checkbox[j].checked = true;
+                }
+            }
+        }
+    }
 })

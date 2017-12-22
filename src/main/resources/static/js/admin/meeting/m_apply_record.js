@@ -82,7 +82,10 @@ function seeApplyRecordNE(id,tabId) {
 function submitWtjForm(id) {
     AjaxTool.post('meeting/submitWtj',{id: id}, function (data) {
             alert(data.message);
-            window.location.reload();
+            var table = $('#m-apply-record-table').DataTable();
+            if(data.success) {
+                table.rows('#' + id).remove().draw();
+            }
         }
     )
 };
@@ -92,7 +95,10 @@ function deleteWtjCon(id) {
     AjaxTool.post('meeting/deleteWjt',{
         id:id},function (data) {
         alert(data.message);
-        window.location.reload();
+        var table = $('#m-apply-record-table').DataTable();
+        if(data.success) {
+            table.rows('#' + id).remove().draw();
+        }
     })
 }
 
