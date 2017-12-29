@@ -122,7 +122,7 @@ public class Document {
         this.bt = bt;
     }
 
-    @Column(name = "ztc", length = 300)
+    @Column(name = "ztc", columnDefinition="TEXT")
     public String getZtc() {
         return ztc;
     }
