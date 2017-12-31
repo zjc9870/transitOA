@@ -142,12 +142,11 @@ var Meetingroom = {
             id:id+""
         },function(html){
             $("#meetingrecord-modal .modal-body").html(html);
-            console.log(id);
+
 
             $("#ck").click(function() {
                 $('#container').html("");
                 var m_date= $("#xzrq").val();
-                console.log(m_date);
                 if(m_date==""){
                     alert("请选择日期再进行查看")
                 }else{
@@ -163,7 +162,6 @@ var Meetingroom = {
                         data:m_info,
                         success: function(data) {
                             syqk = data.obj;
-                            console.log(syqk);
                             var tasks = [{
                                 name: "使用详情",
                                 intervals: []

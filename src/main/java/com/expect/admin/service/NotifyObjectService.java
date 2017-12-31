@@ -46,7 +46,7 @@ public class NotifyObjectService {
         List<NotifyObjectVo> notifyObjectVos = new ArrayList<>();
         UserVo userVo = userService.getLoginUser();
         List<NotifyObject> notifyObjectList = new ArrayList<>();
-        if(userVo.getDepartmentName().contains("集团部门")){
+        if(userVo.getDepartmentName().contains("集团")){
             notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("集团高管"));
             notifyObjectList.addAll(notifyObjectRepository.findByTzdxfl("集团部门"));
         }else if(userVo.getDepartmentName().contains("东山公交")){
