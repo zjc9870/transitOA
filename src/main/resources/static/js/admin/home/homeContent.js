@@ -342,7 +342,7 @@ function getAndDisplaySwCyByfl(url,fl){
 				var leftUlStr = "<ul class='home-content-block2'>";
 				var rightUlStr = "<ul>"
 				var drafts = data.content;
-				for (var i = drafts.length-1; (i >= 0 && drafts.length-i <= 7); i--) {
+				for (var i = 0; (i < drafts.length && i <= 7); i++) {
 					leftUlStr += "<li class = 'lcbt' data-id = '"+drafts[i].id+"' data-fl = '"+drafts[i].tab+"'><span>" + drafts[i].wjbt + "</span></li>";
 					rightUlStr += "<li><span>" + drafts[i].swr + "&nbsp;"+ drafts[i].fqsj + "</span></li>";
 
