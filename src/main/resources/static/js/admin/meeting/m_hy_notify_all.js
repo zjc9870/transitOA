@@ -2,7 +2,6 @@ var tabs = document.getElementById('tab').getElementsByTagName('button');
 for(var i=0; i<tabs.length; i++) {
     tabs[i].onclick = function () {
         var tabId = this.id;
-        debugger;
         //若当前按钮已选中则点击不再触发事件
         AjaxTool.get('meeting/hytzTab', {
                 lx: this.id},function (data) {
@@ -10,6 +9,7 @@ for(var i=0; i<tabs.length; i++) {
                     var str = "";
                     var cons = data.content;
                     for(var i=0;i<cons.length;i++) {
+                        fl = cons[i].hydd;
                         str += "<tr>";
                         str += "<td>"+cons[i].hyzt+"</td>";
                         switch(tabId){
@@ -33,7 +33,7 @@ for(var i=0; i<tabs.length; i++) {
                             default:
                                 break;
                         }
-                        str += "<td><div onclick='seeHyNotify(\""+ cons[i].id +'\",\"' + tabId +"\",\"" + cons[i].hytzid +"\")'>查看</div></td>";
+                        str += "<td><div onclick='seeHyNotify(\""+ cons[i].id +'\",\"' + tabId +"\",\"" + cons[i].hytzid +"\",\""+fl+"\")'>查看</div></td>";
                         str += "</tr>";
                     }
 //                    mTable.fnClearTable();
@@ -54,11 +54,16 @@ for(var i=0; i<tabs.length; i++) {
     }
 }
 
-function seeHyNotify(id,tabId,hytzid) {
+function seeHyNotify(id,tabId,hytzid,fl) {
     AjaxTool.html('meeting/hytzNE',{id: id, hytzid:hytzid},function (html) {
         $('.portlet-body').html(html);
         if(tabId == "yd"){
             $('#yd').attr('style','display:none');
+        }
+        if(fl.indexOf("集团") != -1){
+            $(".dsgj").attr('style','display:none');
+        }else if(fl.indexOf("东山公交") != -1){
+            $(".jt").attr('style','display:none');
         }
         $('#back').data('tabId',tabId);
     });

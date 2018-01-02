@@ -44,6 +44,7 @@
         var textFormat='.+(.doc|.docx|.txt|.DOC|.DOCX|.TXT)$';
         var wordFormat='.+(.doc|.docx|.DOC|.DOCX)$';
 
+
         var trHtml='<tr id="${fileId}"><td class="file-name">${fileName}</td>'
             +'<td class="file-progress"><span class="size">${fileSize}KB</span><div class="progress"><div class="progress-bar progress-bar-success"></div></div><span class="upload-result"></span></td>'
             +'<td class="file-button"><a href="javascript:;" class="btn btn-xs blue fileinput-upload">上传</a><a href="javascript:;" class="btn btn-xs green fileinput-abort">取消</a>'

@@ -20,4 +20,7 @@ public interface MeetingroomRepository extends JpaRepository<Meetingroom, String
 
     public Meetingroom findByHyddAndHysname(String hydd, String hysname);
 
+    @Query("select distinct hysname from Meetingroom where hydd = ?1 and location = ?2 ")
+    public String findHysnameByHyddAndLocation(String hydd, String location);
+
 }

@@ -1,26 +1,35 @@
 package com.expect.admin.service;
 
+import com.expect.admin.data.dao.DepartmentRepository;
 import com.expect.admin.data.dao.MeetingRepository;
 import com.expect.admin.data.dao.MeetingroomRepository;
+
 import com.expect.admin.data.dao.UserRepository;
-import com.expect.admin.data.dataobject.Meeting;
-import com.expect.admin.data.dataobject.Meetingroom;
+import com.expect.admin.data.dataobject.*;
+
+
+import com.expect.admin.exception.BaseAppException;
+import com.expect.admin.service.convertor.DepartmentConvertor;
+import com.expect.admin.service.convertor.MeetingConvertor;
 import com.expect.admin.service.convertor.MeetingroomConvertor;
-import com.expect.admin.service.vo.MeetingVo;
-import com.expect.admin.service.vo.MeetingroomVo;
+
+import com.expect.admin.service.convertor.UserConvertor;
+
+import com.expect.admin.service.vo.*;
 import com.expect.admin.service.vo.component.ResultVo;
+import com.expect.admin.service.vo.component.html.SelectOptionVo;
 import com.expect.admin.service.vo.component.html.datatable.DataTableRowVo;
+import com.expect.admin.utils.StringUtil;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.ehcache.annotations.TriggersRemove;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -126,7 +135,7 @@ public class MeetingroomService {
      * @param mdate
      * @return
      */
-    public ResultVo getMeetingInfo(String mid, String mdate){
+    public ResultVo getMeetingInfo(String mid,String mdate){
         ResultVo resultVo = new ResultVo();
         resultVo.setMessage("该天没有使用记录");
         Meetingroom meetingroom = meetingroomRepository.findOne(mid);
@@ -164,11 +173,25 @@ public class MeetingroomService {
         DataTableRowVo mrrv = new DataTableRowVo();
         mrrv.setMessage("添加失败");
 
+        String hydd_str = meetingroomVo.getHydd();
+        String location_str = meetingroomVo.getLocation();
+        String hysname_str = meetingroomRepository.findHysnameByHyddAndLocation(hydd_str,location_str);
+        String hysname_up = meetingroomVo.getHysname();
+        if(hysname_str != null &&!hysname_str.equals("")&&hysname_str.equals(hysname_up)){
+            mrrv.setMessage("该会议室已经存在");
+            return mrrv;
+
+        }
+
+
         if (StringUtils.isEmpty(meetingroomVo.getHysname())) {
             mrrv.setMessage("会议室名不能为空");
             return mrrv;
         }
-
+        if (StringUtils.isEmpty(meetingroomVo.getLocation())) {
+            mrrv.setMessage("会议室地点不能为空");
+            return mrrv;
+        }
 //        UserVo manager = userService.getLoginUser();
 //        String department_user = manager.getDepartmentName();
 //        String departmentName="";
@@ -208,23 +231,59 @@ public class MeetingroomService {
         DataTableRowVo mrrv = new DataTableRowVo();
         mrrv.setMessage("修改失败");
 
-        if (StringUtils.isEmpty(meetingroomVo.getHysname())) {
-            mrrv.setMessage("会议室名称不能为空");
-            return mrrv;
-        }
-
         Meetingroom checkMeetingroom = meetingroomRepository.findOne(meetingroomVo.getId());
         if (checkMeetingroom == null) {
             mrrv.setMessage("该会议室不存在");
             return mrrv;
         }
 
-        MeetingroomConvertor.convert(meetingroomVo, checkMeetingroom);
+        if (StringUtils.isEmpty(meetingroomVo.getHysname())) {
+            mrrv.setMessage("会议室名称不能为空");
+            return mrrv;
+        }
 
-        mrrv.setMessage("修改成功");
-        mrrv.setResult(true);
-        MeetingroomConvertor.convertDtrv(mrrv, checkMeetingroom);
-        return mrrv;
+        if (StringUtils.isEmpty(meetingroomVo.getLocation())) {
+            mrrv.setMessage("会议室地点不能为空");
+            return mrrv;
+        }
+
+
+        String hydd_up = meetingroomVo.getHydd();
+        String location_up = meetingroomVo.getLocation();
+        String hysname_up = meetingroomVo.getHysname();
+
+
+        String hydd_ck = checkMeetingroom.getHydd();
+        String location_ck = checkMeetingroom.getLocation();
+        String hysname_ck = checkMeetingroom.getHysname();
+
+        String hysname_str = meetingroomRepository.findHysnameByHyddAndLocation(hydd_up,location_up);
+
+        if (hydd_ck.equals(hydd_up)&&location_ck.equals(location_up)&&(hysname_ck.equals(hysname_up))){
+            MeetingroomConvertor.convert(meetingroomVo, checkMeetingroom);
+
+            mrrv.setMessage("修改成功");
+            mrrv.setResult(true);
+            MeetingroomConvertor.convertDtrv(mrrv, checkMeetingroom);
+            return mrrv;
+        }else if(hysname_str != null &&!hysname_str.equals("")&&hysname_str.equals(hysname_up)){
+            mrrv.setMessage("该会议室已经存在，请重新修改");
+            return mrrv;
+        }else{
+            MeetingroomConvertor.convert(meetingroomVo, checkMeetingroom);
+
+            mrrv.setMessage("修改成功");
+            mrrv.setResult(true);
+            MeetingroomConvertor.convertDtrv(mrrv, checkMeetingroom);
+            return mrrv;
+        }
+
+//        MeetingroomConvertor.convert(meetingroomVo, checkMeetingroom);
+//
+//        mrrv.setMessage("修改成功");
+//        mrrv.setResult(true);
+//        MeetingroomConvertor.convertDtrv(mrrv, checkMeetingroom);
+//        return mrrv;
     }
 
     /**

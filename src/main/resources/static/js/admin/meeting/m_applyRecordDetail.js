@@ -365,6 +365,20 @@ function searchSyqk(){
         keypress();
     }
 
+    var checkbox = document.getElementsByName("hygg");
+    var hygg = $("#hygg").val();
+    var hyggStr = new Array();
+    hyggStr = hygg.split(",");
+    if(hyggStr.length != 0){
+        for(i = 0; i < hyggStr.length; i++){
+            for(j = 0;j < checkbox.length; j++){
+                if(hyggStr[i] == checkbox[j].value){
+                    checkbox[j].checked = true;
+                }
+            }
+        }
+    }
+
 
 
     //提交
@@ -376,29 +390,31 @@ function searchSyqk(){
                 return false;
             }
         }
-        console.log( $('#m_apply_form').serialize());
-        AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
-                alert(data.message);
-                if(data.success) toSqjl();
-            }
-        )
+         if(validator.form()){
+             AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                     alert(data.message);
+                     if(data.success) toSqjl();
+                 }
+             )
+         }
     });
 
     //保存
     $('#bc').click(function() {
         var formContents = document.getElementsByClassName('form-content');
-        for(var i=0; i<formContents.length; i++ ) {
+        for(var i=1; i<formContents.length; i++ ) {
             if(/^\s*$/.test(formContents[i].value)) {
                 alert('请填写完整信息!');
                 return false;
             }
         }
-        console.log( $('#m_apply_form').serialize());
-        AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
-                alert(data.message);
-                if(data.success) toSqjl();
-            }
-        )
+        if(validator.form()){
+            AjaxTool.post('meeting/saveMeeting', $('#m_apply_form').serialize()+ '&' +$('#form_data').serialize()+"&bczl="+this.id+"&fileId="+ids, function (data) {
+                    alert(data.message);
+                    if(data.success) toSqjl();
+                }
+            )
+        }
     });
 
     var date = new Date();
@@ -474,6 +490,48 @@ function searchSyqk(){
         });
     });
 
+    var validator = $('#m_apply_form').validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'error-tips', // default input error message class
+        rules: {
+            hyzt: {
+                maxlength: 50
+            },
+            hynr: {
+                maxlength: 300
+            },
+            chry: {
+                maxlength: 200
+            },
+            djrxm:  {
+                maxlength: 10
+            },
+            qt: {
+                maxlength: 200
+            },
+            lxfs: {
+                isPhone: true
+            }
+
+        },
+        messages: {
+            hyzt: {
+                maxlength: "(不超过50个字)"
+            },
+            hynr: {
+                maxlength: "(不超过300个字)"
+            },
+            chry: {
+                maxlength: "(不超过200个字)"
+            },
+            djrxm: {
+                maxlength:"(不超过10个字)"
+            },
+            qt: {
+                maxlength:"(不超过200字)"
+            }
+        }
+    });
 })();
 
 

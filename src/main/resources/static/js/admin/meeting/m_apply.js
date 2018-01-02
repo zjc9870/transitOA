@@ -253,33 +253,43 @@ function searchSyqk(){
 
 
 $(document).ready(function () {
+
     var ids = [];
+    var linames = [];
     $('#uploadFile').click(function () {
         DatatableTool.modalShow("#upload-modal", "#fileUploadForm");
         var uploader = $("#fileUploadForm").FileUpload({
             url: "meeting/uploadMeetingAttachment",
             isMultiFile: true,
         });
-        uploader.done(function(data) {
-            ids.push(data.result.id);
-            var li = document.createElement('li');
-            var span = document.createElement('span');
-            span.innerHTML = 'x';
-            span.setAttribute('style','margin-left:10px;color:red;font-weight:bold;cursor:pointer');
-            span.setAttribute('class','delete');
-            span.setAttribute('id',data.result.id);
-            li.innerHTML = data.result.name;
-            li.appendChild(span);
-            $('#fjlb').append(li);
 
-            var deletes = document.getElementsByClassName('delete');
-            for(var i=0;i<deletes.length;i++) {
-                deletes[i].onclick = function () {
-                    ids.splice(ids.indexOf(this.id),1);
-                    this.parentNode.setAttribute('style','display:none;');
-                }
-            }
+        uploader.done(function(data) {
+          ids.push(data.result.id);
+          if ($.inArray(data.result.name,linames) == -1){
+              var li = document.createElement('li');
+              var span = document.createElement('span');
+              span.innerHTML = 'x';
+              span.setAttribute('style','margin-left:10px;color:red;font-weight:bold;cursor:pointer');
+              span.setAttribute('class','delete');
+              span.setAttribute('id',data.result.id);
+              li.innerHTML = data.result.name;
+              li.appendChild(span);
+              $('#fjlb').append(li);
+              linames.push(data.result.name);
+          }else{
+              alert("去除重复会议附件！");
+          }
+
+
+          var deletes = document.getElementsByClassName('delete');
+          for(var i=0;i<deletes.length;i++) {
+              deletes[i].onclick = function () {
+                  ids.splice(ids.indexOf(this.id),1);
+                  this.parentNode.setAttribute('style','display:none;');
+              }
+          }
         });
+
     });
 
 
@@ -313,7 +323,7 @@ $(document).ready(function () {
 
     var date = new Date();
     $('#hyrq').datetimepicker({
-        //   startDate: date,
+        //startDate: date,
         format:'yyyy/mm/dd',
         language: 'zh-CN',
         weekStart: 1,
@@ -370,54 +380,45 @@ $(document).ready(function () {
         }
     });
 
-
     var validator = $('#m_apply_form').validate({
         errorElement: 'span', //default input error message container
         errorClass: 'error-tips', // default input error message class
         rules: {
-            bt: {
+            hyzt: {
                 maxlength: 50
             },
-            nr: {
+            hynr: {
                 maxlength: 300
             },
-            sqbgs: {
-                maxlength: 50
+            chry: {
+                maxlength: 200
             },
-            sj:  {
-                date: true
+            djrxm:  {
+                maxlength: 10
             },
-            rs: {
-                digits:true
+            qt: {
+                maxlength: 200
             },
-            rymd: {
-                required:true
+            lxfs: {
+                isPhone: true
             }
+
         },
         messages: {
             hyzt: {
-                maxlength: "主题不超过50个字"
+                maxlength: "(不超过50个字)"
             },
             hynr: {
-                maxlength: "内容不超过300个字"
-            },
-            hydd: {
-                maxlength: "申请地点不超过30个字"
-            },
-            hysj:  {
-                dateISO: "请输入有效的日期"
+                maxlength: "(不超过300个字)"
             },
             chry: {
-                required: "请输入人员名单"
+                maxlength: "(不超过200个字)"
             },
             djrxm: {
-                maxlength:"姓名不超过10个字"
+                maxlength:"(不超过10个字)"
             },
-            lxfs: {
-                required: "请输入有效联系方式"
-            },
-            hygg: {
-                maxlength:"其他规格不超过300字"
+            qt: {
+                maxlength:"(不超过200字)"
             }
         }
     });

@@ -39,7 +39,7 @@
         var memoContentHtml = '<div class="memo-content"><div class="memo-list-wrapper"><div class="memo-list"></div></div><div class="memo-form-wrapper">' + '<div class="memo-form"><div class="form-input"><input type="text" class="input-time"><input type="text" class="input-desc"></div>' +
             '<div class="form-button"><span class="button-cancel-wrapper"><input type="button" class="button-cancel" value="取消"/></span><span class="button-confirm-wrapper"><input type="button" class="button-confirm" value="确定"/></span></div></div>' +
             '<div class="memo-add"><span></span></div></div></div>';
-        var memoContentItemHtml = '<div class="memo-item" data-id="${id}"><div class="memo-time">${time}</div><div class="memo-desc">${desc}</div><div class="memo-actions"><span class="memo-update"></span><span class="memo-delete"></span></div></div>';
+        var memoContentItemHtml = '<div class="memo-item small-font smallsize-font" data-id="${id}"><div class="memo-time">${time}</div><div class="memo-desc">${desc}</div><div class="memo-actions"><span class="memo-update"></span><span class="memo-delete"></span></div></div>';
 
         this.init = function () {
             $element= this.$element;
@@ -85,15 +85,17 @@
         var computeMemoDescWidth = function(){
         	$element.find(".memo-item").each(function(){
         		var itemWidth=$(this).outerWidth();
-        		if(itemWidth<=470){
-        			$(this).find(".memo-desc").css("width","100%");
-        			$(this).css("height","62px");
+                $(this).find(".memo-desc").css("width","100%");
+                if(itemWidth<=400){
+                    $(this).find(".memo-time").css("width","50%");
         		}else{
-        			var timeWidth=$(this).find(".memo-time").outerWidth();
-            		var actionsWidth=$(this).find(".memo-actions").outerWidth();
-            		$(this).find(".memo-desc").width(itemWidth-timeWidth-actionsWidth-50);
-            		$(this).css("height","100%");
+                    $(this).find(".memo-time").css("width","35%");
+                    // var timeWidth=$(this).find(".memo-time").outerWidth();
+            		// var actionsWidth=$(this).find(".memo-actions").outerWidth();
+            		// $(this).find(".memo-desc").width(itemWidth-timeWidth-actionsWidth-50);
+            		// $(this).css("height","100%");
         		}
+                $(this).css("height","100%");
         	});
         }
         
@@ -279,6 +281,10 @@
         	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control date-picker" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
         	$element.find(".memo-update").unbind("click");
         	$element.find(".memo-update").bind("click",function(){
+
+                var year=currentData.selected.year;
+                var month=currentData.selected.month;
+                var day=currentData.selected.day;
         		var $this=$(this);
         		var $memoItem=$this.parent().parent();
         		swal({   
@@ -331,16 +337,17 @@
                     		}
     			        }
                });
+                var str = year+","+month+","+day;
+                var date1 = new Date(str);
+                var date2 = new Date(date1.getTime()+24*60*60*1000-1);
                 $('.date-picker').datetimepicker({
-                    format:'hh:ii',
+                    startDate:date1,
+                    endDate:date2,
+                    format:'yyyy/mm/dd hh:ii',
                     language: 'zh-CN',
-                    weekStart: 1,
-                    todayBtn:  1,
                     autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 0,
-                    minView: 2,
-                    forceParse: 0
+                    startView: 1,
+                    maxView:1
                 });
         	});
         }
@@ -396,6 +403,9 @@
         var setMemoFormClick=function(){
         	var sweetAlertContentHtml = '<form id="memo-form"><div class="form-group" style="display:block;"><input type="text" class="form-control date-picker" name="time" placeholder="请输入时间"/><input type="text" class="form-control" name="desc" placeholder="请输入内容" style="margin-top:20px"/></div></form>';
         	$element.find(".memo-add").click(function(){
+                var year=currentData.selected.year;
+                var month=currentData.selected.month;
+                var day=currentData.selected.day;
         		swal({   
         			title: "备忘录增加",   
                     type: "content",   
@@ -412,16 +422,22 @@
                     		requestAdd(time,desc);
     			        }
                });
+                var str = year+","+month+","+day;
+                var date1 = new Date(str);
+                var date2 = new Date(date1.getTime()+24*60*60*1000-1);
                 $('.date-picker').datetimepicker({
-                    format:'hh:ii',
+                    startDate:date1,
+                    endDate:date2,
+                    format:'yyyy/mm/dd hh:ii',
                     language: 'zh-CN',
-                    weekStart: 1,
-                    todayBtn:  1,
+                    // weekStart: 1,
+                    // todayBtn:  1,
                     autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 0,
-                    minView: 2,
-                    forceParse: 0
+                    // todayHighlight: 1,
+                    startView: 1,
+                    maxView:1
+                    // minView: 2,
+                    // forceParse: 0
                 });
         	});
 //            $element.find(".memo-add").click(function(){

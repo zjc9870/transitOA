@@ -37,7 +37,7 @@ public class MemoService {
 	 * @return 备忘录vo
 	 */
 	public MemoVo getMemosByDate(String userId, String year, String month) {
-		List<Memo> memos = memoRepository.findByYearAndMonthAndUserId(year, month, userId);
+		List<Memo> memos = memoRepository.findByYearAndMonthAndUserIdOrderByTime(year, month, userId);
 		MemoVo memoVo = new MemoVo();
 		if (CollectionUtils.isEmpty(memos)) {
 			memoVo.setMessage("暂无备忘录记录");

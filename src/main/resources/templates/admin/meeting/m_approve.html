@@ -24,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody id="m-approve-tbody" class="mt-td-checkbox">
-                    <input type="hidden" id="roleName" th:value="${roleName}" />
+                    <input type="hidden" id="departmentName" th:value="${userVo.departmentName}" />
                     <th:block th:if='${not #lists.isEmpty(meetingVoList)}'>
                         <tr th:each='mee : ${meetingVoList}' th:id="${mee.id}">
                             <th:block >

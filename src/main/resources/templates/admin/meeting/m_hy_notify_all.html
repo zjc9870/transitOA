@@ -28,12 +28,13 @@
                     <tr th:each="doc : ${meetingVoListByTzsj}">
                         <th:block>
                             <input type="hidden" id="id" th:value="${doc.id}" />
+                            <input type="hidden" id="fl" th:value="${doc.hydd}" />
                             <td th:text='${doc.hyzt}'></td>
                             <td>未读</td>
                             <td th:text="${doc.tzsj} ? ${doc.tzsj} : '-'"></td>
                             <td>
                                 <input type="hidden" id="hytzid" th:value="${doc.hytzid}" />
-                                <div onclick="seeHyNotify($(this.parentNode.parentNode.childNodes[1]).val(),'wd',$(this.parentNode.childNodes[1]).val())">查看</div>
+                                <div onclick="seeHyNotify($(this).parent().parent().find('#id').val(),'wd',$(this.parentNode.childNodes[1]).val(),$(this).parent().parent().find('#fl').val())">查看</div>
                             </td>
                         </th:block>
                     </tr>

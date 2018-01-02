@@ -13,7 +13,7 @@
                 <label for="hysname">会议室名</label>
                 <div class="input-group col-md-12">
                     <input id="hysname" type="text" class="form-control" name="hysname"
-                           placeholder="请输入会议室名" th:value="${meetingroom.hysname}" />
+                           placeholder="请输入会议室名,如701" th:value="${meetingroom.hysname}" />
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
                 <label for="location">具体地点</label>
                 <div class="input-group col-md-12">
                     <input id="location" type="text" class="form-control"
-                           name="location" placeholder="请输入具体地点"
+                           name="location" placeholder="请输入具体地点，如9号楼"
                            th:value="${meetingroom.location}" />
                 </div>
             </div>
@@ -43,17 +43,21 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="capacity">可容纳最大人数</label>
+                <label id="tishi1" style="color: gray;"></label>
                 <div class="input-group col-md-12">
-                    <input id="capacity" type="text" class="form-control" name="capacity"
+                    <input id="capacity" type="text" class="form-control" name="capacity" maxlength="5"
                            placeholder="请输入可容纳最大人数" th:value="${meetingroom.capacity}" />
                 </div>
+                <!--<input type="text" onkeyup="this.value=this.value.replace(/\D/g,'')"/>-->
             </div>
 
             <div class="form-group">
                 <label for="description">备注</label>
+                <label id="tishi2" style="color: gray;">(最多输入30个字)</label>
                 <div class="input-group col-md-12">
                     <input id="description" type="text" class="form-control" name="description"
-                           placeholder="请输入备注" th:value="${meetingroom.description}" />
+                          maxlength="30" onkeypress="keypress()" placeholder="请输入备注" th:value="${meetingroom.description}" />
+
                 </div>
             </div>
         </div>
