@@ -80,10 +80,10 @@ public class MeetingService {
         meeting = meetingRepository.save(meeting);
         String id = meeting.getId();
 
-
+        //绑定会议室
+        bindMeetingWithRoom(meeting);
         if (StringUtil.equals(bczl,"tj")){
             addXzLcrz(id,condition); //如果是新增就增加一条日志记录
-//            bindMeetingWithRoom(meeting);
         }
     }
 

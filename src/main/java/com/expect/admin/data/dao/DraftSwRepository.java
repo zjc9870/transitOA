@@ -25,6 +25,8 @@ public interface DraftSwRepository extends JpaRepository<DraftSw, String> {
 	 */
 	List<DraftSw> findBySwzt(String condition);
 	List<DraftSw> findBySwr_idAndSwztAndSwfl(String userId, String swzt, String swfl);
+
+	List<DraftSw> findBySwr_idAndSwztAndSwflOrderByFqsjDesc(String userId, String swzt, String swfl);
 	List<DraftSw> findBySwr_idAndSwfl(String userId, String swfl);
 	/**
 	 * 查一切
@@ -32,8 +34,10 @@ public interface DraftSwRepository extends JpaRepository<DraftSw, String> {
 	 * @param page
 	 * @return
 	 */
-	List<DraftSw> findAll(Specification<DraftSw> spe, Pageable page);
-	List<DraftSw> findAll(Specification<DraftSw> spe);
+	List<DraftSw> findAllByOrderByFqsjDesc(Specification<DraftSw> spe, Pageable page);
+	List<DraftSw> findAllByOrderByFqsjDesc(Specification<DraftSw> spe);
 
+
+	List<DraftSw> findAllByOrderByFqsjDesc();
 }
  

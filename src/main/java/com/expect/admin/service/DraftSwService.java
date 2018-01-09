@@ -392,27 +392,28 @@ public class DraftSwService {
     private List<DraftSwVo> getSwblOrSwcyOrLdps(final String userId, final String ryfl, final boolean sfcl) {
         if (StringUtil.isBlank(ryfl))
             return getDraftSwVoListFromDraftSwList(null);
-        List<DraftSw> wclDraftSwList = draftSwRepository.findAll(new Specification<DraftSw>() {
-            @Override
-            public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<DraftSw, DraftSwUserLcrzbGxb> join = root.joinSet("draftSwUserLcrzbGxbs", JoinType.LEFT);
-                List<Predicate> predicateList = new ArrayList<>();
-                predicateList.add(cb.notEqual(root.get("swfl").as(String.class), DraftSw.SWFL_WTJ));// 不是未提交
-                if (!StringUtil.isBlank(userId)) {
-                    predicateList.add(cb.equal(join.get("user").get("id").as(String.class), userId));// 限定相关用户的Id
-                }
-                predicateList.add(cb.equal(join.get("ryfl").as(String.class), ryfl));// 人员分类
-
-                // 未处理的相关联的lcrzb记录为null，已处理的不是null
-                if (sfcl)
-                    predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
-                else
-                    predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
-//                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
-                Predicate[] predicate = new Predicate[predicateList.size()];
-                return cb.and(predicateList.toArray(predicate));
-            }
-        });
+//        List<DraftSw> wclDraftSwList = draftSwRepository.findAllByOrderByRqDesc(new Specification<DraftSw>() {
+//            @Override
+//            public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+//                Join<DraftSw, DraftSwUserLcrzbGxb> join = root.joinSet("draftSwUserLcrzbGxbs", JoinType.LEFT);
+//                List<Predicate> predicateList = new ArrayList<>();
+//                predicateList.add(cb.notEqual(root.get("swfl").as(String.class), DraftSw.SWFL_WTJ));// 不是未提交
+//                if (!StringUtil.isBlank(userId)) {
+//                    predicateList.add(cb.equal(join.get("user").get("id").as(String.class), userId));// 限定相关用户的Id
+//                }
+//                predicateList.add(cb.equal(join.get("ryfl").as(String.class), ryfl));// 人员分类
+//
+//                // 未处理的相关联的lcrzb记录为null，已处理的不是null
+//                if (sfcl)
+//                    predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
+//                else
+//                    predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
+////                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
+//                Predicate[] predicate = new Predicate[predicateList.size()];
+//                return cb.and(predicateList.toArray(predicate));
+//            }
+//        });
+        List<DraftSw> wclDraftSwList = draftSwRepository.findAllByOrderByFqsjDesc();
         return getDraftSwVoListFromDraftSwList(wclDraftSwList);
     }
 
@@ -447,9 +448,9 @@ public class DraftSwService {
         String condition = "15";
         List<DraftSw> dclDraftSwList = null;
         // 第一轮的待处理收文
-        List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition, DraftSw.SWFL_SLYTJ);
+        List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwflOrderByFqsjDesc(userId, condition, DraftSw.SWFL_SLYTJ);
         // 不是第一轮的待处理收文
-        List<DraftSw> draftSwList2 = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition,
+        List<DraftSw> draftSwList2 = draftSwRepository.findBySwr_idAndSwztAndSwflOrderByFqsjDesc(userId, condition,
                 DraftSw.SWFL_DLYTJ);
         if (draftSwList == null)
             dclDraftSwList = draftSwList2;
@@ -470,7 +471,7 @@ public class DraftSwService {
      */
     public List<DraftSwVo> getYclSw(final String userId) {
         final String condition = lcService.getStartCondition(SWLC_ID);
-        List<DraftSw> draftSwList = draftSwRepository.findAll(new Specification<DraftSw>() {
+        List<DraftSw> draftSwList = draftSwRepository.findAllByOrderByFqsjDesc(new Specification<DraftSw>() {
 
             @Override
             public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -587,7 +588,7 @@ public class DraftSwService {
      * @param ryfl
      */
     @Transactional
-    private void swcl(String swId, String clyj, String userId, String ryfl) {
+    void swcl(String swId, String clyj, String userId, String ryfl) {
         saveSwsp(swId, clyj, userId, ryfl);
         if (StringUtil.equals(ryfl, DraftSwUserLcrzbGxb.RYFL_LD) || swclqkpd(swId, ryfl)) {
             DraftSw draftSw = draftSwRepository.findOne(swId);
@@ -671,7 +672,7 @@ public class DraftSwService {
      * @param draftSwId
      */
     @Transactional
-    private void addXgry(List<String> userIdList, final String draftSwId, String ryfl, String nextCondition) {
+    void addXgry(List<String> userIdList, final String draftSwId, String ryfl, String nextCondition) {
         DraftSw draftSw = draftSwRepository.getOne(draftSwId);
         if (draftSw == null)
             throw new BaseAppException("没有找到想应的收文记录");
