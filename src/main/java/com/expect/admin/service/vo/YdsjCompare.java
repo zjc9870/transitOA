@@ -1,13 +1,9 @@
-/*  1:   */package com.expect.admin.service.vo;
-/*  2:   */
-/*  3:   */import java.util.Comparator;
+package com.expect.admin.service.vo;
 
-/*  4:   */
-/*  7:   */public class YdsjCompare<T>
-/*  8:   */  implements Comparator<T>
-/*  9:   */{
-    /* 10:   */  public int compare(T a, T b)
-/* 11:   */  {
+import java.util.Comparator;
+
+public class YdsjCompare<T> implements Comparator<T> {
+    public int compare(T a, T b) {
         if (a.getClass().isInstance(new MeetingVo())){
             MeetingVo A = (MeetingVo)a;
             MeetingVo B = (MeetingVo)b;
@@ -21,9 +17,9 @@
                 return B.getYdsj().compareTo(A.getYdsj());
             }
         }
-/* 15:15 */    return -1;
-/* 16:   */  }
-/* 17:   */}
+        return -1;
+    }
+}
 
 
 /* Location:           Z:\spring-boot-admin-0.0.1-SNAPSHOT.jar

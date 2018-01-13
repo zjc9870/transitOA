@@ -146,7 +146,8 @@ public class MeetingroomService {
             for (Meeting meeting : meetingList) {
                 MeetingVo meetingVo = new MeetingVo();
                 String meeting_date = meeting.getHyrq();
-                if (meeting_date.equals(mdate)) {
+                String meeting_shzt = meeting.getHyshzt();
+                if (meeting_date.equals(mdate) && !meeting_shzt.equals("T")) {
                     BeanUtils.copyProperties(meeting, meetingVo);
                     meetingVoList.add(meetingVo);
                 }

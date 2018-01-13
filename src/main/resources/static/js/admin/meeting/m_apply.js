@@ -323,7 +323,7 @@ $(document).ready(function () {
 
     var date = new Date();
     $('#hyrq').datetimepicker({
-        //startDate: date,
+        startDate: date,
         format:'yyyy/mm/dd',
         language: 'zh-CN',
         weekStart: 1,
