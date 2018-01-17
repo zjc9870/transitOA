@@ -43,8 +43,7 @@ $(document).on('click','#fwdb,#fwyb',function(){
     // 如果该人是发文机要专员
     if(roleName.indexOf("发文机要专员") !=-1){
 		bz='sq';
-        // 对于发文机要专员而言，发文待办(fl=dsp)表示未提交的发文,而fl=ysp表示已提交而dsp的发文
-        fl = (fl == "dsp" ? "wtj" : "ysp")
+        fl = (fl == "dsp" ? "dsp" : "ysp")
         url='document/sqjlTab'
         getAndDisplayFwsjByFl(url,fl,bz)
 	}
