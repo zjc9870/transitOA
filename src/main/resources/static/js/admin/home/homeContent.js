@@ -24,34 +24,42 @@ $(document).on('click', '#wdtz, #ydtz', function(){
 });
 
 $(document).on('click','#fwdb,#fwyb',function(){
+    setTheClickButtonSelect($(this).parent());
 	var roleName=$('#userRolesName').val();
 	var fl=$(this).data("fl");
-	var url='document/sqjlTab';
-	var bz='sp';
+	// fl 指ysp和dsp
+	var url; // 后台请求的地址
+	var bz;// sp还是sq
 
-	// if(roleName.indexOf("机要专员") !=-1){
+    /**
+	 * bz是发文审批还是发文申请，这都是待办
+     * 发文机要专员是发文待办==发文未提交
+	 * 发文已办==已提交
+	 * 发文审核员：发文待办==未审核
+	 * 发文已办==已审核
+	 * 其余人：发文未读==未读
+	 * 发文已读==已读
+     */
+    // 如果该人是发文机要专员
     if(roleName.indexOf("发文机要专员") !=-1){
 		bz='sq';
-		if(fl=="dsp"){
-			fl='wtj';
-		}else{
-			fl='dsp';
-		}
+        fl = (fl == "dsp" ? "dsp" : "ysp")
+        url='document/sqjlTab'
+        getAndDisplayFwsjByFl(url,fl,bz)
 	}
-	setTheClickButtonSelect($(this).parent());
-
-	// if (roleName.indexOf("董事长") !=-1 || roleName.indexOf("机要专员") !=-1){
-    if (roleName.indexOf("发文机要专员") !=-1 || roleName.indexOf("发文审核员") !=-1){
-		getAndDisplayFwsjByFl(url,fl,bz);
+	// 如果该人是发文审核员
+	if(roleName.indexOf("发文审核员") !=-1) {
+    	bz = 'sp';
+        fl = (fl == "dsp" ? "dsp" : "ysp")
+        url='document/sqjlTab'
+        getAndDisplayFwsjByFl(url,fl,bz)
 	}
-	else
+	// 如果该人既不是发文机要专员，也不是发文审核员，他就是普通用户，此时两个按钮是发文已读和发文未读
+    if (roleName.indexOf("发文机要专员") == -1 && roleName.indexOf("发文审核员") == -1)
 	{
 		url='document/fwtzTab';
-		if(fl=="dsp"){
-			fl='wd';
-		}else{
-			fl='yd';
-		}
+		fl = (fl=="dsp" ? 'wd' : 'yd')
+		// 对一般用户而言，只有被通知或者不被通知，后台程序不需要bz
 		getAndDisplayTzByfl(url,fl);
 	}
 

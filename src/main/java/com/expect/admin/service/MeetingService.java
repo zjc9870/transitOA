@@ -754,7 +754,7 @@ public class MeetingService {
         String hyrq = meetingVo.getHyrq();
         String[] str = hyrq.split("/");
         String year = str[0];
-        String month = str[1];
+        String month = str[1].replaceFirst("^0*", "");
         String day = str[2];
         String time = hyrq + " " + meetingVo.getKssj();
         String descript = meetingVo.getHyzt();

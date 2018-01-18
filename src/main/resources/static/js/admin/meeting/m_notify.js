@@ -118,7 +118,6 @@ $(document).ready(function() {
     });
 
     $('#tz').click(function (){
-        debugger;
         var id = $('#id').html();
         var jtgg=$('#jtgg').val();
         var jtbm=$('#jtbm').val();
@@ -137,8 +136,7 @@ $(document).ready(function() {
         }else{
             alert("请填入通知人信息！");
         }
-
-    })
+    });
 
     var validator = $('#m_notify_form').validate({
         errorElement: 'span', //default input error message container

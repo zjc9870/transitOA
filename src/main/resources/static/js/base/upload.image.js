@@ -112,7 +112,7 @@
                     }
                     var fileId=Tools.getUUID();
                     data.id=fileId;
-                    var html=trHtml.replace("${fileId}",fileId).replace("${fileName}",file.name).replace("${fileSize}",Math.round(file.size/1024));
+                    var html=trHtml.replace("${fileId}",fileId).replace("${fileName}",(file.name.substring(0,15)+((file.name.length<=15)?'':'...'))).replace("${fileSize}",Math.round(file.size/1024));
                     $element.find(".files-exist-template tbody").append(html);
                     var jqXHR;
                     $element.find(".files-exist-template tbody tr:last").find(".fileinput-upload").click(function(){
@@ -229,7 +229,8 @@
                 $(templateSelector+" .file-name-all").text(length+"个文件");
             }else if(length==1){
                 var name=$(templateSelector+" .files-exist-template tr td.file-name").text();
-                $(templateSelector+" .file-name-all").text(name);
+                // 防止文件名过长而显示错误
+                $(templateSelector + " .file-name-all").text(name.substring(0,15)+((name.length<=15)?'':'...'));
             }else{
                 $(templateSelector+" .file-name-all").text("");
             }
