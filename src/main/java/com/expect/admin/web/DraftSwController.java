@@ -192,8 +192,13 @@ private final Logger log = LoggerFactory.getLogger(DraftSwController.class);
 		UserVo userVo = userService.getLoginUser();
 		List<DraftSwVo> draftSwVoList = null;
 		try{
-			if(StringUtil.contains(ym, "cl")){
+			if(StringUtil.contains(tab, "homepage")){
 				//获取首页需要拿到的快捷导航数据
+				if(StringUtil.equals(tab,"dclhomepage")){
+					tab="dcl";
+				}else{
+					tab="ycl";
+				}
 				draftSwVoList = draftSwService.getHomePageContent(ym,userVo.getId());
 			}else{
 				draftSwVoList = draftSwService.getDraftSwVoList(ym, tab, userVo.getId());

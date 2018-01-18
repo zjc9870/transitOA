@@ -39,5 +39,7 @@ public interface DraftSwRepository extends JpaRepository<DraftSw, String> {
 
 
 	List<DraftSw> findAllByOrderByFqsjDesc();
+
+	List<DraftSw> findAll(Specification<DraftSw> specification);
 }
  

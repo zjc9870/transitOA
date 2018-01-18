@@ -74,7 +74,7 @@ public class DraftSwService {
      * 3.收文分类设置为“第一次 提交：Y”<br>
      * 4.保存一条DraftSwUserLcrzbGxb记录<br>
      * }
-     * 
+     *
      * @param sftj
      *            是否提交（true：提交（提交到流程） false：不是提交(只保存，不提交的流程)）
      * @param draftSwVo（收文的基本信息）
@@ -111,7 +111,7 @@ public class DraftSwService {
 
         // 保存收文
         DraftSw savedDraftSw = draftSwRepository.save(draftSw);
-        
+
         DraftSwUserLcrzbGxb draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(user, savedDraftSw, null);
 
         Lcrzb swLcrz = new Lcrzb("发起收文", "发起收文", user);
@@ -121,35 +121,35 @@ public class DraftSwService {
 
         draftSwUserLcrzbGxb.setLcrz(savedLcrz);
         draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
-        
-        // 保存审批领导的信息 
+
+        // 保存审批领导的信息
         if (!StringUtil.isBlank(ldId)) {
             User ldUser = userRepository.findOne(ldId);
             draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(ldUser, savedDraftSw,
                     DraftSwUserLcrzbGxb.RYFL_LD);
             draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
         }
-        
-     // 保存审批领导的信息 
+
+        // 保存审批领导的信息
 //        if (!StringUtil.isBlank(ldId)) {
 //            User ldUser = userRepository.findOne(ldId);
 //            draftSwUserLcrzbGxb = new DraftSwUserLcrzbGxb(ldUser, savedDraftSw,DraftSwUserLcrzbGxb.RYFL_LD);
-//            
+//
 //            swLcrz = new Lcrzb("未审批", "领导审批", ldUser);
 //            swLcrz.setClsj(new Date());
 //            swLcrz.setDyjd("领导审批");
 //            savedLcrz = lcrzbRepository.save(swLcrz);
 //
 //            draftSwUserLcrzbGxb.setLcrz(savedLcrz);
-//            
-//            
+//
+//
 //            draftSwUserLcrzbGxbRepository.save(draftSwUserLcrzbGxb);
 //        }
     }
 
     /**
      * 保存收文
-     * 
+     *
      * @param draftSwVo
      *            永远不能为null
      * @return
@@ -190,7 +190,7 @@ public class DraftSwService {
 
     /**
      * 未实现
-     * 
+     *
      * @param id
      */
     @Transactional
@@ -203,7 +203,7 @@ public class DraftSwService {
 
     /**
      * 获取某个收文的信息
-     * 
+     *
      * @param id
      * @return
      */
@@ -215,14 +215,14 @@ public class DraftSwService {
         if (draftSw == null)
             throw new BaseAppException("id为 " + id + "的收文没有找到");
         DraftSwVo draftSwVo = new DraftSwVo(draftSw);
-        
+
         draftSwVo.setAttachmentList(
                 getDraftSwAttachment(draftSw.getAttachments()));
         // 流程信息
         processLcrz(id, draftSwVo);
         return draftSwVo;
     }
-    
+
     private List<AttachmentVo> getDraftSwAttachment(Set<Attachment> attachmentSet) {
 //        Set<Attachment> attachmentList = contract.getAttachments();
         List<AttachmentVo> attachmentVoList = new ArrayList<>();
@@ -237,7 +237,7 @@ public class DraftSwService {
 
     /**
      * 设置收文的流程信息
-     * 
+     *
      * @param id
      * @param draftSwVo
      */
@@ -251,24 +251,13 @@ public class DraftSwService {
         draftSwVo.setCyrRecordList(getLcrzList(draftSwRecordList, DraftSwUserLcrzbGxb.RYFL_CYR));
         // 办理人日志信息
         draftSwVo.setBlrRecordList(getLcrzList(draftSwRecordList, DraftSwUserLcrzbGxb.RYFL_BLR));
-     // 传阅人和办理人的日志信息
+        // 传阅人和办理人的日志信息
         draftSwVo.setXgryRecordList(getLcrzList(draftSwRecordList, "XGRY"));
     }
 
     /**
-     * 根据流程日志id获取该日志是传阅人还是办理人
-     *
-     * @param id
-     * @return
-     */
-    public String getCyOrBlByLcrzId(String id) {
-        DraftSwUserLcrzbGxb draftSwRecordList = draftSwUserLcrzbGxbRepository.findByLcrz(lcrzbRepository.findOne(id));
-        return draftSwRecordList.getRyfl().equals("cyr") ? "传阅人" : "办理人";
-    }
-
-    /**
      * 获取某类人员的流程日志列表
-     * 
+     *
      * @param draftSwRecordList
      * @return
      */
@@ -282,14 +271,14 @@ public class DraftSwService {
             if (StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), ryfl)) {
                 recordSet.add(lcrz);
             }else if(StringUtil.equals("XGRY", ryfl)){
-            	//说明获取所有相关人员的日志
-            	if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_CYR)){
-            		lcrz.setClnrfl("传阅人");
-            		recordSet.add(lcrz);
-            	}else if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_BLR)){
-            		lcrz.setClnrfl("办理人");
-            		recordSet.add(lcrz);
-            	}
+                //说明获取所有相关人员的日志
+                if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_CYR)){
+                    lcrz.setClnrfl("传阅人");
+                    recordSet.add(lcrz);
+                }else if(StringUtil.equals(draftSwUserLcrzbGxb.getRyfl(), DraftSwUserLcrzbGxb.RYFL_BLR)){
+                    lcrz.setClnrfl("办理人");
+                    recordSet.add(lcrz);
+                }
             }
         }
         return LcrzbService.convert(recordSet);
@@ -298,7 +287,9 @@ public class DraftSwService {
     /**
      * 处理没有完成操作的流程显示
      *
-     * @param user
+     * @param today
+     * @param draftSwUserLcrzbGxb
+     * @param lcrz
      * @return
      */
     private Lcrzb processUnfinishedLcrz(User user) {
@@ -313,7 +304,7 @@ public class DraftSwService {
      * 待处理("dcl") 3.已处理(未完成)("ycl") 4.已完成("ywc") 收文批示页面(ym = "swps")
      * 5.待批示("dps") 6.已批示("yps") 收文办理页面(ym = "swbl") 7.未办理("wbl") 8.已办理("ybl")
      * 收文传阅页面(ym = "swcy")9.待传阅("dcy") 10.已传阅("ycy")
-     * 
+     *
      * @param ym
      *            请求来着的页面
      * @param tab
@@ -349,7 +340,7 @@ public class DraftSwService {
                 if (StringUtil.equals(tab, "ycy"))
                     sfcl = true;
             }
-            
+
             return getSwblOrSwcyOrLdps(userId, ryfl, sfcl);
         }
         return getDraftSwVoListFromDraftSwList(null);
@@ -358,7 +349,7 @@ public class DraftSwService {
     /**
      * 收文记录页面teb的请求数据获取，获取某用户（用户的id是userId的）申请的收文的相关他tab的
      * （如果tab内容不是下面四个选项之一，返回空的列表）记录
-     * 
+     *
      * @param tab
      *            tab名称{"wtj"：未提交, "dcl"：待处理, "ycl"：已处理 , "ywc"：已完成 }
      * @param userId
@@ -380,7 +371,7 @@ public class DraftSwService {
 
     /**
      * 修改加收文id判断某收文相关的数据 获取收文办理或者收文传阅的收文
-     * 
+     *
      * @param userId
      *            相关用户id
      * @param ryfl
@@ -392,28 +383,27 @@ public class DraftSwService {
     private List<DraftSwVo> getSwblOrSwcyOrLdps(final String userId, final String ryfl, final boolean sfcl) {
         if (StringUtil.isBlank(ryfl))
             return getDraftSwVoListFromDraftSwList(null);
-//        List<DraftSw> wclDraftSwList = draftSwRepository.findAllByOrderByRqDesc(new Specification<DraftSw>() {
-//            @Override
-//            public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-//                Join<DraftSw, DraftSwUserLcrzbGxb> join = root.joinSet("draftSwUserLcrzbGxbs", JoinType.LEFT);
-//                List<Predicate> predicateList = new ArrayList<>();
-//                predicateList.add(cb.notEqual(root.get("swfl").as(String.class), DraftSw.SWFL_WTJ));// 不是未提交
-//                if (!StringUtil.isBlank(userId)) {
-//                    predicateList.add(cb.equal(join.get("user").get("id").as(String.class), userId));// 限定相关用户的Id
-//                }
-//                predicateList.add(cb.equal(join.get("ryfl").as(String.class), ryfl));// 人员分类
-//
-//                // 未处理的相关联的lcrzb记录为null，已处理的不是null
-//                if (sfcl)
-//                    predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
-//                else
-//                    predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
-////                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
-//                Predicate[] predicate = new Predicate[predicateList.size()];
-//                return cb.and(predicateList.toArray(predicate));
-//            }
-//        });
-        List<DraftSw> wclDraftSwList = draftSwRepository.findAllByOrderByFqsjDesc();
+        List<DraftSw> wclDraftSwList = draftSwRepository.findAll(new Specification<DraftSw>() {
+            @Override
+            public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Join<DraftSw, DraftSwUserLcrzbGxb> join = root.joinSet("draftSwUserLcrzbGxbs", JoinType.LEFT);
+                List<Predicate> predicateList = new ArrayList<>();
+                predicateList.add(cb.notEqual(root.get("swfl").as(String.class), DraftSw.SWFL_WTJ));// 不是未提交
+                if (!StringUtil.isBlank(userId)) {
+                    predicateList.add(cb.equal(join.get("user").get("id").as(String.class), userId));// 限定相关用户的Id
+                }
+                predicateList.add(cb.equal(join.get("ryfl").as(String.class), ryfl));// 人员分类
+
+                // 未处理的相关联的lcrzb记录为null，已处理的不是null
+                if (sfcl)
+                    predicateList.add(cb.isNotNull(join.get("lcrz").as(Lcrzb.class)));
+                else
+                    predicateList.add(cb.isNull(join.get("lcrz").as(Lcrzb.class)));
+//                Predicate[] predicateA = (Predicate[]) predicateList.toArray();
+                Predicate[] predicate = new Predicate[predicateList.size()];
+                return cb.and(predicateList.toArray(predicate));
+            }
+        });
         return getDraftSwVoListFromDraftSwList(wclDraftSwList);
     }
 
@@ -427,7 +417,7 @@ public class DraftSwService {
     // }
     /**
      * 获取某用户未提交的收文（收文人id是userid 收文分类是‘W’）
-     * 
+     *
      * @param userId
      * @return
      */
@@ -438,7 +428,7 @@ public class DraftSwService {
 
     /**
      * 获取申请人的待处理收文
-     * 
+     *
      * @param userId
      * @return
      */
@@ -448,9 +438,9 @@ public class DraftSwService {
         String condition = "15";
         List<DraftSw> dclDraftSwList = null;
         // 第一轮的待处理收文
-        List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwflOrderByFqsjDesc(userId, condition, DraftSw.SWFL_SLYTJ);
+        List<DraftSw> draftSwList = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition, DraftSw.SWFL_SLYTJ);
         // 不是第一轮的待处理收文
-        List<DraftSw> draftSwList2 = draftSwRepository.findBySwr_idAndSwztAndSwflOrderByFqsjDesc(userId, condition,
+        List<DraftSw> draftSwList2 = draftSwRepository.findBySwr_idAndSwztAndSwfl(userId, condition,
                 DraftSw.SWFL_DLYTJ);
         if (draftSwList == null)
             dclDraftSwList = draftSwList2;
@@ -465,13 +455,13 @@ public class DraftSwService {
 
     /**
      * 收文发起人已处理但是还没有完成的收文
-     * 
+     *
      * @param userId
      * @return
      */
     public List<DraftSwVo> getYclSw(final String userId) {
         final String condition = lcService.getStartCondition(SWLC_ID);
-        List<DraftSw> draftSwList = draftSwRepository.findAllByOrderByFqsjDesc(new Specification<DraftSw>() {
+        List<DraftSw> draftSwList = draftSwRepository.findAll(new Specification<DraftSw>() {
 
             @Override
             public Predicate toPredicate(Root<DraftSw> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -491,7 +481,7 @@ public class DraftSwService {
 
     /**
      * 发起人发起的已完成的收文（收文状态为Y）
-     * 
+     *
      * @param userId
      * @return
      */
@@ -502,7 +492,7 @@ public class DraftSwService {
 
     /**
      * 将DoList转化为VoList
-     * 
+     *
      * @param draftSwList
      * @return
      */
@@ -520,7 +510,7 @@ public class DraftSwService {
         }
         return draftSwVoList;
     }
-    
+
     public Map<String, String> getAllSwLcjdMapping() {
         List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("4");
         Map<String, String> resultMap = new HashMap<String, String>();
@@ -534,7 +524,7 @@ public class DraftSwService {
 
     /**
      * 将Do转化为Vo
-     * 
+     *
      * @param draftSw
      * @return
      */
@@ -546,7 +536,7 @@ public class DraftSwService {
 
     /**
      * 收文领导审批处理 1.保存领导审批流程 2.修改收文的状态为发起人处理的状态
-     * 
+     *
      * @param swId
      * @param ldps
      * @param userId
@@ -557,7 +547,7 @@ public class DraftSwService {
 
     /**
      * 收文传阅人意见的保存
-     * 
+     *
      * @param swId
      * @param cyyj
      * @param userId
@@ -568,7 +558,7 @@ public class DraftSwService {
 
     /**
      * 收文办理意见的保存
-     * 
+     *
      * @param swId
      * @param blqk
      *            办理情况
@@ -581,14 +571,14 @@ public class DraftSwService {
     /**
      * 保存处理记录到流程日志表并且与收文关联 如果是领导批示 就讲收文状态修改为待机要专员处理的状态 否则是传阅或者办理
      * 只有所有的传阅人或办理人都处理完了才改变收文的装态到机要专员处理 否则就不该变收文的状态
-     * 
+     *
      * @param swId
-     * @param clyj
+     * @param cyyj
      * @param userId
      * @param ryfl
      */
     @Transactional
-    void swcl(String swId, String clyj, String userId, String ryfl) {
+    private void swcl(String swId, String clyj, String userId, String ryfl) {
         saveSwsp(swId, clyj, userId, ryfl);
         if (StringUtil.equals(ryfl, DraftSwUserLcrzbGxb.RYFL_LD) || swclqkpd(swId, ryfl)) {
             DraftSw draftSw = draftSwRepository.findOne(swId);
@@ -600,7 +590,7 @@ public class DraftSwService {
 
     /**
      * 判断某个收文是否已经完成处理（所有的传阅人或办理人都已经处理完毕了）
-     * 
+     *
      * @param swId
      *            收文id
      * @param ryfl
@@ -615,7 +605,7 @@ public class DraftSwService {
 
     /**
      * 保存人对收文的处理结果 1查找关系表 找到该用户该条收文的未审批的记录 2保存用户审批到流程日志 3关联关系表和流程日志
-     * 
+     *
      * @param swId
      *            收文的Id
      * @param ldps
@@ -641,10 +631,10 @@ public class DraftSwService {
 
     /**
      * 添加传阅人
-     * 
+     *
      * @param userIdList
      *            传阅人的idList(不会为空)
-     * @param draftSwId
+     * @param swVo
      *            相应收文id（不会为空）
      */
     @Transactional
@@ -655,7 +645,7 @@ public class DraftSwService {
 
     /**
      * 添加办理人
-     * 
+     *
      * @param userIdList
      * @param draftSwId
      */
@@ -667,12 +657,12 @@ public class DraftSwService {
     /**
      * 增加相关人员 拿到收文的Do数据（如果收文的数据为空抛出异常） 获取所有相关用户的user对象 从代码表中获取传阅人角色的id，拿到角色的对象
      * 循环为相关用户增加想应角色 生成收文相关人员对象列表并绑定到相应收文 修改收文的状态
-     * 
+     *
      * @param userIdList
      * @param draftSwId
      */
     @Transactional
-    void addXgry(List<String> userIdList, final String draftSwId, String ryfl, String nextCondition) {
+    private void addXgry(List<String> userIdList, final String draftSwId, String ryfl, String nextCondition) {
         DraftSw draftSw = draftSwRepository.getOne(draftSwId);
         if (draftSw == null)
             throw new BaseAppException("没有找到想应的收文记录");
@@ -705,7 +695,7 @@ public class DraftSwService {
 
     /**
      * 根据人员分类获取相关角色的代码编号
-     * 
+     *
      * @param ryfl
      * @return
      */
@@ -719,89 +709,98 @@ public class DraftSwService {
         throw new BaseAppException("没有相关角色");
     }
 
+    public List<DraftSwVo> getHomePageContent(String ym, String id) {
+        List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
+        String sfcl = "dcl";
+        if(StringUtil.contains(ym, "ycl")){
+            sfcl = "ycl";
+        }
+        List<String> tabList = new ArrayList<String>();
+        if(StringUtil.contains(ym, "dsz")){
+            if(StringUtil.equals("ycl", sfcl)){
+                tabList.add("yps");
+            }else{
+                tabList.add("dps");
+            }
+        }
 
-    /**
-     * 根据人员分类获取相关角色的首页快捷栏内容
-     *
-     * @param ym,id
-     * @return
-     */
-	public List<DraftSwVo> getHomePageContent(String ym, String id) {
-		List<DraftSwVo> draftSwVoList = new ArrayList<DraftSwVo>();
-		String sfcl = "dcl";
-		if(StringUtil.contains(ym, "ycl")){
-			sfcl = "ycl";
-		}
-		List<String> tabList = new ArrayList<String>();
-		if(StringUtil.contains(ym, "dsz")){
-			if(StringUtil.equals("ycl", sfcl)){
-				tabList.add("yps");
-			}else{
-				tabList.add("dps");
-			}
-		}
-		
-		if(StringUtil.contains(ym, "jyzy")){
-			if(StringUtil.equals("ycl", sfcl)){
-				tabList.add("ycl");
-			}else{
-				tabList.add("dcl");
-			}
-		}
-		if(StringUtil.equals("ycl", sfcl)){
-			tabList.add("ycy");
-			tabList.add("ybl");
-		}else{
-			tabList.add("dcy");
-			tabList.add("dbl");
-		}
-		for(String tab : tabList){
-			String returnym = "";
-			switch(tab){
-			case "ycy":
-			case "dcy":
-				returnym = "swcy";
-				break;
-			case "ybl":
-			case "dbl":
-				returnym = "swbl";
-				break;
-			case "yps":
-			case "dps":
-				returnym = "swps";
-				break;
-			case "ycl":
-			case "dcl":
-				returnym = "swjl";
-				break;
-			}
-			List<DraftSwVo> subDraftSwVoList = getDraftSwVoList(returnym,tab,id);
-			if(StringUtil.equals(tab, "ycl")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "yps")||StringUtil.equals(tab, "ybl")){
-				for(DraftSwVo vo : subDraftSwVoList){
-					boolean cf = false;
-					vo.setTab(tab);
-					for(DraftSwVo draftSwVo: draftSwVoList){
-						if(StringUtil.equals(draftSwVo.getId(), vo.getId())){
-							cf = true;
-							break;
-						}
-					}if(!cf){
-						draftSwVoList.add(vo);						
-					}
-				}
-			}else{
+        if(StringUtil.contains(ym, "jyzy")){
+            if(StringUtil.equals("ycl", sfcl)){
+                tabList.add("ycl");
+            }else{
+                tabList.add("dcl");
+            }
+        }
+        if(StringUtil.equals("ycl", sfcl)){
+            tabList.add("ycy");
+            tabList.add("ybl");
+        }else{
+            tabList.add("dcy");
+            tabList.add("dbl");
+        }
+        for(String tab : tabList){
+            String returnym = "";
+            switch(tab){
+                case "ycy":
+                case "dcy":
+                    returnym = "swcy";
+                    break;
+                case "ybl":
+                case "dbl":
+                    returnym = "swbl";
+                    break;
+                case "yps":
+                case "dps":
+                    returnym = "swps";
+                    break;
+                case "ycl":
+                case "dcl":
+                    returnym = "swjl";
+                    break;
+            }
+            List<DraftSwVo> subDraftSwVoList = getDraftSwVoList(returnym,tab,id);
+            if(StringUtil.equals(tab, "ycl")||StringUtil.equals(tab, "ycy")||StringUtil.equals(tab, "yps")||StringUtil.equals(tab, "ybl")){
+                for(DraftSwVo vo : subDraftSwVoList){
+                    boolean cf = false;
+                    vo.setTab(tab);
+                    for(DraftSwVo draftSwVo: draftSwVoList){
+                        if(StringUtil.equals(draftSwVo.getId(), vo.getId())){
+                            cf = true;
+                            break;
+                        }
+                    }if(!cf){
+                        draftSwVoList.add(vo);
+                    }
+                }
+            }else{
                 for(DraftSwVo vo : subDraftSwVoList){
                     vo.setTab(tab);
                     draftSwVoList.add(vo);
                 }
             }
-		}
-		//进行时间排序显示最近
-		return draftSwVoList;
-		
-	}
+        }
+        //进行时间排序显示最近的
+        draftSwVoList.sort(new SortByFqsj());
+        return draftSwVoList;
 
-	// 获取发文是否是穿越还是办理人的信息
+    }
+
+    class SortByFqsj implements Comparator {
+        @Override
+        public int compare(Object o1, Object o2) {
+            DraftSwVo vo1=(DraftSwVo) o1;
+            DraftSwVo vo2=(DraftSwVo) o2;
+            Date date1 = new Date(vo1.getFqsj());
+            Date date2 = new Date(vo2.getFqsj());
+            if(date1.after(date2)){
+                return -1;
+            }
+            else
+                return 1;
+        }
+    }
+
+    // 获取发文是否是穿越还是办理人的信息
     public String getCyAndBl(DraftSwVo draftSwVo) {
         String CYandBL = "";
         List<LcrzbVo> xgryRecordList = draftSwVo.getXgryRecordList();

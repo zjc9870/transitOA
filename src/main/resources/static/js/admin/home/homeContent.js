@@ -340,6 +340,7 @@ function getAndDisplaySwCyByfl(url,fl){
 	if(roleName.indexOf("收文机要专员") !=-1){
 		ym+="jyzy";
 	}
+	fl+="homepage";
 	AjaxTool.post(url, {
 			tab :fl, ym: ym
 		}, function(data) {
