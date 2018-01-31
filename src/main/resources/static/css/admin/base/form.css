@@ -261,6 +261,20 @@
     list-style: none;
     overflow: hidden;
 }
-.notify-object-tbody-row{
+.notify-object-tbody-row {
     cursor: pointer;
 }
+#node_table_position{
+    margin-top: 20px;
+}
+#leftNodeId{
+    float: left;
+    margin-top: 10px;
+}
+#rightRole{
+    float: right;
+    margin-top: 10px;
+}
+
+
+

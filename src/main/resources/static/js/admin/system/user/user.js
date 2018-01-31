@@ -88,14 +88,14 @@ var User = {
 		//绑定保存和修改按钮
 		DatatableTool.bindSaveAndUpdate(function(){
 			if(userValidator.form()) {
-				DatatableTool.saveRow("user/save",$("#user-form").serialize()+"&attachmentId="+ids,"user-table",function(rowNode,response){
+				DatatableTool.saveRow("user/save",$("#user-form").serialize()+"&attachmentId="+ids+"&ssgsId="+$("#ssgs").val(),"user-table",function(rowNode,response){
 					$("#user-modal").modal('hide');
                     ids = [];
 					User.initModal();
 				});
 			}
 		},function(){
-			DatatableTool.updateRow("user/update",$("#user-form").serialize()+"&attachmentId="+ids,"user-table",function(rowNode,response){
+			DatatableTool.updateRow("user/update",$("#user-form").serialize()+"&attachmentId="+ids+"&ssgsId="+$("#ssgs").val(),"user-table",function(rowNode,response){
 				$("#user-modal").modal('hide');
                 ids = [];
 				User.initModal();
