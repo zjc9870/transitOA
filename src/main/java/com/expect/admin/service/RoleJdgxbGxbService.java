@@ -35,18 +35,24 @@ public class RoleJdgxbGxbService {
 	 * @param wjzl
 	 * @return
 	 */
-	public RoleJdgxbGxbVo getWjzt(String bz, String wjzl){
+	public List<RoleJdgxbGxbVo> getWjzt(String bz, String wjzl){
 		UserVo userVo = userService.getLoginUser();
 		User user = userRepository.findOne(userVo.getId());
 //		User user = userRepository.findOne("2c913b71590fcb3201590fd15ada0007");
-		if(user.getRoles() == null || user.getRoles().size() == 0) return new RoleJdgxbGxbVo();
+		if(user.getRoles() == null || user.getRoles().size() == 0) return null;
 		List<String> roleIds = new ArrayList<>(user.getRoles().size());
 		for (Role role : user.getRoles()) {
 			roleIds.add(role.getId());
+            System.out.println(role.getName());
+        }
+		List<RoleJdgxbGxb> roleJdgxbGxbList = roleJdgxbGxbRepository.findByBzAndWjzlAndRoleIdIn(bz, wjzl, roleIds);//有错
+        if(roleJdgxbGxbList == null) return null;
+		List<RoleJdgxbGxbVo> list = new ArrayList<>();
+		for (RoleJdgxbGxb roleJdgxbGxb:roleJdgxbGxbList){
+			RoleJdgxbGxbVo roleJdgxbGxbVo = new RoleJdgxbGxbVo(roleJdgxbGxb);
+			list.add(roleJdgxbGxbVo);
 		}
-		RoleJdgxbGxb roleJdgxbGxb = roleJdgxbGxbRepository.findByBzAndWjzlAndRoleIdIn(bz, wjzl, roleIds);//有错
-		if(roleJdgxbGxb == null) return new RoleJdgxbGxbVo();
-		return new RoleJdgxbGxbVo(roleJdgxbGxb);
+		return list;
 	}
 
 }

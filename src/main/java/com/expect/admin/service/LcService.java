@@ -169,5 +169,9 @@ public class LcService {
 		if(lcjdb == null) return null;
 		return lcjdb.getId();
 	}
-	
+
+	public Lcjdgxb getMaxLcId(){
+		return lcjdgxbRepository.fingMaxLcId();
+	}
+
 }

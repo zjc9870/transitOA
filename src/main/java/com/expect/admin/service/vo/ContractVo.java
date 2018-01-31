@@ -207,4 +207,19 @@ public class ContractVo {
 //	public void setNhtr(User nhtr) {
 //		this.nhtr = nhtr;
 //	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj){
+			return true;
+		}
+		if (obj == null){
+			return false;
+		}
+		if (getClass() != obj.getClass()){
+			return  false;
+		}
+		ContractVo contractVo = (ContractVo) obj;
+		return this.id == contractVo.id;
+	}
 }

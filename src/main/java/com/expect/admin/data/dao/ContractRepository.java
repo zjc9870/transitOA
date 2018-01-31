@@ -66,7 +66,10 @@ public interface ContractRepository extends JpaRepository<Contract, String>{
 //     */
 //	@Query("select distinct c from Contract c,Lcrzb l where c.id = l.clnrid and l.dyjd = '5' and l.cljg = '通过' order by c.sqsj desc ")
 //	List<Contract> findDhtContract();
-	@Query("select distinct c from Contract c,Lcrzb l1 where c.id = l1.clnrid and l1.dyjd = '5' and l1.cljg = '通过' and c.htshzt='Y' and c.id in (select l2.clnrid from Lcrzb l2 where l2.dyjd='4' and l2.user.id= ?1) order by c.sqsj desc")
+//	@Query("select distinct c from Contract c,Lcrzb l1 where c.id = l1.clnrid and l1.dyjd = '5' and l1.cljg = '通过' and c.htshzt='Y' and c.id in (select l2.clnrid from Lcrzb l2 where l2.dyjd='4' and l2.user.id= ?1) order by c.sqsj desc")
+//	List<Contract> findDhtContract(String userId);
+	@Query("select distinct c from Contract c,Lcrzb l1 where c.id = l1.clnrid and l1.dyjd in (select r1.jdId from RoleJdgxbGxb r1 where r1.roleId='2c913b71590fcb3201590fd63f20002a') and " +
+			"l1.cljg = '通过' and c.htshzt='Y' and c.id in (select l2.clnrid from Lcrzb l2 where l2.dyjd in (select r2.jdId from RoleJdgxbGxb r2 where r2.roleId='2c913b71590fcb3201590fd6076e0024') and l2.user.id= ?1) order by c.sqsj desc")
 	List<Contract> findDhtContract(String userId);
 	/**
 	 * 某用户已审批的合同记录

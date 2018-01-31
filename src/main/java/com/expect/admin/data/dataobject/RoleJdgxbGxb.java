@@ -41,7 +41,13 @@ public class RoleJdgxbGxb {
 	public RoleJdgxbGxb(RoleJdgxbGxbVo gxbVo) {
 		BeanUtils.copyProperties(gxbVo, this);
 	}
-	
+
+	public RoleJdgxbGxb(String bz,String jdId,String roleId,String wjzl){
+		this.bz = bz;
+		this.jdId= jdId;
+		this.roleId = roleId;
+		this.wjzl= wjzl;
+	}
 	public RoleJdgxbGxb() {
 	}
 	

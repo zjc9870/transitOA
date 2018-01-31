@@ -44,6 +44,18 @@ public class Lcjdgxb {
 	@Column(name = "xssx")
 	private Integer xssx;//显示顺序(用来标识该节点在界面上的显示顺序)
 
+	public Lcjdgxb(){
+
+	}
+	public Lcjdgxb(String startLcId,String endLcId,String backLcId,String qygz,String sftb,String lcid){
+		this.ksjd = startLcId;
+		this.jsjd = endLcId;
+		this.thjd = backLcId;
+		this.qygz = qygz;
+		this.sftb = sftb;
+		this.lcbs = lcid;
+	}
+
 	public String getId() {
 		return id;
 	}

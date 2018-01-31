@@ -11,6 +11,12 @@ import com.expect.admin.data.dataobject.Department;
 public interface DepartmentRepository extends JpaRepository<Department, String> {
 
 	/**
+	 * 查询所有部门id和name
+	 * @return
+     */
+	@Query("select id,name from Department")
+	public List<Department> findAllIdAndName();
+	/**
 	 * 根据部门代码获取部门
 	 */
 	public Department findByCode(String code);

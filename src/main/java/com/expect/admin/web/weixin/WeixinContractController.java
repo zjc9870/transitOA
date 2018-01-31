@@ -122,7 +122,7 @@ public class WeixinContractController {
 		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
 		try{
 			UserVo userVo = userService.getLoginUser();
-			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
+			List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt(bz, "ht");
 			
 			//申请记录的已审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "ysp")){
@@ -134,7 +134,10 @@ public class WeixinContractController {
 			
 			//申请记录的待审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "dsp")){
-				contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
+				for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+					List<ContractVo> contractVos = contractService.getSqjlWspList(userVo.getId(), roleJdgxbGxbVo.getJdId());
+					contractVoList.addAll(contractVos);
+				}
 				MyResponseBuilder.writeJsonResponse(response, 
 						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 				return;
@@ -145,8 +148,12 @@ public class WeixinContractController {
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 						"T", lx);
 			}else{
-				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-						condition.getJdId(), lx);
+				for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+					List<ContractVo> contractVos = contractService.getContractByUserIdAndCondition(userVo.getId(),
+							roleJdgxbGxbVo.getJdId(), lx);
+					contractVoList.addAll(contractVos);
+					contractVoList = contractService.deleteRepeatedContract(contractVoList);
+				}
 			}
 		}catch(Exception e) {
 //			e.printStackTrace();
@@ -204,16 +211,21 @@ public class WeixinContractController {
 		UserVo userVo = userService.getLoginUser();
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "contract_approve");
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt("sp", "ht");
 		if(condition == null) return modelAndView;
-		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
-		String roleName = roleVo.getName();
+		List<ContractVo> contractVos = new ArrayList<>();
+		String roleName ="";
+		for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+			List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+					roleJdgxbGxbVo.getJdId(), lx);
+			contractVos.addAll(contractVoList);
+			RoleVo roleVo = roleService.getRoleById(roleJdgxbGxbVo.getRoleId());
+			roleName =roleName+" "+roleVo.getName();
+
+		}
 		modelAndView.addObject("xsth", sfxsTab(roleName, "yth"));
-		modelAndView.addObject("roleName", roleVo.getName());
-		System.out.println(roleVo.getName());
-		modelAndView.addObject("contractVoList", 
-				contractService.getContractByUserIdAndCondition(userVo.getId(),
-						condition.getJdId(), lx));
+		modelAndView.addObject("roleName", roleName);
+		modelAndView.addObject("contractVoList", contractVos);
 		return modelAndView;
 	}
 	
@@ -278,10 +290,15 @@ public class WeixinContractController {
 	@RequestMapping("/approve")
 	public ModelAndView approve() {
 
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
-		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
+		List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		String roleName ="";
+		for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+			RoleVo roleVo = roleService.getRoleById(roleJdgxbGxbVo.getRoleId());
+			roleName = roleName+ " "+roleVo.getName();
+		}
+
 		ModelAndView mv = new ModelAndView(viewName + "contract_approve");
-		mv.addObject("roleName", roleVo.getName());
+		mv.addObject("roleName", roleName);
 		return mv;
 	}
 	

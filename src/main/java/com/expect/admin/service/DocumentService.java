@@ -306,7 +306,7 @@ public class DocumentService {
         return documentVo;
     }
 
-    public java.util.List<FwtzVo> getFwtzVosByDocumentId(String documentId) {
+    public List<FwtzVo> getFwtzVosByDocumentId(String documentId) {
         List<String> tzids = fwtzRepository.findTzidByDocumentId(documentId);
         HashSet<String> tzidSet = new HashSet(tzids);
         Iterator tzidIterator = tzidSet.iterator();
