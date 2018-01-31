@@ -51,6 +51,14 @@ public class Lcjdb {
 	@Column(name = "shgs", length = 32)
 	private String shgs;//是否公司内部审核
 
+
+	public Lcjdb(){
+
+	}
+	public Lcjdb(String name,String sslc){
+		this.name = name;
+		this.sslc = sslc;
+	}
 	public String getId() {
 		return id;
 	}

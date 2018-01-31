@@ -86,9 +86,21 @@
     margin-left:10px;
     display: inline;
 }
-#m-hy-notify-tbody tr td:last-child div{
-    color:blue;
+#m-hy-notify-tbody tr td:last-child div {
+    color: blue;
     cursor: pointer;
-    margin-left:10px;
+    margin-left: 10px;
     display: inline;
 }
+.select-process{
+    color: #ffffff;
+    background: rgb(65,173,60);
+    border: none;
+    padding: 6px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    margin-left: 10px;
+    width: 64px;
+    height: 29px;
+}
+

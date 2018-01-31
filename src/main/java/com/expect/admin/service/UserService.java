@@ -139,7 +139,7 @@ public class UserService implements UserDetailsService {
 	 */
 	@Transactional
 	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
-	public DataTableRowVo save(UserVo userVo,String[] attachmentId) {
+	public DataTableRowVo save(UserVo userVo,String[] attachmentId,String ssgsId) {
 		User checkUser = userRepository.findByUsername(userVo.getUsername());
 		DataTableRowVo dtrv = new DataTableRowVo();
 		if (checkUser != null) {
@@ -164,6 +164,10 @@ public class UserService implements UserDetailsService {
 			Department ssgs = departmentRepository.findOne(userVo.getSsgsId());
 			user.setSsgs(ssgs);
 		}
+		//将用户ssgs_id更新
+		if (ssgsId.length() !=0 && ssgsId !=null){
+			user.setSsgs(departmentRepository.findOne(ssgsId));
+		}
 		// 数据库日至记录开始
 		User result = userRepository.save(user);
 		if (result != null) {
@@ -181,7 +185,7 @@ public class UserService implements UserDetailsService {
 	 */
 	@Transactional
 	@TriggersRemove(cacheName = {"USER_CACHE"}, removeAll = true)
-	public DataTableRowVo update(UserVo userVo,String[] attachmentId) {
+	public DataTableRowVo update(UserVo userVo,String[] attachmentId,String ssgsId) {
 		DataTableRowVo dtrv = new DataTableRowVo();
 		dtrv.setMessage("修改失败");
 
@@ -215,6 +219,11 @@ public class UserService implements UserDetailsService {
 			if (!attachmentList.isEmpty()) user.setAttachments(new HashSet<>(attachmentList));
 		}
 
+
+		//将用户ssgs_id更新
+		if (ssgsId.length() !=0 && ssgsId !=null){
+			user.setSsgs(departmentRepository.findOne(ssgsId));
+		}
 		userRepository.save(user);
 		UserConvertor.convertDtrv(dtrv, user);
 		dtrv.setMessage("修改成功");

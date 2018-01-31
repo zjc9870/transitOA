@@ -155,10 +155,20 @@
 				</select>
 			</li> -->
 			<li>
-				<div class="pform-title">所属公司:</div> <input name="ssgsName"
-				class="pform-content pform-disabled" type="text" disabled="disabled"
-				th:value="${userVo.ssgsName}" />
-				<input name = "ssgsId" style = "display:none" th:value = "${userVo.ssgsId}" />
+				<!--<div class="pform-title">所属公司:</div> <input name="ssgsName"-->
+				<!--class="pform-content pform-disabled" type="text" disabled="disabled"-->
+				<!--th:value="${userVo.ssgsName}" />-->
+				<!--<input name = "ssgsId" style = "display:none" th:value = "${userVo.ssgsId}" />-->
+
+				<div class="pform-title">所属公司:</div>
+				<select name="ssgs" id="ssgs" class="pform-content">
+				<th:block th:if="${not #lists.isEmpty(departmentVos)}">
+					<option th:value="${userVo.ssgsId}" th:text="${userVo.ssgsName}" selected="selected"></option>>
+					<div th:each="object : ${departmentVos}">
+						<option th:value="${object.id}" th:text="${object.name}" ></option>
+					</div>
+				</th:block>
+			    </select>
 			</li>
 		</ul>
 		<!-- <input type="hidden" th:value="${userVo.id}" id="userId" /> -->

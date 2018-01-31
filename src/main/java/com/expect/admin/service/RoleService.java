@@ -316,4 +316,8 @@ public class RoleService {
 		resultVo.setResult(true);
 		return resultVo;
 	}
+
+	public Set<Function> getFunctionsByRoleId(String roleId){
+		return roleRepository.findOne(roleId).getFunctions();
+	}
 }

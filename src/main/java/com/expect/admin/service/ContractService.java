@@ -17,6 +17,8 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.expect.admin.data.dao.*;
+import com.expect.admin.data.dataobject.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,19 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.ehcache.annotations.TriggersRemove;
 
-import com.expect.admin.data.dao.AttachmentRepository;
-import com.expect.admin.data.dao.ContractRepository;
-import com.expect.admin.data.dao.LcjdbRepository;
-import com.expect.admin.data.dao.LcrzbRepository;
-import com.expect.admin.data.dao.RoleRepository;
-import com.expect.admin.data.dao.UserRepository;
-import com.expect.admin.data.dataobject.Attachment;
-import com.expect.admin.data.dataobject.Contract;
-import com.expect.admin.data.dataobject.Department;
-import com.expect.admin.data.dataobject.Lcjdb;
-import com.expect.admin.data.dataobject.Lcrzb;
-import com.expect.admin.data.dataobject.Role;
-import com.expect.admin.data.dataobject.User;
 import com.expect.admin.exception.BaseAppException;
 import com.expect.admin.service.vo.AttachmentVo;
 import com.expect.admin.service.vo.ContractVo;
@@ -76,6 +65,8 @@ public class ContractService {
 	private AttachmentRepository attachmentRepository;
 	@Autowired
 	private LcrzbRepository lcrzbRepository;
+	@Autowired
+	private RoleJdgxbGxbRepository roleJdgxbGxbRepository;
 	@Transactional
 	public String save(ContractVo contractVo, String[] attachmentId){
 		Contract contract = new Contract(contractVo);
@@ -101,7 +92,7 @@ public class ContractService {
 	 * @param attachmentId
 	 */
 	@Transactional
-	public void newContractSave(ContractVo contractVo, String bczl, String[] attachmentId) {
+	public void  newContractSave(ContractVo contractVo, String bczl, String[] attachmentId) {
 		String htfl = getHtfl();
 		contractVo.setHtfl(htfl);
 		String lcbs = htfl;
@@ -113,7 +104,7 @@ public class ContractService {
 		String id = save(contractVo, attachmentId);
 		contractVo.setId(id);
 		if(StringUtil.equals(bczl, "tj")) {
-		    addXzLcrz(id, contractVo.getHtfl(), lcService.getStartCondition(lcbs));//如果是新增就增加一条日志记录 
+		    addXzLcrz(id, "ht", lcService.getStartCondition(lcbs));//如果是新增就增加一条日志记录
 		}
 	}
 
@@ -336,7 +327,7 @@ public class ContractService {
 	 * @return
 	 */
 	private List<ContractVo> filter(String userId, String condition, List<Contract> contractList) {
-		List<ContractVo> contractVoList = new ArrayList<ContractVo>();
+		List<ContractVo> contractVoList = new ArrayList<>();
 		if(contractList == null) return contractVoList;
 		Map<String, String> lcjdbMap = getAllLcjdMapping();
 		Lcjdb lcjd = lcjdbRepository.findOne(condition);
@@ -630,13 +621,25 @@ public class ContractService {
 	 * @return
 	 */
 	public String getHtfl() {
-		RoleJdgxbGxbVo roleJdgxbGxbVo= roleJdgxbGxbService.getWjzt("sq", "ht");
-		Role role = roleRepository.findOne(roleJdgxbGxbVo.getRoleId());
+		List<RoleJdgxbGxbVo> roleJdgxbGxbVo= roleJdgxbGxbService.getWjzt("sq", "ht");
+		//取第一个合同申请角色
+		Role role = roleRepository.findOne(roleJdgxbGxbVo.get(0).getRoleId());
 		if(StringUtil.equals(role.getName(), "集团文员")) return "1";//集团合同
 		if(StringUtil.equals(role.getName(), "东交公司文员")) return "3";//东交合同
-		return "2";//非集团合同
+		if (StringUtil.equals(role.getName(),"其他公司发起人")) return "2";//非集团合同
+
+		RoleJdgxbGxb roleJdgxbGxb  = roleJdgxbGxbRepository.findByRoleId(role.getId());
+		if (roleJdgxbGxb !=null && roleJdgxbGxb.getJdId() !=null ){
+			Lcjdb lcjdb = lcjdbRepository.getOne(roleJdgxbGxb.getJdId());
+			if (lcjdb !=null){
+				return lcjdb.getSslc();
+			}
+		}
+
+		return "-1";
+
 	}
-	
+
 	/**
 	 * 删除合同（软删除）
 	 * @param id
@@ -665,18 +668,23 @@ public class ContractService {
 	 * @return
 	 */
 	public Map<String, String> getAllLcjdMapping() {
-		List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("1");
-		List<Lcjdb> lcjdbList2 = lcjdbRepository.findBySslc("2");
-		List<Lcjdb> lcjdbList3 = lcjdbRepository.findBySslc("3");
 		Map<String, String> resultMap = new HashMap<String, String>();
-		for (Lcjdb lcjdb : lcjdbList) {
-			resultMap.put(lcjdb.getId(), lcjdb.getName());
-		}
-		for (Lcjdb lcjdb : lcjdbList2) {
-			resultMap.put(lcjdb.getId(), lcjdb.getName());
-		}
-		for (Lcjdb lcjdb : lcjdbList3) {
-			resultMap.put(lcjdb.getId(), lcjdb.getName());
+//		List<Lcjdb> lcjdbList = lcjdbRepository.findBySslc("1");
+//		List<Lcjdb> lcjdbList2 = lcjdbRepository.findBySslc("2");
+//		List<Lcjdb> lcjdbList3 = lcjdbRepository.findBySslc("3");
+//
+//		for (Lcjdb lcjdb : lcjdbList) {
+//			resultMap.put(lcjdb.getId(), lcjdb.getName());
+//		}
+//		for (Lcjdb lcjdb : lcjdbList2) {
+//			resultMap.put(lcjdb.getId(), lcjdb.getName());
+//		}
+//		for (Lcjdb lcjdb : lcjdbList3) {
+//			resultMap.put(lcjdb.getId(), lcjdb.getName());
+//		}
+		List<Lcjdb> lcjdbs = lcjdbRepository.findAll();
+		for (Lcjdb lcjdb:lcjdbs){
+			resultMap.put(lcjdb.getId(),lcjdb.getName());
 		}
 		resultMap.put("T", "已回填");
 		resultMap.put("Y", "审核完成");
@@ -813,6 +821,16 @@ public class ContractService {
             }
         }
 	    return (isAuditFinaish && isZichanguanlibu);
+	}
+	public List<ContractVo> deleteRepeatedContract(List<ContractVo> contractVos){
+		if (contractVos.size() == 0 ) return new ArrayList<>();
+		List<ContractVo> contractVoList = new ArrayList<>();
+		for (ContractVo contractVo:contractVos){
+			if (!contractVoList.contains(contractVo)){
+				contractVoList.add(contractVo);
+			}
+		}
+		return contractVoList;
 	}
 
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.expect.admin.data.dataobject.RoleJdgxbGxb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,10 +104,13 @@ public class ContractController {
 		if(StringUtil.isBlank(lx)) lx = "wtj";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_apply_record");
 		UserVo userVo = userService.getLoginUser();
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sq", "ht");
-//		List<ContractVo> contractVoList = ;
-		modelAndView.addObject("contractVoList", 
-				contractService.getContractByUserIdAndCondition(userVo.getId(), condition.getJdId(), lx));
+		List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt("sq", "ht");
+		List<ContractVo> contractVoList = new ArrayList<>();
+		for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+			List<ContractVo> contractVos = contractService.getContractByUserIdAndCondition(userVo.getId(), roleJdgxbGxbVo.getJdId(), lx);
+			contractVoList.addAll(contractVos);
+		}
+		modelAndView.addObject("contractVoList", contractVoList);
 		return modelAndView;
 	}
 	/**
@@ -121,7 +125,7 @@ public class ContractController {
 		List<ContractVo> contractVoList =  new ArrayList<ContractVo>();
 		try{
 			UserVo userVo = userService.getLoginUser();
-			RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt(bz, "ht");
+			List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt(bz, "ht");
 			
 			//申请记录的已审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "ysp")){
@@ -133,7 +137,11 @@ public class ContractController {
 			
 			//申请记录的待审批
 			if(StringUtil.equals(bz, "sq") && StringUtil.equals(lx, "dsp")){
-				contractVoList = contractService.getSqjlWspList(userVo.getId(), condition.getJdId());
+				for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+					List<ContractVo> contractVos = contractService.getSqjlWspList(userVo.getId(), roleJdgxbGxbVo.getJdId());
+					contractVoList.addAll(contractVos);
+				}
+
 				MyResponseBuilder.writeJsonResponse(response, 
 						JsonResult.useDefault(true, "获取申请记录成功", contractVoList).build());
 				return;
@@ -144,8 +152,13 @@ public class ContractController {
 				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
 						"T", lx);
 			}else{
-				contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
-						condition.getJdId(), lx);
+				for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+					List<ContractVo> contractVos = contractService.getContractByUserIdAndCondition(userVo.getId(),
+							roleJdgxbGxbVo.getJdId(), lx);
+					contractVoList.addAll(contractVos);
+
+				}
+				contractVoList = contractService.deleteRepeatedContract(contractVoList);
 			}
 		}catch(Exception e) {
 //			e.printStackTrace();
@@ -164,16 +177,22 @@ public class ContractController {
 		UserVo userVo = userService.getLoginUser();
 		if(StringUtil.isBlank(lx)) lx = "dsp";
 		ModelAndView modelAndView = new ModelAndView(viewName + "c_approve");
-		RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+		List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt("sp", "ht");
 		if(condition == null) return modelAndView;
-		RoleVo roleVo = roleService.getRoleById(condition.getRoleId());
-		String roleName = roleVo.getName();
+		List<ContractVo> contractVos = new ArrayList<>();
+		String roleName ="";
+		for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+			List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(),
+					roleJdgxbGxbVo.getJdId(), lx);
+			contractVos.addAll(contractVoList);
+			RoleVo roleVo = roleService.getRoleById(roleJdgxbGxbVo.getRoleId());
+			roleName =roleName+" "+roleVo.getName();
+
+		}
 		modelAndView.addObject("xsth", sfxsTab(roleName, "yth"));
-		modelAndView.addObject("roleName", roleVo.getName());
-		System.out.println(roleVo.getName());
-		modelAndView.addObject("contractVoList", 
-				contractService.getContractByUserIdAndCondition(userVo.getId(),
-						condition.getJdId(), lx));
+		modelAndView.addObject("roleName", roleName);
+
+		modelAndView.addObject("contractVoList", contractVos);
 		return modelAndView;
 	}
 
@@ -388,7 +407,7 @@ public class ContractController {
 		contractVo.setBh(bh);
 		contractVo.setHtshzt("T");
 		contractService.updateContract(contractVo, null);
-		String lcrzId = lcrzbService.save(new LcrzbVo("编号回填", bh), id, contractVo.getHtfl(), "T");
+		String lcrzId = lcrzbService.save(new LcrzbVo("编号回填", bh), id, "ht", "T");
 		contractService.bindContractWithLcrz(contractVo.getId(), lcrzId);
 		MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true, "合同编号回填成功！").build());
 	}
@@ -579,5 +598,11 @@ public class ContractController {
 	        return "forward:/admin/attachment/download?id=" + attachmentId;
 	    }
 	    return "forward:/admin/attachment/downloadAttachmentAsPdf?id=" + attachmentId;
+	}
+
+	@RequestMapping(value = "/processConfiguration", method = RequestMethod.GET)
+	public ModelAndView processConfiguration(){
+		ModelAndView mv = new ModelAndView(viewName+"configuration");
+		return mv;
 	}
 }

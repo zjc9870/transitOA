@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.expect.admin.service.DepartmentService;
+import com.expect.admin.service.vo.DepartmentVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,8 +50,8 @@ public class UserController {
 	private AttachmentService attachmentService;
 	@Autowired
 	private Settings settings;
-//	@Autowired
-//	private DepartmentService departmentService;
+	@Autowired
+	private DepartmentService departmentService;
 
 	/**
 	 * 用户管理页面
@@ -74,7 +76,9 @@ public class UserController {
 		UserVo userVo = userService.getUserById(id);
 		ModelAndView modelAndView = new ModelAndView(viewName + "form/userForm");
 		userVo.setPassword("");
+		List<DepartmentVo> departmentVos = departmentService.getDepartments();
 		modelAndView.addObject("userVo", userVo);
+		modelAndView.addObject("departmentVos",departmentVos);
 		return modelAndView;
 	}
 
@@ -95,12 +99,13 @@ public class UserController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo save(UserVo userVo,
-							   @RequestParam(name = "attachmentId" ,required = false) String[] attachmentId) {
+							   @RequestParam(name = "attachmentId" ,required = false) String[] attachmentId,
+	                           @RequestParam(name ="ssgsId",required = false) String ssgsId) {
 		if(!StringUtil.isBlank(userVo.getPassword())){
 			String encodePassword = userService.encodePassword(userVo.getPassword());
 			userVo.setPassword(encodePassword);
 		}
-		return userService.save(userVo,attachmentId);
+		return userService.save(userVo,attachmentId,ssgsId);
 	}
 
 	/**
@@ -109,12 +114,13 @@ public class UserController {
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
 	@ResponseBody
 	public DataTableRowVo update(UserVo userVo,
-								 @RequestParam(name = "attachmentId" ,required = false) String[] attachmentId) {
+								 @RequestParam(name = "attachmentId" ,required = false) String[] attachmentId,
+								 @RequestParam(name ="ssgsId",required = false) String ssgsId) {
 	    if(!StringUtil.isBlank(userVo.getPassword())) {
 	        String encodeNewPassword = userService.encodePassword(userVo.getPassword());
             userVo.setPassword(encodeNewPassword);
 	    }
-		return userService.update(userVo,attachmentId);
+		return userService.update(userVo,attachmentId,ssgsId);
 	}
 
 	/**
