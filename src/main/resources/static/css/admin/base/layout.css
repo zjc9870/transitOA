@@ -730,6 +730,20 @@ Page sidebar
         .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a > .title {
           font-size: 14px;
           font-weight: 400; }
+        .page-sidebar .page-sidebar-menu > li > a > .count,
+        .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a > .count {
+          /*display: none;*/
+          background: #00783a;
+          border-radius: 50%;
+          width: 22px;
+          height: 22px;
+          top: 10px;
+          right: 40px;
+          position: absolute;
+          text-align: center;
+          color: #FFF;
+          /*z-index: 99999;*/
+        }
         .page-sidebar .page-sidebar-menu > li > a > i,
         .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu > li > a > i {
           font-size: 18px;
@@ -789,6 +803,7 @@ Page sidebar
       margin: 8px 0px 8px 0px; }
       .page-sidebar .page-sidebar-menu .sub-menu li,
       .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu li {
+        position:relative;
         background: none;
         margin: 0px;
         padding: 0px;
@@ -803,6 +818,20 @@ Page sidebar
           font-size: 14px;
           font-weight: 400;
           background: none; }
+        .page-sidebar .page-sidebar-menu .sub-menu li > a > .count1,
+        .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu li > a > .count1{
+          /*display: none;*/
+          background: #00783a;
+          border-radius: 50%;
+          width: 22px;
+          height: 22px;
+          top: 10px;
+          right: 40px;
+          position: absolute;
+          text-align: center;
+          color: #FFF;
+          z-index: 99999;
+        }
           .page-sidebar .page-sidebar-menu .sub-menu li > a > i,
           .page-sidebar-closed.page-sidebar-fixed .page-sidebar:hover .page-sidebar-menu .sub-menu li > a > i {
             font-size: 16px;

@@ -93,10 +93,28 @@ function pass(id) {
             var table = $('#c-approve-table').DataTable();
             if(data.success) {
                 table.rows('#'+id).remove().draw();
+                refreshContract();
             }
         });
     }
 
+}
+
+function refreshContract(){
+    var n = $('#合同审批').text();
+    n--;
+    if(n == 0){
+        $('#合同审批').remove();
+    }else{
+        $('#合同审批').text(n);
+    }
+    var count = $('#合同审办').text();
+    count--;
+    if (count == 0){
+        $('#合同审办').remove();
+    }else{
+        $('#合同审办').text(count);
+    }
 }
 
 function init() {

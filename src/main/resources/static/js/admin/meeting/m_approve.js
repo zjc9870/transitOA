@@ -78,10 +78,29 @@ function pass(id) {
         var table = $('#m-approve-table').DataTable();
         if(data.success) {
             table.rows('#'+id).remove().draw();
+            refreshMeeting();
         }
     });
 }
 
+function refreshMeeting(){
+    debugger;
+    var n = $('#会议审批').text();
+    n--;
+    if(n == 0){
+        $('#会议审批').remove();
+    }else{
+        $('#会议审批').text(n);
+    }
+    var count = $('#会议管理').text();
+    count--;
+    if (count == 0){
+        $('#会议管理').remove();
+    }else{
+        $('#会议管理').text(count);
+    }
+
+}
 
 
 function seeApproveRecordNE(id, tabId, hyshzt, departmentName){

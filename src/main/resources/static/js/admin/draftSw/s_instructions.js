@@ -65,8 +65,26 @@ function passPs(id) {
         var table = $('#s-instructions-table').DataTable();
         if(data.success) {
             table.rows('#'+id).remove().draw();
+            refreshSwps();
         }
     });
+}
+
+function refreshSwps() {
+    var n = $('#收文批示').text();
+    n--;
+    if(n == 0){
+        $('#收文批示').remove();
+    }else{
+        $('#收文批示').text(n);
+    }
+    var count = $('#收文管理').text();
+    count--;
+    if (count == 0){
+        $('#收文管理').remove();
+    }else{
+        $('#收文管理').text(count);
+    }
 }
 
 

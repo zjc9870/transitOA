@@ -330,6 +330,7 @@ $(document).ready(function () {
         AjaxTool.post('meeting/addLcrz', $('#m_approve_form').serialize()+ '&' +$('#form_data').serialize()+"&cljg="+this.id+"&fileId="+ids, function (data) {
                 alert(data.message);
                 toHysp();
+                refreshMeeting();
             }
         )
     });
@@ -347,6 +348,7 @@ $(document).ready(function () {
             AjaxTool.post('meeting/addLcrz', $('#m_approve_form').serialize()+ '&' +$('#form_data').serialize()+"&cljg="+this.id+"&fileId="+ids, function (data) {
                     alert(data.message);
                     toHysp();
+                    refreshMeeting();
                 }
             )
         }
@@ -357,7 +359,6 @@ $(document).ready(function () {
             $('.page-content').html(html);
         });
     }
-
 
     $('#back').click(function () {
         var tabId = $('#back').data('tabId');

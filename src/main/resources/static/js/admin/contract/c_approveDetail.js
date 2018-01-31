@@ -28,6 +28,7 @@ $(document).ready(function () {
             AjaxTool.post('contract/addLcrz', $('#c_approveForm').serialize()+"&id="+$('#data').val(), function (data) {
                     alert(data.message);
                     toHtsp();
+                    refreshContract();
                 }
             )
         } else {

@@ -5,6 +5,7 @@ $('#yd').click(function(){
         alert(data.message);
         if(data.success){
             toNotifyAll();
+            refreshFwtz();
         }
     })
 } );
@@ -48,8 +49,26 @@ $('#back').click(function () {
         $('#'+tabId).trigger('click');
     });
 });
+
 function toNotifyAll() {
     AjaxTool.getHtml('document/fwtz',function (html) {
         $('.page-content').html(html);
     });
+}
+
+function refreshFwtz(){
+    var n = $('#发文通知').text();
+    n--;
+    if(n == 0){
+        $('#发文通知').remove();
+    }else{
+        $('#发文通知').text(n);
+    }
+    var count = $('#发文管理').text();
+    count--;
+    if (count == 0){
+        $('#发文管理').remove();
+    }else{
+        $('#发文管理').text(count);
+    }
 }

@@ -37,11 +37,29 @@ $(document).ready(function () {
             AjaxTool.post('draftSw/py', $('#s_cyForm').serialize()+"&draftSwId="+$('#data').val(), function (data) {
                 alert(data.message);
                 toSwcy();
+                refreshSwcy();
             })
         } else {
             alert("提交失败!");
         }
     });
+
+    function refreshSwcy() {
+        var n = $('#收文传阅').text();
+        n--;
+        if(n == 0){
+            $('#收文传阅').remove();
+        }else{
+            $('#收文传阅').text(n);
+        }
+        var count = $('#收文管理').text();
+        count--;
+        if (count == 0){
+            $('#收文管理').remove();
+        }else{
+            $('#收文管理').text(count);
+        }
+    }
 
     function toSwcy() {
         AjaxTool.getHtml('draftSw/swCyRecord',function (html) {

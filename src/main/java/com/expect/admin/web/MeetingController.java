@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -50,6 +51,8 @@ public class MeetingController {
     private NotifyObjectService notifyObjectService;
     @Autowired
     private MeetingroomService meetingroomService;
+    @Autowired
+    private FunctionService functionService;
 
     private final String viewName = "admin/meeting/";
 
@@ -194,11 +197,6 @@ public class MeetingController {
         modelAndView.addObject("hytzVo",hytzVo);
         return modelAndView;
     }
-
-
-
-
-
 
     /**
      * 保存，提交会议
@@ -414,7 +412,7 @@ public class MeetingController {
             log.error("会议审核失败",e);
             MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false, "会议审核失败！").build());
         }
-        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(false,"会议审核成功！").build());
+        MyResponseBuilder.writeJsonResponse(response, JsonResult.useDefault(true,"会议审核成功！").build());
     }
 
     @RequestMapping(value = "savenotify", method = RequestMethod.POST)

@@ -31,11 +31,29 @@ $(document).ready(function () {
             AjaxTool.post('draftSw/bl', $('#s_blForm').serialize()+"&draftSwId="+$('#data').val(), function (data) {
                 alert(data.message);
                 toSwbl();
+                refreshSwbl();
             })
         } else {
             alert("提交失败!");
         }
     });
+
+    function refreshSwbl() {
+        var n = $('#收文办理').text();
+        n--;
+        if(n == 0){
+            $('#收文办理').remove();
+        }else{
+            $('#收文办理').text(n);
+        }
+        var count = $('#收文管理').text();
+        count--;
+        if (count == 0){
+            $('#收文管理').remove();
+        }else{
+            $('#收文管理').text(count);
+        }
+    }
 
     function toSwbl() {
         AjaxTool.getHtml('draftSw/swBlRecord',function (html) {

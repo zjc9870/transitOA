@@ -26,4 +26,7 @@ public interface MeetingRepository extends JpaRepository<Meeting,String> {
     @Query("select m.kssj, m.jssj from Meeting as m where m.hydd = ?1 and m.hys = ?2 and m.hyrq = ?3 and m.id <> ?4 and m.hyshzt <> 'revocation' and m.hyshzt <> 'N'")
     public List<Object> findHysSyqk2(String paramString1, String paramString2, String paramString3, String paramString4);
 
+    @Query("select count(m) from Meeting as m where m.hyshzt = ?1 and m.hyfl =?2")
+    public int findCountMeeting(String hyshzt, String hyfl);
+
 }

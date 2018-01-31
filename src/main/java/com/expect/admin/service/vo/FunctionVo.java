@@ -20,6 +20,7 @@ public class FunctionVo implements Comparable<FunctionVo> {
 	private String parentId;
 	private String parentName;
 	private SelectOptionVo parentFunctionSov = new SelectOptionVo();
+	private String count; //功能栏信息条目
 
 	public String getId() {
 		return id;
@@ -130,6 +131,14 @@ public class FunctionVo implements Comparable<FunctionVo> {
 
 	public void setParentFunctionSov(SelectOptionVo parentFunctionSov) {
 		this.parentFunctionSov = parentFunctionSov;
+	}
+
+	public String getCount() {
+		return count;
+	}
+
+	public void setCount(String count) {
+		this.count = count;
 	}
 
 	@Override

@@ -31,6 +31,7 @@ $(document).ready(function () {
             AjaxTool.post('draftSw/ldps', $('#s_psForm').serialize()+"&id="+$('#data').val(), function (data) {
                 alert(data.message);
                 toSwps();
+                refreshSwps();
             })
         } else {
             alert("提交失败!");

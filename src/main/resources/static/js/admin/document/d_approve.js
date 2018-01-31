@@ -75,9 +75,26 @@ function pass(id) {
         var table = $('#d-approve-table').DataTable();
         if(data.success) {
             table.rows('#'+id).remove().draw();
-            window.location.reload();
+            refreshDocument();
         }
     });
+}
+
+function refreshDocument(){
+    var n = $('#发文审批').text();
+    n--;
+    if(n == 0){
+        $('#发文审批').remove();
+    }else{
+        $('#发文审批').text(n);
+    }
+    var count = $('#发文管理').text();
+    count--;
+    if (count == 0){
+        $('#发文管理').remove();
+    }else{
+        $('#发文管理').text(count);
+    }
 }
 
 function init() {

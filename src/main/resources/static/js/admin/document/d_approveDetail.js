@@ -28,6 +28,7 @@ $(document).ready(function () {
             AjaxTool.post('document/addLcrz', $('#d_approveForm').serialize()+"&id="+$('#data').val(), function (data) {
                     alert(data.message);
                     toGwsp();
+                    refreshDocument();
                 }
             )
         } else {

@@ -5,10 +5,27 @@ $('#yd').click(function(){
         alert(data.message);
         if(data.success){
             toNotifyAll();
+            refreshHytz();
         }
     })
 } );
 
+function refreshHytz(){
+    var n = $('#会议通知').text();
+    n--;
+    if(n == 0){
+        $('#会议通知').remove();
+    }else{
+        $('#会议通知').text(n);
+    }
+    var count = $('#会议管理').text();
+    count--;
+    if (count == 0){
+        $('#会议管理').remove();
+    }else{
+        $('#会议管理').text(count);
+    }
+}
 
 $('#back').click(function () {
     var tabId = ($('#back').data('tabId'));
