@@ -198,8 +198,12 @@ public class FunctionService {
 						FunctionVo childFunction = childFunctions.get(j);
 						String functionName = childFunction.getName();
 						if(functionName.equals("合同审批")){
-							RoleJdgxbGxbVo condition = roleJdgxbGxbService.getWjzt("sp", "ht");
-							List<ContractVo> contractVoList = contractService.getContractByUserIdAndCondition(userVo.getId(), condition.getJdId(), "dsp");
+							List<RoleJdgxbGxbVo> condition = roleJdgxbGxbService.getWjzt("sp", "ht");
+							List<ContractVo> contractVoList = new ArrayList<>();
+							for (RoleJdgxbGxbVo roleJdgxbGxbVo:condition){
+								List<ContractVo> contractVos = contractService.getContractByUserIdAndCondition(userVo.getId(), roleJdgxbGxbVo.getJdId(), "dsp");
+								contractVoList.addAll(contractVos);
+							}
 							int countChild = contractVoList.size();
 							countParent += countChild;
 							if (countChild != 0){

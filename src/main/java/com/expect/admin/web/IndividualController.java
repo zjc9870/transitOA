@@ -64,7 +64,7 @@ public class IndividualController {
 			userVo.setPassword(encodeNewPassword);
 		}
 		else userVo.setPassword(loginUserVo.getPassword());
-		return userService.update(userVo,null);
+		return userService.update(userVo,null, null);
 	}
 	/**
 	 * 签名图片附件上传
