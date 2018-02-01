@@ -230,9 +230,12 @@ public class FunctionService {
 								childFunction.setCount("" + countChild);
 							}
 						}else if (functionName.equals("发文通知")){
+							String role = userVo.getRoleName();
 							List<FwtzVo> fwtzVoList=fwtzService.getFwtzByUserName(userName);
 							List<FwtzVo> wdFwtzVoList=fwtzService.getWdFwtzList(fwtzVoList);
-							int countChild = wdFwtzVoList.size();
+							List<DocumentVo> documentVoList1=fwtzService.getFwDocumentVo(wdFwtzVoList,role);
+							List<DocumentVo> documentVoList=fwtzService.getFwDocumentVoMerge(documentVoList1);
+							int countChild = documentVoList.size();
 							countParent += countChild;
 							if (countChild != 0){
 								childFunction.setCount("" + countChild);
